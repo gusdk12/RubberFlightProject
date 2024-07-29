@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: RubberFlightProject
+    name: RubberFlight
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

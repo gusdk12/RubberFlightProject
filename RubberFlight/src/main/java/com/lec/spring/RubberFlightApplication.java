@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RubberFlightProjectApplication {
+public class RubberFlightApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RubberFlightProjectApplication.class, args);
+        SpringApplication.run(RubberFlightApplication.class, args);
     }
 
 }
