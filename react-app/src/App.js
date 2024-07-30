@@ -16,6 +16,7 @@ function App() {
           rel="noopener noreferrer"
         >
           Learn React
+          {/* 안녕? 난 다혜야. */}
         </a>
       </header>
     </div>
