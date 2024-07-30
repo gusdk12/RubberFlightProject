@@ -17,14 +17,31 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/join")
+    @PostMapping("/join/user")
     public String join(@RequestBody UserJoinDTO joinDTO) {
 
         User user = User.builder()
                 .username(joinDTO.getUsername())
                 .password(joinDTO.getPassword())
+                .name(joinDTO.getName())  // Set this field
+                .email(joinDTO.getEmail())  // Set this field
+                .tel(joinDTO.getTel())  // Set this field
+                .image(joinDTO.getImage())
                 .build();
+
         user = userService.join(user);
+        if (user == null) return "JOIN FAILED";
+        return "JOIN OK : " + user;
+    }
+
+    @PostMapping("/join/admin")
+    public String Admin(@RequestBody UserJoinDTO joinDTO) {
+
+        User user = User.builder()
+                .username(joinDTO.getUsername())
+                .password(joinDTO.getPassword())
+                .build();
+        user = userService.admin(user);
         if (user == null) return "JOIN FAILED";
         return "JOIN OK : " + user;
     }

@@ -31,6 +31,23 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User admin(User user){
+        String username = user.getUsername();
+        String password = user.getPassword();
+
+
+        if(userRepository.existsByUsername(username)){
+            return null;  // 회원 가입 실패
+        }
+
+
+        user.setUsername(user.getUsername().toUpperCase());
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole("ROLE_ADMIN");
+        return userRepository.save(user);
+    }
+
+
 
     public User findByUsername(String username){
         return userRepository.findByUsername(username.toUpperCase());

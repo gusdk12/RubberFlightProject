@@ -24,11 +24,15 @@ public class JWTUtil {
     // JWT 생성
     // Payload 에 저장될 정보
     // - id, username, role, 생성일, 만료일
-    public String createJwt(Long id, String username, String role, Long expiredMs) {
+    public String createJwt(Long id, String username, String role, String name, String email, String tel, String image, Long expiredMs) {
         return Jwts.builder()
                 .claim("username", username)
                 .claim("role", role)
                 .claim("id", id)
+                .claim("name", name)
+                .claim("email", email)
+                .claim("tel", tel)
+                .claim("image", image)
                 .issuedAt(new Date(System.currentTimeMillis())) //생성일
                 .expiration(new Date(System.currentTimeMillis() + expiredMs)) // 만료일시
                 .signWith(secretKey)
@@ -66,6 +70,42 @@ public class JWTUtil {
                 .getPayload()
                 .get("role", String.class);
     }
+
+    public String getName(String token) {  // role 확인
+
+
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("name", String.class);
+    }
+
+    public String getEmail(String token) {  // role 확인
+
+
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("email", String.class);
+    }
+
+    public String getTel(String token) {  // role 확인
+
+
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("tel", String.class);
+    }
+
+
+
 
 
     public Boolean isExpired(String token) {  // 만료일 확인

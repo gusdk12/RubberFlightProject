@@ -61,6 +61,9 @@ public class JWTFilter extends OncePerRequestFilter {
         Long id = jwtUtil.getId(token);
         String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
+        String name = jwtUtil.getName(token);
+        String tel = jwtUtil.getTel(token);
+        String email = jwtUtil.getEmail(token);
 
         // User 생성하여 로그인 진행
         User user = User.builder()
@@ -68,6 +71,10 @@ public class JWTFilter extends OncePerRequestFilter {
                 .username(username)
                 .password("temppassword") // 임시 비밀번호 (어짜피 Session 에 저장하는 용도)
                 .role(role)
+                .name(name)
+                .email(email)
+                .tel(tel)
+                .image("image")
                 .build();
 
         // UserDetails 에 User 담아 생성

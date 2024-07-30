@@ -8,4 +8,8 @@ import lombok.NoArgsConstructor;
 public class UserJoinDTO {
     private String username;
     private String password;
+    private String name;
+    private String email;
+    private String tel;
+    private String image;
 }
