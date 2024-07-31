@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import RubberFlightApp from './RubberFlightApp/RubberFlightApp';
 import reportWebVitals from './reportWebVitals';
 import TestApp from './test/TestApp';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <RubberFlightApp />
   </React.StrictMode>
 );
 
