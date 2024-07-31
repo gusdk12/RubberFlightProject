@@ -41,7 +41,7 @@ public class JWTFilter extends OncePerRequestFilter {
         // Authorization 헤더 검증
         if(authorization == null || !authorization.startsWith("Bearer ")){
             // JWT 가 없다 !
-            System.out.println("\tJWT도 없고 유인아도 없고..");
+//            System.out.println("\tJWT도 없고 유인아도 없고..");
             filterChain.doFilter(request, response); //, 리턴하기 전에 다음 필터에 넘기고 종료~!
             return;
         }
