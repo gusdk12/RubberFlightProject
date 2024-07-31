@@ -1,4 +1,4 @@
-package com.lec.spring.schedule.controller;
+package com.lec.spring.member.schedule.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.messaging.handler.annotation.MessageMapping;

@@ -1,4 +1,4 @@
-package com.lec.spring.schedule.config;
+package com.lec.spring.member.schedule.config;
 
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;

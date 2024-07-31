@@ -1,4 +1,4 @@
-package com.lec.spring.schedule.config;
+package com.lec.spring.member.schedule.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
