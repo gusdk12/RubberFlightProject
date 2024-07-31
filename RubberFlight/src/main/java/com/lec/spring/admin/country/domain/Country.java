@@ -15,7 +15,10 @@ public class Country {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // 나라 id : countryId
+    private Long id;
+
+    @Column
+    private Integer countryId; // 나라 id : countryId
 
     @Column
     private String countryIso; // 나라 ISO 코드 : codeIso2Country

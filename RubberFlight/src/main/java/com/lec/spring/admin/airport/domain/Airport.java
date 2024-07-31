@@ -14,7 +14,10 @@ public class Airport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id; // 공항 ID : airportId
+    private Long id;
+
+    @Column
+    private Integer airportId;  // 공항 ID : airportId
 
     @ManyToOne
     @ToString.Exclude
