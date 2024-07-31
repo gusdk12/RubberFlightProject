@@ -1,6 +1,6 @@
-package com.lec.spring.main.user.config;
+package com.lec.spring.general.user.config;
 
-import com.lec.spring.main.user.domain.User;
+import com.lec.spring.general.user.domain.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

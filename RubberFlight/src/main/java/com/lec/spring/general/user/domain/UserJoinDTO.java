@@ -1,4 +1,4 @@
-package com.lec.spring.main.user.domain;
+package com.lec.spring.general.user.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,8 +1,8 @@
-package com.lec.spring.main.user.controller;
+package com.lec.spring.general.user.controller;
 
 
-import com.lec.spring.main.user.config.PrincipalDetails;
-import com.lec.spring.main.user.domain.User;
+import com.lec.spring.general.user.config.PrincipalDetails;
+import com.lec.spring.general.user.domain.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;

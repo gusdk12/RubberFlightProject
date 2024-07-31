@@ -1,4 +1,4 @@
-package com.lec.spring.main.user.jwt;
+package com.lec.spring.general.user.jwt;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;

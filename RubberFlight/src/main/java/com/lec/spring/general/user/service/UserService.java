@@ -1,7 +1,7 @@
-package com.lec.spring.main.user.service;
+package com.lec.spring.general.user.service;
 
-import com.lec.spring.main.user.domain.User;
-import com.lec.spring.main.user.repository.UserRepository;
+import com.lec.spring.general.user.domain.User;
+import com.lec.spring.general.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

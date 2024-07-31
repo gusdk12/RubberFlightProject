@@ -1,6 +1,6 @@
-package com.lec.spring.main.user.repository;
+package com.lec.spring.general.user.repository;
 
-import com.lec.spring.main.user.domain.User;
+import com.lec.spring.general.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
