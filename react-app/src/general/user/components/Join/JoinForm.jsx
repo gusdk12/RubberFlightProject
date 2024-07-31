@@ -41,7 +41,6 @@ const JoinForm = ({ join }) => {
         const tel1 = e.target.tel1.value;
         const tel2 = e.target.tel2.value;
         const tel3 = e.target.tel3.value;
-        const tel4 = e.target.tel4.value;
         const profileImage = e.target.profileImage.files[0];
 
         if (password !== confirmPassword) {
@@ -49,31 +48,21 @@ const JoinForm = ({ join }) => {
             return;
         }
 
-        const tel = `${tel1}-${tel2}-${tel3}-${tel4}`;
-
-        console.log({
-            username,
-            password,
-            name,
-            email,
-            tel,
-            profileImage: profileImage ? profileImage.name : 'No file selected'
-        });
+        const tel = `${tel1}-${tel2}-${tel3}`;
 
         join({ username, password, name, email, tel, profileImage });
     };
 
     const checkUsernameAvailability = () => {
-        console.log('Checking username availability...');
         setIsUsernameAvailable(true); 
     };
 
     return (
         <Box className="form" maxWidth="500px" mx="auto" p={6} bg="white" borderRadius="md" boxShadow="md">
-            <h2 className="login-title" style={{ textAlign: 'center' }}>Join</h2>
+            <h2 className="login-title" style={{ textAlign: 'center'}}>Join</h2>
 
             <form className="login-form" onSubmit={(e) => onJoin(e)}>
-                <FormControl id="username" mb={4} isInvalid={!isUsernameAvailable} isRequired>
+                <FormControl id="join-username" mb={4} isInvalid={!isUsernameAvailable} isRequired>
                     <FormLabel>Username</FormLabel>
                     <Box display="flex" alignItems="center">
                         <Input
@@ -87,16 +76,17 @@ const JoinForm = ({ join }) => {
                         />
                         <Button
                             ml={3}
-                            bg="#99A8B7"
+                            bg="#EDF2F7"
+                            color={'black'}
                             onClick={checkUsernameAvailability}
                         >
-                            중복 확인
+                        <p>중복확인</p>
                         </Button>
                     </Box>
                     {!isUsernameAvailable && <FormErrorMessage>Username already taken.</FormErrorMessage>}
                 </FormControl>
 
-                <FormControl id="password" mb={4} isRequired>
+                <FormControl id="join-password" mb={4} isRequired>
                     <FormLabel>Password</FormLabel>
                     <PasswordInput
                         placeholder="Enter password"
@@ -105,7 +95,7 @@ const JoinForm = ({ join }) => {
                     />
                 </FormControl>
 
-                <FormControl id="confirmPassword" mb={4} isRequired>
+                <FormControl id="join-confirm-password" mb={4} isRequired>
                     <FormLabel>Confirm Password</FormLabel>
                     <PasswordInput
                         placeholder="Confirm password"
@@ -114,7 +104,7 @@ const JoinForm = ({ join }) => {
                     />
                 </FormControl>
 
-                <FormControl id="name" mb={4} isRequired>
+                <FormControl id="join-name" mb={4} isRequired>
                     <FormLabel>Name</FormLabel>
                     <Input
                         type="text"
@@ -125,7 +115,7 @@ const JoinForm = ({ join }) => {
                     />
                 </FormControl>
 
-                <FormControl id="email" mb={4} isRequired>
+                <FormControl id="join-email" mb={4} isRequired>
                     <FormLabel>Email</FormLabel>
                     <Box display="flex" alignItems="center">
                         <Input
@@ -135,6 +125,7 @@ const JoinForm = ({ join }) => {
                             autoComplete="email"
                             required
                             mr={2}
+                            id="join-email-local" // 고유 id
                         />
                         @
                         <Select
@@ -142,6 +133,7 @@ const JoinForm = ({ join }) => {
                             value={emailDomain}
                             onChange={(e) => setEmailDomain(e.target.value)}
                             ml={2}
+                            id="join-email-domain" // 고유 id
                         >
                             <option value="gmail.com">gmail.com</option>
                             <option value="yahoo.com">yahoo.com</option>
@@ -152,7 +144,7 @@ const JoinForm = ({ join }) => {
                     </Box>
                 </FormControl>
 
-                <FormControl id="tel" mb={4} isRequired>
+                <FormControl id="join-tel" mb={4} isRequired>
                     <FormLabel>Telephone</FormLabel>
                     <Box display="flex" gap={2}>
                         <Input
@@ -161,6 +153,7 @@ const JoinForm = ({ join }) => {
                             name="tel1"
                             maxLength="3"
                             required
+                            id="join-tel1" // 고유 id
                         />
                         -
                         <Input
@@ -169,6 +162,7 @@ const JoinForm = ({ join }) => {
                             name="tel2"
                             maxLength="4"
                             required
+                            id="join-tel2" // 고유 id
                         />
                         -
                         <Input
@@ -177,18 +171,18 @@ const JoinForm = ({ join }) => {
                             name="tel3"
                             maxLength="4"
                             required
+                            id="join-tel3" // 고유 id
                         />
                     </Box>
                 </FormControl>
 
-                <FormControl id="profileImage" mb={4}>
+                <FormControl id="join-profile-image" mb={4}>
                     <FormLabel>Profile Image</FormLabel>
                     <Input
                         type="file"
                         name="profileImage"
                         accept="image/*"
                     />
-                    
                 </FormControl>
 
                 <Button className="btn btn--form btn-login" type="submit" colorScheme="teal" width="full">

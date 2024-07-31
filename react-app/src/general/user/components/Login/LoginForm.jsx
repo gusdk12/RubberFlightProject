@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Box, Button, Checkbox, FormControl, FormLabel, Input, Stack, useToast } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
-import './LoginForm.css'
 import { Link } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const LoginForm = () => {
-
-  const {login} = useContext(LoginContext);
-  const [rememberUserId, setRememberUserId] = useState();
+  const { login } = useContext(LoginContext);
+  const [rememberUserId, setRememberUserId] = useState('');
+  const toast = useToast();
 
   const onLogin = (e) => {
     e.preventDefault();
@@ -15,70 +15,79 @@ const LoginForm = () => {
     const password = e.target.password.value;
     const rememberId = e.target.rememberId.checked;
 
-    console.log(e.target.username.value)
-    console.log(e.target.password.value)
-    console.log(e.target.rememberId.checked)
-
-    login(username, password, rememberId);  // 로그인 진행!
+    login(username, password, rememberId)
+      .then(() => {
+        toast({
+          title: "Login successful.",
+          description: "You have been logged in successfully.",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        toast({
+          title: "Login failed.",
+          description: error.message,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      });
   };
-
 
   useEffect(() => {
     // 쿠키에 저장된 username(아이디) 가져오기
     const rememberId = Cookies.get('rememberId');
-    console.log(`쿠키 rememberId : ${rememberId}`);
-    setRememberUserId(rememberId);
+    setRememberUserId(rememberId || '');
   }, []);
 
   return (
-    <div className="form">
-        <h2 className="login-title">Login</h2>
+    <Box maxWidth="400px" mx="auto" p={6} bg="white" borderRadius="md" boxShadow="md">
+      <h2 style={{ textAlign: 'center', marginBottom: '1rem' }}>Login</h2>
 
-        <form className="login-form" onSubmit={ (e) => onLogin(e) }>
-            <div>
-            <label htmlFor="name">username</label>
-            <input
-                    id="username"
-                    type="text"
-                    placeholder="username"
-                    name="username"
-                    autoComplete='username'
-                    required
-                    defaultValue={rememberUserId}
-                    />
-            </div>
-            <div>
-            <label htmlFor="password">password </label>
-            <input
-                    id="password"
-                    type="password"
-                    placeholder="password"
-                    name="password"
-                    autoComplete='current-password'
-                    required
-                    />
-            </div>
-            <div className='form-check'>
-            <label className="toggle-btn">
-                { !rememberUserId 
-                ? 
-                <input type="checkbox" id="remember-id" name='rememberId' value='0' />
-                :
-                <input type="checkbox" id="remember-id" name='rememberId' value='0' defaultChecked />
-                }
-                <span className="slider"></span>
-            </label>
-            <label htmlFor='remember-id' className='check-label'>아이디 저장</label>
-            </div>
-            
-            <div className='button'>
-            <button className="btn btn--form btn-login" value="Login">
-            로그인
-            </button>
-            <Link className="btn--link" to="/join">회원가입</Link>
-            </div>
-        </form>
-    </div>
+      <form onSubmit={(e) => onLogin(e)}>
+        <Stack spacing={4}>
+          <FormControl id="username" isRequired>
+            <FormLabel>Username</FormLabel>
+            <Input
+              type="text"
+              placeholder="Username"
+              name="username"
+              autoComplete="off"
+              defaultValue={rememberUserId}
+            />
+          </FormControl>
+
+          <FormControl id="password" isRequired>
+            <FormLabel>Password</FormLabel>
+            <Input
+              type="password"
+              placeholder="Password"
+              name="password"
+              autoComplete="off"
+            />
+          </FormControl>
+
+          <FormControl>
+            <Stack direction="row" align="center">
+              <Checkbox id="remember-id" name="rememberId" defaultChecked={!!rememberUserId}>
+                Remember me
+              </Checkbox>
+            </Stack>
+          </FormControl>
+
+          <Stack spacing={4} align="center">
+            <Button type="submit" colorScheme="teal" width="full">
+              Login
+            </Button>
+            <Button as={Link} to="/join" variant="outline" colorScheme="teal">
+              Sign Up
+            </Button>
+          </Stack>
+        </Stack>
+      </form>
+    </Box>
   );
 };
 

@@ -14,27 +14,27 @@ const Join = () => {
   // 회원가입 요청
   // form <= {username, password}
   const join = async (form) => {
-    console.log(`join()`, form);
+    // console.log(`join()`, form);
 
     let response;
     try{
       response = await auth.join(form);
     } catch(error) {
-      console.log(`${error}`);
-      console.log(`회원 가입 요청중 에러가 발생했습니다`);
+      // console.log(`${error}`);
+      // console.log(`회원 가입 요청중 에러가 발생했습니다`);
       return;
     }
 
     const { data, status } = response;
-    console.log(`data : ${data}`);
-    console.log(`status : ${status}`);
+    // console.log(`data : ${data}`);
+    // console.log(`status : ${status}`);
 
     if( status === 200 ) { 
-      console.log(`회원가입 성공!`);
+      // console.log(`회원가입 성공!`);
       Swal.alert("회원가입 성공", "메인 화면으로 이동합니다.", "success", () => { navigate("/") })
     }
     else { 
-      console.log(`회원가입 실패!`);
+      // console.log(`회원가입 실패!`);
       Swal.alert("회원가입 실패", "회원가입에 실패하였습니다.", "error" )
     }
 

@@ -50,14 +50,14 @@ const LoginContextProvider = ({children}) => {
   const loginCheck = async (isAuthPage = false) => {
     // 쿠키에 access token (JWT) 가 있는지 꺼내본다.
     const accessToken = Cookies.get('accessToken');
-    console.log(`accessToken: ${accessToken}`);
+    // console.log(`accessToken: ${accessToken}`);
 
     let response;
     let data;
 
     // JWT 이 없다면!
     if(!accessToken){
-      console.log('쿠키에 JWT(accessToken) 이 없슴');
+      // console.log('쿠키에 JWT(accessToken) 이 없슴');
       logoutSetting();
       return;
     }
@@ -68,14 +68,14 @@ const LoginContextProvider = ({children}) => {
     }
 
     // JWT 토큰이 있다면?
-    console.log('쿠키에 JWT(accessToken) 이 저장되어 있슴');
+    // console.log('쿠키에 JWT(accessToken) 이 저장되어 있슴');
     api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
     try{
       response = await auth.userInfo();
     } catch(error){
-      console.error(`error: ${error}`);
-      console.log(`status: ${response.status}`);
+      // console.error(`error: ${error}`);
+      // console.log(`status: ${response.status}`);
       return;
     }
 
@@ -83,14 +83,14 @@ const LoginContextProvider = ({children}) => {
     if(!response) return;
 
     // user 정보 획득 성공
-    console.log('JWT (accessToken) 토큰으로 사용자 인증 정보 요청 성공');
+    // console.log('JWT (accessToken) 토큰으로 사용자 인증 정보 요청 성공');
 
     data = response.data;
-    console.log(`data: ${data}`);
+    // console.log(`data: ${data}`);
 
     // 인증실패
     if(data === 'UNAUTHORIZED' || response.status === 401){
-      console.log('JWT(accessToken) 이 만료되었거나 인증에 실패했습니다.');
+      // console.log('JWT(accessToken) 이 만료되었거나 인증에 실패했습니다.');
       return
     }
 
@@ -113,10 +113,10 @@ const LoginContextProvider = ({children}) => {
    */
 
   const login = async (username, password, rememberId) => {
-    console.log(`
-        로그인 요청
-        login(username:${username}, password:${password}, rememberId:${rememberId});
-        `);
+    // console.log(`
+    //     로그인 요청
+    //     login(username:${username}, password:${password}, rememberId:${rememberId});
+    //     `);
   
   
       // username 저장
@@ -129,13 +129,13 @@ const LoginContextProvider = ({children}) => {
         const {data, status, headers} = response;
         const authorization = headers.authorization;
         const accessToken = authorization.replace("Bearer ", ""); // 발급받은 JWT 추출
-        console.log(`
-            -- login 요청응답 --
-              data : ${data}
-              status : ${status}
-              headers : ${headers}
-              jwt : ${accessToken}
-            `);
+        // console.log(`
+        //     -- login 요청응답 --
+        //       data : ${data}
+        //       status : ${status}
+        //       headers : ${headers}
+        //       jwt : ${accessToken}
+        //     `);
     
     
           // ✅ 로그인 성공
@@ -153,7 +153,7 @@ const LoginContextProvider = ({children}) => {
     
 
     } catch(error){
-        console.log(`로그인 error: ${error}`);
+        // console.log(`로그인 error: ${error}`);
         Swal.alert('로그인 실패', '아이디 또는 비밀번호가 일치하지 않습니다.', "error");
     }
   };
@@ -198,12 +198,12 @@ const LoginContextProvider = ({children}) => {
   const loginSetting = (userData, accessToken) => {
     const {id, username, role} = userData;
 
-    console.log(`
-    loginSetting() 
-       id : ${id}
-       username : ${username}
-       role : ${role}
-    `);
+    // console.log(`
+    // loginSetting() 
+    //    id : ${id}
+    //    username : ${username}
+    //    role : ${role}
+    // `);
 
     // 💍 ➡ 🍪
     // JWT 토큰 을 header 저장
