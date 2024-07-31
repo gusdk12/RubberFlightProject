@@ -1,8 +1,8 @@
-package com.lec.spring.main.user.jwt;
+package com.lec.spring.general.user.jwt;
 
 
-import com.lec.spring.main.user.config.PrincipalDetails;
-import com.lec.spring.main.user.domain.User;
+import com.lec.spring.general.user.config.PrincipalDetails;
+import com.lec.spring.general.user.domain.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

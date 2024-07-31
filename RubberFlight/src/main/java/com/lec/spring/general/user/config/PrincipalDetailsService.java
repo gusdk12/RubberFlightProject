@@ -1,8 +1,8 @@
-package com.lec.spring.main.user.config;
+package com.lec.spring.general.user.config;
 
 
-import com.lec.spring.main.user.domain.User;
-import com.lec.spring.main.user.service.UserService;
+import com.lec.spring.general.user.domain.User;
+import com.lec.spring.general.user.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

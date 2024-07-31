@@ -1,4 +1,4 @@
-package com.lec.spring.main.user.config;
+package com.lec.spring.general.user.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

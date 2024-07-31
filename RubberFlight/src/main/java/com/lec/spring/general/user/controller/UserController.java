@@ -1,8 +1,8 @@
-package com.lec.spring.main.user.controller;
+package com.lec.spring.general.user.controller;
 
-import com.lec.spring.main.user.domain.User;
-import com.lec.spring.main.user.domain.UserJoinDTO;
-import com.lec.spring.main.user.service.UserService;
+import com.lec.spring.general.user.domain.User;
+import com.lec.spring.general.user.domain.UserJoinDTO;
+import com.lec.spring.general.user.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

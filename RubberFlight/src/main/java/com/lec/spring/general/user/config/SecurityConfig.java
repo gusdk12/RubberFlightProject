@@ -1,8 +1,8 @@
-package com.lec.spring.main.user.config;
+package com.lec.spring.general.user.config;
 
-import com.lec.spring.main.user.jwt.LoginFilter;
-import com.lec.spring.main.user.jwt.JWTFilter;
-import com.lec.spring.main.user.jwt.JWTUtil;
+import com.lec.spring.general.user.jwt.LoginFilter;
+import com.lec.spring.general.user.jwt.JWTFilter;
+import com.lec.spring.general.user.jwt.JWTUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
