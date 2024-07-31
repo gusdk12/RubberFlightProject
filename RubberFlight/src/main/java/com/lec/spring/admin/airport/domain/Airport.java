@@ -1,10 +1,9 @@
 package com.lec.spring.admin.airport.domain;
 
+import com.lec.spring.admin.country.domain.Country;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Data
 @NoArgsConstructor
@@ -17,8 +16,9 @@ public class Airport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; // 공항 ID : airportId
 
-    @Column
-    private Integer countryId; // FK : ft_country 테이블
+    @ManyToOne
+    @ToString.Exclude
+    private Country country; // FK : countryId
 
     @Column
     private String airportName; // 공항 이름 : nameAirport
