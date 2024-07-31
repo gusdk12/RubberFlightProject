@@ -1,4 +1,3 @@
-import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoginContextProvider from '../general/user/contexts/LoginContextProvider';
 import { ChakraProvider } from '@chakra-ui/react';
