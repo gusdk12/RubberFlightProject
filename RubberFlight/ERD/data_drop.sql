@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS ft_country;
+DROP TABLE IF EXISTS ft_airport;
