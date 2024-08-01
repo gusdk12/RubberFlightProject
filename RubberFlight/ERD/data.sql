@@ -71,3 +71,9 @@ VALUES ('AEY', 'Akureyri', 10, 113, 65.654564, -18.075068);
 # 우크라이나
 INSERT INTO ft_airport (airport_iso, airport_name, country_id, airport_id , latitude_airport, longitude_airport)
 VALUES ('CKC', 'Cherkassy', 11, 1352, 49.416668, 32);
+
+INSERT INTO ft_airline (name) VALUE ('아시아나');
+INSERT INTO ft_airline (name) VALUE ('대한항공');
+
+INSERT INTO ft_review (title, user_id, airline_id, clean_rate, flightmeal_rate, lounge_rate, procedure_rate, seat_rate, service_rate, content, date)
+VALUES ('편하게 이용했어요', 1, 1, 4, 3, 3, 4, 5, 4, '좌석 공간도 넓고 푹신했어요', now());
