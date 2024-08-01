@@ -1,6 +1,7 @@
 package com.lec.spring.member.flightInfo.domain;
 
 import com.lec.spring.general.reserve.domain.Reserve;
+import com.lec.spring.member.review.domain.Review;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,5 +52,7 @@ public class FlightInfo {
     @Column(nullable = false)
     private String airlineName;
 
-
+    @OneToOne
+    @JoinColumn(name = "review_id")
+    private Review review;
 }

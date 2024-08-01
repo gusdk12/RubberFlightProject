@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Data
@@ -18,24 +19,31 @@ public class Flight {
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public Flight(JsonNode jsonNode, String date) {
+    public Flight(JsonNode jsonNode, String date, int price) {
         this.airlineIata = jsonNode.path("airline").path("iataCode").asText(null);
 
         // JSON에서 시간 정보 가져오기
         String depTimeStr = jsonNode.path("departure").path("scheduledTime").asText(null); // "HH:mm"
         String arrTimeStr = jsonNode.path("arrival").path("scheduledTime").asText(null); // "HH:mm"
 
-        LocalDateTime dateTime = LocalDateTime.parse(date, DATE_FORMATTER);
+        LocalDateTime depTime = LocalDateTime.parse(date + "T" + depTimeStr + ":00");
+        LocalDateTime arrTime = LocalDateTime.parse(date + "T" + arrTimeStr + ":00");
 
-        this.depTime = dateTime.withHour(Integer.parseInt(depTimeStr.split(":")[0]))
-                .withMinute(Integer.parseInt(depTimeStr.split(":")[1]));
+        if (arrTime.isBefore(depTime)) {
+            arrTime = arrTime.plusDays(1);
+        }
 
-        this.arrTime = dateTime.withHour(Integer.parseInt(arrTimeStr.split(":")[0]))
-                .withMinute(Integer.parseInt(arrTimeStr.split(":")[1]));
+
+        System.out.println("예상 출발 시간" + depTime);
+        System.out.println("예상 도착 시간" + arrTime);
+
+        this.depTime = depTime;
+        this.arrTime = arrTime;
 
         Duration duration = Duration.between(depTime, arrTime);
         this.takeTime = (int) duration.toMinutes();
 
-//        this.price; // TODO
+
+        this.price = price;
     }
 }
