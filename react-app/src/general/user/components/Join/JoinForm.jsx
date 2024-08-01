@@ -36,25 +36,30 @@ const JoinForm = ({ join }) => {
 
     const onJoin = (e) => {
         e.preventDefault();
-        const name = e.target.name.value;
-        const email = `${e.target.email.value}@${emailDomain}`;
-        const tel1 = e.target.tel1.value;
-        const tel2 = e.target.tel2.value;
-        const tel3 = e.target.tel3.value;
-        const profileImage = e.target.profileImage.files[0];
 
+        // 비밀번호 확인
         if (password !== confirmPassword) {
             alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
             return;
         }
 
+        // 폼 데이터 추출
+        const formData = new FormData(e.target);
+        const username = formData.get('username')
+        const name = formData.get('name');
+        const email = `${formData.get('email')}@${emailDomain}`;
+        const tel1 = formData.get('tel1');
+        const tel2 = formData.get('tel2');
+        const tel3 = formData.get('tel3');
+        const image = formData.get('image');
+
         const tel = `${tel1}-${tel2}-${tel3}`;
 
-        join({ username, password, name, email, tel, profileImage });
+        join({ username, password, name, email, tel, image });
     };
 
     const checkUsernameAvailability = () => {
-        setIsUsernameAvailable(true); 
+        setIsUsernameAvailable(true);
     };
 
     return (
@@ -80,7 +85,7 @@ const JoinForm = ({ join }) => {
                             color={'black'}
                             onClick={checkUsernameAvailability}
                         >
-                        <p>중복확인</p>
+                            <p>중복확인</p>
                         </Button>
                     </Box>
                     {!isUsernameAvailable && <FormErrorMessage>Username already taken.</FormErrorMessage>}
@@ -119,13 +124,12 @@ const JoinForm = ({ join }) => {
                     <FormLabel>Email</FormLabel>
                     <Box display="flex" alignItems="center">
                         <Input
-                            type="email"
+                            type="text"
                             placeholder="Email"
                             name="email"
                             autoComplete="email"
                             required
                             mr={2}
-                            id="join-email-local" // 고유 id
                         />
                         @
                         <Select
@@ -133,7 +137,6 @@ const JoinForm = ({ join }) => {
                             value={emailDomain}
                             onChange={(e) => setEmailDomain(e.target.value)}
                             ml={2}
-                            id="join-email-domain" // 고유 id
                         >
                             <option value="gmail.com">gmail.com</option>
                             <option value="yahoo.com">yahoo.com</option>
@@ -153,7 +156,6 @@ const JoinForm = ({ join }) => {
                             name="tel1"
                             maxLength="3"
                             required
-                            id="join-tel1" // 고유 id
                         />
                         -
                         <Input
@@ -162,7 +164,6 @@ const JoinForm = ({ join }) => {
                             name="tel2"
                             maxLength="4"
                             required
-                            id="join-tel2" // 고유 id
                         />
                         -
                         <Input
@@ -171,7 +172,6 @@ const JoinForm = ({ join }) => {
                             name="tel3"
                             maxLength="4"
                             required
-                            id="join-tel3" // 고유 id
                         />
                     </Box>
                 </FormControl>
@@ -180,7 +180,7 @@ const JoinForm = ({ join }) => {
                     <FormLabel>Profile Image</FormLabel>
                     <Input
                         type="file"
-                        name="profileImage"
+                        name="image"
                         accept="image/*"
                     />
                 </FormControl>
