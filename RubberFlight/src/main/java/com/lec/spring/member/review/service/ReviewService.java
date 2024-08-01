@@ -34,14 +34,15 @@ public class ReviewService {
     // 리뷰 작성
     @Transactional
     public Review write(Review review) {
-//        Airline airline = airlineRepository.findByName(airlineName);
-//
-//        if (airline == null){
-//            airline = new Airline();
-//            airline.setName(airlineName);
-//            airline = airlineRepository.save(airline);  // 새로운 항공사 저장
-//        }
-//
+
+
+        if (!airlineRepository.existsByName(review.getAirline_name())){
+            Airline airline = new Airline();
+            airline.setName(review.getAirline_name());
+            airlineRepository.save(airline);  // 새로운 항공사 저장
+            System.out.println("항공사 이름 추가 :" + review.getAirline_name());
+        }
+
 //        review.setAirline(airline); // 항공사 설정
         return reviewRepository.save(review); // 리뷰 저장
     }
