@@ -1,7 +1,6 @@
 package com.lec.spring.member.review.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lec.spring.general.review.domain.Airline;
 import com.lec.spring.general.user.domain.User;
 import jakarta.persistence.*;
@@ -62,7 +61,15 @@ public class Review {
     @Column(name = "airline_id")
     private Long airline;   // 어느 항공사의 리뷰 (FK)
 
-    @ManyToOne(optional = false)
-    @ToString.Exclude
-    private User user;   // 작성자 이름
+//    @ManyToOne(optional = false)
+//    @ToString.Exclude
+//    private Airline airline;   // 어느 항공사의 리뷰 (FK)
+
+    @Column(name = "user_id")
+    private Long user;   // 작성자 이름
+
+//    @ManyToOne(optional = false)
+//    @ToString.Exclude
+//    private User user;   // 작성자
+
 }

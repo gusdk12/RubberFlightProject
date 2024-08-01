@@ -2,37 +2,70 @@ package com.lec.spring.general.user.controller;
 
 import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.domain.UserJoinDTO;
+import com.lec.spring.general.user.service.FileService;
 import com.lec.spring.general.user.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    private final FileService fileService;
+
+    public UserController(UserService userService, FileService fileService) {
         this.userService = userService;
+        this.fileService = fileService;
     }
 
     @PostMapping("/join/user")
-    public String join(@RequestBody UserJoinDTO joinDTO) {
+    public ResponseEntity<String> join(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("tel") String tel,
+            @RequestParam("file") MultipartFile file) {
 
+        // 파일 처리 (예: 저장, 검사 등)
+        if (!file.isEmpty()) {
+            // 파일을 저장하는 로직을 구현
+            String fileName = file.getOriginalFilename();
+            try {
+                // 파일 저장 경로를 설정
+                Path path = Paths.get("uploads/" + fileName);
+                Files.write(path, file.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new ResponseEntity<>("File upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        // 사용자 객체 생성
         User user = User.builder()
-                .username(joinDTO.getUsername())
-                .password(joinDTO.getPassword())
-                .name(joinDTO.getName())  // Set this field
-                .email(joinDTO.getEmail())  // Set this field
-                .tel(joinDTO.getTel())  // Set this field
-                .image(joinDTO.getImage())
+                .username(username)
+                .password(password)
+                .name(name)
+                .email(email)
+                .tel(tel)
                 .build();
 
         user = userService.join(user);
-        if (user == null) return "JOIN FAILED";
-        return "JOIN OK : " + user;
+        if (user == null) return new ResponseEntity<>("JOIN FAILED", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("JOIN OK : " + user, HttpStatus.OK);
     }
+
 
     @PostMapping("/join/admin")
     public String Admin(@RequestBody UserJoinDTO joinDTO) {

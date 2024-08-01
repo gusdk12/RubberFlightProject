@@ -1,10 +1,13 @@
 package com.lec.spring.general.user.domain;
 
+import com.lec.spring.admin.coupon.domain.Coupon;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -34,5 +37,9 @@ public class User {
     @Column(nullable = false)
     private String tel;
 
+    @Column(nullable = true)
     private String image;
+
+    @ManyToMany
+    private List<Coupon> coupons; // 사용자가 가진 쿠폰들
 }

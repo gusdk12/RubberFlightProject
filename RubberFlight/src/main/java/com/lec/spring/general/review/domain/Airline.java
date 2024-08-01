@@ -28,6 +28,7 @@ public class Airline {
     @JoinColumn(name = "airline_id")
     @ToString.Exclude
     @Builder.Default  // builder 제공안함
+    @JsonIgnore
     private List<Review> reviewList = new ArrayList<>();
 
     public void addReview(Review... reviews){

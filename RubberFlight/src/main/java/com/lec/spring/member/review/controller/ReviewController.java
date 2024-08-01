@@ -13,12 +13,6 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @CrossOrigin
-    @GetMapping("/member/review/list")
-    public ResponseEntity<?> list(){
-        return new ResponseEntity<>(reviewService.list(), HttpStatus.OK);
-    }
-
     // 해당 유저의 리뷰 목록
 //    @CrossOrigin
 //    @GetMapping("/member/review/list")
