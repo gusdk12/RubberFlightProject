@@ -1,7 +1,7 @@
 package com.lec.spring.member.review.service;
 
 import com.lec.spring.general.review.domain.Airline;
-import com.lec.spring.general.review.reposietory.AirlineRepository;
+import com.lec.spring.general.review.repository.AirlineRepository;
 import com.lec.spring.member.review.domain.Review;
 import com.lec.spring.member.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
