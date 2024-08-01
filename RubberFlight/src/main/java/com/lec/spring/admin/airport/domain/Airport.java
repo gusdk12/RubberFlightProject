@@ -1,5 +1,6 @@
 package com.lec.spring.admin.airport.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lec.spring.admin.country.domain.Country;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,7 +20,7 @@ public class Airport {
     @Column
     private Integer airportId;  // 공항 ID : airportId
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @ToString.Exclude
     private Country country; // FK : countryId
 

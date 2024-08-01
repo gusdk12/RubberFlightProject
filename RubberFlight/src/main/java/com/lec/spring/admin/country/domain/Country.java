@@ -1,10 +1,14 @@
 package com.lec.spring.admin.country.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lec.spring.admin.airport.domain.Airport;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,6 +29,10 @@ public class Country {
 
     @Column
     private String countryName; // 나라 이름 : nameCountry
+
+    @OneToMany(mappedBy = "country", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
+    private List<Airport> airports;
 
 
 }
