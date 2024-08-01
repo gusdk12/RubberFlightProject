@@ -2,14 +2,19 @@ package com.lec.spring.member.review.service;
 
 import com.lec.spring.general.review.domain.Airline;
 import com.lec.spring.general.review.repository.AirlineRepository;
+import com.lec.spring.general.user.domain.User;
 import com.lec.spring.member.review.domain.Review;
 import com.lec.spring.member.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static java.lang.Integer.parseInt;
+import static java.lang.Long.parseLong;
 
 @RequiredArgsConstructor
 @Service
@@ -26,24 +31,37 @@ public class ReviewService {
 
     // 해당 유저의 리뷰 목록 조회
 //    @Transactional(readOnly = true)
-//    public List<Review> userReviewList(Long userId){
-//        Sort sort = Sort.by(Sort.Order.desc("date")); // 날짜순으로 내림차순
-//        return reviewRepository.findByUser(userId, sort);
+//    public List<Review> userReviewList(User user){
+//        Sort sort = Sort.by(Sort.Order.desc("id"));
+//        return reviewRepository.findByUser(user, sort);
 //    }
+
+    @Transactional(readOnly = true)
+    public List<Review> airlineReviewList(Long airline){
+        Sort sort = Sort.by(Sort.Order.desc("id"));
+        return reviewRepository.findByAirline(airline, sort);
+    }
 
     // 리뷰 작성
     @Transactional
     public Review write(Review review) {
 
-
-        if (!airlineRepository.existsByName(review.getAirline_name())){
-            Airline airline = new Airline();
+        Airline airline;
+        // 항공사 존재하는지 확인
+        if (!airlineRepository.existsByName(review.getAirline_name())) {
+            airline = new Airline();
             airline.setName(review.getAirline_name());
             airlineRepository.save(airline);  // 새로운 항공사 저장
             System.out.println("항공사 이름 추가 :" + review.getAirline_name());
+        } else {
+            // 항공사 존재하면 해당 항공사 가져오기
+            airline = airlineRepository.findByName(review.getAirline_name());
         }
 
-//        review.setAirline(airline); // 항공사 설정
+        Long airlineId = airline.getId(); // Airline ID 가져오기
+        if (airlineId != null) {
+            review.setAirline(airlineId); // 리뷰에 항공사 ID 설정
+        }
         return reviewRepository.save(review); // 리뷰 저장
     }
 
