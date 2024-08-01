@@ -1,6 +1,7 @@
 package com.lec.spring.member.flightInfo.controller;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -29,7 +30,9 @@ public class FlightInfoController {
                 .encode()
                 .toUri();
 
-        return new RestTemplate().getForEntity(uri, String.class);
+        // getForEntity 대신 getForObject 를 사용하고 Entity 를 직접 만들어서 보내기
+        String forObject = new RestTemplate().getForObject(uri, String.class);
+        return new ResponseEntity<>(forObject, HttpStatus.OK);
     }
 
 }
