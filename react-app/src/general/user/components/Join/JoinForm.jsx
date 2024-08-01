@@ -1,9 +1,9 @@
 import React from 'react';
-import { InputGroup, Input, InputRightElement, Button, Select, FormControl, FormLabel, FormErrorMessage, Box } from '@chakra-ui/react';
-import '../../components/Login/LoginForm.css';
+import { InputGroup, Input, InputRightElement, Button, Select, FormControl, FormLabel, Box } from '@chakra-ui/react';
+import api from '../../../../apis/api'; // api 인스턴스 경로
 
 // 비밀번호 입력 필드 컴포넌트
-const PasswordInput = ({ placeholder, value, onChange, onBlur }) => {
+const PasswordInput = ({ placeholder, name, value, onChange, onBlur }) => {
     const [show, setShow] = React.useState(false);
     const handleClick = () => setShow(!show);
 
@@ -13,6 +13,7 @@ const PasswordInput = ({ placeholder, value, onChange, onBlur }) => {
                 pr='4.5rem'
                 type={show ? 'text' : 'password'}
                 placeholder={placeholder}
+                name={name}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
@@ -28,75 +29,64 @@ const PasswordInput = ({ placeholder, value, onChange, onBlur }) => {
 };
 
 const JoinForm = ({ join }) => {
-    const [username, setUsername] = React.useState('');
-    const [emailDomain, setEmailDomain] = React.useState('');
-    const [isUsernameAvailable, setIsUsernameAvailable] = React.useState(true);
-    const [password, setPassword] = React.useState('');
-    const [confirmPassword, setConfirmPassword] = React.useState('');
-
-    const onJoin = (e) => {
+    const onJoin = async (e) => {
         e.preventDefault();
 
-        // 비밀번호 확인
-        if (password !== confirmPassword) {
-            alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-            return;
-        }
-
-        // 폼 데이터 추출
+        // FormData 객체 생성
         const formData = new FormData(e.target);
-        const username = formData.get('username')
-        const name = formData.get('name');
-        const email = `${formData.get('email')}@${emailDomain}`;
+
+        // tel1, tel2, tel3 필드를 하나로 결합
         const tel1 = formData.get('tel1');
         const tel2 = formData.get('tel2');
         const tel3 = formData.get('tel3');
-        const image = formData.get('image');
-
         const tel = `${tel1}-${tel2}-${tel3}`;
+        
+        // 결합된 tel을 FormData에 추가 (기존 tel1, tel2, tel3 제거)
+        formData.delete('tel1');
+        formData.delete('tel2');
+        formData.delete('tel3');
+        formData.append('tel', tel);
 
-        join({ username, password, name, email, tel, image });
-    };
+        // 데이터 확인
+        console.log(
+            formData.get('username'),
+            formData.get('password'),
+            formData.get('name'),
+            formData.get('email') + '@' + formData.get('emailDomain'),
+            formData.get('tel'),
+            formData.get('file')
+        );
 
-    const checkUsernameAvailability = () => {
-        setIsUsernameAvailable(true);
+        // join 함수 호출
+        join(formData);
+
+        // 폼 리셋 (선택 사항)
+        e.target.reset();
     };
 
     return (
         <Box className="form" maxWidth="500px" mx="auto" p={6} bg="white" borderRadius="md" boxShadow="md">
-            <h2 className="login-title" style={{ textAlign: 'center'}}>Join</h2>
+            <h2 className="login-title" style={{ textAlign: 'center' }}>Join</h2>
 
-            <form className="login-form" onSubmit={(e) => onJoin(e)}>
-                <FormControl id="join-username" mb={4} isInvalid={!isUsernameAvailable} isRequired>
+            <form className="login-form" onSubmit={onJoin}>
+                {/* Form fields */}
+                <FormControl id="join-username" mb={4} isRequired>
                     <FormLabel>Username</FormLabel>
-                    <Box display="flex" alignItems="center">
-                        <Input
-                            type="text"
-                            placeholder="Username"
-                            name="username"
-                            autoComplete="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                        />
-                        <Button
-                            ml={3}
-                            bg="#EDF2F7"
-                            color={'black'}
-                            onClick={checkUsernameAvailability}
-                        >
-                            <p>중복확인</p>
-                        </Button>
-                    </Box>
-                    {!isUsernameAvailable && <FormErrorMessage>Username already taken.</FormErrorMessage>}
+                    <Input
+                        type="text"
+                        placeholder="Username"
+                        name="username"
+                        autoComplete="username"
+                        required
+                    />
                 </FormControl>
 
                 <FormControl id="join-password" mb={4} isRequired>
                     <FormLabel>Password</FormLabel>
                     <PasswordInput
                         placeholder="Enter password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        name="password"
+                        required
                     />
                 </FormControl>
 
@@ -104,8 +94,8 @@ const JoinForm = ({ join }) => {
                     <FormLabel>Confirm Password</FormLabel>
                     <PasswordInput
                         placeholder="Confirm password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        name="confirmPassword"
+                        required
                     />
                 </FormControl>
 
@@ -134,8 +124,7 @@ const JoinForm = ({ join }) => {
                         @
                         <Select
                             name="emailDomain"
-                            value={emailDomain}
-                            onChange={(e) => setEmailDomain(e.target.value)}
+                            defaultValue="gmail.com"
                             ml={2}
                         >
                             <option value="gmail.com">gmail.com</option>
@@ -180,7 +169,7 @@ const JoinForm = ({ join }) => {
                     <FormLabel>Profile Image</FormLabel>
                     <Input
                         type="file"
-                        name="image"
+                        name="file"
                         accept="image/*"
                     />
                 </FormControl>
