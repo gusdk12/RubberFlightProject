@@ -15,6 +15,7 @@ INSERT INTO ft_country (country_iso, country_name, country_id) VALUES ('CH','Swi
 INSERT INTO ft_country (country_iso, country_name, country_id) VALUES ('SG','Singapore', 200); #싱가포르
 INSERT INTO ft_country (country_iso, country_name, country_id) VALUES ('IS','Iceland', 111); #아이슬란드
 INSERT INTO ft_country (country_iso, country_name, country_id) VALUES ('UA','Ukraine', 232); #우크라이나
+INSERT INTO ft_country (country_iso, country_name, country_id) VALUES ('JP','Japan', 116); #일본
 
 # 공항
 # API : codeIataAirport, nameAirport, FK, airportId, latitudeAirport, longitudeAirport
@@ -71,6 +72,10 @@ VALUES ('AEY', 'Akureyri', 10, 113, 65.654564, -18.075068);
 # 우크라이나
 INSERT INTO ft_airport (airport_iso, airport_name, country_id, airport_id , latitude_airport, longitude_airport)
 VALUES ('CKC', 'Cherkassy', 11, 1352, 49.416668, 32);
+
+# 일본(나리타)
+INSERT INTO ft_airport (airport_iso, airport_name, country_id, airport_id , latitude_airport, longitude_airport)
+VALUES ('NRT', 'Narita', 12, 5537, 35.773212, 140.38744);
 
 INSERT INTO ft_airline (name) VALUE ('아시아나');
 INSERT INTO ft_airline (name) VALUE ('대한항공');

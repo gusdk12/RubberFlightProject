@@ -3,8 +3,8 @@ package com.lec.spring.general.reserve.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.lec.spring.general.reserve.domain.Flight;
 import com.lec.spring.general.reserve.service.ReserveService;
-import com.lec.spring.member.flightInfo.domain.FlightInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,21 +40,17 @@ public class ReserveController {
         String arrDate = flightRequest.get("date2");
 
 
-        List<JsonNode> outboundFlights = fetchFlights(iataCode, arrIataCode, depDate, type);
-        List<JsonNode> inboundFlights = arrDate != null && !arrDate.isEmpty()
+        List<Flight> outboundFlights = fetchFlights(iataCode, arrIataCode, depDate, type);
+        List<Flight> inboundFlights = arrDate != null && !arrDate.isEmpty()
                 ? fetchFlights(arrIataCode, iataCode, arrDate, type)
                 : Collections.emptyList();
 
-        // 가격 추가
-        List<JsonNode> updatedOutboundFlights = addPricesToFlights(outboundFlights, iataCode, arrIataCode);
-        List<JsonNode> updatedInboundFlights = addPricesToFlights(inboundFlights, arrIataCode, iataCode);
-
         Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("outboundFlights", updatedOutboundFlights);
-        responseMap.put("inboundFlights", updatedInboundFlights);
+        responseMap.put("outboundFlights", outboundFlights);
+
 
         if (!inboundFlights.isEmpty()) {
-            List<JsonNode> matchingFlights = getMatchingFlights(outboundFlights, inboundFlights);
+            List<Flight> matchingFlights = getMatchingFlights(outboundFlights, inboundFlights);
             responseMap.put("matchingFlights", matchingFlights);
         } else {
             responseMap.put("matchingFlights", null);
@@ -63,7 +59,7 @@ public class ReserveController {
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
 
-    private List<JsonNode> fetchFlights(String depIata, String arrIata, String date, String type) {
+    private List<Flight> fetchFlights(String depIata, String arrIata, String date, String type) {
         URI uri = UriComponentsBuilder
                 .fromUriString("https://aviation-edge.com/v2/public/flightsFuture")
                 .queryParam("key", aviation_key)
@@ -78,18 +74,20 @@ public class ReserveController {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
 
-        return parseFlightInfo(response.getBody());
+        return parseFlightInfo(response.getBody(), depIata, arrIata, date);
     }
 
-    private List<JsonNode> parseFlightInfo(String response) {
+    private List<Flight> parseFlightInfo(String response, String depIata, String arrIata, String date) {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<JsonNode> flights = new ArrayList<>();
+        List<Flight> flights = new ArrayList<>();
 
         try {
             JsonNode root = objectMapper.readTree(response);
             if (root.isArray()) {
-                for (JsonNode flight : root) {
-                    flights.add(flight);
+                for (JsonNode jsonNode : root) {
+                    double distance = reserveService.calculateDistance(depIata, arrIata);
+                    int price = reserveService.calculateRandomPrice(distance);
+                    flights.add(new Flight(jsonNode, date, price));
                 }
             }
         } catch (Exception e) {
@@ -99,51 +97,24 @@ public class ReserveController {
         return flights;
     }
 
-    private List<JsonNode> addPricesToFlights(List<JsonNode> flights, String depIata, String arrIata) {
-        List<JsonNode> updatedFlights = new ArrayList<>();
-        for (JsonNode flight : flights) {
-            ObjectNode flightNode = (ObjectNode) flight;
-
-            // 거리와 가격 계산
-            double distance = reserveService.calculateDistance(depIata, arrIata);
-            int price = reserveService.calculateRandomPrice(distance);
-
-            // 거리 추가
-            flightNode.put("price", price);
-
-            updatedFlights.add(flightNode);
-        }
-        return updatedFlights;
-    }
-
-    private List<JsonNode> getMatchingFlights(List<JsonNode> outboundFlights, List<JsonNode> inboundFlights) {
-        List<JsonNode> matchingFlights = new ArrayList<>();
+    private List<Flight> getMatchingFlights(List<Flight> outboundFlights, List<Flight> inboundFlights) {
+        List<Flight> matchingFlights = new ArrayList<>();
         Set<String> airlineNames = new HashSet<>();
 
-        // Extract airline names from outbound flights
-        for (JsonNode outbound : outboundFlights) {
-            JsonNode airlineNode = outbound.get("airline");
-            if (airlineNode != null) {
-                String airlineName = airlineNode.get("iataCode").asText(null);
-                if (airlineName != null) {
-                    airlineNames.add(airlineName);
-                }
+        // 항공사 이름찾기
+        for (Flight outbound : outboundFlights) {
+            if (outbound.getAirlineIata() != null) {
+                airlineNames.add(outbound.getAirlineIata());
             }
         }
 
-        // Find matching flights based on airline names
-        for (JsonNode inbound : inboundFlights) {
-            JsonNode airlineNode = inbound.get("airline");
-            if (airlineNode != null) {
-                String airlineName = airlineNode.get("iataCode").asText(null);
-                if (airlineName != null && airlineNames.contains(airlineName)) {
-                    matchingFlights.add(inbound);
-                }
+        // 출국 때 검색 됐던 항공사와 같은 것들만
+        for (Flight inbound : inboundFlights) {
+            if (inbound.getAirlineIata() != null && airlineNames.contains(inbound.getAirlineIata())) {
+                matchingFlights.add(inbound);
             }
         }
         return matchingFlights;
-
-
     }
 
 

@@ -11,14 +11,15 @@ import com.lec.spring.member.flightInfo.repository.FlightInfoRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Random;
 
 @Service
 public class ReserveService {
+
     private final ReserveRepository reserveRepository;
+
     private final FlightInfoRepository flightInfoRepository;
 
     private final UserRepository userRepository;
@@ -64,14 +65,12 @@ public class ReserveService {
         return reserve;
     }
 
-    // list? api 사용
+    // 거리 측정
 
     private static final double EARTH_RADIUS = 6371.0; // 지구 반지름 (킬로미터)
-    private static final double PRICE_PER_KM_LOW = 180; // 1킬로미터당 저렴한 가격
-    private static final double PRICE_PER_KM_HIGH = 250; // 1킬로미터당 비싼 가격
+    private static final int MIN_PRICE_PER_KM = 180;
+    private static final int MAX_PRICE_PER_KM = 250;
 
-
-    // 가격 거리 측정
     public double calculateDistance(String departureIata, String arrivalIata) {
         Airport departureAirport = airportRepository.findByAirportIso(departureIata);
         Airport arrivalAirport = airportRepository.findByAirportIso(arrivalIata);
@@ -100,8 +99,10 @@ public class ReserveService {
     // 랜덤 값 출력
     public int calculateRandomPrice(double distance) {
         Random random = new Random();
-        double pricePerKm = random.nextBoolean() ? PRICE_PER_KM_LOW : PRICE_PER_KM_HIGH;
-        return (int) (distance * pricePerKm);
+        int pricePerKm = MIN_PRICE_PER_KM + random.nextInt(MAX_PRICE_PER_KM - MIN_PRICE_PER_KM + 1);
+        int price = (int) (pricePerKm * distance);
+        price = (price / 10) * 10;
+        return price;
     }
 
 
