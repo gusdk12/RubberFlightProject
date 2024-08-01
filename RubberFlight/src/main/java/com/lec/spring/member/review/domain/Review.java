@@ -57,9 +57,10 @@ public class Review {
 //    @OneToOne
 //    private FlightInfo flightInfo; // 비행정보
 
-    @ManyToOne(optional = false)
-    @ToString.Exclude
-    private Airline airline; // 항공사 이름
+    private String airline_name; // 항공사 이름
+
+    @Column(name = "airline_id")
+    private Long airline;   // 어느 항공사의 리뷰 (FK)
 
     @ManyToOne(optional = false)
     @ToString.Exclude

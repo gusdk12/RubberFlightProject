@@ -24,11 +24,10 @@ public class Airline {
     @Column(unique = true, nullable = false)
     private String name; // 항공사 이름
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "airline_id")
     @ToString.Exclude
     @Builder.Default  // builder 제공안함
-    @JsonIgnore
     private List<Review> reviewList = new ArrayList<>();
 
     public void addReview(Review... reviews){
