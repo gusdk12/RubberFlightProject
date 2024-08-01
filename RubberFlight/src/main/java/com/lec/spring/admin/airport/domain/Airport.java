@@ -29,4 +29,10 @@ public class Airport {
     @Column
     private String airportIso; // 공항 ISO 코드 : codeIataAirport
 
+    @Column
+    private Double latitudeAirport; // 공항 위도 : latitudeAirport
+
+    @Column
+    private Double longitudeAirport; // 공항 경도 : longitudeAirport
+
 }

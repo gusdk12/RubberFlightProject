@@ -17,4 +17,4 @@ INSERT INTO ft_country (country_iso, country_name, country_id) VALUES ('IS','Ice
 INSERT INTO ft_country (country_iso, country_name, country_id) VALUES ('UA','Ukraine', 232); #우크라이나
 
 # 공항
-INSERT INTO ft_airport (airport_id, airport_iso, country_id, airport_name, latitude_airport, longitude_airport)
+# INSERT INTO ft_airport (longitude_airport)
