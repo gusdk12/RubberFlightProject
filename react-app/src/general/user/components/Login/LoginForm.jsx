@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Button, Checkbox, FormControl, FormLabel, HStack, Input, Stack, useToast } from '@chakra-ui/react';
+import { Box, Button, Checkbox, FormControl, FormLabel, HStack, Input, Stack, useToast, Text } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
@@ -44,7 +44,7 @@ const LoginForm = () => {
 
   return (
     <Box maxWidth="400px" mx="auto" p={6} bg="white" borderRadius="md" boxShadow="md">
-      <h2 style={{ textAlign: 'center', marginBottom: '1rem' }}>Login</h2>
+      <h2 style={{ textAlign: 'center', marginBottom: '1rem', fontSize: 30}}>Login</h2>
 
       <form onSubmit={(e) => onLogin(e)}>
         <Stack spacing={4}>
@@ -80,12 +80,12 @@ const LoginForm = () => {
           </FormControl>
 
           <HStack spacing={4} align="center" justify="right">
-            <Button type="submit" colorScheme="white" color={'#586D92'} borderWidth="1px" 
-    borderColor={'#586D92'}>
-              Login
+            {/* <Text fontSize={10}>아직 회원이 아니신가요?</Text> */}
+            <Button as={Link} to="/selectJoin" variant="link" color={'#586D92'}>
+            Join
             </Button>
-            <Button as={Link} to="/join" variant="outline" bg={'#586D92'} color={'white'} >
-              Sign Up
+            <Button type="submit" bg={'#586D92'} color={'white'}>
+              Login
             </Button>
           </HStack>
         </Stack>

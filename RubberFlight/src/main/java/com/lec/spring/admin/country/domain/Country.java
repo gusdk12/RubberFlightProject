@@ -24,7 +24,7 @@ public class Country {
     @Column
     private Integer countryId; // 나라 id : countryId
 
-    @Column
+    @Column(unique = true)
     private String countryIso; // 나라 ISO 코드 : codeIso2Country
 
     @Column
@@ -33,6 +33,4 @@ public class Country {
     @OneToMany(mappedBy = "country", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private List<Airport> airports;
-
-
 }

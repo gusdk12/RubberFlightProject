@@ -70,15 +70,44 @@ public class UserController {
     }
 
     @PostMapping("/join/admin")
-    public String Admin(@RequestBody UserJoinDTO joinDTO) {
+    public ResponseEntity<String> admin(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("tel") String tel,
+            @RequestParam("file") MultipartFile file) {
 
+        String filePath = "uploads/user.png";
+
+        // 파일 처리 (예: 저장, 검사 등)
+        if (!file.isEmpty()) {
+            // 파일을 저장하는 로직을 구현
+            String fileName = file.getOriginalFilename();
+            try {
+                // 파일 저장 경로를 설정
+                Path path = Paths.get("uploads/" + fileName);
+                Files.write(path, file.getBytes());
+                filePath = path.toString().replace("\\", "/");
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new ResponseEntity<>("File upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        // 사용자 객체 생성
         User user = User.builder()
-                .username(joinDTO.getUsername())
-                .password(joinDTO.getPassword())
+                .username(username)
+                .password(password)
+                .name(name)
+                .email(email)
+                .tel(tel)
+                .image(filePath) // 파일 경로를 저장
                 .build();
+
         user = userService.admin(user);
-        if (user == null) return "JOIN FAILED";
-        return "JOIN OK : " + user;
+        if (user == null) return new ResponseEntity<>("JOIN FAILED", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("JOIN OK : " + user, HttpStatus.OK);
     }
 
     @PostMapping("/check-username")
