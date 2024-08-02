@@ -241,7 +241,7 @@ const JoinForm = ({ join }) => {
             <h2 className="login-title" style={{ textAlign: 'center', fontSize: '40px' }}>Join</h2>
 
             <form className="login-form" onSubmit={onJoin}>
-                <FormControl id="join-username" mb={4} >
+                <FormControl id="join-username" mb={4}  >
                     <FormLabel>Username</FormLabel>
                     <Flex>
                         <Input
@@ -299,7 +299,7 @@ const JoinForm = ({ join }) => {
                     />
                 </FormControl>
 
-                <FormControl id="join-email" mb={4} isRequired>
+                <FormControl id="join-email" mb={4} >
                     <FormLabel>Email</FormLabel>
                     <Box display="flex" alignItems="center">
                         <Input
@@ -382,6 +382,7 @@ const JoinForm = ({ join }) => {
                     type="submit"
                     bg="#586D92"
                     color="white"
+                    width={'100%'}
                     _hover={{ bg: "#4a5b71" }}
                     _active={{ bg: "#586D92" }}
                 >
