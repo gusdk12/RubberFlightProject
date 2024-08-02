@@ -1,5 +1,6 @@
+
 .contentpart{
-    width: 1000px;
+    width: 100vw;
     margin: auto;
     display: flex;
     flex-direction: column;
@@ -27,7 +28,8 @@
     top: 540px;
 }
 .canvas{
-    background: linear-gradient(to bottom, #adbddc, #ffffff);
+    /* background: linear-gradient(to bottom, #adbddc, #ffffff); */
+    /* background-color: burlywood; */
     width: 100%;
     height: 700px;
 }

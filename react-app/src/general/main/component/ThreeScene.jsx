@@ -1,21 +1,33 @@
 import * as THREE from "three"
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, useGLTF } from '@react-three/drei';
-import { DepthOfField, EffectComposer } from '@react-three/postprocessing'
-
-import { Clouds, Cloud, Sky as SkyImpl } from "@react-three/drei"
+import { Environment, useGLTF } from '@react-three/drei';
+import { EffectComposer } from '@react-three/postprocessing'
 
 function easeInOutQuad(t) {
   return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 }
 
 function Airplane() {
-    const { scene } = useGLTF('/models/a320neo/scene.gltf');
+    const { scene } = useGLTF('/models/a319_plane/scene.gltf');
     const ref = useRef();
     const startTime = useRef(null); // To track the start time for easing
     const initialPosition = 30; // Initial position off-screen
     let time = 0;
+
+    useFrame(() => {
+      if (ref.current) {
+          ref.current.traverse((child) => {
+              if (child.isMesh && child.material) {
+                  const material = child.material;
+                  if (material instanceof THREE.MeshStandardMaterial) {
+                      material.emissive.set('#aaaaaa'); 
+                      material.emissiveIntensity = 0.15; 
+                  }
+              }
+          });
+      }
+  });
 
     useFrame((state, delta) => {
       // if (!startTime.current) startTime.current = state.clock.getElapsedTime(); // Set start time
@@ -51,77 +63,31 @@ function Airplane() {
       // if (easedProgress >= 1) startTime.current = null; // Stop updating if done
     });
   
-  
     return <primitive ref={ref} object={scene} scale={0.5} rotation={[0, 4.7, 0]} position={[0, 0, 0]} />;
   
 }
-
 function ThreeScene() {
   return ( 
     <>
-      {/* <Canvas className="canvas" 
-        camera={{ position: [25, 10, -25], fov: 45, near: 0.1, far: 1000 }} style={{ width: '100%', height: '700px' }}>
-          <EffectComposer>
-              <DepthOfField focusDistance={0} focalLength={0.07} bokehScale={1.5} height={480} />
-          </EffectComposer>
-          <Sky />
-          <directionalLight position={[0, 1, -1]} intensity={3.7} />
+      <Canvas 
+        dpr={[1, 2]} 
+        gl={{ antialias: true }}
+        camera={{ position: [-220, 10, -250], fov: 45, near: 0.1, far: 1000 }} 
+        style={{ width: '100vw', height: '100vh', 
+          background: 'linear-gradient(to bottom, #B0C9E6, #D5E1EB, #EFF3F6)',
+        }}>
+
+          <ambientLight intensity={0.9} color="#AEDEFF"/>
+          <pointLight position={[0, 0, 0]} intensity={0.5}/>
+
+          <EffectComposer/>
+
           <Airplane />
-       </Canvas> */}
-      <div className="canvasgradienttop"></div>
-      <div className="canvasgradient"></div>
+          <Environment preset="city" blur={0.8} />
+       </Canvas>
     </>
   );
 }
-
-function Sky() {
-    const ref = useRef();
-    const numClouds = 3; // Number of clouds
-    const cloudSpeed = 0.1; // Speed of cloud movement
-    const cloudsRef = useRef([]);
-  
-    useFrame(() => {
-      cloudsRef.current.forEach((cloud, index) => {
-        if (cloud) {
-          cloud.position.x += cloudSpeed;
-          if (cloud.position.x > 200) {
-            cloud.position.x = -400;
-          }
-        }
-      });
-    });
-    
-    const cloudPositions = Array.from({ length: numClouds }, (_, index) => [
-        0 + (index * -200),
-        -60,
-        80
-    ]);
-
-    return (
-      <>
-        {/* <SkyImpl sunPosition={[10, 10, 0]}/> */}
-        <group ref={ref}>
-            <Clouds material={THREE.MeshLambertMaterial} limit={400}>
-                {cloudPositions.map((position, index) => (
-                    <Cloud
-                        key={index}
-                        ref={(el) => (cloudsRef.current[index] = el)}
-                        concentrate="outside"
-                        growth={100}
-                        color="#f7fdff"
-                        opacity={0.9}
-                        seed={Math.random()}
-                        bounds={[200, 0, 200]}
-                        volume={100}
-                        // position={[0, -35, 0]}
-                        position={position}
-                    />
-                ))}
-            </Clouds>
-        </group>
-      </>
-    )
-  }
 
 export default ThreeScene;
 
