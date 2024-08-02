@@ -28,6 +28,8 @@ const PasswordInput = ({ placeholder, name, value, onChange, onBlur }) => {
     );
 };
 
+
+
 const JoinForm = ({ join }) => {
     const onJoin = async (e) => {
         e.preventDefault();
@@ -54,14 +56,21 @@ const JoinForm = ({ join }) => {
             formData.get('name'),
             formData.get('email') + '@' + formData.get('emailDomain'),
             formData.get('tel'),
-            formData.get('file')
+            formData.get('file') // file이 올바르게 업로드되는지 확인
         );
 
         // join 함수 호출
-        join(formData);
+        try {
+            await join(formData); // 파일 업로드와 함께 전송
+            console.log('Join request successful');
+        } catch (error) {
+            console.error('Join request failed:', error);
+        }
 
         // 폼 리셋 (선택 사항)
         e.target.reset();
+
+    
     };
 
     return (
