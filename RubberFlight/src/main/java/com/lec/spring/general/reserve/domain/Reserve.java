@@ -1,6 +1,7 @@
 package com.lec.spring.general.reserve.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lec.spring.general.user.domain.User;
 import com.lec.spring.member.flightInfo.domain.FlightInfo;
 import jakarta.persistence.*;
@@ -45,6 +46,7 @@ public class Reserve {
     @JoinColumn(name = "reservation_id")
     @ToString.Exclude
     @Builder.Default
+    @JsonIgnore
     private List<FlightInfo> flightInfoList = new ArrayList<>();
 
     public void addFlightInfo(FlightInfo... flightInfos){
