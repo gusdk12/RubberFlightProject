@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputGroup, Input, InputRightElement, Button, Select, FormControl, FormLabel, Box, Flex } from '@chakra-ui/react';
+import { InputGroup, Input, InputRightElement, Button, Select, FormControl, FormLabel, Box, Flex, Text } from '@chakra-ui/react';
 import CustomFileInput from '../Join/CustomFileInput';
 import Swal from 'sweetalert2';
 import axios from 'axios';
@@ -237,12 +237,12 @@ const JoinForm = ({ join }) => {
     };
 
     return (
-        <Box className="form" maxWidth="500px" mx="auto" p={6} bg="#e6eaf4" borderRadius="md" boxShadow="md">
+        <Box className="form" maxWidth="480px" mx="auto" p={6} bg="#e6eaf4" borderRadius="md" boxShadow="md" padding={10}>
             <h2 className="login-title" style={{ textAlign: 'center', fontSize: '40px' }}>Join</h2>
 
             <form className="login-form" onSubmit={onJoin}>
-                <FormControl id="join-username" mb={4}  >
-                    <FormLabel>Username</FormLabel>
+                <FormControl id="join-username" mb={4} >
+                    <FormLabel>Username <Text as="span" color="red">*</Text></FormLabel>
                     <Flex>
                         <Input
                             type="text"
@@ -265,9 +265,8 @@ const JoinForm = ({ join }) => {
                         </Button>
                     </Flex>
                 </FormControl>
-
                 <FormControl id="join-password" mb={4}>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Password <Text as="span" color="red">*</Text></FormLabel>
                     <PasswordInput
                         placeholder="Enter password"
                         name="password"
@@ -277,7 +276,7 @@ const JoinForm = ({ join }) => {
                 </FormControl>
 
                 <FormControl id="join-confirm-password" mb={4}>
-                    <FormLabel>Confirm Password</FormLabel>
+                    <FormLabel>Confirm Password <Text as="span" color="red">*</Text></FormLabel>
                     <PasswordInput
                         placeholder="Confirm password"
                         name="confirmPassword"
@@ -287,7 +286,7 @@ const JoinForm = ({ join }) => {
                 </FormControl>
 
                 <FormControl id="join-name" mb={4}>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Name <Text as="span" color="red">*</Text></FormLabel>
                     <Input
                         type="text"
                         placeholder="Name"
@@ -300,7 +299,7 @@ const JoinForm = ({ join }) => {
                 </FormControl>
 
                 <FormControl id="join-email" mb={4} >
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Email <Text as="span" color="red">*</Text></FormLabel>
                     <Box display="flex" alignItems="center">
                         <Input
                             type="text"
@@ -334,7 +333,7 @@ const JoinForm = ({ join }) => {
 
 
                 <FormControl id="join-tel" mb={4}>
-                    <FormLabel>Phone</FormLabel>
+                    <FormLabel>Phone <Text as="span" color="red">*</Text></FormLabel>
                     <Flex>
                         <Input
                             type="text"
@@ -377,6 +376,7 @@ const JoinForm = ({ join }) => {
                         accept="image/*"
                     />
                 </FormControl>
+                <br/>
 
                 <Button
                     type="submit"
