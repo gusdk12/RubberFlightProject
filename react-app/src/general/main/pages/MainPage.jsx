@@ -1,15 +1,20 @@
-import React from 'react';
-import Header from '../../user/components/Header/Header.jsx';
-import ThreeDScene from '../component/ThreeDScene.js';
+import React, { useEffect } from 'react';
+import Header from '../../common/Header/Header.jsx';
+import ThreeScene from '../component/ThreeScene.jsx';
+import '../CSS/Main.css';
 
 const MainPage = () => {
+    useEffect(() => {
+        document.body.style.overflowX = 'hidden';
+    }, []);
+
     return (
         <>
         <Header/>
-        <h1>메인페이지</h1>
-        {/* <div className="App">
-            <ThreeDScene />
-        </div> */}
+        <div className="contentpart">
+            <div className="introduceMain"></div>
+            <ThreeScene/>
+        </div>
         </>
     );
 };
