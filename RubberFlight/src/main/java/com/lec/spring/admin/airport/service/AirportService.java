@@ -21,6 +21,12 @@ public class AirportService {
         return airportRepository.findAll(Sort.by(Sort.Order.desc("id")));
     }
 
+    // 나라별 공항 목록
+    @Transactional
+    public List<Airport> detail(Long countryId) {
+        return airportRepository.findByCountryId(countryId);
+    }
+
     // 나라 추가
     @Transactional
     public Airport add(Airport airport) {
