@@ -241,7 +241,7 @@ const JoinForm = ({ join }) => {
             <h2 className="login-title" style={{ textAlign: 'center', fontSize: '40px' }}>Join</h2>
 
             <form className="login-form" onSubmit={onJoin}>
-                <FormControl id="join-username" mb={4} >
+                <FormControl id="join-username" mb={4}>
                     <FormLabel>Username <Text as="span" color="red">*</Text></FormLabel>
                     <Flex>
                         <Input
@@ -298,7 +298,7 @@ const JoinForm = ({ join }) => {
                     />
                 </FormControl>
 
-                <FormControl id="join-email" mb={4} >
+                <FormControl id="join-email-section" mb={4}>
                     <FormLabel>Email <Text as="span" color="red">*</Text></FormLabel>
                     <Box display="flex" alignItems="center">
                         <Input
@@ -308,9 +308,9 @@ const JoinForm = ({ join }) => {
                             value={email}
                             onChange={handleEmailChange}
                             autoComplete="email"
-                            required
                             mr={2}
                             backgroundColor={'white'}
+                            id="join-email-input"
                         />
                         @
                         <Select
@@ -319,6 +319,7 @@ const JoinForm = ({ join }) => {
                             onChange={handleEmailDomainChange}
                             ml={2}
                             backgroundColor={'white'}
+                            id="join-email-domain"
                         >
                             <option value="naver.com">naver.com</option>
                             <option value="gmail.com">gmail.com</option>
@@ -331,8 +332,7 @@ const JoinForm = ({ join }) => {
                     </Box>
                 </FormControl>
 
-
-                <FormControl id="join-tel" mb={4}>
+                <FormControl id="join-tel-section" mb={4}>
                     <FormLabel>Phone <Text as="span" color="red">*</Text></FormLabel>
                     <Flex>
                         <Input
@@ -343,6 +343,7 @@ const JoinForm = ({ join }) => {
                             onChange={handleTel1Change}
                             maxLength="3"
                             backgroundColor={'white'}
+                            id="join-tel1"
                         />
                         -
                         <Input
@@ -354,6 +355,7 @@ const JoinForm = ({ join }) => {
                             maxLength="4"
                             ml={2}
                             backgroundColor={'white'}
+                            id="join-tel2"
                         />
                         -
                         <Input
@@ -365,6 +367,7 @@ const JoinForm = ({ join }) => {
                             maxLength="4"
                             ml={2}
                             backgroundColor={'white'}
+                            id="join-tel3"
                         />
                     </Flex>
                 </FormControl>
