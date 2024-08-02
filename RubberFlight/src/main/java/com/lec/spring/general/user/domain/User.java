@@ -40,6 +40,6 @@ public class User {
     @Column(nullable = true)
     private String image;
 
-    @ManyToMany
-    private List<Coupon> coupons; // 사용자가 가진 쿠폰들
+//    @ManyToMany
+//    private List<Coupon> coupons; // 사용자가 가진 쿠폰들
 }
