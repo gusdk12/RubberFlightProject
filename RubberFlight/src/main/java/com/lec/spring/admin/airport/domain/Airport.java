@@ -25,6 +25,9 @@ public class Airport {
     private Country country; // FK : countryId
 
     @Column
+    private String countryIso; // 나라 ISO 코드 : codeIso2Country
+
+    @Column
     private String airportName; // 공항 이름 : nameAirport
 
     @Column

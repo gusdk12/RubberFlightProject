@@ -21,7 +21,6 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
-
     private final FileService fileService;
 
     public UserController(UserService userService, FileService fileService) {
@@ -70,8 +69,6 @@ public class UserController {
         return new ResponseEntity<>("JOIN OK : " + user, HttpStatus.OK);
     }
 
-
-
     @PostMapping("/join/admin")
     public String Admin(@RequestBody UserJoinDTO joinDTO) {
 
@@ -84,5 +81,12 @@ public class UserController {
         return "JOIN OK : " + user;
     }
 
-
+    @PostMapping("/check-username")
+    public ResponseEntity<Map<String, Boolean>> checkUsername(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        boolean exists = userService.existsByUsername(username);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("exists", exists);
+        return ResponseEntity.ok(response);
+    }
 }

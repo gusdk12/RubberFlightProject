@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -40,11 +41,19 @@ public class AirportController {
         return new ResponseEntity<>(forObject, HttpStatus.OK);
     }
 
-    // 목록
+    // 전체 공항 목록
     @CrossOrigin
     @GetMapping("/list")
     public ResponseEntity<?> list() {
         return new ResponseEntity<>(airportService.list(), HttpStatus.OK);
+    }
+
+    // 나라별 목록
+    @CrossOrigin
+    @GetMapping("/detail/{countryId}")
+    public ResponseEntity<?> detail(@PathVariable Long countryId) {
+        List<Airport> airports = airportService.detail(countryId);
+        return new ResponseEntity<>(airports, HttpStatus.OK);
     }
 
     // 추가
