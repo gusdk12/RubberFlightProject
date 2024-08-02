@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Button, Checkbox, FormControl, FormLabel, Input, Stack, useToast } from '@chakra-ui/react';
+import { Box, Button, Checkbox, FormControl, FormLabel, HStack, Input, Stack, useToast } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
@@ -16,24 +16,24 @@ const LoginForm = () => {
     const rememberId = e.target.rememberId.checked;
 
     login(username, password, rememberId)
-      .then(() => {
-        toast({
-          title: "Login successful.",
-          description: "You have been logged in successfully.",
-          status: "success",
-          duration: 9000,
-          isClosable: true,
-        });
-      })
-      .catch((error) => {
-        toast({
-          title: "Login failed.",
-          description: error.message,
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-      });
+      // .then(() => {
+      //   toast({
+      //     title: "Login successful.",
+      //     description: "You have been logged in successfully.",
+      //     status: "success",
+      //     duration: 9000,
+      //     isClosable: true,
+      //   });
+      // })
+      // .catch((error) => {
+      //   toast({
+      //     title: "Login failed.",
+      //     description: error.message,
+      //     status: "error",
+      //     duration: 9000,
+      //     isClosable: true,
+      //   });
+      // });
   };
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const LoginForm = () => {
 
       <form onSubmit={(e) => onLogin(e)}>
         <Stack spacing={4}>
-          <FormControl id="username" isRequired>
+          <FormControl id="username">
             <FormLabel>Username</FormLabel>
             <Input
               type="text"
@@ -56,16 +56,18 @@ const LoginForm = () => {
               name="username"
               autoComplete="off"
               defaultValue={rememberUserId}
+              backgroundColor={'white'}
             />
           </FormControl>
 
-          <FormControl id="password" isRequired>
+          <FormControl id="password">
             <FormLabel>Password</FormLabel>
             <Input
               type="password"
               placeholder="Password"
               name="password"
               autoComplete="off"
+              backgroundColor={'white'}
             />
           </FormControl>
 
@@ -77,14 +79,15 @@ const LoginForm = () => {
             </Stack>
           </FormControl>
 
-          <Stack spacing={4} align="center">
-            <Button type="submit" colorScheme="teal" width="full">
+          <HStack spacing={4} align="center" justify="right">
+            <Button type="submit" colorScheme="white" color={'#586D92'} borderWidth="1px" 
+    borderColor={'#586D92'}>
               Login
             </Button>
-            <Button as={Link} to="/join" variant="outline" colorScheme="teal">
+            <Button as={Link} to="/join" variant="outline" bg={'#586D92'} color={'white'} >
               Sign Up
             </Button>
-          </Stack>
+          </HStack>
         </Stack>
       </form>
     </Box>
