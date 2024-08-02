@@ -1,8 +1,7 @@
 package com.lec.spring.member.review.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lec.spring.general.review.domain.Airline;
-import com.lec.spring.general.user.domain.User;
+import com.lec.spring.member.flightInfo.domain.FlightInfo;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -53,10 +52,18 @@ public class Review {
         this.date = LocalDateTime.now();
     }
 
-//    @OneToOne
-//    private FlightInfo flightInfo; // 비행정보
+    @OneToOne
+    @JoinColumn(name = "flightinfo_id")
+    private FlightInfo flightInfo; // 비행정보
 
-    private String airline_name; // 항공사 이름
+//    @Column(name = "flightinfo_id", nullable = false, unique = true)
+//    private Long flightinfo;
+//
+//    @Column(name = "flightinfo_airlinename", nullable = false, unique = true)
+//    private String airline_name;
+
+
+//    private String airline_name; // 항공사 이름
 
     @Column(name = "airline_id")
     private Long airline;   // 어느 항공사의 리뷰 (FK)
@@ -65,8 +72,8 @@ public class Review {
 //    @ToString.Exclude
 //    private Airline airline;   // 어느 항공사의 리뷰 (FK)
 
-    @Column(name = "user_id")
-    private Long user;   // 작성자 이름
+//    @Column(name = "user_id")
+//    private Long user;   // 작성자 이름
 
 //    @ManyToOne(optional = false)
 //    @ToString.Exclude

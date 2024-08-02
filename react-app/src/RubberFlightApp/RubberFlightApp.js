@@ -4,6 +4,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import MainPage from '../general/main/pages/MainPage';
 import Login from '../general/user/pages/Login';
 import Join from '../general/user/pages/Join';
+import Search from '../general/reserve/pages/search';
 
 function RubberFlightApp() {
   return (
@@ -15,6 +16,7 @@ function RubberFlightApp() {
           <Route path="/" element={<MainPage />}/>
           <Route path="/login" element={<Login />} />
           <Route path="/join" element={<Join />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </LoginContextProvider>
       </BrowserRouter>
