@@ -2,6 +2,7 @@ package com.lec.spring.general.reserve.service;
 
 import com.lec.spring.admin.airport.domain.Airport;
 import com.lec.spring.admin.airport.repository.AirportRepository;
+import com.lec.spring.general.reserve.domain.Flight;
 import com.lec.spring.general.reserve.domain.Reserve;
 import com.lec.spring.general.reserve.repository.ReserveRepository;
 import com.lec.spring.general.user.domain.User;
@@ -12,8 +13,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class ReserveService {
@@ -105,5 +108,13 @@ public class ReserveService {
         return price;
     }
 
+    // 리스트
+    public List<Flight> getFlights(List<Flight> flights) {
+        return flights.stream()
+                .sorted(Comparator.comparingInt(Flight::getPrice)
+                        .thenComparingInt(Flight::getTakeTime))
+                .limit(10)
+                .collect(Collectors.toList());
+    }
 
 }

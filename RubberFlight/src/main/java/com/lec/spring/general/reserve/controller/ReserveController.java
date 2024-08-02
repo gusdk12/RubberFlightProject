@@ -41,20 +41,17 @@ public class ReserveController {
 
 
         List<Flight> outboundFlights = fetchFlights(iataCode, arrIataCode, depDate, type);
+
         List<Flight> inboundFlights = arrDate != null && !arrDate.isEmpty()
                 ? fetchFlights(arrIataCode, iataCode, arrDate, type)
                 : Collections.emptyList();
 
+        List<Flight> sortedOutboundFlights = reserveService.getFlights(outboundFlights);
+        List<Flight> sortedInboundFlights = reserveService.getFlights(inboundFlights);
+
         Map<String, Object> responseMap = new HashMap<>();
-        responseMap.put("outboundFlights", outboundFlights);
-
-
-        if (!inboundFlights.isEmpty()) {
-            List<Flight> matchingFlights = getMatchingFlights(outboundFlights, inboundFlights);
-            responseMap.put("matchingFlights", matchingFlights);
-        } else {
-            responseMap.put("matchingFlights", null);
-        }
+        responseMap.put("outboundFlights", sortedOutboundFlights);
+        responseMap.put("inboundFlights", sortedInboundFlights);
 
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
@@ -97,25 +94,7 @@ public class ReserveController {
         return flights;
     }
 
-    private List<Flight> getMatchingFlights(List<Flight> outboundFlights, List<Flight> inboundFlights) {
-        List<Flight> matchingFlights = new ArrayList<>();
-        Set<String> airlineNames = new HashSet<>();
 
-        // 항공사 이름찾기
-        for (Flight outbound : outboundFlights) {
-            if (outbound.getAirlineIata() != null) {
-                airlineNames.add(outbound.getAirlineIata());
-            }
-        }
-
-        // 출국 때 검색 됐던 항공사와 같은 것들만
-        for (Flight inbound : inboundFlights) {
-            if (inbound.getAirlineIata() != null && airlineNames.contains(inbound.getAirlineIata())) {
-                matchingFlights.add(inbound);
-            }
-        }
-        return matchingFlights;
-    }
 
 
     // 디테일 페이지(api 계속 가지고 있고, 사용자가 작성한 것도 필요해)
