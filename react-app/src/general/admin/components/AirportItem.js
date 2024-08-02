@@ -6,9 +6,7 @@ const AirportItem = ({ airport, onDelete }) => {
 
     return (
         <tr>
-            <td>{id}</td>
             <td>{countryIso}</td>
-            <td>{airportId}</td>
             <td>{airportIso}</td>
             <td>{airportName}</td>
             <td>{latitudeAirport}</td>

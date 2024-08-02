@@ -6,8 +6,7 @@ const CountryItem = ({ country, onDelete, onNameClick}) => {
 
     return (
         <tr>
-            <td>{id}</td>
-            <td>{countryId}</td>
+            <td>O</td>
             <td>{countryIso}</td>
             <td key={id} onClick={()=>onNameClick(id)}>{countryName}</td>
             <td>

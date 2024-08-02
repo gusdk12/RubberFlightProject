@@ -1,0 +1,41 @@
+
+.clear {
+    clear: both;
+}
+
+.topBox {
+    border: 1px solid red;
+    width: 1100px;
+    height: 100vh;
+    margin: 0 auto;
+}
+
+.countryBox {
+    border: 1px solid blue;
+    float: left;
+    width: 48%;
+    /* background-color: bisque; */
+}
+
+.airportBox {
+    border: 1px solid green;
+    float: right;
+    width: 48%;
+    /* background-color: skyblue; */
+}
+
+#countryInput, #airportInput {
+    /* border: 1px solid red; */
+    width: 80%;
+    float: left;
+}
+
+#countryButton, #airportButton{
+    /* border: 1px solid blue; */
+    width: 20%;
+    float: left;
+}
+
+table {
+    width: 100%;
+}
