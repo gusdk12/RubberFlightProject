@@ -2,7 +2,7 @@ import * as THREE from "three"
 import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
-import { DepthOfField, EffectComposer, Noise, Vignette } from '@react-three/postprocessing'
+import { DepthOfField, EffectComposer } from '@react-three/postprocessing'
 
 import { Clouds, Cloud, Sky as SkyImpl } from "@react-three/drei"
 
@@ -67,7 +67,7 @@ function ThreeScene() {
           <Sky />
           <directionalLight position={[0, 1, -1]} intensity={3.7} />
           <Airplane />
-      </Canvas>
+       </Canvas>
       <div className="canvasgradienttop"></div>
       <div className="canvasgradient"></div>
     </>
