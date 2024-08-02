@@ -1,11 +1,12 @@
 import React from 'react';
 
 const AirportItem = ({ airport, onDelete }) => {
-    const { id, airportId ,airportIso, airportName, latitudeAirport, longitudeAirport} = airport;
+    const { id, countryIso, airportId ,airportIso, airportName, latitudeAirport, longitudeAirport} = airport;
 
     return (
         <tr>
             <td>{id}</td>
+            <td>{countryIso}</td>
             <td>{airportId}</td>
             <td>{airportIso}</td>
             <td>{airportName}</td>
