@@ -12,7 +12,7 @@ const MainPage = () => {
         <>
         <Header/>
         <div className="contentpart">
-            <div className="introduceMain"></div>
+            {/* <div className="introduceMain"></div> */}
             <ThreeScene/>
         </div>
         </>
