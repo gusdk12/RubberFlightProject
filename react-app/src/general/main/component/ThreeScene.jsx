@@ -59,7 +59,7 @@ function Airplane() {
 function ThreeScene() {
   return ( 
     <>
-      <Canvas className="canvas" 
+      {/* <Canvas className="canvas" 
         camera={{ position: [25, 10, -25], fov: 45, near: 0.1, far: 1000 }} style={{ width: '100%', height: '700px' }}>
           <EffectComposer>
               <DepthOfField focusDistance={0} focalLength={0.07} bokehScale={1.5} height={480} />
@@ -67,7 +67,7 @@ function ThreeScene() {
           <Sky />
           <directionalLight position={[0, 1, -1]} intensity={3.7} />
           <Airplane />
-       </Canvas>
+       </Canvas> */}
       <div className="canvasgradienttop"></div>
       <div className="canvasgradient"></div>
     </>
