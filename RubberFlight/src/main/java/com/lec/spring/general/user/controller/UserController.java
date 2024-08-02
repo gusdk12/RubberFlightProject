@@ -38,7 +38,7 @@ public class UserController {
             @RequestParam("tel") String tel,
             @RequestParam("file") MultipartFile file) {
 
-        String filePath = null;
+        String filePath = "uploads/user.png";
 
         // 파일 처리 (예: 저장, 검사 등)
         if (!file.isEmpty()) {
@@ -48,7 +48,7 @@ public class UserController {
                 // 파일 저장 경로를 설정
                 Path path = Paths.get("uploads/" + fileName);
                 Files.write(path, file.getBytes());
-                filePath = path.toString(); // 파일 경로를 문자열로 변환하여 저장
+                filePath = path.toString().replace("\\", "/");
             } catch (IOException e) {
                 e.printStackTrace();
                 return new ResponseEntity<>("File upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
