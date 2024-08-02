@@ -31,7 +31,8 @@ public class CountryController {
                 .encode()
                 .toUri();
 
-        return new RestTemplate().getForEntity(uri, String.class);
+        String forObject = new RestTemplate().getForObject(uri, String.class);
+        return new ResponseEntity<>(forObject, HttpStatus.OK);
     }
 
     // 목록
