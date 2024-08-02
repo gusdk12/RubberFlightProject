@@ -32,19 +32,28 @@ public class ReserveController {
 
     // 검색 페이지(api)
     @GetMapping("/search")
-    public ResponseEntity<?> searchFlights(@RequestBody Map<String, String> flightRequest) {
-        String iataCode = flightRequest.get("iataCode");
+    public ResponseEntity<?> searchFlights(@RequestParam String iataCode,
+                                           @RequestParam String depDate,
+                                           @RequestParam String arrIataCode,
+                                           @RequestParam(required = false) String arrDate,
+                                           @RequestParam String mode) {
+
         String type = "departure";
-        String depDate = flightRequest.get("date");
-        String arrIataCode = flightRequest.get("arr_iataCode");
-        String arrDate = flightRequest.get("date2");
+
+        System.out.println("arrDate: " + arrDate); // 로깅 추가
+
 
 
         List<Flight> outboundFlights = fetchFlights(iataCode, arrIataCode, depDate, type);
 
-        List<Flight> inboundFlights = arrDate != null && !arrDate.isEmpty()
+        List<Flight> inboundFlights = (arrDate != null && !arrDate.isEmpty())
                 ? fetchFlights(arrIataCode, iataCode, arrDate, type)
                 : Collections.emptyList();
+
+        if ("combine".equals(mode) && !outboundFlights.isEmpty() && !inboundFlights.isEmpty()) {
+            List<Map<String, Flight>> combinations = createFlightCombinations(outboundFlights, inboundFlights);
+            return new ResponseEntity<>(Collections.singletonMap("combinations", combinations), HttpStatus.OK);
+        }
 
         List<Flight> sortedOutboundFlights = reserveService.getFlights(outboundFlights);
         List<Flight> sortedInboundFlights = reserveService.getFlights(inboundFlights);
@@ -84,7 +93,11 @@ public class ReserveController {
                 for (JsonNode jsonNode : root) {
                     double distance = reserveService.calculateDistance(depIata, arrIata);
                     int price = reserveService.calculateRandomPrice(distance);
-                    flights.add(new Flight(jsonNode, date, price));
+                    Flight flight = new Flight(jsonNode, depIata, arrIata, date, price);
+
+                    if(!flight.getAirlineName().equals("") && !flight.getAirlineName().trim().isEmpty()) {
+                        flights.add(flight);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -94,7 +107,18 @@ public class ReserveController {
         return flights;
     }
 
-
+    private List<Map<String, Flight>> createFlightCombinations(List<Flight> outboundFlights, List<Flight> inboundFlights) {
+        List<Map<String, Flight>> combinations = new ArrayList<>();
+        for (Flight outbound : outboundFlights) {
+            for (Flight inbound : inboundFlights) {
+                Map<String, Flight> combination = new HashMap<>();
+                combination.put("outbound", outbound);
+                combination.put("inbound", inbound);
+                combinations.add(combination);
+            }
+        }
+        return combinations;
+    }
 
 
     // 디테일 페이지(api 계속 가지고 있고, 사용자가 작성한 것도 필요해)

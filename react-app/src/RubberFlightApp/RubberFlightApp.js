@@ -7,6 +7,8 @@ import Join from '../general/user/pages/Join';
 import Search from '../general/reserve/pages/search';
 import customTheme from '../general/user/components/Join/customTheme'
 import AdminPage from '../general/admin/AdminPage';
+import SelectJoin from '../general/user/pages/SelectJoin';
+import Admin from '../general/user/pages/admin';
 
 function RubberFlightApp() {
   return (
