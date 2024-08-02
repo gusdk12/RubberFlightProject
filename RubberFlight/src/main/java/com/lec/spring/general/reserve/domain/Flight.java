@@ -10,6 +10,8 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 public class Flight {
+    String depAirport;
+    String arrAirport;
     String airlineIata;
     LocalDateTime depTime;
     LocalDateTime arrTime;
@@ -20,12 +22,12 @@ public class Flight {
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public Flight(JsonNode jsonNode, String date, int price) {
+    public Flight(JsonNode jsonNode, String iataCode, String arrIataCode, String date, int price) {
+        this.depAirport = iataCode;
+        this.arrAirport = arrIataCode;
+
         this.airlineIata = jsonNode.path("airline").path("iataCode").asText(null);
         this.airlineName = jsonNode.path("airline").path("name").asText(null);
-        if(this.airlineName.equals("") || this.airlineName.isEmpty()) {
-            this.airlineName = "찾아야해요,,";
-        }
 
         // JSON에서 시간 정보 가져오기
         String depTimeStr = jsonNode.path("departure").path("scheduledTime").asText(null); // "HH:mm"
