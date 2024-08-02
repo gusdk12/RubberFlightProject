@@ -81,7 +81,7 @@ const LoginForm = () => {
 
           <HStack spacing={4} align="center" justify="right">
             {/* <Text fontSize={10}>아직 회원이 아니신가요?</Text> */}
-            <Button as={Link} to="/join" variant="link" color={'#586D92'}>
+            <Button as={Link} to="/selectJoin" variant="link" color={'#586D92'}>
             Join
             </Button>
             <Button type="submit" bg={'#586D92'} color={'white'}>

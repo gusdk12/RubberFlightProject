@@ -21,3 +21,9 @@ export const join = (formData) => api.post(`${SERVER_HOST}/user/join/user`, form
         'Content-Type': 'multipart/form-data'
     }
 });
+
+export const admin = (formData) => api.post(`${SERVER_HOST}/user/join/admin`, formData, {
+    headers: {
+        'Content-Type': 'multipart/form-data'
+    }
+});
