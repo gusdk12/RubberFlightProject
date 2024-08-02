@@ -1,0 +1,86 @@
+.search-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* outline: 2px solid salmon; */
+    margin-top: 18%;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .trip-type {
+    margin-bottom: 10px;
+    margin-left: 3%;
+  }
+  
+  .trip-type button {
+    margin-right: 10px;
+    background-color: #586D92;
+  }
+  
+  .input-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .input-group input {
+    margin-right: 5px;
+    padding: 5px;
+    width: 150px; /* 인풋 크기 조정 */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .input-group input[type="date"] {
+    width: 130px; /* 날짜 인풋 크기 조정 */
+  }
+
+  .search-button {
+    background-color: #586D92;
+  }
+  
+  button {
+    padding: 10px 20px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    /* background-color: #586D92; */
+  }
+  
+  .search-results {
+    margin-top: 20px;
+  }
+  
+  .search-results h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .search-results h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  
+  .search-results ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .search-results li {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
