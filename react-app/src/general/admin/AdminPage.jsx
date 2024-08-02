@@ -4,9 +4,9 @@ import axios from 'axios';
 import CountryItem from './components/CountryItem';
 
 const AdminPage = () => {
-    const [countrys, setCountry] = useState([]); // Initialize country list
+    const [countrys, setCountry] = useState([]); 
     const [countryIsoInput, setCountryIsoInput] = useState("");
-    const [selectedCountry, setSelectedCountry] = useState(null); // State to hold selected country info
+    const [selectedCountry, setSelectedCountry] = useState(null);
 
     useEffect(() => {
         axios({
@@ -24,7 +24,7 @@ const AdminPage = () => {
         });
     }, []);
 
-    const searchCountry = async (e) => {
+    const addCountry = async (e) => {
         e.preventDefault();
 
         if (!countryIsoInput) {
@@ -41,7 +41,22 @@ const AdminPage = () => {
                 countryIso: data.codeIso2Country,
                 countryName: data.nameCountry,
             };
-            setSelectedCountry(extractedData); // Set the selected country info
+            setSelectedCountry(extractedData);
+
+            const saveResponse = await fetch('http://localhost:8282/country/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(extractedData),
+        });
+
+        if (!saveResponse.ok) {
+            throw new Error('저장시 오류 발생');
+        }
+
+        window.alert('저장 성공');
+        
         } catch (error) {
             console.error("Error fetching country data:", error);
             window.alert("데이터를 가져오는 중 오류가 발생했습니다.");
@@ -80,7 +95,7 @@ const AdminPage = () => {
 
     return (
         <div>
-            <form onSubmit={searchCountry}>
+            <form onSubmit={addCountry}>
                 <div>
                     <div>나라 입력</div>
                     <input
@@ -91,16 +106,17 @@ const AdminPage = () => {
                         onChange={(e) => setCountryIsoInput(e.target.value)}
                     />
                 </div>
-                <button type="submit" name="search">Search</button>
+                <button type="submit" name="search">Add</button>
             </form>
 
             <table>
                 <thead>
                     <tr>
-                        <th>나라 id</th>
-                        <th>나라 iso 코드</th>
-                        <th>나라 이름</th>
-                        <th>Actions</th>
+                        <th>id |</th>
+                        <th>나라 id |</th>
+                        <th>나라 iso 코드 |</th>
+                        <th>나라 이름 |</th>
+                        <th>삭제</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -108,7 +124,7 @@ const AdminPage = () => {
                         <CountryItem
                             key={country.countryId}
                             country={country}
-                            onDelete={() => deleteCountry(country.countryIso)} // Pass delete function with isoCode
+                            onDelete={() => deleteCountry(country.countryIso)} 
                         />
                     ))}
                 </tbody>
