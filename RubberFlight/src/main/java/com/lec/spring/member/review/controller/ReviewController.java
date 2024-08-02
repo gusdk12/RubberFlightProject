@@ -14,11 +14,11 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     // 해당 유저의 리뷰 목록
-//    @CrossOrigin
-//    @GetMapping("/member/review/list")
-//    public ResponseEntity<?> userReviewList(Long user_id) {
-//        return new ResponseEntity<>(reviewService.userReviewList(user_id), HttpStatus.OK);
-//    }
+    @CrossOrigin
+    @GetMapping("/member/review/list/{user}")
+    public ResponseEntity<?> userReviewList(@PathVariable Long user) {
+        return new ResponseEntity<>(reviewService.userReviewList(user), HttpStatus.OK);
+    }
 
     // 리뷰 작성
     @CrossOrigin

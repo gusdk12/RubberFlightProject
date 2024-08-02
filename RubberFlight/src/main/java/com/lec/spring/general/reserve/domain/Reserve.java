@@ -39,6 +39,7 @@ public class Reserve {
     // ft_user:ft_reservation 1:N
     @ManyToOne
     @ToString.Exclude
+    @JoinColumn(name = "user_id")
     private User user;
 
     // ft_reservation:ft_flightinfo 랑 1:N

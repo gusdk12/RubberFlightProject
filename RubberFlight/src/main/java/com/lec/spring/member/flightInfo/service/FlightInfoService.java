@@ -18,4 +18,9 @@ public class FlightInfoService {
     public List<FlightInfo> findAll() {
         return flightInfoRepository.findAll();
     }
+
+    @Transactional(readOnly = true)
+    public FlightInfo findById(Long id) {
+        return flightInfoRepository.findById(id).orElse(null);
+    }
 }
