@@ -15,16 +15,16 @@ public class Flight {
     LocalDateTime arrTime;
     int takeTime;
     int price;
-    String airIineName;
+    String airlineName;
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Flight(JsonNode jsonNode, String date, int price) {
         this.airlineIata = jsonNode.path("airline").path("iataCode").asText(null);
-        this.airIineName = jsonNode.path("airline").path("name").asText(null);
-        if(this.airIineName.equals("") || this.airIineName.isEmpty()) {
-            this.airIineName = "찾아야해요,,";
+        this.airlineName = jsonNode.path("airline").path("name").asText(null);
+        if(this.airlineName.equals("") || this.airlineName.isEmpty()) {
+            this.airlineName = "찾아야해요,,";
         }
 
         // JSON에서 시간 정보 가져오기
