@@ -5,6 +5,7 @@ import MainPage from '../general/main/pages/MainPage';
 import Login from '../general/user/pages/Login';
 import Join from '../general/user/pages/Join';
 import Search from '../general/reserve/pages/search';
+import AdminPage from '../general/admin/AdminPage';
 
 function RubberFlightApp() {
   return (
@@ -17,6 +18,7 @@ function RubberFlightApp() {
           <Route path="/login" element={<Login />} />
           <Route path="/join" element={<Join />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/admin" element={<AdminPage/>}/>
         </Routes>
       </LoginContextProvider>
       </BrowserRouter>
