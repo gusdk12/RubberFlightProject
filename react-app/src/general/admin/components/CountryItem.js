@@ -1,6 +1,7 @@
 import React from 'react';
+import {Button} from '@chakra-ui/react';
 
-const CountryItem = ({ country, onDelete }) => {
+const CountryItem = ({ country, onDelete, onNameClick}) => {
     const { id, countryId, countryIso, countryName } = country;
 
     return (
@@ -8,9 +9,9 @@ const CountryItem = ({ country, onDelete }) => {
             <td>{id}</td>
             <td>{countryId}</td>
             <td>{countryIso}</td>
-            <td>{countryName}</td>
+            <td key={id} onClick={()=>onNameClick(id)}>{countryName}</td>
             <td>
-                <button type="button" onClick={() => onDelete(countryIso)}>DELETE</button>
+                <Button type="button" onClick={() => onDelete(countryIso)}>DELETE</Button>
             </td>
         </tr>
     );

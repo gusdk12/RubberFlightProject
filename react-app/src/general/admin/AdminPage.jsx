@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { getCountryInfo } from '../../apis/countryApis';
 import { getAirportInfo } from '../../apis/airportApis';
-import axios from 'axios';
 import CountryItem from './components/CountryItem';
 import AirportItem from './components/AirportItem';
 
@@ -12,53 +12,53 @@ const AdminPage = () => {
 
     const [airports, setAirport] = useState([]);
     const [airportIataInput, setAirportIataInput] = useState("");
-    const [selectedAirport, setSelectedAirport] = useState(null);
 
-    // 나라 목록 가져오기
-    useEffect(() => {
-        axios({
-            method: "get",
-            url: "http://localhost:8282/country/list",
-        })
-        .then(response => {
+    // 전체 나라 목록 가져오기
+    const fetchCountries = async () => {
+        try {
+            const response = await axios.get("http://localhost:8282/country/list");
             const { data, status } = response;
             if (status === 200) {
                 setCountry(data);
             }
-        })
-        .catch(error => {
+        } catch (error) {
             console.error("Error fetching country list:", error);
-        });
-    }, []);
+        }
+    };
 
-    // 공항 목록 가져오기
-    useEffect(() => {
-        axios({
-            method: "get",
-            url: "http://localhost:8282/airport/list",
-        })
-        .then(response => {
+    // 선택한 나라의 공항 목록 가져오기
+    const fetchAirportsByCountry = async (countryId) => {
+        try {
+            const response = await axios.get(`http://localhost:8282/airport/detail/${countryId}`);
             const { data, status } = response;
             if (status === 200) {
                 setAirport(data);
             }
-        })
-        .catch(error => {
+        } catch (error) {
             console.error("Error fetching airport list:", error);
-        });
+        }
+    };
+
+    // 컴포넌트 마운트 시 나라 목록 가져오기
+    useEffect(() => {
+        fetchCountries();
     }, []);
 
+    // 나라 클릭 시 해당 나라의 공항 목록 불러오기
+    const handleCountryClick = (countryId) => {
+        setSelectedCountry(countrys.find(country => country.id === countryId));
+        fetchAirportsByCountry(countryId);
+    };
+
+    // 나라 추가
     const addCountry = async (e) => {
         e.preventDefault();
-
-        console.log(countryIsoInput);
 
         if (!countryIsoInput) {
             window.alert("ISO 코드를 입력해주세요.");
             return;
         }
 
-        // 중복 확인
         const existingCountry = countrys.find(country => country.countryIso === countryIsoInput);
         if (existingCountry) {
             window.alert("해당 ISO 코드는 이미 존재합니다.");
@@ -74,24 +74,18 @@ const AdminPage = () => {
                 countryIso: data.codeIso2Country,
                 countryName: data.nameCountry,
             };
-            setSelectedCountry(extractedData);
 
-            // Country 저장하기
-            const saveResponse = await axios({
-                method: 'post',
-                url: 'http://localhost:8282/country/add',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                data: extractedData,
+            const saveResponse = await axios.post('http://localhost:8282/country/add', extractedData, {
+                headers: { 'Content-Type': 'application/json' },
             });
 
-            if (saveResponse.status !== 200) {
-                throw new Error('저장시 오류 발생');
+            if (saveResponse.status === 200) {
+                window.alert('저장 성공');
+                await fetchCountries(); // 목록을 다시 가져와서 UI를 업데이트합니다.
+                setSelectedCountry(null); // 새로 추가한 나라가 없으므로 선택된 나라를 초기화합니다.
+            } else {
+                window.alert('저장 실패');
             }
-
-            window.alert('저장 성공');
-            setCountry([...countrys, extractedData]); // 새 나라를 목록에 추가
 
         } catch (error) {
             console.error("Error fetching or saving country data:", error);
@@ -99,6 +93,7 @@ const AdminPage = () => {
         }
     };
 
+    // 나라 삭제
     const deleteCountry = async (countryIso) => {
         if (!countryIso) {
             window.alert("삭제할 나라 ID를 제공해주세요.");
@@ -106,18 +101,14 @@ const AdminPage = () => {
         }
 
         try {
-            const response = await axios({
-                method: "delete",
-                url: `http://localhost:8282/country/delete/${countryIso}`,
-                headers: {
-                    "Content-Type": "application/json"
-                }
+            const response = await axios.delete(`http://localhost:8282/country/delete/${countryIso}`, {
+                headers: { "Content-Type": "application/json" },
             });
 
             if (response.status === 200) {
                 window.alert('삭제 성공');
-                setCountry(countrys.filter(country => country.countryIso !== countryIso)); 
-                setSelectedCountry(null); 
+                await fetchCountries(); // 목록을 다시 가져와서 UI를 업데이트합니다.
+                setSelectedCountry(null);
             } else {
                 window.alert('삭제 실패');
             }
@@ -127,36 +118,30 @@ const AdminPage = () => {
         }
     };
 
+    // 공항 추가
     const addAirport = async (e) => {
         e.preventDefault();
 
-        console.log(airportIataInput);
-    
-        if(!airportIataInput) {
-            window.alert("IATA 코드를 입력해주세요.");
+        if (!airportIataInput || !selectedCountry) {
+            window.alert("IATA 코드와 선택한 나라를 입력해주세요.");
             return;
         }
-    
-        // 중복 확인
+
         const existingAirport = airports.find(airport => airport.airportIso === airportIataInput);
         if (existingAirport) {
             window.alert("해당 IATA 코드는 이미 존재합니다.");
             return;
         }
-    
+
         try {
-            // Fetch airport information
-            const response = await getAirportInfo(airportIataInput);
+            const response = await getAirportInfo(airportIataInput, selectedCountry.countryIso);
             const data = response.data[0];
-    
-            // Find the associated country information using countryIso
-            const country = countrys.find(country => country.countryIso === data.codeIso2Country);
-            if (!country) {
-                window.alert("해당 IATA 코드에 해당하는 나라 정보를 찾을 수 없습니다.");
+
+            if (!data) {
+                window.alert("해당 IATA 코드에 대한 공항 정보를 찾을 수 없습니다.");
                 return;
             }
-    
-            // Extract relevant airport and country data
+
             const extractedData = {
                 airportId: data.airportId,
                 countryIso: data.codeIso2Country,
@@ -164,56 +149,43 @@ const AdminPage = () => {
                 airportIso: data.codeIataAirport,
                 latitudeAirport: data.latitudeAirport,
                 longitudeAirport: data.longitudeAirport,
-                country: {
-                    id: country.id
-                }
+                country: { id: selectedCountry.id },
             };
-    
-            setSelectedAirport(extractedData);
-    
-            // Save airport along with the associated country data
-            const saveResponse = await axios({
-                method: 'post',
-                url: 'http://localhost:8282/airport/add',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                data: extractedData,
+
+            const saveResponse = await axios.post('http://localhost:8282/airport/add', extractedData, {
+                headers: { 'Content-Type': 'application/json' },
             });
-    
-            if (saveResponse.status !== 200) {
-                throw new Error('저장시 오류 발생');
+
+            if (saveResponse.status === 200) {
+                window.alert('저장 성공');
+                await fetchAirportsByCountry(selectedCountry.id); // 선택한 나라의 공항 목록을 다시 가져와서 UI를 업데이트합니다.
+                setAirport(prev => [...prev, extractedData]); // 현재 공항 목록에 새 공항 추가
+            } else {
+                window.alert('저장 실패');
             }
-    
-            window.alert('저장 성공');
-            setAirport([...airports, extractedData]); // 새 공항을 목록에 추가
-    
+
         } catch (error) {
             console.error("Error fetching or saving airport data:", error);
             window.alert("데이터를 가져오거나 저장하는 중 오류가 발생했습니다.");
         }
     };
-    
 
+    // 공항 삭제
     const deleteAirport = async (airportIso) => {
         if (!airportIso) {
             window.alert("삭제할 공항 IATA 코드를 제공해주세요.");
             return;
         }
-    
+
         try {
-            const response = await axios({
-                method: "delete",
-                url: `http://localhost:8282/airport/delete/${airportIso}`,
-                headers: {
-                    "Content-Type": "application/json"
-                }
+            const response = await axios.delete(`http://localhost:8282/airport/delete/${airportIso}`, {
+                headers: { "Content-Type": "application/json" },
             });
-    
+
             if (response.status === 200) {
                 window.alert('삭제 성공');
-                setAirport(airports.filter(airport => airport.airportIso !== airportIso));
-                setSelectedAirport(null);
+                await fetchAirportsByCountry(selectedCountry.id); // 선택한 나라의 공항 목록을 다시 가져와서 UI를 업데이트합니다.
+                setAirport(prev => prev.filter(airport => airport.airportIso !== airportIso)); // 현재 공항 목록에서 삭제
             } else {
                 window.alert('삭제 실패');
             }
@@ -256,7 +228,8 @@ const AdminPage = () => {
                             <CountryItem
                                 key={country.countryId}
                                 country={country}
-                                onDelete={() => deleteCountry(country.countryIso)} // 수정된 부분
+                                onDelete={() => deleteCountry(country.countryIso)}
+                                onNameClick={() => handleCountryClick(country.id)} 
                             />
                         ))}
                     </tbody>
@@ -301,7 +274,7 @@ const AdminPage = () => {
                             <AirportItem
                                 key={airport.airportId}
                                 airport={airport}
-                                onDelete={() => deleteAirport(airport.airportIso)} // 수정된 부분
+                                onDelete={() => deleteAirport(airport.airportIso)}
                             />
                         ))}
                     </tbody>

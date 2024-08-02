@@ -27,12 +27,13 @@ public class AirportController {
     @Value("${app.api-key.aviation}")
     private String aviation_key;
 
-    @GetMapping("/{codeIataAirport}")
-    public ResponseEntity<?> find(@PathVariable String codeIataAirport){
+    @GetMapping("/{codeIataAirport}/{codeIso2Country}")
+    public ResponseEntity<?> find(@PathVariable String codeIataAirport, @PathVariable String codeIso2Country){
         URI uri = UriComponentsBuilder
                 .fromUriString("https://aviation-edge.com/v2/public/airportDatabase")
                 .queryParam("key", aviation_key)
                 .queryParam("codeIataAirport", codeIataAirport)
+                .queryParam("codeIso2Country", codeIso2Country)
                 .build()
                 .encode()
                 .toUri();
