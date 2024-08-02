@@ -5,6 +5,7 @@ import MainPage from '../general/main/pages/MainPage';
 import Login from '../general/user/pages/Login';
 import Join from '../general/user/pages/Join';
 import Search from '../general/reserve/pages/search';
+import customTheme from '../general/user/components/Join/customTheme'
 import AdminPage from '../general/admin/AdminPage';
 
 function RubberFlightApp() {
@@ -12,7 +13,7 @@ function RubberFlightApp() {
     <div>
       <ChakraProvider>
       <BrowserRouter>
-        <LoginContextProvider>
+        <LoginContextProvider theme={customTheme}>
         <Routes>
           <Route path="/" element={<MainPage />}/>
           <Route path="/login" element={<Login />} />

@@ -53,4 +53,7 @@ public class UserService {
         return userRepository.findByUsername(username.toUpperCase());
     }
 
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
 }
