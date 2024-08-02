@@ -1,3 +1,7 @@
+
+
+
+
 INSERT INTO FT_USER (username, password, role , name, email, tel, image) VALUES ('USER1', '$2a$10$4Ebd4IBQaURqIBekekR/yeMKSuES6KnoRJ5SRYaQ8j5ScaYpW2tZK', 'ROLE_MEMBER', '유인아', 'berry@naver.com', '010-4567-5215', 'user.png');
 INSERT INTO FT_USER (username, password, role , name, email, tel, image) VALUES ('ADMIN1', '$2a$10$4Ebd4IBQaURqIBekekR/yeMKSuES6KnoRJ5SRYaQ8j5ScaYpW2tZK', 'ROLE_ADMIN', '사장님', 'king@naver.com', '010-8956-1245', 'user.png');
 
@@ -82,3 +86,26 @@ INSERT INTO ft_airline (name) VALUE ('대한항공');
 
 INSERT INTO ft_review (title, user_id, airline_id, clean_rate, flightmeal_rate, lounge_rate, procedure_rate, seat_rate, service_rate, content, date)
 VALUES ('편하게 이용했어요', 1, 1, 4, 3, 3, 4, 5, 4, '좌석 공간도 넓고 푹신했어요', now());
+
+# 예약
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인2", false);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인1", false);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인3,소아1", false);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인2,소아2", false);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인2", false);
+
+# 예약 비행정보
+INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name)
+VALUES (1, "인천", "ICN", "나리타", "NRT", 198700, "ze593", "2024-07-20T20:30:00", "2024-07-20T23:25:00", "eastar jet");
+
+INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name)
+VALUES (2, "인천", "ICN", "후쿠오카", "fuk", 123700, "ze643", "2024-07-20T14:40:00", "2024-07-20T16:00:00", "eastar jet");
+
+INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name)
+VALUES (3, "인천", "ICN", "나리타", "NRT", 135600, "ze603", "2024-07-20T15:10:00", "2024-07-20T17:30:00", "eastar jet");
+
+INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name)
+VALUES (4, "인천", "ICN", "나리타", "NRT", 139640, "ze605", "2024-07-21T07:05:00", "2024-07-21T09:50:00", "eastar jet");
+
+INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name)
+VALUES (5, "인천", "ICN", "나리타", "NRT", 182930, "ze601", "2024-07-21T08:00:00", "2024-07-21T10:30:00", "eastar jet");

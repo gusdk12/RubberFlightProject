@@ -6,6 +6,8 @@ SELECT * FROM ft_review;
 
 
 SELECT * FROM ft_airline;
+SELECT * FROM ft_reservation;
+SELECT * FROM ft_flightinfo;
 
 DESCRIBE ft_review;
 DESCRIBE ft_airline;
