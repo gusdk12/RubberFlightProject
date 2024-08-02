@@ -1,0 +1,41 @@
+/* SelectJoin.css */
+.select-join-container {
+    text-align: center;
+    margin: 20px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.join-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    transition: background-color 0.3s;
+}
+
+.join-button:hover {
+    background-color: #e0e0e0;
+}
+
+.join-button.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.selected-option {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
