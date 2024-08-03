@@ -9,8 +9,8 @@ const AirportItem = ({ airport, onDelete }) => {
             <td>{countryIso}</td>
             <td>{airportIso}</td>
             <td>{airportName}</td>
-            <td>{latitudeAirport}</td>
-            <td>{longitudeAirport}</td>
+            {/* <td>{latitudeAirport}</td>
+            <td>{longitudeAirport}</td> */}
             <td>
                 <Button type="button" onClick={() => onDelete(airportIso)}>DELETE</Button>
             </td>

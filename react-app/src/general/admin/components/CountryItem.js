@@ -1,16 +1,20 @@
 import React from 'react';
-import {Button} from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 
-const CountryItem = ({ country, onDelete, onNameClick}) => {
-    const { id, countryId, countryIso, countryName } = country;
+
+
+const CountryItem = ({ country, onDelete, onNameClick, isActive }) => {
+    const { id, countryIso, countryName } = country;
 
     return (
-        <tr>
+        <tr className={`countryItem ${isActive ? 'active' : ''}`} onClick={() => onNameClick(id)}>
             <td>O</td>
             <td>{countryIso}</td>
-            <td key={id} onClick={()=>onNameClick(id)}>{countryName}</td>
+            <td>{countryName}</td>
             <td>
-                <Button type="button" onClick={() => onDelete(countryIso)}>DELETE</Button>
+                <Button type="button" onClick={(e) => { e.stopPropagation(); onDelete(countryIso); }}>
+                    DELETE
+                </Button>
             </td>
         </tr>
     );
