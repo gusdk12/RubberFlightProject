@@ -30,6 +30,7 @@ const Search = () => {
       });
   }, []);
 
+  // 검색 시 자동 완성(엔터 불가)
   useEffect(() => {
     const handleClickOutside = (event) => {
         if (autocompleteRef.current && !autocompleteRef.current.contains(event.target)) {
@@ -49,7 +50,7 @@ const Search = () => {
         if (term) {
           setFilteredAirports(airports.filter(airport => airport.airportName.toLowerCase().includes(term.toLowerCase())));
         } else {
-          setFilteredAirports(airports); // Show all airports if search term is empty
+          setFilteredAirports(airports);
         }
       };
 
@@ -133,10 +134,10 @@ const Search = () => {
       <div className="autocomplete-container">
       <input
             type="text"
-            value={departure} // Display the selected airport code
+            value={departure}
             onChange={(e) => {
               setDeparture(e.target.value);
-              handleSearchTermChange(e); // Update search term and filtered results
+              handleSearchTermChange(e);
             }}
             onFocus={() => handleFocus('departure')}
             placeholder="출발 공항 검색"
