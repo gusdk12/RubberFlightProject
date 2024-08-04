@@ -62,13 +62,13 @@ function CameraAnimation({ isLoaded, isSearhMode }) {
   const { camera } = useThree();
   useFrame((state, delta) => {
     if(!isSearhMode){
-      const targetPosition = isLoaded ? [-220, 100, -250] : [-2200, 1000, -2500];
+      const targetPosition = isLoaded ? [-220, 120, -250] : [-2200, 1000, -2500];
       camera.position.lerp(new THREE.Vector3(...targetPosition), delta * 4);
       // camera.lookAt(0, 0, 0);
     }else{
-      const targetPosition = [350, 100, -380];
+      const targetPosition = [350, 150, -380];
       camera.position.lerp(new THREE.Vector3(...targetPosition), delta * 2);
-      camera.lookAt(100, 30, 30);
+      camera.lookAt(100, 70, 30);
     }
   });
   return null;
