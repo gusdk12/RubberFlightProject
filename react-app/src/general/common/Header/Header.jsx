@@ -57,6 +57,7 @@ const Header = () => {
                   aria-label='Options'
                   bg='#FBFFFF'
                   size='lg'
+                  boxShadow='md'
                   fontSize='50px'>
                 </MenuButton>
                 <MenuList>
@@ -80,10 +81,13 @@ const Header = () => {
             <>
               <Menu>
                 <MenuButton as={IconButton} icon={<CustomIcon />}
-                  variant='filled'
+                  isRound={true}
+                  variant='solid'
                   aria-label='Options'
-                  colorScheme='white'
-                  fontSize='30px'>
+                  bg='#FBFFFF'
+                  size='lg'
+                  boxShadow='md'
+                  fontSize='50px'>
                 </MenuButton>
                 <MenuList>
                   <MenuItem icon={<StarIcon />}>
@@ -94,12 +98,6 @@ const Header = () => {
                   </MenuItem>
                 </MenuList>
               </Menu>
-              {/* <IconButton
-                variant=''
-                colorScheme='#ffffff'
-                aria-label='Call Sage'
-                fontSize='30px'
-                icon={<HamburgerIcon />}/> */}
               <Menu>
                 <MenuButton as={IconButton} icon={<HamburgerIcon />} 
                   variant='filled'
@@ -119,11 +117,6 @@ const Header = () => {
                   </MenuItem>
                 </MenuList>
               </Menu>
-              {/* <Button onClick={() => logout()}
-                color="#5B6D92" fontWeight="bold"
-                fontSize="lg" bg="#ffffff0" variant="solid">
-                Logout
-              </Button> */}
             </>
           )}
         </ButtonGroup>

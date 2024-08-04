@@ -34,3 +34,64 @@
     height: 700px;
 }
 
+.reserveButton{
+    z-index: 10;
+    position: absolute;
+    background-color: #f8fbffd7;
+    opacity: 0;
+    border-radius: 100px;
+    box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.082);
+    align-content: center;
+}
+.showReserveClass{
+    animation: showingReserve 1s linear;
+    animation-fill-mode : forwards;
+}
+@keyframes showingReserve {
+    50% {
+        width: 0vw;
+        height: 0vh;
+        right: 40vw;
+        top: 40vh;
+        opacity: 0;
+    }
+    100% {
+        width: 250px;
+        height: 70px;
+        right: 18vw;
+        top: 60vh;
+        opacity: 1;
+    }
+}
+
+.searchBox{
+    z-index: 10;
+    position: absolute;
+    border-radius: 100px;
+    box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.082);
+    align-content: center;
+    background-color: #f8fbffd7;
+    opacity: 0;
+}
+.showSeachClass{
+    animation: showingSearch 0.5s linear;
+    animation-fill-mode : forwards;
+}
+@keyframes showingSearch {
+    50% {
+        width: 30px;
+        height: 30px;
+        top: 50vh;
+        opacity: 1;
+        left: 80%;
+        transform: translateX(-60%);
+    }
+    100% {
+        width: 750px;
+        height: 120px;
+        top: 23vh;
+        opacity: 1;
+        left: 50%;
+        transform: translateX(-60%);
+    }
+}
