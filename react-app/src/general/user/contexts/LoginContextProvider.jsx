@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as Swal from '../../../apis/alert';
@@ -251,5 +251,8 @@ const LoginContextProvider = ({children}) => {
     </LoginContext.Provider>
   );
 };
+
+// 로그인한 유저 정보 가져오기
+export const useUser = () => useContext(LoginContext);
 
 export default LoginContextProvider;
