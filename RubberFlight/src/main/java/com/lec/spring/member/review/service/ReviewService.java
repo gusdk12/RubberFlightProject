@@ -95,7 +95,12 @@ public class ReviewService {
 
     // 리뷰 삭제
     public int delete(Long id) {
+        Review review = reviewRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("id를 확인하세요."));
+
         if (reviewRepository.existsById(id)) {
+            if (review.getFlightInfo() != null) {
+                review.getFlightInfo().setReview(null);
+            }
             reviewRepository.deleteById(id);
             return 1;
         } else {
