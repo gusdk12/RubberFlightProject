@@ -1,0 +1,39 @@
+
+
+
+.airportInfo {
+    background-color: white;
+    border-radius: 10px;
+    width: 55%;
+    height: 800px;
+    padding-top: 100px;
+    padding-left: 200px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    position: fixed;
+    bottom: 0;
+    right: 200px;
+}
+
+.lataBox {
+    background-color: white;
+    width: 180px;
+    height: 300px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+
+    overflow-y: auto;
+
+    position: absolute;
+    left: -60px;
+    top: 70px;
+}
+
+.lataBox::-webkit-scrollbar {
+    display: none; 
+}
+
+.lataBox .ai {
+    font-size: 30px;
+    text-align: center;
+}
