@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../css/search.css';
 import { searchFlight } from '../../../apis/flightApis';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Search = () => {
   const [tripType, setTripType] = useState('round-trip');
@@ -17,6 +18,20 @@ const Search = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [focusedInput, setFocusedInput] = useState(null);
   const autocompleteRef = useRef(null);
+  const [selectedFlight, setSelectedFlight] = useState(null);
+
+  const navigate = useNavigate();
+
+  const handleClick = (flight) => {
+    setSelectedFlight(flight); // 클릭된 항공권 정보를 상태에 저장
+    navigate(`/reserve/${flight.id}`, { 
+      state: {
+        flight,
+        departure,
+        arrival,
+        passengers
+     } }); // `reserve` 페이지로 이동
+  };
 
   useEffect(() => {
     // 공항 데이터를 서버에서 가져오는 useEffect
@@ -124,6 +139,7 @@ const Search = () => {
     }
   };
 
+
   return (
     <div className="search-bar">
     <div className="trip-type">
@@ -215,7 +231,7 @@ const Search = () => {
           <h3>왕복 항공권 조합</h3>
           <ul>
             {results.combinations.map((combination, index) => (
-              <li key={index}>
+              <li key={index} onClick={() => handleClick(combination)}>
                 <div>항공사: {combination.outbound.airlineName} | 출발 공항: {combination.outbound.depAirport} | 도착 공항: {combination.outbound.arrAirport}
                   | 출발 날짜: {combination.outbound.depTime} | 도착 날짜: {combination.outbound.arrTime} | 가격: {combination.outbound.price}
                 </div>
@@ -270,7 +286,7 @@ const Search = () => {
           <h3>출발 항공권</h3>
           <ul>
             {results.outboundFlights.map((flight, index) => (
-              <li key={index}>
+              <li key={index} onClick={() => handleClick(flight)}>
                 <div>출발 공항: {flight.depAirport}</div>
                 <div>도착 공항: {flight.arrAirport}</div>
                 <div>출발 날짜: {flight.depTime}</div>

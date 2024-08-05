@@ -5,6 +5,7 @@ import MainPage from '../general/main/pages/MainPage';
 import Login from '../general/user/pages/Login';
 import Join from '../general/user/pages/Join';
 import Search from '../general/reserve/pages/search';
+import Reserve from '../general/reserve/pages/reserve';
 import customTheme from '../general/user/components/Join/customTheme'
 import AdminPage from '../general/admin/AdminPage';
 import SelectJoin from '../general/user/pages/SelectJoin';
@@ -21,6 +22,7 @@ function RubberFlightApp() {
           <Route path="/login" element={<Login />} />
           <Route path="/join" element={<Join />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/reserve/:id" element={<Reserve/>}/>
           <Route path="/admin" element={<AdminPage/>}/>
         </Routes>
       </LoginContextProvider>
