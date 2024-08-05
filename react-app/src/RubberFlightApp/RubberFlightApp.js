@@ -24,11 +24,8 @@ function RubberFlightApp() {
           <Route path="/join/admin" element={<JoinAdmin />} />
           <Route path="/search" element={<Search />} />
           <Route path="/admin" element={<AdminPage/>}/>
-<<<<<<< HEAD
           <Route path="/admin2" element={<AdminPage2/>}/>
-=======
           <Route path="/selectJoin" element={<SelectJoin/>}/>
->>>>>>> master
         </Routes>
       </LoginContextProvider>
       </BrowserRouter>

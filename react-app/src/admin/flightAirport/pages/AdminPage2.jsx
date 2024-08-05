@@ -6,6 +6,7 @@ import { Input, Button } from '@chakra-ui/react';
 import { Canvas } from '@react-three/fiber';
 
 import '../CSS/AdminPage2.css'
+import '../../../Global/font.css'
 
 const AdminPage2 = () => {
     const [countrys, setCountry] = useState([]);
@@ -239,28 +240,61 @@ const AdminPage2 = () => {
                 style={{
                     width: '100vw',
                     height: '100vh',
-                    background: 'linear-gradient(to bottom, #B0C9E6, #D5E1EB, #EFF3F6)',
+                    background: '#dde6f5',
                     position: 'absolute',
                     zIndex: -1
                 }}
             />
 
-<div className='isoBox'>
-                {countrys.map(country => (
-                    <div
-                        key={country.countryId}
-                        className={`${selectedCountry && selectedCountry.countryIso === country.countryIso ? 'active' : ''}`}
-                        onClick={() => handleCountryClick(country.id)}
-                    >
-                        <div className="cn">{country.countryName}</div>
-                    </div>
-                ))}
+            <div className="countryInfo">
+                <div className="countryPlus">
+                    <Input
+                        id="countryInput"
+                        type="text"
+                        placeholder="나라 ISO 코드 입력하기"
+                        name="countryIso"
+                        value={countryIsoInput}
+                        onChange={(e) => setCountryIsoInput(e.target.value)}
+                    />
+                    <Button onClick={addCountry} id='countryButton'>Add</Button>
+                </div>
+
+                <div className="countryList">
+                    {countrys.map(country => (
+                        <div
+                            key={country.countryId}
+                            className={`countryDetails ${selectedCountry && selectedCountry.countryIso === country.countryIso ? 'active' : ''}`}
+                            onClick={() => handleCountryClick(country.id)}
+                        >
+                            <div className="cn">{country.countryName}</div>
+                        </div>
+                    ))}
+                </div>
             </div>
 
+
+
             <div className='airportInfo'>
+                <div className='airportPlus'>
+                    <Input
+                        id="airportInput"
+                        type="text"
+                        placeholder='공항 Iata 코드 입력하기'
+                        _placeholder={{ opacity: 1, color: 'black.500' }}
+                        name="airportIata"
+                        value={airportIataInput}
+                        onChange={(e) => setAirportIataInput(e.target.value)}
+                    />
+                    <Button onClick={addAirport} id='airportButton'>Add</Button>
+                </div>
+
                 <div className='lataBox'>
                     {airports.map(airport => (
-                        <div key={airport.airportId} className="ai" onClick={() => handleAirportClick(airport.airportIso)}>
+                        <div
+                            key={airport.airportId}
+                            className={`ai ${selectedAirport && selectedAirport.airportIso === airport.airportIso ? 'active' : ''}`}
+                            onClick={() => handleAirportClick(airport.airportIso)}
+                        >
                             {airport.airportIso}
                         </div>
                     ))}
@@ -268,11 +302,26 @@ const AdminPage2 = () => {
                 
                 {selectedAirport && ( // 선택된 공항 정보만 렌더링
                     <div className="airportDetails">
-                        <div className="airIata">{selectedAirport.airportIso}</div>
-                        <div className="aai">{selectedAirport.airportId}</div>
-                        <div className="aai">{selectedAirport.airportName}</div>
-                        <div className="aai">{selectedAirport.latitudeAirport}</div>
-                        <div className="aai">{selectedAirport.longitudeAirport}</div>
+                        <div className="airName">{selectedAirport.airportName}</div>
+                        <table className="airportTable">
+                            <tr>
+                                <td className="tableHeader">Airport Iata Code</td>
+                                <td>{selectedAirport.airportIso}</td>
+                            </tr>
+                            <tr>
+                                <td className="tableHeader">Airport Id</td>
+                                <td>{selectedAirport.airportId}</td>
+                            </tr>
+                            <tr>
+                                <td className="tableHeader">Airport Latitude</td>
+                                <td>{selectedAirport.latitudeAirport}</td>
+                            </tr>
+                            <tr>
+                                <td className="tableHeader">Airport Longitude</td>
+                                <td>{selectedAirport.longitudeAirport}</td>
+                            </tr>
+
+                        </table>
                     </div>
                 )}
             </div>
