@@ -21,11 +21,13 @@ const MainPage = () => {
 
     return (
         <>
-        <Header/>
+        <Header isMain={true}/>
         <div className="contentpart">
             <ThreeScene setIsAirplaneLoaded={setIsAirplaneLoaded} isSearhMode={isSearhMode}/>
             <Box onClick={() => setIsSearhMode(true)} className="reserveButton">{/*항공권 검색하기*/}</Box>
-            <Box className="searchBox"></Box>
+            <Box className="searchBox">
+                <div className='crossline'/>
+            </Box>
         </div>
         </>
     );

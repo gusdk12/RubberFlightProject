@@ -3,21 +3,19 @@ import * as auth from '../../../apis/auth.js';
 import * as Swal from '../../../apis/alert.js';
 import { useNavigate } from 'react-router-dom';
 import JoinForm from '../components/Join/JoinForm.jsx';
-import { background } from '@chakra-ui/react';
-import { color } from 'framer-motion';
 
-const Join = () => {
+const Admin = () => {
 
   const navigate = useNavigate();
 
   // 회원가입 요청
   // form <= {username, password}
-  const join = async (form) => {
+  const admin = async (form) => {
     // console.log(`join()`, form);
 
     let response;
     try{
-      response = await auth.join(form);
+      response = await auth.admin(form);
     } catch(error) {
       // console.log(`${error}`);
       // console.log(`회원 가입 요청중 에러가 발생했습니다`);
@@ -48,10 +46,10 @@ const Join = () => {
         background: 'linear-gradient(rgb(176, 201, 230), rgb(213, 225, 235), rgb(239, 243, 246))'
       }}
     >
-        <JoinForm join={join}/>
+        <JoinForm join={admin}/>
       </div>
     </>
   );
 };
 
-export default Join;
+export default Admin;
