@@ -105,9 +105,96 @@ const LoginForm = () => {
               </Checkbox>
             </Stack>
           </FormControl>
+            <hr/>
+          <div>
+            <h4 style={
+              {
+                fontWeight: '500'
+              }
+            }>Log in using your account on ></h4>
+          </div>
+          {/* 로그인 버튼 목록 */}
+          <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 20,
+            
+          }}>
+
+             {/* 구글 */}
+         <div
+          style={{
+            backgroundImage: 'url(/images/btns/google_login_btn.png)',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            width: '50px', // 이미지의 너비
+            height: '50px', // 이미지의 높이
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            // 클릭 시 이동할 URL을 여기서 설정
+            window.location.href = '/';
+          }}
+        />
+
+            {/* 카카오 */}
+            <div
+              style={{
+                backgroundImage: 'url(/images/btns/kakao_login_btn.png)',
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                width: '50px', // 이미지의 너비
+                height: '50px', // 이미지의 높이
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                // 클릭 시 이동할 URL을 여기서 설정
+                window.location.href = '/';
+              }}
+            />
+
+             {/* 네이버 */}
+             <div
+          style={{
+            backgroundImage: 'url(/images/btns/naver_login_btn.png)',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            width: '50px', // 이미지의 너비
+            height: '50px', // 이미지의 높이
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            // 클릭 시 이동할 URL을 여기서 설정
+            window.location.href = '/';
+          }}
+        />
+
+
+          {/* 페이스북 */}
+          <div
+          style={{
+            backgroundImage: 'url(/images/btns/facebook_login_btn.png)',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            width: '50px', // 이미지의 너비
+            height: '50px', // 이미지의 높이
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            // 클릭 시 이동할 URL을 여기서 설정
+            window.location.href = '/';
+          }}
+        />
+        </div>
+      
 
           <HStack spacing={4} align="center" justify="right">
-            {/* <Text fontSize={10}>아직 회원이 아니신가요?</Text> */}
             <Button as={Link} to="/selectJoin" variant="link" color={'#586D92'}>
             Join
             </Button>
