@@ -3,7 +3,6 @@ import * as auth from '../../../apis/auth.js';
 import * as Swal from '../../../apis/alert.js';
 import { useNavigate } from 'react-router-dom';
 import JoinForm from '../components/Join/JoinForm.jsx';
-import Header from '../../common/Header/Header.jsx';
 
 const Admin = () => {
 
@@ -41,8 +40,12 @@ const Admin = () => {
 
   return (
     <>
-      <Header />
-      <div className ='container'>
+      <div
+      className='container'
+      style={{
+        background: 'linear-gradient(rgb(176, 201, 230), rgb(213, 225, 235), rgb(239, 243, 246))'
+      }}
+    >
         <JoinForm join={admin}/>
       </div>
     </>

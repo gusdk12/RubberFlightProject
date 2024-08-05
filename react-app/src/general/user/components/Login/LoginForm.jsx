@@ -1,19 +1,25 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Box, Button, Checkbox, FormControl, FormLabel, HStack, Input, Stack, useToast, Text } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const LoginForm = () => {
   const { login } = useContext(LoginContext);
   const [rememberUserId, setRememberUserId] = useState('');
   const toast = useToast();
+  const navigate = useNavigate();
+
+  const home = () => {
+    navigate("/");
+  }
 
   const onLogin = (e) => {
     e.preventDefault();
     const username = e.target.username.value;
     const password = e.target.password.value;
     const rememberId = e.target.rememberId.checked;
+
 
     login(username, password, rememberId)
       // .then(() => {
@@ -43,6 +49,27 @@ const LoginForm = () => {
   }, []);
 
   return (
+    <>
+    <div
+            style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: 100
+            }}
+        >
+            <div
+                style={{
+                backgroundImage: 'url(/images/icons/commercial-plane.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                width: '75px',
+                height: '75px',
+                cursor: 'pointer'
+                }}
+                onClick={home}
+            ></div>
+            </div>
     <Box maxWidth="400px" mx="auto" p={6} bg="white" borderRadius="md" boxShadow="md">
       <h2 style={{ textAlign: 'center', marginBottom: '1rem', fontSize: 30}}>Login</h2>
 
@@ -78,9 +105,96 @@ const LoginForm = () => {
               </Checkbox>
             </Stack>
           </FormControl>
+            <hr/>
+          <div>
+            <h4 style={
+              {
+                fontWeight: '500'
+              }
+            }>Log in using your account on ></h4>
+          </div>
+          {/* 로그인 버튼 목록 */}
+          <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 20,
+            
+          }}>
+
+             {/* 구글 */}
+         <div
+          style={{
+            backgroundImage: 'url(/images/btns/google_login_btn.png)',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            width: '50px', // 이미지의 너비
+            height: '50px', // 이미지의 높이
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            // 클릭 시 이동할 URL을 여기서 설정
+            window.location.href = '/';
+          }}
+        />
+
+            {/* 카카오 */}
+            <div
+              style={{
+                backgroundImage: 'url(/images/btns/kakao_login_btn.png)',
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+                width: '50px', // 이미지의 너비
+                height: '50px', // 이미지의 높이
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                // 클릭 시 이동할 URL을 여기서 설정
+                window.location.href = '/';
+              }}
+            />
+
+             {/* 네이버 */}
+             <div
+          style={{
+            backgroundImage: 'url(/images/btns/naver_login_btn.png)',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            width: '50px', // 이미지의 너비
+            height: '50px', // 이미지의 높이
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            // 클릭 시 이동할 URL을 여기서 설정
+            window.location.href = '/';
+          }}
+        />
+
+
+          {/* 페이스북 */}
+          <div
+          style={{
+            backgroundImage: 'url(/images/btns/facebook_login_btn.png)',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            width: '50px', // 이미지의 너비
+            height: '50px', // 이미지의 높이
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            // 클릭 시 이동할 URL을 여기서 설정
+            window.location.href = '/';
+          }}
+        />
+        </div>
+      
 
           <HStack spacing={4} align="center" justify="right">
-            {/* <Text fontSize={10}>아직 회원이 아니신가요?</Text> */}
             <Button as={Link} to="/selectJoin" variant="link" color={'#586D92'}>
             Join
             </Button>
@@ -91,6 +205,7 @@ const LoginForm = () => {
         </Stack>
       </form>
     </Box>
+    </>
   );
 };
 

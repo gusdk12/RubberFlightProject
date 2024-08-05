@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom'; // useNavigate를 import합니�
 import './SelectJoin.css'; // CSS 파일을 별도로 생성하여 스타일을 정의합니다.
 import Header from '../../common/Header/Header';
 
+
 const SelectJoin = () => {
     const [selectedOption, setSelectedOption] = useState(null);
-    const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수 얻기
+    const navigate = useNavigate();
 
     // 사용자 회원가입 버튼 클릭 핸들러
     const handleUserClick = () => {
@@ -19,8 +20,32 @@ const SelectJoin = () => {
         navigate('/join/admin'); // 클릭 시 '/join/admin'으로 이동
     };
 
+    const home = () => {
+        navigate("/");
+    }
+
     return (
         <>
+        <div
+            style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: 100
+            }}
+        >
+            <div
+                style={{
+                backgroundImage: 'url(/images/icons/commercial-plane.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                width: '75px',
+                height: '75px',
+                cursor: 'pointer'
+                }}
+                onClick={home}
+            ></div>
+            </div>
         {/* <Header/ > */}
         <div className="select-join-container">
             <h2>회원가입 유형을 선택하세요</h2>

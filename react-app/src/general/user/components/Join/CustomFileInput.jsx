@@ -23,7 +23,7 @@ const CustomFileInput = ({ name, accept, ...props }) => {
             <Button as="label" htmlFor={name} bg='#bbc7db' color='white'>
                 Choose File
             </Button>
-            <Box color='gray.400' fontSize={12} mx="auto" p={3} bg="white" borderRadius="md" width={'72%'} marginLeft={'13px'}>
+            <Box color='gray.400' fontSize={12} mx="auto" p={3} bg="#f0f5f8" borderRadius="md" width={'72%'} marginLeft={'13px'}>
                 <span>{fileName || '　'}</span>
             </Box>
         </Flex>
