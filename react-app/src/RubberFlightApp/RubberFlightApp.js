@@ -4,12 +4,12 @@ import { ChakraProvider } from '@chakra-ui/react';
 import MainPage from '../general/main/pages/MainPage';
 import Login from '../general/user/pages/Login';
 import Join from '../general/user/pages/Join';
+import JoinAdmin from '../general/user/pages/JoinAdmin';
 import Search from '../general/reserve/pages/search';
 import customTheme from '../general/user/components/Join/customTheme'
 import AdminPage from '../admin/flightAirport/pages/AdminPage';
 import AdminPage2 from '../admin/flightAirport/pages/AdminPage2';
 import SelectJoin from '../general/user/pages/SelectJoin';
-import Admin from '../general/user/pages/admin';
 
 function RubberFlightApp() {
   return (
@@ -20,10 +20,15 @@ function RubberFlightApp() {
         <Routes>
           <Route path="/" element={<MainPage />}/>
           <Route path="/login" element={<Login />} />
-          <Route path="/join" element={<Join />} />
+          <Route path="/join/user" element={<Join />} />
+          <Route path="/join/admin" element={<JoinAdmin />} />
           <Route path="/search" element={<Search />} />
           <Route path="/admin" element={<AdminPage/>}/>
+<<<<<<< HEAD
           <Route path="/admin2" element={<AdminPage2/>}/>
+=======
+          <Route path="/selectJoin" element={<SelectJoin/>}/>
+>>>>>>> master
         </Routes>
       </LoginContextProvider>
       </BrowserRouter>
