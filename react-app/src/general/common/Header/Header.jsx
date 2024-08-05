@@ -1,9 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Box, Button, ButtonGroup, CheckboxIcon, Flex, Heading, IconButton, Image, Menu, MenuButton, MenuItem, MenuList, Spacer, background } from '@chakra-ui/react';
 import { LoginContext } from '../../user/contexts/LoginContextProvider';
 import '../CSS/Header.css';
-import { CheckIcon, CloseIcon, HamburgerIcon, StarIcon, ViewIcon } from '@chakra-ui/icons';
+import { CloseIcon, HamburgerIcon, StarIcon, ViewIcon } from '@chakra-ui/icons';
+
+
+const CustomIcon = () => {
+  return <Image src="/images/icons/navigation.png" boxSize="36px" />;
+};
 
 const Header = () => {
   const { isLogin, logout, userInfo } = useContext(LoginContext);
@@ -24,37 +29,72 @@ const Header = () => {
     };
   }, []);
 
+  const navigate = useNavigate();
+  const myPage= () => {
+    navigate('/member/mypage')
+  }
+
+
+  const backgroundImageUrl = process.env.PUBLIC_URL + '/images/icons/commercial-plane.png';
 
   return (
     <>
       <div className={`HeaderContainer ${isScrolled ? 'scrolled' : ''}`}>
       <Flex minWidth='max-content' alignItems='space-between'>
-        <Box>
-          <Heading paddingLeft={'30px'} color="#364042" size='lg' position={"relative"} zIndex={3}>
-            임시홈
-          </Heading>
-        </Box>
+        <div
+          style={{
+            backgroundImage: `url(${backgroundImageUrl})`,
+            backgroundSize: 'cover', // 배경 이미지 크기 조정
+            backgroundPosition: 'center', // 배경 이미지 위치 조정
+            width: '75px',
+            height: '75px'
+        }}/>
+
         <Spacer />
         <ButtonGroup>
           {!isLogin ? (
             <>
-            <Button as={Link} 
-              to="/login" color="#5B6D92" fontWeight="bold"
-              fontSize="lg" bg="#ffffff0" variant="solid">
-              Login
-            </Button>
+              <Menu>
+                <MenuButton as={IconButton} icon={<CustomIcon />}
+                  isRound={true}
+                  variant='solid'
+                  aria-label='Options'
+                  bg='#FBFFFF'
+                  size='lg'
+                  boxShadow='md'
+                  fontSize='50px'>
+                </MenuButton>
+                <MenuList>
+                  <MenuItem as={Link} 
+                      to="/login">
+                    로그인
+                  </MenuItem>
+                  <MenuItem >
+                    항공권 검색
+                  </MenuItem>
+                  <MenuItem >
+                    비행기 실시간 추척
+                  </MenuItem>
+                  <MenuItem >
+                    항공사 리뷰
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             </>
           ) : (
             <>
               <Menu>
-                <MenuButton as={IconButton} icon={<ViewIcon />} 
-                  variant='filled'
+                <MenuButton as={IconButton} icon={<CustomIcon />}
+                  isRound={true}
+                  variant='solid'
                   aria-label='Options'
-                  colorScheme='white'
-                  fontSize='30px'>
+                  bg='#FBFFFF'
+                  size='lg'
+                  boxShadow='md'
+                  fontSize='50px'>
                 </MenuButton>
                 <MenuList>
-                  <MenuItem icon={<StarIcon />}>
+                  <MenuItem icon={<StarIcon />} onClick={myPage}>
                     마이페이지
                   </MenuItem>
                   <MenuItem icon={<CloseIcon />} onClick={() => logout()}>
@@ -62,12 +102,6 @@ const Header = () => {
                   </MenuItem>
                 </MenuList>
               </Menu>
-              {/* <IconButton
-                variant=''
-                colorScheme='#ffffff'
-                aria-label='Call Sage'
-                fontSize='30px'
-                icon={<HamburgerIcon />}/> */}
               <Menu>
                 <MenuButton as={IconButton} icon={<HamburgerIcon />} 
                   variant='filled'
@@ -87,11 +121,6 @@ const Header = () => {
                   </MenuItem>
                 </MenuList>
               </Menu>
-              {/* <Button onClick={() => logout()}
-                color="#5B6D92" fontWeight="bold"
-                fontSize="lg" bg="#ffffff0" variant="solid">
-                Logout
-              </Button> */}
             </>
           )}
         </ButtonGroup>

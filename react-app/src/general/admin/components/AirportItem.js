@@ -1,19 +1,18 @@
 import React from 'react';
+import { InputGroup, Input, InputRightElement, Button, Select, FormControl, FormLabel, Box, Flex, Text } from '@chakra-ui/react';
 
 const AirportItem = ({ airport, onDelete }) => {
     const { id, countryIso, airportId ,airportIso, airportName, latitudeAirport, longitudeAirport} = airport;
 
     return (
         <tr>
-            <td>{id}</td>
             <td>{countryIso}</td>
-            <td>{airportId}</td>
             <td>{airportIso}</td>
             <td>{airportName}</td>
-            <td>{latitudeAirport}</td>
-            <td>{longitudeAirport}</td>
+            {/* <td>{latitudeAirport}</td>
+            <td>{longitudeAirport}</td> */}
             <td>
-                <button type="button" onClick={() => onDelete(airportIso)}>DELETE</button>
+                <Button type="button" onClick={() => onDelete(airportIso)}>DELETE</Button>
             </td>
         </tr>
     );

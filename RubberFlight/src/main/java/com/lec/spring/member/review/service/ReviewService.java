@@ -3,6 +3,8 @@ package com.lec.spring.member.review.service;
 import com.lec.spring.general.review.domain.Airline;
 import com.lec.spring.general.review.repository.AirlineRepository;
 
+import com.lec.spring.member.flightInfo.domain.FlightInfo;
+import com.lec.spring.member.flightInfo.repository.FlightInfoRepository;
 import com.lec.spring.member.review.domain.Review;
 import com.lec.spring.member.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final AirlineRepository airlineRepository;
+    private final FlightInfoRepository flightInfoRepository;
 
     // 모든 유저 목록 조회
     @Transactional(readOnly = true) // 변경사항 체크 X
@@ -27,7 +30,7 @@ public class ReviewService {
 
     // 해당 유저의 리뷰 목록 조회
     @Transactional(readOnly = true)
-    public List<Review> userReviewList(Long user){
+    public List<Review> userReviewList(Long user) {
         return reviewRepository.findByUser(user);
     }
 
@@ -40,7 +43,9 @@ public class ReviewService {
     @Transactional
     public Review write(Review review) {
 
+        System.out.println(review.getFlightInfo());
         Airline airline;
+
         // 항공사 존재하는지 확인
         if (!airlineRepository.existsByName(review.getFlightInfo().getAirlineName())) {
             airline = new Airline();
@@ -56,7 +61,13 @@ public class ReviewService {
         if (airlineId != null) {
             review.setAirline(airlineId); // 리뷰에 항공사 ID 설정
         }
-        return reviewRepository.save(review); // 리뷰 저장
+        Review savedReview = reviewRepository.save(review); // 리뷰 저장 후 반환받기
+
+        // 비행정보에 review 등록하기
+        FlightInfo flightInfo = flightInfoRepository.findById(review.getFlightInfo().getId()).orElseThrow(() -> new IllegalArgumentException("id를 확인하세요"));
+        flightInfo.setReview(savedReview);
+
+        return savedReview;
     }
 
     // 리뷰 조회
@@ -84,7 +95,12 @@ public class ReviewService {
 
     // 리뷰 삭제
     public int delete(Long id) {
+        Review review = reviewRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("id를 확인하세요."));
+
         if (reviewRepository.existsById(id)) {
+            if (review.getFlightInfo() != null) {
+                review.getFlightInfo().setReview(null);
+            }
             reviewRepository.deleteById(id);
             return 1;
         } else {
