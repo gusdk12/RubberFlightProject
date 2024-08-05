@@ -121,7 +121,7 @@ const Header = ({isMain}) => {
                 <DrawerHeader>메뉴</DrawerHeader>
                 <DrawerBody>
                   <VStack spacing={2} align="stretch">
-                    <Button variant="outline">마이페이지</Button>
+                    <Button variant="outline" onClick={myPage}>마이페이지</Button>
                     <Button variant="outline">항공권 검색</Button>
                     <Button variant="outline">비행기 실시간 추척</Button>
                     <Button variant="outline">항공사 리뷰</Button>

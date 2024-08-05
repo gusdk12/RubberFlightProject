@@ -1,0 +1,20 @@
+.menuBox {
+    margin-top: 30px;
+    padding-top:  30px;
+    background-color: azure;
+    text-align: center;
+    border-radius: 5px;
+    height: 80vh;
+    width: 300px;
+}
+
+.menutitle {
+    font-size: 50px;
+    margin-bottom: 50px;
+}
+
+.menulist {
+    margin-bottom: 20px;
+    padding-left: 50px;
+    text-align: left;
+}
