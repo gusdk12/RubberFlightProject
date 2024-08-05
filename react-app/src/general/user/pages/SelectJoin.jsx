@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate를 import합니다.
 import './SelectJoin.css'; // CSS 파일을 별도로 생성하여 스타일을 정의합니다.
+import Header from '../../common/Header/Header';
 
 const SelectJoin = () => {
     const [selectedOption, setSelectedOption] = useState(null);
@@ -19,6 +20,8 @@ const SelectJoin = () => {
     };
 
     return (
+        <>
+        {/* <Header/ > */}
         <div className="select-join-container">
             <h2>회원가입 유형을 선택하세요</h2>
             <div className="button-container">
@@ -36,6 +39,7 @@ const SelectJoin = () => {
                 </button>
             </div>
         </div>
+        </>
     );
 };
 
