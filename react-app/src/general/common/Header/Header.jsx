@@ -10,7 +10,7 @@ const CustomIcon = () => {
   return <Image src="/images/icons/navigation.png" boxSize="36px" />;
 };
 
-const Header = () => {
+const Header = ({isMain}) => {
   const { isLogin, logout, userInfo } = useContext(LoginContext);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -39,7 +39,7 @@ const Header = () => {
 
   return (
     <>
-      <div className={`HeaderContainer ${isScrolled ? 'scrolled' : ''}`}>
+      <div className={`HeaderContainer ${isMain ? 'HeaderAbsolute' : '' } ${isScrolled ? 'scrolled' : ''}`}>
       <Flex minWidth='max-content' alignItems='space-between'>
         <div
           style={{
