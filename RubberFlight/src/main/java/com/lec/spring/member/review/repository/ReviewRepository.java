@@ -1,6 +1,9 @@
 package com.lec.spring.member.review.repository;
 
 import com.lec.spring.member.review.domain.Review;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,7 +24,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
         where u.id = 1
         ORDER BY r.date DESC
         """, nativeQuery = true)
-    List<Review> findByUser(@Param("id") Long user);  // 해당 유저 리뷰 목록
+    Page<Review> findByUser(@Param("id") Long user, PageRequest pageRequest);  // 해당 유저 리뷰 목록
 
     @Query(value = """
             SELECT r.id, r.content, r.clean_rate, r.date, r.flightinfo_id, r.flightmeal_rate, r.lounge_rate,
@@ -31,7 +34,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             where r.airline_id = :id
             ORDER BY r.id DESC
                 """, nativeQuery = true)
-    List<Review> findByAirline(@Param("id") Long airline);  // 해당 항공사 리뷰 목록
+    Page<Review> findByAirline(@Param("id") Long airline, PageRequest pageRequest);  // 해당 항공사 리뷰 목록
+
+    Page<Review> findAll(PageRequest of, Sort id);
 }
 
 

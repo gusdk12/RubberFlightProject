@@ -8,6 +8,8 @@ import com.lec.spring.member.flightInfo.repository.FlightInfoRepository;
 import com.lec.spring.member.review.domain.Review;
 import com.lec.spring.member.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,19 +26,25 @@ public class ReviewService {
 
     // 모든 유저 목록 조회
     @Transactional(readOnly = true) // 변경사항 체크 X
-    public List<Review> list() {
-        return reviewRepository.findAll(Sort.by(Sort.Order.desc("id"))); // id 순으로 내림차순
+    public Page<Review> list(int page, int size) {
+        return reviewRepository.findAll(PageRequest.of(page, size), Sort.by(Sort.Order.desc("id"))); // id 순으로 내림차순
     }
 
     // 해당 유저의 리뷰 목록 조회
     @Transactional(readOnly = true)
-    public List<Review> userReviewList(Long user) {
-        return reviewRepository.findByUser(user);
+    public Page<Review> userReviewList(Long user, int page, int size) {
+        if (page < 0) {
+            page = 0; // 페이지 번호가 음수일 경우 0으로 설정
+        }
+        if (size <= 0) {
+            size = 1; // 사이즈가 0 이하일 경우 1로 설정
+        }
+        return reviewRepository.findByUser(user, PageRequest.of(page, size));
     }
 
     @Transactional(readOnly = true)
-    public List<Review> airlineReviewList(Long airline) {
-        return reviewRepository.findByAirline(airline);
+    public Page<Review> airlineReviewList(Long airline, int page, int size) {
+        return reviewRepository.findByAirline(airline, PageRequest.of(page, size));
     }
 
     // 리뷰 작성
