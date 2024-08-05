@@ -1,19 +1,25 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Box, Button, Checkbox, FormControl, FormLabel, HStack, Input, Stack, useToast, Text } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const LoginForm = () => {
   const { login } = useContext(LoginContext);
   const [rememberUserId, setRememberUserId] = useState('');
   const toast = useToast();
+  const navigate = useNavigate();
+
+  const home = () => {
+    navigate("/");
+  }
 
   const onLogin = (e) => {
     e.preventDefault();
     const username = e.target.username.value;
     const password = e.target.password.value;
     const rememberId = e.target.rememberId.checked;
+
 
     login(username, password, rememberId)
       // .then(() => {
@@ -43,6 +49,27 @@ const LoginForm = () => {
   }, []);
 
   return (
+    <>
+    <div
+            style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: 100
+            }}
+        >
+            <div
+                style={{
+                backgroundImage: 'url(/images/icons/commercial-plane.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                width: '75px',
+                height: '75px',
+                cursor: 'pointer'
+                }}
+                onClick={home}
+            ></div>
+            </div>
     <Box maxWidth="400px" mx="auto" p={6} bg="white" borderRadius="md" boxShadow="md">
       <h2 style={{ textAlign: 'center', marginBottom: '1rem', fontSize: 30}}>Login</h2>
 
@@ -91,6 +118,7 @@ const LoginForm = () => {
         </Stack>
       </form>
     </Box>
+    </>
   );
 };
 
