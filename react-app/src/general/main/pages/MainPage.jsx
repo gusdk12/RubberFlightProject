@@ -12,7 +12,7 @@ const MainPage = () => {
     const [isRoundWay, setIsRoundWay] = useState(true);
 
     useEffect(() => {
-        document.body.style.overflowX = 'hidden';
+        document.body.style.overflow = 'hidden';
     }, []);
     useEffect(() => {
         isAirplaneLoaded && document.querySelector(".reserveButton").classList.add("showReserveClass");
@@ -26,7 +26,6 @@ const MainPage = () => {
         <div className="contentpart">
             <ThreeScene setIsAirplaneLoaded={setIsAirplaneLoaded} isSearhMode={isSearhMode}/>
             <Box onClick={() => setIsSearhMode(true)} className="reserveButton">항공권 조회하기</Box>
-            
             <Box className="searchBox">
                 <div id='wayBox'>
                     <div id='roundway' onClick={() => setIsRoundWay(true)} className={isRoundWay ? 'active' : ''}>왕복</div> 

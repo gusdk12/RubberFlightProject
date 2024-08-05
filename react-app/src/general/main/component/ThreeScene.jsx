@@ -8,7 +8,7 @@ function easeInOutQuad(t) {
   return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 }
 
-function Airplane({ onLoaded }) {
+function Airplane({ onLoaded, isSearhMode }) {
   const { scene } = useGLTF('/models/a319_plane/scene.gltf');
   const ref = useRef();
   let time = 0;
@@ -49,22 +49,23 @@ function Airplane({ onLoaded }) {
     // Rotate airplane based on mouse position
     ref.current.rotation.x = Math.sin(time * 0.6) * 0.1 + (mouse.y * 0.05);
     ref.current.rotation.y = (Math.PI / -2) + Math.cos(time * 0.6) * 0.05 + (mouse.x * 0.05);
-    ref.current.rotation.z = Math.cos(time * 0.6) * 0.01;
+    isSearhMode && (ref.current.rotation.z = Math.cos(time * 0.6) * 0.01);
+    isSearhMode || (ref.current.rotation.z = Math.cos(time * 0.6) * 0.01 + 0.4);
 
     if (ref.current.position.x <= 0)
       ref.current.position.x = sideMovement;
   });
 
-  return <primitive ref={ref} object={scene} scale={0.5} rotation={[0, 4.7, 0]} position={[0, 0, 0]} />;
+  return <primitive ref={ref} object={scene} scale={0.5} rotation={[0, 4.7, 0.5]} position={[0, 0, 0]} />;
 }
 
 function CameraAnimation({ isLoaded, isSearhMode }) {
   const { camera } = useThree();
   useFrame((state, delta) => {
     if(!isSearhMode){
-      const targetPosition = isLoaded ? [-100, 120, -200] : [-2200, 1000, -2500];
+      const targetPosition = isLoaded ? [-150, -20, -250] : [-2200, 1000, -2500];
       camera.position.lerp(new THREE.Vector3(...targetPosition), delta * 4);
-      camera.lookAt(0, 10, 0);
+      camera.lookAt(10, 10, 0);
     }else{
       const targetPosition = [200, 120, -230];
       camera.position.lerp(new THREE.Vector3(...targetPosition), delta * 2);
@@ -84,18 +85,27 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
 
   return (
     <>
+      <div style={{ position: 'absolute', width: '100vw', height: '100vh', background: 'linear-gradient(to bottom, #B0C9E6, #D5E1EB, #EFF3F6)' }}/>
+      <div className="backcloud" id="backcloud1" />
+      <div className="backcloud" id="backcloud2" />
+      <div className="backcloud" id="backcloud3" />
+
+      <div className="frontcloud" id="frontcloud1" />
+      <div className="frontcloud" id="frontcloud2" />
+      <div className="frontcloud" id="frontcloud3" />
+
       <Canvas 
         dpr={[1, 2]} 
         gl={{ antialias: true }}
         camera={{ position: [-2200, 1000, -2500], fov: 45, near: 0.1, far: 1000 }} 
-        style={{ width: '100vw', height: '100vh', background: 'linear-gradient(to bottom, #B0C9E6, #D5E1EB, #EFF3F6)' }}
+        style={{ width: '100vw', height: '100vh', background: '#B0C9E600' }}
       >
         <ambientLight intensity={0.9} color="#AEDEFF"/>
         <pointLight position={[0, 0, 0]} intensity={0.5}/>
 
         <EffectComposer/>
 
-        <Airplane onLoaded={handleModelLoaded}/>
+        <Airplane onLoaded={handleModelLoaded} isSearhMode={isSearhMode}/>
         <Environment preset="city" blur={0.8} />
         <CameraAnimation isLoaded={isLoaded} isSearhMode={isSearhMode} setIsAirplaneLoaded={setIsAirplaneLoaded}/>
       </Canvas>
