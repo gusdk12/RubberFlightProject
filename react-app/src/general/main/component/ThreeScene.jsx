@@ -47,8 +47,8 @@ function Airplane({ onLoaded }) {
     // ref.current.position.y = oscillation;
 
     // Rotate airplane based on mouse position
-    ref.current.rotation.x = Math.sin(time * 0.6) * 0.1 + (mouse.y * 0.02);
-    ref.current.rotation.y = (Math.PI / -2) + Math.cos(time * 0.6) * 0.05 + (mouse.x * 0.02);
+    ref.current.rotation.x = Math.sin(time * 0.6) * 0.1 + (mouse.y * 0.05);
+    ref.current.rotation.y = (Math.PI / -2) + Math.cos(time * 0.6) * 0.05 + (mouse.x * 0.05);
     ref.current.rotation.z = Math.cos(time * 0.6) * 0.01;
 
     if (ref.current.position.x <= 0)
@@ -62,13 +62,13 @@ function CameraAnimation({ isLoaded, isSearhMode }) {
   const { camera } = useThree();
   useFrame((state, delta) => {
     if(!isSearhMode){
-      const targetPosition = isLoaded ? [-220, 120, -250] : [-2200, 1000, -2500];
+      const targetPosition = isLoaded ? [-100, 120, -200] : [-2200, 1000, -2500];
       camera.position.lerp(new THREE.Vector3(...targetPosition), delta * 4);
-      // camera.lookAt(0, 0, 0);
+      camera.lookAt(0, 10, 0);
     }else{
-      const targetPosition = [350, 150, -380];
+      const targetPosition = [200, 120, -230];
       camera.position.lerp(new THREE.Vector3(...targetPosition), delta * 2);
-      camera.lookAt(100, 70, 30);
+      camera.lookAt(80, 60, 30);
     }
   });
   return null;
