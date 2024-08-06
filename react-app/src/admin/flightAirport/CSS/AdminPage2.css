@@ -1,8 +1,8 @@
 .all-con {
-    width: 1300px;
-    height: 100vh;
-    border: 1px solid red;
+    width: 1250px;
     left: 50%;
+    top: 190px;
+    height: calc(100vh - 190px);
     transform: translateX(-50%);
     position: relative;
 }
@@ -13,9 +13,7 @@
     width: 300px;
     height: 500px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-    /* position: fixed;
-    bottom: 250px;
-    left: 240px; */
+    position: fixed;
     display: flex;
     flex-direction: column;
 }
@@ -79,15 +77,14 @@
 .airportInfo {
     background-color: white;
     border-radius: 10px;
-    width: 55%;
-    height: 750px;
+    width: 800px;
+    height: 600px;
     padding-top: 100px;
     padding-left: 200px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 
     position: fixed;
-    bottom: 0;
-    right: 200px;
+    right: 0;
 }
 
 .airportInfo .airName {
@@ -95,16 +92,25 @@
     margin-bottom: 30px;
 }
 
+/* .airportDetails {
+    border: 1px solid red;
+} */
+
 .airportTable tr {
     height: 50px; 
 }
 
 .airportTable td {
-    padding: 10px; /* 셀 내부의 여백 */
-    text-align: left; /* 텍스트 정렬 방식 */
-    white-space: nowrap; /* 텍스트가 길 경우 줄 바꿈 방지 */
-    overflow: hidden; /* 내용이 넘칠 경우 숨김 */
-    text-overflow: ellipsis; /* 넘치는 내용은 생략 기호 (...) 표시 */
+    padding: 10px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.airportTable .tdd{
+    color: #2A4B7C;
+    padding-left: 25px;
 }
 
 .tableHeader {
@@ -127,7 +133,7 @@
     position: absolute;
     z-index: 1;
     top: 20px;
-    /* left: 120px; */
+    left: 120px;
 }
 
 .countryPlus #countryInput,
@@ -137,12 +143,27 @@
     font-weight: 700;
     margin-right: 10px; 
 }
-/* 
-.airportPlus #airportInpu {
-    width: 200px;
-} */
 
 .countryPlus #countryButton,
 .airportPlus #airportButton { 
     background-color: #d7e4faa9;
+}
+
+/* 삭제 */
+#delCountryIcon {
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    right: 0;
+    bottom: -40px;
+    cursor: pointer;
+}
+
+#delAirportIcon {
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    cursor: pointer;
 }
