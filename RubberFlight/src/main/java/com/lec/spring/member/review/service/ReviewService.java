@@ -26,8 +26,8 @@ public class ReviewService {
 
     // 모든 유저 목록 조회
     @Transactional(readOnly = true) // 변경사항 체크 X
-    public Page<Review> list(int page, int size) {
-        return reviewRepository.findAll(PageRequest.of(page, size), Sort.by(Sort.Order.desc("id"))); // id 순으로 내림차순
+    public List<Review> list() {
+        return reviewRepository.findAll(Sort.by(Sort.Order.desc("id"))); // id 순으로 내림차순
     }
 
     // 해당 유저의 리뷰 목록 조회

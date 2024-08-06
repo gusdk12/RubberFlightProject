@@ -36,7 +36,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
                 """, nativeQuery = true)
     Page<Review> findByAirline(@Param("id") Long airline, PageRequest pageRequest);  // 해당 항공사 리뷰 목록
 
-    Page<Review> findAll(PageRequest of, Sort id);
 }
 
 
