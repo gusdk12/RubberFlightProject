@@ -360,9 +360,15 @@ body{
     padding: 15px 0 ;
     margin-top: -2px;
     color: #000000 !important;
-    font-size: 15px;
+    /* font-size: 15px; */
     outline: none;
   }
+
+  .flatpickr-monthDropdown-months {
+    width: 57% !important;
+  }
+
+  
 
   .flatpickr-input:focus {
     outline: none;
@@ -372,6 +378,7 @@ body{
   .flatpickr-input::placeholder {
     color: #000000;
 }
+  
 
 .menu-container {
     background-color: white;
@@ -391,7 +398,7 @@ body{
 }
 
 .dropdown-button {
-    font-family: "KIMM_Bold";
+    /* font-family: "KIMM_Bold"; */
     color: #1d212e;
     font-size: 15px;
     background: transparent;
@@ -406,6 +413,7 @@ body{
     outline: none;
     background: transparent;
 }
+
 
 .dropdown-button:hover {
     background: transparent;
