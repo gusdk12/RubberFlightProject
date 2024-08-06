@@ -125,6 +125,10 @@ const Header = ({isMain}) => {
                     <Button variant="outline">항공권 검색</Button>
                     <Button variant="outline">비행기 실시간 추척</Button>
                     <Button variant="outline">항공사 리뷰</Button>
+                    <Link to="/admin2">
+                      <Button variant="outline">나라 및 공항 관리</Button>
+                    </Link>
+                    
                   </VStack>
                 </DrawerBody>
       

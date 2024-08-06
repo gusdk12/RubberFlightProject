@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { getCountryInfo, getSafeInfo } from '../../../apis/countryApis';
 import { getAirportInfo } from '../../../apis/airportApis';
 import { Input, Button } from '@chakra-ui/react';
 import { Canvas } from '@react-three/fiber';
 
-import '../CSS/AdminPage2.css'
-import '../../../Global/font.css'
+import '../CSS/AdminPage2.css';
+import '../../../Global/font.css';
+import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
 
 const AdminPage2 = () => {
+    // const [isLogin, roles] = useContext(LoginContext)
     const [countrys, setCountry] = useState([]);
     const [countryIsoInput, setCountryIsoInput] = useState("");
     const [selectedCountry, setSelectedCountry] = useState(null);
@@ -24,27 +26,16 @@ const AdminPage2 = () => {
             const { data, status } = response;
             if (status === 200) {
                 setCountry(data);
+                if (data.length > 0) {
+                    const firstCountry = data[0];
+                    setSelectedCountry(firstCountry);
+                    fetchAirportsByCountry(firstCountry.id);
+                }
             }
         } catch (error) {
             console.error("Error fetching country list:", error);
         }
     };
-
-    // 해당 나라의 안전성 결과 가져오기
-    const fetchSafetyByCountry = async (countryIso) => {
-        try {
-            const response = await getSafeInfo(countryIso); // Use getSafeInfo function
-            const { data, status } = response;
-            if (status === 200) {
-                console.log(data);
-            }else {
-                console.log('데이터 못찾음');
-            }
-        } catch (error) {
-            console.error("Error fetching safety info:", error);
-        }
-    };
-
 
     // 선택한 나라의 공항 목록 가져오기
     const fetchAirportsByCountry = async (countryId) => {
@@ -53,6 +44,9 @@ const AdminPage2 = () => {
             const { data, status } = response;
             if (status === 200) {
                 setAirport(data);
+                if (data.length > 0) {
+                    setSelectedAirport(data[0]);
+                }
             }
         } catch (error) {
             console.error("Error fetching airport list:", error);
@@ -66,7 +60,8 @@ const AdminPage2 = () => {
 
     // 나라 클릭 시 해당 나라의 공항 목록 불러오기
     const handleCountryClick = (countryId) => {
-        setSelectedCountry(countrys.find(country => country.id === countryId));
+        const selected = countrys.find(country => country.id === countryId);
+        setSelectedCountry(selected);
         fetchAirportsByCountry(countryId);
     };
 
@@ -76,17 +71,6 @@ const AdminPage2 = () => {
         setSelectedAirport(airport);
     };
 
-    // const handleCountryClick = (countryId) => {
-    //     setSelectedCountry(countrys.find(country => country.id === countryId));
-    //     if (selectedCountry) {
-    //         setSelectedCountry(selectedCountry);
-    //         fetchAirportsByCountry(countryId);
-    //         fetchSafetyByCountry(selectedCountry.countryIso);
-    //     } else {
-    //         console.log("Country not found");
-    //     }
-    // };
-
     // 나라 추가
     const addCountry = async () => {
         if (!countryIsoInput) {
@@ -94,9 +78,17 @@ const AdminPage2 = () => {
             return;
         }
 
+        const isoCodePattern = /^[A-Za-z]{2}$/;
+        if (!isoCodePattern.test(countryIsoInput)) {
+            window.alert("ISO 코드는 두 글자의 영문자입니다.");
+            setCountryIsoInput('');
+            return;
+        }
+
         const existingCountry = countrys.find(country => country.countryIso === countryIsoInput);
         if (existingCountry) {
             window.alert("해당 ISO 코드는 이미 존재합니다.");
+            setCountryIsoInput('');
             return;
         }
 
@@ -116,20 +108,18 @@ const AdminPage2 = () => {
 
             if (saveResponse.status === 200) {
                 window.alert('저장 성공');
-                await fetchCountries(); // 목록을 다시 가져와서 UI를 업데이트합니다.
-                setSelectedCountry(null); // 새로 추가한 나라가 없으므로 선택된 나라를 초기화합니다.
+                await fetchCountries();
+                setSelectedCountry(null);
             } else {
                 window.alert('저장 실패');
             }
 
         } catch (error) {
-            console.error("Error fetching or saving country data:", error);
-            window.alert("데이터를 가져오거나 저장하는 중 오류가 발생했습니다.");
+            window.alert("존재하지 않는 ISO 코드입니다.");
         } finally {
-            setCountryIsoInput(''); // 폼 제출 후 입력 필드 초기화
+            setCountryIsoInput('');
         }
     };
-
 
     // 나라 삭제
     const deleteCountry = async (countryIso) => {
@@ -152,7 +142,6 @@ const AdminPage2 = () => {
                 window.alert('삭제 실패');
             }
         } catch (error) {
-            console.error("Error deleting country:", error);
             window.alert('삭제 중 오류가 발생했습니다.');
         }
     };
@@ -167,6 +156,7 @@ const AdminPage2 = () => {
         const existingAirport = airports.find(airport => airport.airportIso === airportIataInput);
         if (existingAirport) {
             window.alert("해당 IATA 코드는 이미 존재합니다.");
+            setAirportIataInput('');
             return;
         }
 
@@ -176,6 +166,7 @@ const AdminPage2 = () => {
 
             if (!data) {
                 window.alert("해당 IATA 코드에 대한 공항 정보를 찾을 수 없습니다.");
+                setAirportIataInput('');
                 return;
             }
 
@@ -195,7 +186,6 @@ const AdminPage2 = () => {
 
             if (saveResponse.status === 200) {
                 window.alert('저장 성공');
-                console.log()
                 await fetchAirportsByCountry(selectedCountry.id); // 선택한 나라의 공항 목록을 다시 가져옴
             } else {
                 window.alert('저장 실패');
@@ -205,7 +195,7 @@ const AdminPage2 = () => {
             console.error("Error fetching or saving airport data:", error);
             window.alert("데이터를 가져오거나 저장하는 중 오류가 발생했습니다.");
         } finally {
-            setAirportIataInput(''); // 폼 제출 후 입력 필드 초기화
+            setAirportIataInput(''); 
         }
     };
 
@@ -236,6 +226,9 @@ const AdminPage2 = () => {
 
     return (
         <>
+        {
+            // isLogin && roles.isAdmin &&
+            <>
             <Canvas
                 style={{
                     width: '100vw',
@@ -271,8 +264,6 @@ const AdminPage2 = () => {
                     ))}
                 </div>
             </div>
-
-
 
             <div className='airportInfo'>
                 <div className='airportPlus'>
@@ -325,6 +316,8 @@ const AdminPage2 = () => {
                     </div>
                 )}
             </div>
+            </>
+        }
         </>
     );
 };

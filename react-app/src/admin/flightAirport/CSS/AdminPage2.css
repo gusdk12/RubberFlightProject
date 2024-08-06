@@ -3,7 +3,7 @@
     border-radius: 10px;
     width: 300px;
     height: 500px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
     position: fixed;
     bottom: 250px;
     left: 240px;
@@ -11,13 +11,9 @@
     flex-direction: column;
 }
 
-.countryPlus {
-    padding: 20px;
-}
-
 .countryList {
-    flex: 1; /* 남은 공간을 모두 차지 */
-    overflow-y: auto; /* 나라 목록에만 스크롤 적용 */
+    flex: 1; 
+    overflow-y: auto; 
 }
 
 .countryList::-webkit-scrollbar {
@@ -41,7 +37,7 @@
     background-color: white;
     width: 180px;
     height: 300px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.1);
     padding: 30px;
 
     overflow-y: auto;
@@ -70,12 +66,6 @@
     background-color: #ffffff; /* 배경 색상 (선택 시) */
 }
 
-.airportPlus {
-    position: absolute;
-    z-index: 1;
-    top: 20px;
-    left: 120px;
-}
 
 .airportInfo {
     background-color: white;
@@ -84,7 +74,7 @@
     height: 750px;
     padding-top: 100px;
     padding-left: 200px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 
     position: fixed;
     bottom: 0;
@@ -108,8 +98,42 @@
     text-overflow: ellipsis; /* 넘치는 내용은 생략 기호 (...) 표시 */
 }
 
-/* 첫 번째 열의 셀 스타일링 (헤더 역할) */
 .tableHeader {
     font-weight: bold; /* 굵은 글씨 */
-    width: 30%; /* 첫 번째 열의 너비 설정 */
+    width: 30%; 
+}
+
+/* 검색 관련 css */
+
+.countryPlus, .airportPlus {
+    display: flex;
+    align-items: center;
+}
+
+.countryPlus {
+    padding: 20px;
+}
+
+.airportPlus {
+    position: absolute;
+    z-index: 1;
+    top: 20px;
+    /* left: 120px; */
+}
+
+.countryPlus #countryInput,
+.airportPlus #airportInput {
+    font-family: "KIMM_Light";
+    font-size: 14px;
+    font-weight: 700;
+    margin-right: 10px; 
+}
+/* 
+.airportPlus #airportInpu {
+    width: 200px;
+} */
+
+.countryPlus #countryButton,
+.airportPlus #airportButton { 
+    background-color: #d7e4faa9;
 }
