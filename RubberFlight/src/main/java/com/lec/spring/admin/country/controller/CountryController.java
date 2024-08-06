@@ -13,6 +13,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @RequiredArgsConstructor
 @RestController
@@ -41,27 +43,50 @@ public class CountryController {
     }
 
     // 안전성 api
+//    @CrossOrigin
+//    @GetMapping("/safety/{iso2Country}")
+//    public ResponseEntity<?> getCountrySafety(@PathVariable String iso2Country) {
+//
+//// URL 빌더를 사용하여 올바르게 인코딩된 URL 생성
+//        String uri = UriComponentsBuilder
+//                .fromUriString("https://apis.data.go.kr/1262000/CountrySafetyService5/getCountrySafetyList5")
+//                .queryParam("serviceKey", safety_key) // +를 포함한 serviceKey
+//                .queryParam("cond%5Bcountry_iso_alp2%3A%3AEQ%5D", iso2Country)
+//                .queryParam("numOfRows", 1)
+//                .build(true)
+//                .encode() // 인코딩은 기본적으로 수행됨
+//                .toUriString();
+//
+//        try {
+//            System.out.println(URLDecoder.decode(uri, "UTF-8"));
+//        } catch (UnsupportedEncodingException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        String response = new RestTemplate().getForObject(uri, String.class);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
+
+    @CrossOrigin
     @GetMapping("/safety/{iso2Country}")
     public ResponseEntity<?> getCountrySafety(@PathVariable String iso2Country) {
-
-        String uri = UriComponentsBuilder
-                .fromUriString("https://apis.data.go.kr/1262000/CountrySafetyService5/getCountrySafetyList5")
-                .queryParam("serviceKey", safety_key)
-                .queryParam("cond%5Bcountry_iso_alp2%3A%3AEQ%5D", iso2Country)
-                .queryParam("numOfRows", 1)
-                .build()
-                .encode()
-                .toUriString();
-//                .toUri();
-
         try {
-            System.out.println(URLDecoder.decode(uri, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+            // 쿼리 파라미터를 직접 포함한 URL 생성
+            String baseUrl = "https://apis.data.go.kr/1262000/CountrySafetyService5/getCountrySafetyList5";
+            String uri = String.format("%s?serviceKey=%s&cond[country_iso_alp2::EQ]=%s&numOfRows=1",
+                    baseUrl,
+                    URLEncoder.encode(safety_key, StandardCharsets.UTF_8.toString()),
+                    URLEncoder.encode(iso2Country, StandardCharsets.UTF_8.toString()));
 
-        String response = new RestTemplate().getForObject(uri, String.class);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+            // 생성된 URI를 로그로 출력 (디버깅 용도)
+            System.out.println("Generated URI: " + uri);
+
+            String response = new RestTemplate().getForObject(uri, String.class);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("URL 인코딩 오류");
+        }
     }
 
     // 목록
