@@ -1,18 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Button, ButtonGroup, CheckboxIcon, Flex, Heading, IconButton, Image, Menu, MenuButton, MenuItem, MenuList, Spacer, background } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, CheckboxIcon, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, Heading, IconButton, Image, Menu, MenuButton, MenuItem, MenuList, Spacer, VStack, background, useDisclosure } from '@chakra-ui/react';
 import { LoginContext } from '../../user/contexts/LoginContextProvider';
 import '../CSS/Header.css';
 import { CloseIcon, HamburgerIcon, StarIcon, ViewIcon } from '@chakra-ui/icons';
 
 
 const CustomIcon = () => {
-  return <Image src="/images/icons/navigation.png" boxSize="36px" />;
+  return <Image src="/images/icons/navigation.png" boxSize="60px"objectFit='contain' />;
 };
 
 const Header = ({isMain}) => {
   const { isLogin, logout, userInfo } = useContext(LoginContext);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef();
 
   const handleScroll = () => {
     if (window.scrollY > 70) {
@@ -54,73 +56,86 @@ const Header = ({isMain}) => {
         <ButtonGroup>
           {!isLogin ? (
             <>
-              <Menu>
-                <MenuButton as={IconButton} icon={<CustomIcon />}
+            <Box>
+              <Button ref={btnRef} onClick={onOpen} as={IconButton} icon={<CustomIcon />}
                   isRound={true}
                   variant='solid'
                   aria-label='Options'
                   bg='#FBFFFF'
-                  size='lg'
                   boxShadow='md'
-                  fontSize='50px'>
-                </MenuButton>
-                <MenuList>
-                  <MenuItem as={Link} 
-                      to="/login">
+                  width="53px"
+                  height="53px"
+                  borderRadius="50%">
+              </Button>
+              <Drawer
+                isOpen={isOpen}
+                placement="right"
+                onClose={onClose}
+                finalFocusRef={btnRef}
+              >
+              <DrawerOverlay />
+              <DrawerContent>
+                <DrawerCloseButton />
+                <DrawerHeader>메뉴</DrawerHeader>
+                <DrawerBody>
+                  <VStack spacing={2} align="stretch">
+                    <Button variant="outline">항공권 검색</Button>
+                    <Button variant="outline">비행기 실시간 추척</Button>
+                    <Button variant="outline">항공사 리뷰</Button>
+                  </VStack>
+                </DrawerBody>
+      
+                <DrawerFooter>
+                  <Button as={Link} 
+                      to="/login" bg='#6b8aef' width="100%" color={'#ffffff'}>
                     로그인
-                  </MenuItem>
-                  <MenuItem >
-                    항공권 검색
-                  </MenuItem>
-                  <MenuItem >
-                    비행기 실시간 추척
-                  </MenuItem>
-                  <MenuItem >
-                    항공사 리뷰
-                  </MenuItem>
-                </MenuList>
-              </Menu>
+                  </Button>
+                </DrawerFooter>
+              </DrawerContent>
+            </Drawer>
+            </Box>
             </>
           ) : (
             <>
-              <Menu>
-                <MenuButton as={IconButton} icon={<CustomIcon />}
+              
+            <Box>
+              <Button ref={btnRef} onClick={onOpen} as={IconButton} icon={<CustomIcon />}
                   isRound={true}
                   variant='solid'
                   aria-label='Options'
                   bg='#FBFFFF'
-                  size='lg'
                   boxShadow='md'
-                  fontSize='50px'>
-                </MenuButton>
-                <MenuList>
-                  <MenuItem icon={<StarIcon />} onClick={myPage}>
-                    마이페이지
-                  </MenuItem>
-                  <MenuItem icon={<CloseIcon />} onClick={() => logout()}>
-                    Logout
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-              <Menu>
-                <MenuButton as={IconButton} icon={<HamburgerIcon />} 
-                  variant='filled'
-                  aria-label='Options'
-                  colorScheme='white'
-                  fontSize='30px'>
-                </MenuButton>
-                <MenuList>
-                  <MenuItem >
-                    항공권 검색
-                  </MenuItem>
-                  <MenuItem >
-                    비행기 실시간 추척
-                  </MenuItem>
-                  <MenuItem >
-                    항공사 리뷰
-                  </MenuItem>
-                </MenuList>
-              </Menu>
+                  width="53px"
+                  height="53px"
+                  borderRadius="50%">
+              </Button>
+              <Drawer
+                isOpen={isOpen}
+                placement="right"
+                onClose={onClose}
+                finalFocusRef={btnRef}
+              >
+              <DrawerOverlay />
+              <DrawerContent>
+                <DrawerCloseButton />
+                <DrawerHeader>메뉴</DrawerHeader>
+                <DrawerBody>
+                  <VStack spacing={2} align="stretch">
+                    <Button variant="outline">마이페이지</Button>
+                    <Button variant="outline">항공권 검색</Button>
+                    <Button variant="outline">비행기 실시간 추척</Button>
+                    <Button variant="outline">항공사 리뷰</Button>
+                  </VStack>
+                </DrawerBody>
+      
+                <DrawerFooter>
+                  <Button onClick={() => logout()} bg='#6b8aef' width="100%" color={'#ffffff'}>
+                    로그아웃
+                  </Button>
+                </DrawerFooter>
+              </DrawerContent>
+            </Drawer>
+            </Box>
             </>
           )}
         </ButtonGroup>
