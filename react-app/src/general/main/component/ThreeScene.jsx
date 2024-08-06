@@ -14,6 +14,7 @@ function Airplane({ onLoaded, isSearhMode }) {
   let time = 0;
   let isLoaded = false;
   const { mouse } = useThree();
+  const previousMouse = useRef({ x: 0, y: 0 });
 
   React.useEffect(() => {
     isLoaded = true;
@@ -39,18 +40,22 @@ function Airplane({ onLoaded, isSearhMode }) {
     const targetPosition = isLoaded ? [0, 0, 0] : [0, -100, 0];
     ref.current.position.lerp(new THREE.Vector3(...targetPosition), delta * 5);
 
-    const oscillation = Math.sin(time * 0.8) * 0.5;
     const sideMovement = Math.cos(time * 0.8) * 0.5;
 
     time += delta;
 
-    // ref.current.position.y = oscillation;
+    const mouseX = THREE.MathUtils.lerp(previousMouse.current.x, mouse.x, delta * 5);
+    const mouseY = THREE.MathUtils.lerp(previousMouse.current.y, mouse.y, delta * 5);
+    
+    previousMouse.current = { x: mouseX, y: mouseY };
 
-    // Rotate airplane based on mouse position
-    ref.current.rotation.x = Math.sin(time * 0.6) * 0.1 + (mouse.y * 0.05);
-    ref.current.rotation.y = (Math.PI / -2) + Math.cos(time * 0.6) * 0.05 + (mouse.x * 0.05);
-    isSearhMode && (ref.current.rotation.z = Math.cos(time * 0.6) * 0.01);
-    isSearhMode || (ref.current.rotation.z = Math.cos(time * 0.6) * 0.01 + 0.4);
+    const rotationX = (mouseY * Math.PI) / 4;
+    const rotationY = (mouseX * Math.PI) / 4; 
+
+    ref.current.rotation.x = Math.sin(time * 0.3) * 0.1 + rotationX * 0.1;
+    ref.current.rotation.y = (Math.PI / -2) + Math.cos(time * 0.2) * 0.05 + rotationY * 0.1;
+    isSearhMode && (ref.current.rotation.z = Math.cos(time * 0.3) * 0.2);
+    isSearhMode || (ref.current.rotation.z = Math.cos(time * 0.3) * 0.2 + 0.4);
 
     if (ref.current.position.x <= 0)
       ref.current.position.x = sideMovement;
@@ -63,7 +68,7 @@ function CameraAnimation({ isLoaded, isSearhMode }) {
   const { camera } = useThree();
   useFrame((state, delta) => {
     if(!isSearhMode){
-      const targetPosition = isLoaded ? [-150, -20, -250] : [-2200, 1000, -2500];
+      const targetPosition = isLoaded ? [-150, -20, -250] : [-1500, 1000, -2500];
       camera.position.lerp(new THREE.Vector3(...targetPosition), delta * 4);
       camera.lookAt(10, 10, 0);
     }else{
@@ -81,6 +86,7 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
   const handleModelLoaded = () => {
     setIsLoaded(true);
     setIsAirplaneLoaded(true);
+    document.getElementById('loadingmessage').style.animation = 'slideOut 0.4s ease-out forwards';
   };
 
   return (
@@ -94,11 +100,13 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
       <div className="frontcloud" id="frontcloud2" />
       <div className="frontcloud" id="frontcloud3" />
 
+      <div id="loadingmessage"></div>
+      
       <Canvas 
         dpr={[1, 2]} 
         gl={{ antialias: true }}
-        camera={{ position: [-2200, 1000, -2500], fov: 45, near: 0.1, far: 1000 }} 
-        style={{ width: '100vw', height: '100vh', background: '#B0C9E600' }}
+        camera={{ position: [-1500, 1000, -2500], fov: 45, near: 0.1, far: 1000 }} 
+        style={{ width: '100vw', height: '100vh', background: '#B0C9E600', zIndex: '1' }}
       >
         <ambientLight intensity={0.9} color="#AEDEFF"/>
         <pointLight position={[0, 0, 0]} intensity={0.5}/>
@@ -109,6 +117,7 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
         <Environment preset="city" blur={0.8} />
         <CameraAnimation isLoaded={isLoaded} isSearhMode={isSearhMode} setIsAirplaneLoaded={setIsAirplaneLoaded}/>
       </Canvas>
+
     </>
   );
 }
