@@ -8,7 +8,8 @@ import { LoginContext } from '../../../general/user/contexts/LoginContextProvide
 import '../CSS/AdminPage2.css';
 import '../../../Global/font.css';
 import Header from '../../../general/common/Header/Header';
-import DelAirport from '../IMG/trash.webp'
+import DelAirport from '../../../assets/images/admin/trash.webp'
+import Airplain from '../../../assets/images/admin/airplane.webp'
 
 const AdminPage2 = () => {
     // const [isLogin, roles] = useContext(LoginContext)
@@ -52,10 +53,13 @@ const AdminPage2 = () => {
                 setAirport(data);
                 if (data.length > 0) {
                     setSelectedAirport(data[0]);
+                }else {
+                    setSelectedAirport(null); // 공항 정보가 없을 때 null로 설정
                 }
             }
         } catch (error) {
             console.error("Error fetching airport list:", error);
+            setSelectedAirport(null);
         }
     };
 
@@ -68,6 +72,7 @@ const AdminPage2 = () => {
     const handleCountryClick = (countryId) => {
         const selected = countrys.find(country => country.id === countryId);
         setSelectedCountry(selected);
+        setSelectedAirport(null);
         fetchAirportsByCountry(countryId);
     };
 
@@ -296,7 +301,7 @@ const AdminPage2 = () => {
                         ))}
                     </div>
                     
-                    {selectedAirport && ( // 선택된 공항 정보만 렌더링
+                    {selectedAirport ? (
                         <div className="airportDetails">
                             <div className="airName">{selectedAirport.airportName}</div>
                             <table className="airportTable">
@@ -316,7 +321,6 @@ const AdminPage2 = () => {
                                     <td className="tableHeader">Airport Longitude</td>
                                     <td className='tdd'>{selectedAirport.longitudeAirport}</td>
                                 </tr>
-
                             </table>
                             <img 
                                 src={DelAirport} 
@@ -325,7 +329,16 @@ const AdminPage2 = () => {
                                 onClick={() => deleteAirport(selectedAirport.airportIso)} 
                             />
                         </div>
+                    ) : (
+                        <div className="airportDetailText">
+                            <p>공항을 추가해주세요.</p>
+                        </div>
                     )}
+
+                    <img 
+                        src={Airplain}
+                        id='airplainIMG'
+                    />
                 </div>
             </div>
             </>
