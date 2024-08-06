@@ -26,8 +26,14 @@ public class ReviewService {
 
     // 모든 유저 목록 조회
     @Transactional(readOnly = true) // 변경사항 체크 X
-    public List<Review> list() {
-        return reviewRepository.findAll(Sort.by(Sort.Order.desc("id"))); // id 순으로 내림차순
+    public Page<Review> list(int page, int size) {
+        if (page < 0) {
+            page = 0; // 페이지 번호가 음수일 경우 0으로 설정
+        }
+        if (size <= 0) {
+            size = 1; // 사이즈가 0 이하일 경우 1로 설정
+        }
+        return reviewRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Order.desc("id")))); // id 순으로 내림차순
     }
 
     // 해당 유저의 리뷰 목록 조회
@@ -44,6 +50,12 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public Page<Review> airlineReviewList(Long airline, int page, int size) {
+        if (page < 0) {
+            page = 0; // 페이지 번호가 음수일 경우 0으로 설정
+        }
+        if (size <= 0) {
+            size = 1; // 사이즈가 0 이하일 경우 1로 설정
+        }
         return reviewRepository.findByAirline(airline, PageRequest.of(page, size));
     }
 
@@ -51,9 +63,7 @@ public class ReviewService {
     @Transactional
     public Review write(Review review) {
 
-        System.out.println(review.getFlightInfo());
         Airline airline;
-
         // 항공사 존재하는지 확인
         if (!airlineRepository.existsByName(review.getFlightInfo().getAirlineName())) {
             airline = new Airline();
