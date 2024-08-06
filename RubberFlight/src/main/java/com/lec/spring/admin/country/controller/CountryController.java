@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLDecoder;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,6 +22,9 @@ public class CountryController {
 
     @Value("${app.api-key.aviation}")
     private String aviation_key;
+
+    @Value("${app.api-key.safety}")
+    private String safety_key;
 
     @GetMapping("/{iso2Country}")
     public ResponseEntity<?> find(@PathVariable String iso2Country){
@@ -33,6 +38,30 @@ public class CountryController {
 
         String forObject = new RestTemplate().getForObject(uri, String.class);
         return new ResponseEntity<>(forObject, HttpStatus.OK);
+    }
+
+    // 안전성 api
+    @GetMapping("/safety/{iso2Country}")
+    public ResponseEntity<?> getCountrySafety(@PathVariable String iso2Country) {
+
+        String uri = UriComponentsBuilder
+                .fromUriString("https://apis.data.go.kr/1262000/CountrySafetyService5/getCountrySafetyList5")
+                .queryParam("serviceKey", safety_key)
+                .queryParam("cond%5Bcountry_iso_alp2%3A%3AEQ%5D", iso2Country)
+                .queryParam("numOfRows", 1)
+                .build()
+                .encode()
+                .toUriString();
+//                .toUri();
+
+        try {
+            System.out.println(URLDecoder.decode(uri, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
+        String response = new RestTemplate().getForObject(uri, String.class);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 목록
