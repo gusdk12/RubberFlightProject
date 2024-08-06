@@ -9,16 +9,18 @@ import Search from '../general/reserve/pages/search';
 import Reserve from '../general/reserve/pages/reserve';
 import customTheme from '../general/user/components/Join/customTheme'
 import AdminPage2 from '../admin/flightAirport/pages/AdminPage2';
-import CouponForm from '../admin/coupon/components/CouponForm';
 import SelectJoin from '../general/user/pages/SelectJoin';
 import Admin from '../general/user/pages/admin';
 import UserInfo from '../member/user/pages/UserInfo';
 import ReviewList from '../member/review/pages/ReviewList';
 import ReviewUpdate from '../member/review/pages/ReviewUpdate';
 import ReviewWrite from '../member/review/pages/ReviewWrite';
+import ScheduleMain from '../member/schedule/pages/ScheduleMain';
 import FlightInfoList from '../member/flightInfo/pages/FlightInfoList';
 import FlightInfoDetail from '../member/flightInfo/pages/FlightInfoDetail';
 import { FlightInfoProvider } from '../member/flightInfo/contexts/FlightInfoContext';
+import CouponPage from '../admin/coupon/pages/CouponPage';
+import { CouponProvider } from '../admin/coupon/contexts/CouponContext';
 
 function RubberFlightApp() {
   return (
@@ -34,7 +36,8 @@ function RubberFlightApp() {
               <Route path="/search" element={<Search />} />
                 <Route path="/reserve/:id" element={<Reserve/>}/>
               <Route path="/admin/edit" element={<AdminPage2 />} />
-              {/* <Route path="/admin/coupon" element={<CouponForm />} /> */}
+              <Route path="/schedule" element={<ScheduleMain />} />
+              <Route path="/coupon" element={<CouponProvider><CouponPage/></CouponProvider>} />
               <Route path="/mypage" element={<UserInfo />}>
                 <Route path="flight-info" element={<FlightInfoList />} />
                 <Route path="flight-info/:flightId" element={<FlightInfoProvider><FlightInfoDetail/></FlightInfoProvider>} />
