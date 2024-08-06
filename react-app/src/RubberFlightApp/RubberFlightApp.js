@@ -19,6 +19,8 @@ import ScheduleMain from '../member/schedule/pages/ScheduleMain';
 import FlightInfoList from '../member/flightInfo/pages/FlightInfoList';
 import FlightInfoDetail from '../member/flightInfo/pages/FlightInfoDetail';
 import { FlightInfoProvider } from '../member/flightInfo/contexts/FlightInfoContext';
+import CouponPage from '../admin/coupon/pages/CouponPage';
+import { CouponProvider } from '../admin/coupon/contexts/CouponContext';
 
 function RubberFlightApp() {
   return (
@@ -35,6 +37,7 @@ function RubberFlightApp() {
                 <Route path="/reserve/:id" element={<Reserve/>}/>
               <Route path="/admin2" element={<AdminPage2 />} />
               <Route path="/schedule" element={<ScheduleMain />} />
+              <Route path="/coupon" element={<CouponProvider><CouponPage/></CouponProvider>} />
               <Route path="/mypage" element={<UserInfo />}>
                 <Route path="flight-info" element={<FlightInfoList />} />
                 <Route path="flight-info/:flightId" element={<FlightInfoProvider><FlightInfoDetail/></FlightInfoProvider>} />
