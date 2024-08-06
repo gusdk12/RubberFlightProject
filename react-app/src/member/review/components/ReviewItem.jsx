@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Card, Heading, Flex, Box, Spacer, Text, Stack, ModalOverlay, useDisclosure, Modal, ModalCloseButton, ModalContent, ModalFooter} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import ReviewDetail, { StarRating } from "../pages/ReviewDetail";
+import ReviewDetail from "../pages/ReviewDetail";
 import ReviewUpdate from "../pages/ReviewUpdate";
+import { StarRating } from "./Rating";
 import "../css/ReviewItem.css";
 import "../../../Global/font.css";
 

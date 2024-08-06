@@ -1,46 +1,7 @@
 import { Flex, Grid, ModalHeader, Text } from "@chakra-ui/react";
 import React from "react";
-import emptyStar from "../../../assets/images/review/grey_star.webp";
-import fullStar from "../../../assets/images/review/yellow_star.webp"
 import { useUser } from "../../../general/user/contexts/LoginContextProvider";
-
-// 각 별점
-export const StarRating = ({rate}) => {
-  const starFull = fullStar;
-  const starEmpty = emptyStar;
-  const stars = [];
-
-  // 채워진 별 추가
-  Array.from({length: rate}).forEach(() => {
-    stars.push(<img src={starFull} className='star-ratings' alt='full Star'/>);
-  });
-
-  // 비어있는 별 추가
-  Array.from({length: 5 - rate}).forEach(() => {
-    stars.push(<img src={starEmpty} class='star-ratings' alt='empty Star'/>);
-  });
-
-  return <div className='star-ratings-base'>{stars}</div>
-}
-
-// 항공사별 총 평균 (큰 별)
-export const TotalStarRating = ({rate}) => {
-  const starFull = fullStar;
-  const starEmpty = emptyStar;
-  const stars = [];
-
-  // 채워진 별 추가
-  Array.from({length: rate}).forEach(() => {
-    stars.push(<img src={starFull} className='star-ratings' alt='full Star'/>);
-  });
-
-  // 비어있는 별 추가
-  Array.from({length: 5 - rate}).forEach(() => {
-    stars.push(<img src={starEmpty} class='star-ratings' alt='empty Star'/>);
-  });
-
-  return <div className='total_rate'>{stars}</div>
-}
+import { StarRating, TotalStarRating } from "../components/Rating";
 
 const ReviewDetail = (props) => {
 

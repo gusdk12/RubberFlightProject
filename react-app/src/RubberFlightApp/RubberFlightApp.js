@@ -35,7 +35,7 @@ function RubberFlightApp() {
               <Route path="/join/admin" element={<JoinAdmin />} />
               <Route path="/search" element={<Search />} />
                 <Route path="/reserve/:id" element={<Reserve/>}/>
-              <Route path="/admin2" element={<AdminPage2 />} />
+              <Route path="/admin/edit" element={<AdminPage2 />} />
               <Route path="/schedule" element={<ScheduleMain />} />
               <Route path="/coupon" element={<CouponProvider><CouponPage/></CouponProvider>} />
               <Route path="/mypage" element={<UserInfo />}>

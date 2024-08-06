@@ -1,5 +1,8 @@
 .container {
-    padding-top: 190px;
+    width: 800px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
 }
 
 .subject {
