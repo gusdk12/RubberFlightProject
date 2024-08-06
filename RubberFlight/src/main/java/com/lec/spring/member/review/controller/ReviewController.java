@@ -16,8 +16,10 @@ public class ReviewController {
     // 해당 유저의 리뷰 목록
     @CrossOrigin
     @GetMapping("/member/review/list/{user}")
-    public ResponseEntity<?> userReviewList(@PathVariable Long user) {
-        return new ResponseEntity<>(reviewService.userReviewList(user), HttpStatus.OK);
+    public ResponseEntity<?> userReviewList(@PathVariable Long user,
+                                            @RequestParam int page,
+                                            @RequestParam int size) {
+        return new ResponseEntity<>(reviewService.userReviewList(user, page, size), HttpStatus.OK);
     }
 
     // 리뷰 작성

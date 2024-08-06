@@ -1,0 +1,52 @@
+.container {
+    padding-top: 50px;
+    margin-left: 220px;
+}
+
+.card_container {
+    margin-top: 30px;
+    padding-left: 80px;
+    width: 1000px;
+    background-color: azure;
+    border-radius: 5px;
+}
+
+.subject {
+    font-size: 40px;
+    display: flex;
+    margin-top: 25px;
+}
+
+.reviewIcon {
+    width: 55px;
+    height: 55px;
+}
+
+.pagebtn {
+    width: 920px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.page_btn {
+    text-align: center;
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+    background-color: rgb(147, 197, 247);
+    border-radius: 5px;
+}
+
+.prevbtn, .nextbtn {
+    height: 30px;
+    width: 40px;
+    margin-right: 5px;
+}
+
+.arrowLeft {
+   margin-right: 30px; 
+}
+
+.arrowRight {
+    margin-left: 20px;
+}
