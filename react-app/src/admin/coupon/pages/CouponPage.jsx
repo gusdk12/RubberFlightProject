@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CouponForm from '../components/CouponForm';
 import CouponList from '../components/CouponList';
 import { Box, Flex, Heading } from '@chakra-ui/react';
 
 const CouponPage = () => {
+
+    useEffect(() => {
+        document.body.style.overflowY = 'scroll';
+        document.body.style.overflowX = 'scroll';
+      }, []);
+
     return (
         <Box 
             bg="#dde6f5d7" 
