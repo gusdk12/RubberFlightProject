@@ -86,7 +86,7 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
   const handleModelLoaded = () => {
     setIsLoaded(true);
     setIsAirplaneLoaded(true);
-    document.getElementById('loadingmessage').style.animationDirection = 'reverse';
+    document.getElementById('loadingmessage').style.animation = 'slideOut 0.4s ease-out forwards';
   };
 
   return (
@@ -100,7 +100,7 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
       <div className="frontcloud" id="frontcloud2" />
       <div className="frontcloud" id="frontcloud3" />
 
-      <div id="loadingmessage">비행기가 이륙하는 중입니다...</div>
+      <div id="loadingmessage"></div>
       
       <Canvas 
         dpr={[1, 2]} 
