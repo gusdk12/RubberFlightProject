@@ -35,8 +35,8 @@ public class ReserveController {
     public ResponseEntity<?> searchFlights(@RequestParam String iataCode,
                                            @RequestParam String depDate,
                                            @RequestParam String arrIataCode,
-                                           @RequestParam(required = false) String arrDate,
-                                           @RequestParam String mode) {
+                                           @RequestParam(required = false) String arrDate
+                                          ) {
 
         String type = "departure";
 
@@ -50,7 +50,7 @@ public class ReserveController {
                 ? fetchFlights(arrIataCode, iataCode, arrDate, type)
                 : Collections.emptyList();
 
-        if ("combine".equals(mode) && !outboundFlights.isEmpty() && !inboundFlights.isEmpty()) {
+        if (!outboundFlights.isEmpty() && !inboundFlights.isEmpty()) {
             List<Map<String, Object>> combinations = createFlightCombinations(outboundFlights, inboundFlights);
             return new ResponseEntity<>(Collections.singletonMap("combinations", combinations), HttpStatus.OK);
         }

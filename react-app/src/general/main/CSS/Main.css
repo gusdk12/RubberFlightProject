@@ -12,7 +12,7 @@ body{
     margin: auto;
     display: flex;
     flex-direction: column;
-    /*justify-content : space-between;*/
+    /* justify-content : space-between; */
     align-items: center;
 }
 
@@ -231,22 +231,25 @@ body{
     display: flex;
     gap: 7px;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left: 1%;
+
 }
 #airportPart{
     /* background-color: aqua; */
-    width: 24%;
+    width: 28%;
     height: 80%;
     display: flex;
     gap: 5px;
     align-items: center;
     justify-content: center;
 }
-#depPart{
+#depPart {
     /* background-color: cadetblue; */
     width: 48%;
     height: 100%;
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: center;
     flex-direction: column;
@@ -257,6 +260,7 @@ body{
     width: 48%;
     height: 100%;
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: center;
     flex-direction: column;
@@ -269,26 +273,31 @@ body{
     background-position: center;
     width: 48%;
     height: 20%;
+    /* background-color: red; */
+    margin-left: auto;
+    margin-right: auto;
 }
 #datePart{
-    background-color: cadetblue;
-    width: 30%;
+    /* background-color: cadetblue; */
+    width: 32%;
+    margin-left: -3px;
     height: 55%;
 }
 #peoplePart{
-    background-color: crimson;
-    width: 23%;
+    /* background-color: crimson; */
+    width: 25%;
     height: 55%;
 }
 #submitButton{
     background-color: #6b8aef;
-    width: 18%;
+    width: 12%;
     height: 55%;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #ffffff;
+
 }
 
 .date-picker-container {
@@ -297,6 +306,7 @@ body{
     justify-content: center;
     align-items: center;
     margin: 2.5px 1px;
+    color: #000000;
     /* outline: 2px solid red; */
   }
   
@@ -304,17 +314,21 @@ body{
     border-radius: 4px;
     background-color: none;
     background: transparent !important;
-    padding: 13px;
-    margin-top: -3px;
-    color: #000; /* 텍스트 색상 설정 */
-    font-size: 17px;
+    padding: 15px 0 ;
+    margin-top: -2px;
+    color: #000000 !important;
+    font-size: 15px;
     outline: none;
   }
 
   .flatpickr-input:focus {
     outline: none;
     box-shadow: none;
+    color: #000000;
   }
+  .flatpickr-input::placeholder {
+    color: #000000;
+}
 
 .menu-container {
     background-color: white;
@@ -328,4 +342,133 @@ body{
     z-index: 9999; 
 }
 
+.search {
+    width: 100%;
+    font-size: 20px;
+}
 
+.dropdown-button {
+    font-family: "KIMM_Bold";
+    color: #1d212e;
+    font-size: 15px;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    /* outline: 2px solid greenyellow !important; */
+}
+
+.dropdown-button:active,
+.dropdown-button:focus {
+    outline: none;
+    background: transparent;
+}
+
+.dropdown-button:hover {
+    background: transparent;
+    color: #1d212e; /* 기본 텍스트 색상 */
+}
+
+.menu-container {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    width: 100%;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.menu-item label {
+    flex-grow: 1;
+    margin-left: 15px;
+    margin-right: 4px;
+    /* background-color: blue; */
+}
+
+.menu-item button {
+    background: transparent;
+    border: none;
+    color: red;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.menu-item span {
+    margin: 0 15px 0 4px;
+}
+
+.dropdown-button {
+    width: 100%;
+    height: 100%;
+    font-family: "KIMM_Bold";
+    color: #1d212e;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.dropdown-button:active,
+.dropdown-button:focus,
+.dropdown-button:hover {
+    outline: none;
+    background: transparent;
+    color: #1d212e;
+}
+.autocomplete-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200%;
+    max-height: 150px;
+    overflow-y: auto;
+    background-color: #ffffff;
+    border: 1px solid #d4d4d4;
+    border-top: none;
+    z-index: 999;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 4px;
+}
+
+.autocomplete-results div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #ffffff; 
+    border-bottom: 1px solid #d4d4d4;
+    font-size: 15px;
+}
+
+.autocomplete-results div:hover {
+    background-color: #e9e9e9; 
+}
+
+.autocomplete-active {
+    background-color: DodgerBlue !important; 
+    color: #ffffff; 
+}
+
+input[type="text"] {
+    border: none;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+    font: inherit;
+    color: #718096;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+  
+  /* 포커스 시 스타일 제거 (선택 사항) */
+  input[type="text"]:focus {
+    border: none;
+    outline: none;
+  }
