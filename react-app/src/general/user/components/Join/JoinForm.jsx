@@ -21,6 +21,7 @@ const PasswordInput = ({ placeholder, name, value, onChange, onBlur }) => {
                 onChange={onChange}
                 onBlur={onBlur}
                 backgroundColor={'white'}
+                fontFamily={show ? 'inherit' : 'system-ui, sans-serif'}
             />
             <InputRightElement width='4.5rem'>
                 <Button h='1.75rem' size='sm' onClick={handleClick} bg={'#586D92'} color={'white'}>
