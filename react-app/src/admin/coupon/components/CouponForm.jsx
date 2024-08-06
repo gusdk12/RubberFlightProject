@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCoupon } from '../contexts/CouponContext';
-import { Box, Button, FormControl, FormLabel, Input, Select, Heading } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Input, Select } from '@chakra-ui/react';
 
 const CouponForm = () => {
     const { addCoupon } = useCoupon();
@@ -37,16 +37,7 @@ const CouponForm = () => {
     };
 
     return (
-        <Box 
-            p={5} 
-            bg={'white'}
-            borderRadius="md" 
-            boxShadow="md" 
-            mb={5}
-            mr={5}
-            height="fit-content" 
-            width="700px"
-        >
+        <Box p={5} bg={'white'} borderRadius="md" boxShadow="md" mb={5} mr={5} height="fit-content" width="700px">
             <Box width="400px" ml={2} mt={7} mb={7}>
                 <form onSubmit={handleSubmit}>
                     <FormControl mb={4}>
