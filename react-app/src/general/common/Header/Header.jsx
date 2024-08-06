@@ -11,7 +11,7 @@ const CustomIcon = () => {
 };
 
 const Header = ({isMain}) => {
-  const { isLogin, logout, userInfo } = useContext(LoginContext);
+  const { isLogin, logout, userInfo, roles } = useContext(LoginContext);
   const [isScrolled, setIsScrolled] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
@@ -37,8 +37,12 @@ const Header = ({isMain}) => {
   }
 
   const adminPage = () => {
-    navigate('/admin2')
+    navigate('/admin/edit')
   }
+
+  // const CouponPage = () => {
+  //   navigate('/admin/coupon')
+  // }
 
 
   const backgroundImageUrl = process.env.PUBLIC_URL + '/images/icons/commercial-plane.png';
@@ -83,9 +87,19 @@ const Header = ({isMain}) => {
                   <VStack spacing={2} align="stretch">
                     {isLogin ? (
                           <>
-                          <Button variant="outline" onClick={myPage}>마이페이지</Button>
-                          <Button variant="outline">일정짜기</Button>
-                          <Divider my={5}/>
+                            {roles.isAdmin && (
+                              <>
+                                <Button variant="outline" onClick={adminPage}>나라 및 공항 관리</Button>
+                                <Button variant="outline">쿠폰 관리</Button>
+                              </>
+                            )}
+                            {roles.isMember && (
+                              <>
+                                <Button variant="outline" onClick={myPage}>마이페이지</Button>
+                                <Button variant="outline">일정짜기</Button>
+                              </>
+                            )}
+                            <Divider my={5}/>
                           </>
                         )
                         :
@@ -93,7 +107,6 @@ const Header = ({isMain}) => {
                     <Button variant="outline">항공권 검색</Button>
                     <Button variant="outline">비행기 실시간 추척</Button>
                     <Button variant="outline">항공사 리뷰</Button>
-                    <Button variant="outline" onClick={adminPage}>나라 및 공항 관리</Button>
                   </VStack>
                 </DrawerBody>
       

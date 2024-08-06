@@ -9,6 +9,7 @@ import Search from '../general/reserve/pages/search';
 import Reserve from '../general/reserve/pages/reserve';
 import customTheme from '../general/user/components/Join/customTheme'
 import AdminPage2 from '../admin/flightAirport/pages/AdminPage2';
+import CouponForm from '../admin/coupon/components/CouponForm';
 import SelectJoin from '../general/user/pages/SelectJoin';
 import Admin from '../general/user/pages/admin';
 import UserInfo from '../member/user/pages/UserInfo';
@@ -32,7 +33,8 @@ function RubberFlightApp() {
               <Route path="/join/admin" element={<JoinAdmin />} />
               <Route path="/search" element={<Search />} />
                 <Route path="/reserve/:id" element={<Reserve/>}/>
-              <Route path="/admin2" element={<AdminPage2 />} />
+              <Route path="/admin/edit" element={<AdminPage2 />} />
+              {/* <Route path="/admin/coupon" element={<CouponForm />} /> */}
               <Route path="/mypage" element={<UserInfo />}>
                 <Route path="flight-info" element={<FlightInfoList />} />
                 <Route path="flight-info/:flightId" element={<FlightInfoProvider><FlightInfoDetail/></FlightInfoProvider>} />
