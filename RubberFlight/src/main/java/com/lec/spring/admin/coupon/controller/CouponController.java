@@ -41,21 +41,18 @@ public class CouponController {
 
     /* 사용자 */
     @CrossOrigin
-    @PostMapping("/user/add/{couponCode}") // URL 경로 수정
+    @PostMapping("/user/add/{couponCode}")
     public ResponseEntity<?> useCoupon(@PathVariable String couponCode, HttpServletRequest request) {
-        // JWT에서 사용자 ID 추출
         String token = request.getHeader("Authorization").split(" ")[1];
         Long userId = jwtUtil.getId(token);
 
-        // 쿠폰 사용 로직
         Coupon coupon = couponService.findByCode(couponCode);
         if (coupon != null) {
             User user = userService.findById(userId);
-            // 쿠폰을 사용자에게 추가하는 로직
             user.getCoupons().add(coupon);
             userService.save(user);
 
-            return new ResponseEntity<>(HttpStatus.OK); // 성공적으로 쿠폰 사용
+            return new ResponseEntity<>(HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // 쿠폰 코드가 유효하지 않은 경우
