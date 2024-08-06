@@ -12,12 +12,11 @@ export const getFlightInfoById = (id) => api.get(`${SERVER_HOST}/flightInfo/flig
 export const getFlightInfo = (depIata = "ICN", arrIata = "PVG") => api.get(`${SERVER_HOST}/flightInfo/flights/${depIata}/${arrIata}`); // 임시 데이터
 
 // 항공권 조회
-export const searchFlight = (iataCode, depDate, arrIataCode, arrDate, mode) => api.get(`${SERVER_HOST}/search`, {
+export const searchFlight = (iataCode, depDate, arrIataCode, arrDate) => api.get(`${SERVER_HOST}/search`, {
     params: {
         iataCode,
         depDate,
         arrIataCode,
-        arrDate,
-        mode
+        arrDate
     }
 });

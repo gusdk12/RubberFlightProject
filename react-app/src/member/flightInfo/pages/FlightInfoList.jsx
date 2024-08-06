@@ -10,6 +10,10 @@ const FlightInfoList = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.body.style.overflowY = 'scroll';
+  }, []);
+
+  useEffect(() => {
     const fetchFlightInfo = async () => {
       try {
         const response = await axios.get('http://localhost:8282/flightInfo/list');

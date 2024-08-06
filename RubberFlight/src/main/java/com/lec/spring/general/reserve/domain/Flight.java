@@ -7,9 +7,11 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @Data
 public class Flight {
+    String id;
     String depAirport;
     String arrAirport;
     String airlineIata;
@@ -23,6 +25,7 @@ public class Flight {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Flight(JsonNode jsonNode, String iataCode, String arrIataCode, String date, int price) {
+        this.id = generateId();
         this.depAirport = iataCode;
         this.arrAirport = arrIataCode;
 
@@ -53,5 +56,9 @@ public class Flight {
 
 
         this.price = price;
+    }
+
+    private String generateId() {
+        return UUID.randomUUID().toString(); // UUID를 사용하여 고유 식별자를 생성
     }
 }
