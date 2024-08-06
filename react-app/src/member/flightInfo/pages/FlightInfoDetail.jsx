@@ -2,11 +2,11 @@ import React, { useContext, useEffect } from 'react';
 import { FlightInfoContext } from '../contexts/FlightInfoContext'; 
 import { useParams, useNavigate } from 'react-router-dom'; 
 import { Box, Flex, Heading, Button, Image, Text, Link } from '@chakra-ui/react'; 
-import img2 from '../common/IMG/img2.png';
+import img2 from '../../../assets/images/flightInfo/img2.webp';
 import FlightInfoItem from '../components/FlightItem';
 import FlightDetails from '../components/FlightDetails';
 
-const FlightInfoDetailPage = () => {
+const FlightInfoDetail = () => {
   const { flightId } = useParams(); 
   const { flightInfo, setFlightId } = useContext(FlightInfoContext); 
   const navigate = useNavigate(); 
@@ -18,7 +18,7 @@ const FlightInfoDetailPage = () => {
   const renderFlightDetails = () => {
     
     return (
-      <Box>
+      <Box className="flight-info-container">
         <FlightDetails info={flightInfo} />
         <Box borderBottom="1px" borderColor="gray.300" my={4} />
 
@@ -46,13 +46,15 @@ const FlightInfoDetailPage = () => {
         <Heading as="h1" size="lg" ml={3}>나의 항공편</Heading>
       </Flex>
 
-      <Button mt={2} mb={4} onClick={() => navigate(-1)}>뒤로가기</Button>
-      
-      {flightInfo ? renderFlightDetails() : (
-        <Text>항공편 정보를 불러오는 중입니다...</Text>
-      )}
+      <Flex direction="column" align="flex-start" justify="center" maxWidth="700px" mx="auto" width="90%" mb="40px" mt="20px">
+        <Button mb={4} onClick={() => navigate(-1)}>뒤로가기</Button>
+        
+        {flightInfo ? renderFlightDetails() : (
+          <Text>항공편 정보를 불러오는 중입니다...</Text>
+        )}
+      </Flex>
     </Box>
   );
 };
 
-export default FlightInfoDetailPage;
+export default FlightInfoDetail;

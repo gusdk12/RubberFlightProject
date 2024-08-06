@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, Flex, Heading, Spinner, Image } from '@chakra-ui/react';
 import FlightInfoTabs from '../components/FlightInfoTabs';
-import img2 from '../common/IMG/img2.png';
+import img2 from '../../../assets/images/flightInfo/img2.webp';
 import '../common/CSS/FlightInfoListStyle.css';
 
-const FlightInfoListPage = () => {
+const FlightInfoList = () => {
   const [flightInfoList, setFlightInfoList] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -48,4 +48,4 @@ const FlightInfoListPage = () => {
   );
 };
 
-export default FlightInfoListPage;
+export default FlightInfoList;

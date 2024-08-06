@@ -1,26 +1,27 @@
 import React from 'react';
 import { Box, Flex, Heading, Text, Image } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { calculateFlightDuration, getStatusText } from './FlightUtils';
-import img1 from '../common/IMG/img1.png';
+import img1 from '../../../assets/images/flightInfo/img1.webp';
 
 const MotionBox = motion(Box);
 
-const FlightInfoCard = ({ flight, index }) => {
+const FlightInfoCard = ({ flight, index, tabKey }) => {
+  const navigate = useNavigate(); 
   const status = getStatusText(flight);
 
   return (
     <MotionBox
-      key={flight.id}
+      key={flight.id + tabKey} // tabKey를 추가하여 애니메이션 트리거
       className="flight-info-container flight-item"
       mb={10}
-      onClick={() => window.location.href = `/flightInfo/${flight.id}`}
-      initial={{ opacity: 0, x: -50, scale: 1 }}
-      animate={{ opacity: 1, x: 0, scale: 1 }}
-      whileHover={{ scale: 1.02 }}
+      onClick={() => navigate(`/member/mypage/flight-info/${flight.id}`)} 
+      initial={{ opacity: 0, x: -50 }} // 초기 상태
+      animate={{ opacity: 1, x: 0 }} // 애니메이션 상태
+      exit={{ opacity: 0, x: 50 }} // 퇴장 애니메이션 상태
       transition={{
         default: { duration: 0.5, delay: index * 0.1 },
-        scale: { duration: 0.2 }
       }}
     >
       {/* 항공편 출발지 및 도착지 정보 */}
