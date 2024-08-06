@@ -3,10 +3,10 @@ import { Box, Grid, Image } from "@chakra-ui/react";
 import axios from "axios";
 import ReviewItem from "../components/ReviewItem";
 import { useUser } from "../../../general/user/contexts/LoginContextProvider";
-import "../css/ReviewList.css";
 import MenuBar from "../../../general/common/SideMenu/MenuBar";
-import { Canvas } from "@react-three/fiber";
-import Review from "../img/review.webp";
+import Review from "../../../assets/images/review/review.webp";
+import Header from "../../../general/common/Header/Header";
+import "../css/ReviewList.css";
 
 const ReviewList = () => {
   const { userInfo } = useUser();
@@ -28,6 +28,7 @@ const ReviewList = () => {
   };
 
   useEffect(() => {
+    
     if (userInfo && userInfo.id) {
       fetchReviews(currentPage);
     }
@@ -71,19 +72,8 @@ const ReviewList = () => {
 
   return (
     <>
-      <Canvas
-        style={{
-          margin: 0,
-          width: "100vw",
-          height: "100vh",
-          background: "linear-gradient(to bottom, #B0C9E6, #D5E1EB, #EFF3F6)",
-          position: "absolute",
-          zIndex: -1,
-        }}
-      />
-      <Grid templateColumns="repeat(5, 1fr)" className="container">
-        <MenuBar colSpan={2} />
-        <Box colSpan={4} className="card_container">
+      <Header />
+        <Box className="card_container">
           <div className="subject">
             <Image src={Review} className="reviewIcon" />
             &nbsp;&nbsp;나의 리뷰
@@ -91,6 +81,7 @@ const ReviewList = () => {
           {reviews.map((review) => (
             <ReviewItem key={review.id} review={review} />
           ))}
+          
           {totalPages > 0 && (
             <Box className="pagebtn">
               <button className="page_btn prevbtn" onClick={() => handlePageChange(0)}>◀◀</button>
@@ -101,7 +92,6 @@ const ReviewList = () => {
             </Box>
           )}
         </Box>
-      </Grid>
     </>
   );
 };

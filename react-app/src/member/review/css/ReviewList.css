@@ -1,29 +1,19 @@
 .container {
-    padding-top: 50px;
-    margin-left: 220px;
-}
-
-.card_container {
-    margin-top: 30px;
-    padding-left: 80px;
-    width: 1000px;
-    background-color: azure;
-    border-radius: 5px;
+    padding-top: 190px;
 }
 
 .subject {
-    font-size: 40px;
+    font-size: 30px;
     display: flex;
-    margin-top: 25px;
+    margin-left: 50px;
 }
 
 .reviewIcon {
-    width: 55px;
-    height: 55px;
+    width: 45px;
+    height: 45px;
 }
 
 .pagebtn {
-    width: 920px;
     text-align: center;
     margin-bottom: 20px;
 }
