@@ -54,51 +54,7 @@ const Header = ({isMain}) => {
 
         <Spacer />
         <ButtonGroup>
-          {!isLogin ? (
-            <>
-            <Box>
-              <Button ref={btnRef} onClick={onOpen} as={IconButton} icon={<CustomIcon />}
-                  isRound={true}
-                  variant='solid'
-                  aria-label='Options'
-                  bg='#FBFFFF'
-                  boxShadow='md'
-                  width="53px"
-                  height="53px"
-                  borderRadius="50%">
-              </Button>
-              <Drawer
-                isOpen={isOpen}
-                placement="right"
-                onClose={onClose}
-                finalFocusRef={btnRef}
-              >
-              <DrawerOverlay />
-              <DrawerContent>
-                <DrawerCloseButton />
-                <DrawerHeader>메뉴</DrawerHeader>
-                <DrawerBody>
-                  <VStack spacing={2} align="stretch">
-                    <Button variant="outline">항공권 검색</Button>
-                    <Button variant="outline">비행기 실시간 추척</Button>
-                    <Button variant="outline">항공사 리뷰</Button>
-                  </VStack>
-                </DrawerBody>
-      
-                <DrawerFooter>
-                  <Button as={Link} 
-                      to="/login" bg='#6b8aef' width="100%" color={'#ffffff'}>
-                    로그인
-                  </Button>
-                </DrawerFooter>
-              </DrawerContent>
-            </Drawer>
-            </Box>
-            </>
-          ) : (
-            <>
-              
-            <Box>
+        <Box>
               <Button ref={btnRef} onClick={onOpen} as={IconButton} icon={<CustomIcon />}
                   isRound={true}
                   variant='solid'
@@ -128,20 +84,26 @@ const Header = ({isMain}) => {
                     <Link to="/admin2">
                       <Button variant="outline">나라 및 공항 관리</Button>
                     </Link>
-                    
                   </VStack>
                 </DrawerBody>
       
                 <DrawerFooter>
-                  <Button onClick={() => logout()} bg='#6b8aef' width="100%" color={'#ffffff'}>
-                    로그아웃
-                  </Button>
+                {!isLogin ? (
+                      <><Button as={Link} 
+                          to="/login" bg='#6b8aef' width="100%" color={'#ffffff'}>
+                        로그인
+                      </Button></>
+                    )
+                    :
+                    (
+                      <><Button onClick={() => logout()} bg='#6b8aef' width="100%" color={'#ffffff'}>
+                        로그아웃
+                      </Button></>
+                    )}
                 </DrawerFooter>
               </DrawerContent>
             </Drawer>
             </Box>
-            </>
-          )}
         </ButtonGroup>
       </Flex>
     </div>

@@ -28,7 +28,7 @@ function Airplane({ onLoaded, isSearhMode }) {
           const material = child.material;
           if (material instanceof THREE.MeshStandardMaterial) {
             material.emissive.set('#aaaaaa'); 
-            material.emissiveIntensity = 0.15; 
+            material.emissiveIntensity = 0.1; 
           }
         }
       });
@@ -108,7 +108,7 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
         camera={{ position: [-1500, 1000, -2500], fov: 45, near: 0.1, far: 1000 }} 
         style={{ width: '100vw', height: '100vh', background: '#B0C9E600', zIndex: '1' }}
       >
-        <ambientLight intensity={0.9} color="#AEDEFF"/>
+        <ambientLight intensity={1.2} color="#c2e6ff"/>
         <pointLight position={[0, 0, 0]} intensity={0.5}/>
 
         <EffectComposer/>
