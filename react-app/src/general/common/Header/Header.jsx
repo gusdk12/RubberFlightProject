@@ -40,9 +40,9 @@ const Header = ({isMain}) => {
     navigate('/admin/edit')
   }
 
-  // const CouponPage = () => {
-  //   navigate('/admin/coupon')
-  // }
+  const couponPage = () => {
+    navigate('/coupon')
+  }
 
 
   const schedulePage= () => {
@@ -94,7 +94,7 @@ const Header = ({isMain}) => {
                             {roles.isAdmin && (
                               <>
                                 <Button variant="outline" onClick={adminPage}>나라 및 공항 관리</Button>
-                                <Button variant="outline">쿠폰 관리</Button>
+                                <Button variant="outline" onClick={couponPage}>쿠폰 관리</Button>
                               </>
                             )}
                             {roles.isMember && (
