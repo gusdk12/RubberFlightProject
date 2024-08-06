@@ -16,7 +16,6 @@ import ReviewUpdate from '../member/review/pages/ReviewUpdate';
 import ReviewWrite from '../member/review/pages/ReviewWrite';
 import FlightInfoList from '../member/flightInfo/pages/FlightInfoList';
 import FlightInfoDetail from '../member/flightInfo/pages/FlightInfoDetail';
-import { FlightInfoProvider } from '../member/flightInfo/contexts/FlightInfoContext';
 
 function RubberFlightApp() {
   return (
@@ -24,7 +23,6 @@ function RubberFlightApp() {
       <ChakraProvider>
         <BrowserRouter>
           <LoginContextProvider theme={customTheme}>
-          <FlightInfoProvider>
             <Routes>
               <Route path="/" element={<MainPage />} />
               <Route path="/login" element={<Login />} />
@@ -42,7 +40,6 @@ function RubberFlightApp() {
               <Route path="/selectJoin" element={<SelectJoin />} />
               <Route path="/selectJoin" element={<SelectJoin />} />
             </Routes>
-           </FlightInfoProvider>
           </LoginContextProvider>
         </BrowserRouter>
       </ChakraProvider>
