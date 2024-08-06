@@ -32,13 +32,11 @@ function RubberFlightApp() {
               <Route path="/join/admin" element={<JoinAdmin />} />
               <Route path="/search" element={<Search />} />
               <Route path="/admin2" element={<AdminPage2 />} />
-              <Route path="/member/mypage" element={<UserInfo />}>
+              <Route path="/mypage" element={<UserInfo />}>
                 <Route path="flight-info" element={<FlightInfoList />} />
                 <Route path="flight-info/:flightId" element={<FlightInfoDetail />} />
+                <Route path="review" element={<ReviewList />} />
               </Route>
-              <Route path='member/mypage/review' element={<ReviewList />} />
-              <Route path='member/mypage/review/write' element={<ReviewWrite />} />
-              <Route path='member/mypage/review/update' element={<ReviewUpdate />} />
               <Route path="/selectJoin" element={<SelectJoin />} />
               <Route path="/selectJoin" element={<SelectJoin />} />
             </Routes>

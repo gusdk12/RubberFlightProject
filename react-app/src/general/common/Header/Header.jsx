@@ -33,7 +33,7 @@ const Header = ({isMain}) => {
 
   const navigate = useNavigate();
   const myPage= () => {
-    navigate('/member/mypage')
+    navigate('/mypage')
   }
 
   const adminPage = () => {

@@ -1,0 +1,39 @@
+.rating {
+    display: flex; /* 플렉스 박스를 사용하여 정렬 */
+    flex-direction: row-reverse; /* 오른쪽부터 시작하도록 설정 */
+    align-items: center;
+    justify-content: center;
+}
+
+/* 기존 raido 없앰 */
+.rating > input[type="radio"] {
+    display: none;
+}
+
+/* 선택했을 때 */
+.rating > input:checked ~ label {
+    background-image: url(../../../assets/images/review/yellow_star.webp);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 30px;
+    height: 29px;
+    margin: 0 0;
+    margin-bottom: 2px;
+}
+
+/* 선택하지 않았을 때 */
+.rating > label {
+    display: inline-block;
+    background-image: url(../../../assets/images/review/grey_star.webp);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 30px;
+    height: 29px;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    margin: 0 0;
+    margin-bottom: 2px;
+}
+
+.question {
+    text-align: center;
+}
