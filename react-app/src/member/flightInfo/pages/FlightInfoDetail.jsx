@@ -3,7 +3,7 @@ import { FlightInfoContext } from '../contexts/FlightInfoContext';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import { Box, Flex, Heading, Button, Image, Text, Link } from '@chakra-ui/react'; 
 import img2 from '../../../assets/images/flightInfo/img2.webp';
-import FlightInfoItem from '../components/FlightItem';
+import FlightInfoItem from '../components/FlightInfoItem';
 import FlightDetails from '../components/FlightDetails';
 import { FlightInfoProvider } from '../contexts/FlightInfoContext';
 
