@@ -193,7 +193,6 @@ useEffect(() => {
         }
     };
 
-
     const handleSubmit = () =>{
         navigate('/search', { state: { 
             isRoundWay: isRoundWay ? true : false,
@@ -330,7 +329,7 @@ useEffect(() => {
                             className="dropdown-button" 
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                         >
-                            {`성인 ${adults}명, 소아 ${children}명, 유아 ${infants}명`}
+                            {`성인 ${adults}, 소아 ${children}, 유아 ${infants}`}
                         </button>
                         {isMenuOpen && (
                             <div className="menu-container">

@@ -245,7 +245,7 @@ const handleDecrement = (type) => {
     </div>
     <div className="input-group">
       <div id='depPart' className="autocomplete-container">
-          {isEditing.departure ? (
+      {isEditing.departure ? (
               <input
                   className='search'
                   type="text"
@@ -255,11 +255,11 @@ const handleDecrement = (type) => {
                       handleSearchTermChange(e);
                   }}
                   onFocus={() => handleFocus('departure')}
-                  placeholder="출발 공항"
+                  placeholder="출발"
               />
           ) : (
               <div className="editable-div" onClick={() => handleClickEdit('departure')}>
-                  <div className='airportName'>{departure || '출발 공항'}</div>
+                  <div className='airportName'>{departure || '출발'}</div>
                   <div className='selectArrow' />
               </div>
           )}
@@ -282,25 +282,25 @@ const handleDecrement = (type) => {
       </div>
 
         <div className="autocomplete-container" id='arrPart'>
-        {isEditing.departure ? (
+        {isEditing.arrival ? (
           <input
-              className='search'
               type="text"
+              className='search'
               value={searchTerm}
               onChange={(e) => {
                   setSearchTerm(e.target.value);
                   handleSearchTermChange(e);
               }}
-              onFocus={() => handleFocus('departure')}
-              placeholder="출발 공항"
+              onFocus={() => handleFocus('arrival')}
+              placeholder="도착"
           />
           ) : (
-              <div className="editable-div" onClick={() => handleClickEdit('departure')}>
-                  <div className='airportName'>{departure || '출발 공항'}</div>
+              <div className="editable-div" onClick={() => handleClickEdit('arrival')}>
+                  <div className='airportName'>{arrival || '도착'}</div>
                   <div className='selectArrow' />
               </div>
           )}
-          {focusedInput === 'departure' && searchTerm && (
+          {focusedInput === 'arrival' && searchTerm && (
               <div className="autocomplete-results" ref={autocompleteRef}>
                   {filteredAirports.length > 0 ? (
                       filteredAirports.map((airport) => (
@@ -334,7 +334,7 @@ const handleDecrement = (type) => {
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             value={passengers}
                         >
-                            {`성인 ${adults}명, 소아 ${children}명, 유아 ${infants}명`}
+                            {`성인 ${adults}, 소아 ${children}, 유아 ${infants}`}
                         </button>
                         {isMenuOpen && (
                             <div className="menu-container">
