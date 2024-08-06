@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -68,14 +69,15 @@ public class SecurityConfig {
         // Http basic 인증방식 disable
         http.httpBasic((auth) -> auth.disable());
 
+        // oauth2
+        http
+                .oauth2Login(Customizer.withDefaults());
 
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/member").hasAnyRole("MEMBER", "ADMIN")
-                        .anyRequest().permitAll()
-                );
+                        .requestMatchers("/").permitAll()
+                        .anyRequest().authenticated());
 
         // 세션 설정
         http
