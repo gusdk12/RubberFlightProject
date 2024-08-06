@@ -16,7 +16,7 @@ const FlightInfoCard = ({ flight, index, tabKey }) => {
       key={flight.id + tabKey} 
       className="flight-info-container flight-item"
       mb={10}
-      onClick={() => navigate(`/member/mypage/flight-info/${flight.id}`)} 
+      onClick={() => navigate(`/mypage/flight-info/${flight.id}`)} 
       initial={{ opacity: 0, x: -50, scale: 1 }}
       animate={{ opacity: 1, x: 0, scale: 1 }}
       whileHover={{ scale: 1.02 }}
