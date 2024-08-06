@@ -1,20 +1,18 @@
 .HeaderContainer{
-    width: 1000px;
-    height: 150px;
-    top: 40px;
+    width: 1300px;
+    height: 100px;
+    top: 15px;
     left: 50%;
     transform: translateX(-50%);
-    position: absolute;
+    position: relative;
     align-content: center;
     z-index: 1000;
+    margin-bottom: 20px;
     /* background-color: aqua; */
 }
-
-.HeaderContainer.scrolled {
-    position: fixed;
-    height: 60px;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0px 12px 5px -5px rgba(89, 89, 89, 0.148);
+.HeaderAbsolute{
+    top: 40px;
+    position: absolute;
+    height: 150px;
+    margin-bottom: 0px;
 }

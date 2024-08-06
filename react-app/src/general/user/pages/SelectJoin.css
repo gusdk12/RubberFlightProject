@@ -21,12 +21,12 @@ h2 {
     border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
-    background-color: #f0f0f0;
+    background-color: #75adea;
     transition: background-color 0.3s;
 }
 
 .join-button:hover {
-    background-color: #e0e0e0;
+    background-color: #007bff;
 }
 
 .join-button.selected {

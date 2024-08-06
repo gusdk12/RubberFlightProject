@@ -3,6 +3,7 @@ import { InputGroup, Input, InputRightElement, Button, Select, FormControl, Form
 import CustomFileInput from '../Join/CustomFileInput';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // 비밀번호 입력 필드 컴포넌트
 const PasswordInput = ({ placeholder, name, value, onChange, onBlur }) => {
@@ -40,6 +41,8 @@ const JoinForm = ({ join }) => {
     const [tel1, setTel1] = React.useState('');
     const [tel2, setTel2] = React.useState('');
     const [tel3, setTel3] = React.useState('');
+    const navigate = useNavigate(); 
+
 
     // 사용자 이름 입력값 변경 핸들러
     const handleUsernameChange = (e) => setUsername(e.target.value);
@@ -63,6 +66,7 @@ const JoinForm = ({ join }) => {
     const handleTel1Change = (e) => setTel1(e.target.value);
     const handleTel2Change = (e) => setTel2(e.target.value);
     const handleTel3Change = (e) => setTel3(e.target.value);
+
 
     // 사용자 이름 중복 확인
     const checkUsername = async () => {
@@ -236,8 +240,33 @@ const JoinForm = ({ join }) => {
         e.target.reset();
     };
 
+    const home = () => {
+        navigate("/");
+    }
+
     return (
-        <Box className="form" maxWidth="480px" mx="auto" p={6} bg="#e6eaf4" borderRadius="md" boxShadow="md" padding={10}>
+        <>
+       <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: 100
+      }}
+    >
+      <div className='homeBtn'
+        style={{
+          backgroundImage: 'url(/images/icons/commercial-plane.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          width: '75px',
+          height: '75px',
+          cursor: 'pointer'
+        }}
+        onClick={home}
+      ></div>
+    </div>
+        <Box className="form" maxWidth="480px" mx="auto" p={6} bg="#ffffff" borderRadius="md" boxShadow="md" padding={10}>
             <h2 className="login-title" style={{ textAlign: 'center', fontSize: '40px' }}>Join</h2>
 
             <form className="login-form" onSubmit={onJoin}>
@@ -393,6 +422,7 @@ const JoinForm = ({ join }) => {
                 </Button>
             </form>
         </Box>
+        </>
     );
 };
 

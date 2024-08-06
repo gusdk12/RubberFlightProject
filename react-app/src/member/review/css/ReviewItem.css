@@ -1,0 +1,115 @@
+*{
+    font-family: 'KIMM_Bold';
+}
+.reviewList {
+    background: none;
+    background-image: url(../img/reviewlist2.webp);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.rate {
+    width: 30px;
+}
+
+.writedate {
+    margin-right: 20px;
+}
+
+.airlineName {
+    margin-left: 20px;
+    margin-right: 180px;
+}
+
+.star-ratings-base {
+    display: flex;
+}
+
+img {
+    width: 27px;
+}
+
+.total_rate{
+    width: 35px;
+}
+
+.reviewHead {
+    margin-top: 30px;
+}
+
+.showbtn {
+    width: 100px;
+    height: 30px;
+    margin-left: 585px;
+    margin-top: -34px;
+    display: block;
+    background-color: rgb(147, 197, 247);
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.showbtn:hover{
+    background-color: rgb(99, 173, 247);
+}
+
+.reviewDetail {
+    width: 100%;
+    height: 100%;
+    background-color: lightgray;
+}
+
+.detailTitle{
+    font-size: 50px;
+}
+
+.userInfo {
+    margin-left: 100px;
+}
+
+.flightInfo{
+    margin-left: 50px;
+}
+
+.review_btn {
+    text-align: right;
+    margin: 0 40px 60px 0;
+}
+
+.modalbtn {
+    font-size: 20px;
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.updatebtn {
+    margin-right: 20px;
+    background-color: rgb(140, 243, 243);
+}
+.updatebtn:hover {
+    background-color: rgb(126, 236, 236);
+}
+
+.deletebtn {
+    background-color: rgb(241, 147, 166);
+}
+
+.deletebtn:hover {
+    background-color: rgb(243, 121, 145);
+}
+
+.reviewTitle {
+    margin: 80px 40px 80px 40px;
+}
+
+.review_container{
+    background: linear-gradient(to bottom, #C8E7F4, #83C9E7, #44ACD9);
+}
+
+.review_content {
+    margin: 50px 90px;
+    border: 2px dotted #2aa7dc;
+    padding: 30px
+}
