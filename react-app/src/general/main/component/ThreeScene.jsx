@@ -36,10 +36,6 @@ function Airplane({ onLoaded, isSearhMode }) {
   });
 
   useFrame((state, delta) => {
-    
-    const targetPosition = isLoaded ? [0, 0, 0] : [0, -100, 0];
-    ref.current.position.lerp(new THREE.Vector3(...targetPosition), delta * 5);
-
     const sideMovement = Math.cos(time * 0.8) * 0.5;
 
     time += delta;
@@ -123,3 +119,4 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
 }
 
 export default ThreeScene;
+
