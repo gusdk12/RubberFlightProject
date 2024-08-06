@@ -1,12 +1,21 @@
+.all-con {
+    width: 1300px;
+    height: 100vh;
+    border: 1px solid red;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+}
+
 .countryInfo {
     background-color: white;
     border-radius: 10px;
     width: 300px;
     height: 500px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-    position: fixed;
+    /* position: fixed;
     bottom: 250px;
-    left: 240px;
+    left: 240px; */
     display: flex;
     flex-direction: column;
 }
