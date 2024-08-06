@@ -8,6 +8,7 @@ import JoinAdmin from '../general/user/pages/JoinAdmin';
 import Search from '../general/reserve/pages/search';
 import Reserve from '../general/reserve/pages/reserve';
 import customTheme from '../general/user/components/Join/customTheme'
+import AdminPage from '../admin/flightAirport/pages/AdminPage';
 import AdminPage2 from '../admin/flightAirport/pages/AdminPage2';
 import SelectJoin from '../general/user/pages/SelectJoin';
 import Admin from '../general/user/pages/admin';
@@ -21,6 +22,7 @@ import FlightInfoDetail from '../member/flightInfo/pages/FlightInfoDetail';
 import { FlightInfoProvider } from '../member/flightInfo/contexts/FlightInfoContext';
 import CouponPage from '../admin/coupon/pages/CouponPage';
 import { CouponProvider } from '../admin/coupon/contexts/CouponContext';
+import LiveFlight from '../general/live/pages/LiveFlight';
 
 function RubberFlightApp() {
   return (
@@ -35,6 +37,7 @@ function RubberFlightApp() {
               <Route path="/join/admin" element={<JoinAdmin />} />
               <Route path="/search" element={<Search />} />
                 <Route path="/reserve/:id" element={<Reserve/>}/>
+              <Route path='/admin' element={<AdminPage/>}/>
               <Route path="/admin/edit" element={<AdminPage2 />} />
               <Route path="/schedule" element={<ScheduleMain />} />
               <Route path="/coupon" element={<CouponProvider><CouponPage/></CouponProvider>} />
@@ -45,6 +48,7 @@ function RubberFlightApp() {
               </Route>
               <Route path="/selectJoin" element={<SelectJoin />} />
               <Route path="/selectJoin" element={<SelectJoin />} />
+              <Route path="/live" element={<LiveFlight />} />
             </Routes>
           </LoginContextProvider>
         </BrowserRouter>

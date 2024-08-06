@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { getCountryInfo, getSafeInfo } from '../../../apis/countryApis';
+import { getCountryInfo } from '../../../apis/countryApis';
 import { getAirportInfo } from '../../../apis/airportApis';
 import { Input, Button } from '@chakra-ui/react';
-import { Canvas } from '@react-three/fiber';
-import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
 import '../CSS/AdminPage2.css';
 import '../../../Global/font.css';
 import Header from '../../../general/common/Header/Header';
 import DelAirport from '../../../assets/images/admin/trash.webp'
 import Airplain from '../../../assets/images/admin/airplane.webp'
+import Airport from '../../../assets/images/admin/airport.webp'
 
 const AdminPage2 = () => {
-    // const [isLogin, roles] = useContext(LoginContext)
     const [countrys, setCountry] = useState([]);
     const [countryIsoInput, setCountryIsoInput] = useState("");
     const [selectedCountry, setSelectedCountry] = useState(null);
@@ -24,6 +22,7 @@ const AdminPage2 = () => {
     useEffect(() => {
         document.body.style.backgroundColor = '#dde6f5';
         document.body.style.overflowY = 'scroll';
+        document.body.style.overflowX = 'hidden';
     }, []);
 
     // 전체 나라 목록 가져오기
@@ -146,9 +145,9 @@ const AdminPage2 = () => {
 
             if (response.status === 200) {
                 window.alert(selectedCountry.countryName + '삭제 성공');
-                await fetchCountries(); // 목록을 다시 가져와서 UI를 업데이트합니다.
+                await fetchCountries(); 
                 setSelectedCountry(null);
-                setAirport([]); // 공항 목록 초기화
+                setAirport([]); 
             } else {
                 window.alert('삭제 실패');
             }
@@ -197,7 +196,7 @@ const AdminPage2 = () => {
 
             if (saveResponse.status === 200) {
                 window.alert('저장 성공');
-                await fetchAirportsByCountry(selectedCountry.id); // 선택한 나라의 공항 목록을 다시 가져옴
+                await fetchAirportsByCountry(selectedCountry.id);
             } else {
                 window.alert('저장 실패');
             }
@@ -236,9 +235,6 @@ const AdminPage2 = () => {
     };
 
     return (
-        <>
-        {
-            // isLogin && roles.isAdmin &&
             <>
             <Header isMain={true}/>
             <div className='all-con'>
@@ -290,16 +286,25 @@ const AdminPage2 = () => {
                     </div>
 
                     <div className='lataBox'>
-                        {airports.map(airport => (
-                            <div
-                                key={airport.airportId}
-                                className={`ai ${selectedAirport && selectedAirport.airportIso === airport.airportIso ? 'active' : ''}`}
-                                onClick={() => handleAirportClick(airport.airportIso)}
-                            >
-                                {airport.airportIso}
-                            </div>
-                        ))}
+                        {airports.length > 0 ? (
+                            airports.map(airport => (
+                                <div
+                                    key={airport.airportId}
+                                    className={`ai ${selectedAirport && selectedAirport.airportIso === airport.airportIso ? 'active' : ''}`}
+                                    onClick={() => handleAirportClick(airport.airportIso)}
+                                >
+                                    {airport.airportIso}
+                                </div>
+                            ))
+                        ) : (
+                            <img 
+                                src={Airport} 
+                                id='airportIMG' 
+                                alt="airport Icon" 
+                            />
+                        )}
                     </div>
+
                     
                     {selectedAirport ? (
                         <div className="airportDetails">
@@ -331,7 +336,7 @@ const AdminPage2 = () => {
                         </div>
                     ) : (
                         <div className="airportDetailText">
-                            <p>공항을 추가해주세요.</p>
+                            <p>공항을 추가해주세요</p>
                         </div>
                     )}
 
@@ -341,8 +346,6 @@ const AdminPage2 = () => {
                     />
                 </div>
             </div>
-            </>
-        }
         </>
     );
 };
