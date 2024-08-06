@@ -75,7 +75,8 @@ const Header = ({isMain}) => {
                   boxShadow='md'
                   width="53px"
                   height="53px"
-                  borderRadius="50%">
+                  borderRadius="50%"
+                  pointerEvents={"all"}>
               </Button>
               <Drawer
                 isOpen={isOpen}
