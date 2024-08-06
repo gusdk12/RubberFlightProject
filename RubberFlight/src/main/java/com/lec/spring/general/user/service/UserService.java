@@ -2,6 +2,7 @@ package com.lec.spring.general.user.service;
 
 import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
 
+    @Transactional
+    public User save(User user) {
+        return userRepository.save(user);
+    }
 
     public User findByUsername(String username){
         return userRepository.findByUsername(username.toUpperCase());

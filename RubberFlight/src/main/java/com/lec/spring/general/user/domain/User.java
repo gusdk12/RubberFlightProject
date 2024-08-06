@@ -1,5 +1,6 @@
 package com.lec.spring.general.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lec.spring.admin.coupon.domain.Coupon;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,7 @@ public class User {
     @Column(nullable = true)
     private String image;
 
-//    @ManyToMany
-//    private List<Coupon> coupons; // 사용자가 가진 쿠폰들
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<Coupon> coupons; // 사용자가 가진 쿠폰들
 }

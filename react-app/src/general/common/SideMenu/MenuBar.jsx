@@ -18,11 +18,11 @@ const MenuBar = () => {
     <>
       <Box fontSize={25} className="menuBox">
         <Text className="menutitle">My Page</Text>
-        <div className="menulist"><Link>내 정보</Link></div>
-        <div className="menulist"><Link>예약 정보</Link></div>
+        <div className="menulist"><Link to={'/member/mypage'}>내 정보</Link></div>
+        <div className="menulist"><Link to={'/member/mypage/flight-info'}>예약 정보</Link></div>
         <div className="menulist"><Link to={'/member/mypage/review'}>리뷰 내역</Link></div>
-        <div className="menulist"><Link>일정</Link></div>
-        <div className="menulist"><Link>체크리스트</Link></div>
+        <div className="menulist"><Link to={'/member/mypage'}>일정</Link></div>
+        <div className="menulist"><Link to={'/member/mypage'}>체크리스트</Link></div>
       </Box>
     </>
   );
