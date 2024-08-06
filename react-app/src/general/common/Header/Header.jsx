@@ -39,8 +39,10 @@ const Header = ({isMain}) => {
   const adminPage = () => {
     navigate('/admin2')
   }
-
-
+  const schedulePage= () => {
+    navigate('/schedule')
+  }
+  
   const backgroundImageUrl = process.env.PUBLIC_URL + '/images/icons/commercial-plane.png';
 
   return (
@@ -84,7 +86,7 @@ const Header = ({isMain}) => {
                     {isLogin ? (
                           <>
                           <Button variant="outline" onClick={myPage}>마이페이지</Button>
-                          <Button variant="outline">일정짜기</Button>
+                          <Button variant="outline" onClick={schedulePage}>일정짜기</Button>
                           <Divider my={5}/>
                           </>
                         )

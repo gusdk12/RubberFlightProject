@@ -15,6 +15,7 @@ import UserInfo from '../member/user/pages/UserInfo';
 import ReviewList from '../member/review/pages/ReviewList';
 import ReviewUpdate from '../member/review/pages/ReviewUpdate';
 import ReviewWrite from '../member/review/pages/ReviewWrite';
+import ScheduleMain from '../member/schedule/pages/ScheduleMain';
 import FlightInfoList from '../member/flightInfo/pages/FlightInfoList';
 import FlightInfoDetail from '../member/flightInfo/pages/FlightInfoDetail';
 import { FlightInfoProvider } from '../member/flightInfo/contexts/FlightInfoContext';
@@ -33,6 +34,7 @@ function RubberFlightApp() {
               <Route path="/search" element={<Search />} />
                 <Route path="/reserve/:id" element={<Reserve/>}/>
               <Route path="/admin2" element={<AdminPage2 />} />
+              <Route path="/schedule" element={<ScheduleMain />} />
               <Route path="/mypage" element={<UserInfo />}>
                 <Route path="flight-info" element={<FlightInfoList />} />
                 <Route path="flight-info/:flightId" element={<FlightInfoProvider><FlightInfoDetail/></FlightInfoProvider>} />
