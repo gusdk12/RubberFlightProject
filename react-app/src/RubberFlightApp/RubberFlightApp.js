@@ -17,6 +17,7 @@ import ReviewUpdate from '../member/review/pages/ReviewUpdate';
 import ReviewWrite from '../member/review/pages/ReviewWrite';
 import FlightInfoList from '../member/flightInfo/pages/FlightInfoList';
 import FlightInfoDetail from '../member/flightInfo/pages/FlightInfoDetail';
+import { FlightInfoProvider } from '../member/flightInfo/contexts/FlightInfoContext';
 
 function RubberFlightApp() {
   return (
@@ -34,7 +35,7 @@ function RubberFlightApp() {
               <Route path="/admin2" element={<AdminPage2 />} />
               <Route path="/mypage" element={<UserInfo />}>
                 <Route path="flight-info" element={<FlightInfoList />} />
-                <Route path="flight-info/:flightId" element={<FlightInfoDetail />} />
+                <Route path="flight-info/:flightId" element={<FlightInfoProvider><FlightInfoDetail/></FlightInfoProvider>} />
                 <Route path="review" element={<ReviewList />} />
               </Route>
               <Route path="/selectJoin" element={<SelectJoin />} />

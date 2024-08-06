@@ -11,6 +11,10 @@ const FlightInfoDetail = () => {
   const { flightId } = useParams(); 
   const { flightInfo, setFlightId } = useContext(FlightInfoContext); 
   const navigate = useNavigate(); 
+
+  useEffect(() => {
+    document.body.style.overflowY = 'scroll';
+  }, []);
  
   useEffect(() => {
     setFlightId(flightId); 

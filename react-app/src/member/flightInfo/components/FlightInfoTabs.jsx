@@ -3,10 +3,10 @@ import { Tabs, Tab, TabList, TabPanels, TabPanel, Text } from '@chakra-ui/react'
 import FlightInfoCard from './FlightInfoCard';
 
 const FlightInfoTabs = ({ pastFlights, upcomingFlights }) => {
-  const [tabIndex, setTabIndex] = useState(0); // 현재 탭의 인덱스를 관리합니다.
+  const [tabIndex, setTabIndex] = useState(0); 
 
   const handleTabChange = (index) => {
-    setTabIndex(index); // 탭 인덱스를 업데이트하여 애니메이션을 트리거합니다.
+    setTabIndex(index); 
   };
 
   return (
