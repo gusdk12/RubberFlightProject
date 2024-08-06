@@ -109,3 +109,17 @@ VALUES (4, "김포", "GMP", " 제주", "CJU", 95640, "7c109", "2024-07-20T09:00:
 
 INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name)
 VALUES (5, "인천", "ICN", "나리타", "NRT", 182930, "bx166", "2024-07-21T15:50:00", "2024-07-21T18:10:00", "air busan");
+
+
+# 쿠폰
+INSERT INTO FT_COUPON (code, percent, description, airline_name)
+VALUES ('COUPON2024', 20, '2024년 특별 할인 쿠폰', 'All');
+
+INSERT INTO FT_COUPON (code, percent, description, airline_name)
+VALUES ('SUMMER2024', 15, '여름 한정 할인 쿠폰', 'All');
+
+INSERT INTO FT_COUPON (code, percent, description, airline_name)
+VALUES ('WINTER2024', 25, '겨울 할인 쿠폰', 'All');
+
+INSERT INTO FT_COUPON (code, percent, description, airline_name)
+VALUES ('SPRING2024', 10, '봄 맞이 할인 쿠폰', 'All');

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Button, ButtonGroup, CheckboxIcon, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, Heading, IconButton, Image, Menu, MenuButton, MenuItem, MenuList, Spacer, VStack, background, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, CheckboxIcon, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, Heading, IconButton, Image, Menu, MenuButton, MenuItem, MenuList, Spacer, VStack, background, useDisclosure } from '@chakra-ui/react';
 import { LoginContext } from '../../user/contexts/LoginContextProvider';
 import '../CSS/Header.css';
 import { CloseIcon, HamburgerIcon, StarIcon, ViewIcon } from '@chakra-ui/icons';
@@ -33,7 +33,11 @@ const Header = ({isMain}) => {
 
   const navigate = useNavigate();
   const myPage= () => {
-    navigate('/member/mypage')
+    navigate('/mypage')
+  }
+
+  const adminPage = () => {
+    navigate('/admin2')
   }
 
 
@@ -54,9 +58,7 @@ const Header = ({isMain}) => {
 
         <Spacer />
         <ButtonGroup>
-          {!isLogin ? (
-            <>
-            <Box>
+        <Box>
               <Button ref={btnRef} onClick={onOpen} as={IconButton} icon={<CustomIcon />}
                   isRound={true}
                   variant='solid'
@@ -79,65 +81,39 @@ const Header = ({isMain}) => {
                 <DrawerHeader>메뉴</DrawerHeader>
                 <DrawerBody>
                   <VStack spacing={2} align="stretch">
+                    {isLogin ? (
+                          <>
+                          <Button variant="outline" onClick={myPage}>마이페이지</Button>
+                          <Button variant="outline">일정짜기</Button>
+                          <Divider my={5}/>
+                          </>
+                        )
+                        :
+                        (<></>)}
                     <Button variant="outline">항공권 검색</Button>
                     <Button variant="outline">비행기 실시간 추척</Button>
                     <Button variant="outline">항공사 리뷰</Button>
+                    <Button variant="outline" onClick={adminPage}>나라 및 공항 관리</Button>
                   </VStack>
                 </DrawerBody>
       
                 <DrawerFooter>
-                  <Button as={Link} 
-                      to="/login" bg='#6b8aef' width="100%" color={'#ffffff'}>
-                    로그인
-                  </Button>
+                {!isLogin ? (
+                      <><Button as={Link} 
+                          to="/login" bg='#6b8aef' width="100%" color={'#ffffff'}>
+                        로그인
+                      </Button></>
+                    )
+                    :
+                    (
+                      <><Button onClick={() => logout()} bg='#6b8aef' width="100%" color={'#ffffff'}>
+                        로그아웃
+                      </Button></>
+                    )}
                 </DrawerFooter>
               </DrawerContent>
             </Drawer>
             </Box>
-            </>
-          ) : (
-            <>
-              
-            <Box>
-              <Button ref={btnRef} onClick={onOpen} as={IconButton} icon={<CustomIcon />}
-                  isRound={true}
-                  variant='solid'
-                  aria-label='Options'
-                  bg='#FBFFFF'
-                  boxShadow='md'
-                  width="53px"
-                  height="53px"
-                  borderRadius="50%">
-              </Button>
-              <Drawer
-                isOpen={isOpen}
-                placement="right"
-                onClose={onClose}
-                finalFocusRef={btnRef}
-              >
-              <DrawerOverlay />
-              <DrawerContent>
-                <DrawerCloseButton />
-                <DrawerHeader>메뉴</DrawerHeader>
-                <DrawerBody>
-                  <VStack spacing={2} align="stretch">
-                    <Button variant="outline">마이페이지</Button>
-                    <Button variant="outline">항공권 검색</Button>
-                    <Button variant="outline">비행기 실시간 추척</Button>
-                    <Button variant="outline">항공사 리뷰</Button>
-                  </VStack>
-                </DrawerBody>
-      
-                <DrawerFooter>
-                  <Button onClick={() => logout()} bg='#6b8aef' width="100%" color={'#ffffff'}>
-                    로그아웃
-                  </Button>
-                </DrawerFooter>
-              </DrawerContent>
-            </Drawer>
-            </Box>
-            </>
-          )}
         </ButtonGroup>
       </Flex>
     </div>

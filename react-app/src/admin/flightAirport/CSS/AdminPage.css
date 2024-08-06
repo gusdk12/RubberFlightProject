@@ -1,0 +1,131 @@
+.contentWrapper {
+    z-index: 1;
+    padding: 40px;
+}
+
+.topBox {
+    display: flex;
+    justify-content: space-around;
+    padding-left: 68px;
+    padding-right: 68px;
+    padding-top: 30px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    height: 80%;
+    width: 1300px;
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.arrow {
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%); 
+}
+
+.arrow img {
+    width: 50px; 
+    height: auto; 
+}
+
+.countryBox, .airportBox {
+    padding: 10px;
+    width: 540px;
+    height: 500px;
+    border-radius: 5px;
+    /* border: 2px solid #B0C9E6; */
+}
+
+.boxTitle {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#countryInput, #airportInput {
+    width: 80%;
+    float: left;
+}
+
+#countryButton, #airportButton{
+    width: 20%;
+    float: left;
+}
+
+.getList {
+    border: 1px solid #D5E1EB;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 85px;
+    display: table;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.thead, .tbody {
+    display: table-header-group;
+    display: block;
+}
+
+.ct-con, .countryItem, .airportItem {
+    display: flex;
+    width: 100%; /* flex 기준 비율 일치 */
+}
+
+.ct1, .cl1, .ct2, .cl2 {
+    border: 1px solid #D5E1EB;
+    padding: 10px;
+    text-align: center;
+}
+
+.ct1:nth-child(1), .cl1:nth-child(1) {
+    flex: 0 0 18%; 
+}
+
+.ct1:nth-child(2), .cl1:nth-child(2) {
+    flex: 0 0 18%; 
+}
+
+.ct1:nth-child(3), .cl1:nth-child(3) {
+    flex: 0 0 40%;
+}
+
+.ct1:nth-child(4), .cl1:nth-child(4) {
+    flex: 0 0 24%;
+}
+
+.ct2:nth-child(1), .cl2:nth-child(1) {
+    flex: 0 0 20%; 
+}
+
+.ct2:nth-child(2), .cl2:nth-child(2) {
+    flex: 0 0 60%; 
+}
+
+.ct2:nth-child(3), .cl2:nth-child(3) {
+    flex: 0 0 20%;
+}
+
+.tbody {
+    overflow-y: auto;
+    max-height: 400px;
+}
+
+.tbody::-webkit-scrollbar {
+    display: none; 
+}
+
+.tbody {
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+
+.countryItem.active {
+    background-color: #f0f8ff;
+}

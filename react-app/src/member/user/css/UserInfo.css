@@ -1,0 +1,7 @@
+.info_body {
+    width: 1300px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    padding-top: 190px;
+}

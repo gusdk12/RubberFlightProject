@@ -196,7 +196,7 @@ const LoginContextProvider = ({children}) => {
    *    roles 세팅
    */
   const loginSetting = (userData, accessToken) => {
-    const {id, username, role} = userData;
+    const {id, username, role, name} = userData;
 
     // console.log(`
     // loginSetting() 
@@ -213,7 +213,7 @@ const LoginContextProvider = ({children}) => {
     setIsLogin(true);
 
     // 유저 정보 세팅
-    setUserInfo({id, username, role});
+    setUserInfo({id, username, role, name});
 
     // 권한정보 세팅
     // role => 'ROLE_MEMBER', 'ROLE_MEMBER,ROLE_ADMIN'  <- 하나의 문자열로 되어 있는 형태

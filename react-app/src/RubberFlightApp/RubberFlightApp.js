@@ -8,27 +8,40 @@ import JoinAdmin from '../general/user/pages/JoinAdmin';
 import Search from '../general/reserve/pages/search';
 import Reserve from '../general/reserve/pages/reserve';
 import customTheme from '../general/user/components/Join/customTheme'
-import AdminPage from '../general/admin/AdminPage';
+import AdminPage2 from '../admin/flightAirport/pages/AdminPage2';
 import SelectJoin from '../general/user/pages/SelectJoin';
+import Admin from '../general/user/pages/admin';
+import UserInfo from '../member/user/pages/UserInfo';
+import ReviewList from '../member/review/pages/ReviewList';
+import ReviewUpdate from '../member/review/pages/ReviewUpdate';
+import ReviewWrite from '../member/review/pages/ReviewWrite';
+import FlightInfoList from '../member/flightInfo/pages/FlightInfoList';
+import FlightInfoDetail from '../member/flightInfo/pages/FlightInfoDetail';
 
 function RubberFlightApp() {
   return (
     <div>
       <ChakraProvider>
-      <BrowserRouter>
-        <LoginContextProvider theme={customTheme}>
-        <Routes>
-          <Route path="/" element={<MainPage />}/>
-          <Route path="/login" element={<Login />} />
-          <Route path="/join/user" element={<Join />} />
-          <Route path="/join/admin" element={<JoinAdmin />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/reserve/:id" element={<Reserve/>}/>
-          <Route path="/admin" element={<AdminPage/>}/>
-          <Route path="/selectJoin" element={<SelectJoin/>}/>
-        </Routes>
-      </LoginContextProvider>
-      </BrowserRouter>
+        <BrowserRouter>
+          <LoginContextProvider theme={customTheme}>
+            <Routes>
+              <Route path="/" element={<MainPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/join/user" element={<Join />} />
+              <Route path="/join/admin" element={<JoinAdmin />} />
+              <Route path="/search" element={<Search />} />
+                <Route path="/reserve/:id" element={<Reserve/>}/>
+              <Route path="/admin2" element={<AdminPage2 />} />
+              <Route path="/mypage" element={<UserInfo />}>
+                <Route path="flight-info" element={<FlightInfoList />} />
+                <Route path="flight-info/:flightId" element={<FlightInfoDetail />} />
+                <Route path="review" element={<ReviewList />} />
+              </Route>
+              <Route path="/selectJoin" element={<SelectJoin />} />
+              <Route path="/selectJoin" element={<SelectJoin />} />
+            </Routes>
+          </LoginContextProvider>
+        </BrowserRouter>
       </ChakraProvider>
     </div>
   );

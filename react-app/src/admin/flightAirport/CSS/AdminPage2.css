@@ -1,0 +1,169 @@
+.all-con {
+    width: 1250px;
+    left: 50%;
+    top: 190px;
+    height: calc(100vh - 190px);
+    transform: translateX(-50%);
+    position: relative;
+}
+
+.countryInfo {
+    background-color: white;
+    border-radius: 10px;
+    width: 300px;
+    height: 500px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+}
+
+.countryList {
+    flex: 1; 
+    overflow-y: auto; 
+}
+
+.countryList::-webkit-scrollbar {
+    display: none; /* 웹킷 기반 브라우저에서 스크롤바 숨기기 */
+}
+
+.countryDetails {
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.countryDetails.active {
+    background-color: #dde6f5d7;
+    color: black;
+}
+
+.lataBox {
+    font-family: "KIMM_Light";
+    background-color: white;
+    width: 180px;
+    height: 300px;
+    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+
+    overflow-y: auto;
+
+    position: absolute;
+    left: -60px;
+    top: 80px;
+}
+
+.lataBox::-webkit-scrollbar {
+    display: none; 
+}
+
+.lataBox .ai {
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 10px;
+
+    cursor: pointer;
+}
+
+.ai.active {
+    color: #618eddd2; /* 원하는 색상으로 변경 */
+    font-weight: bold; /* 강조를 위해 글씨를 굵게 설정 */
+    background-color: #ffffff; /* 배경 색상 (선택 시) */
+}
+
+
+.airportInfo {
+    background-color: white;
+    border-radius: 10px;
+    width: 800px;
+    height: 600px;
+    padding-top: 100px;
+    padding-left: 200px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+
+    position: fixed;
+    right: 0;
+}
+
+.airportInfo .airName {
+    font-size: 50px;
+    margin-bottom: 30px;
+}
+
+/* .airportDetails {
+    border: 1px solid red;
+} */
+
+.airportTable tr {
+    height: 50px; 
+}
+
+.airportTable td {
+    padding: 10px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.airportTable .tdd{
+    color: #2A4B7C;
+    padding-left: 25px;
+}
+
+.tableHeader {
+    font-weight: bold; /* 굵은 글씨 */
+    width: 30%; 
+}
+
+/* 검색 관련 css */
+
+.countryPlus, .airportPlus {
+    display: flex;
+    align-items: center;
+}
+
+.countryPlus {
+    padding: 20px;
+}
+
+.airportPlus {
+    position: absolute;
+    z-index: 1;
+    top: 20px;
+    left: 120px;
+}
+
+.countryPlus #countryInput,
+.airportPlus #airportInput {
+    font-family: "KIMM_Light";
+    font-size: 14px;
+    font-weight: 700;
+    margin-right: 10px; 
+}
+
+.countryPlus #countryButton,
+.airportPlus #airportButton { 
+    background-color: #d7e4faa9;
+}
+
+/* 삭제 */
+#delCountryIcon {
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    right: 0;
+    bottom: -40px;
+    cursor: pointer;
+}
+
+#delAirportIcon {
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    cursor: pointer;
+}

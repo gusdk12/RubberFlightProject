@@ -1,0 +1,42 @@
+.container {
+    padding-top: 190px;
+}
+
+.subject {
+    font-size: 30px;
+    display: flex;
+    margin-left: 50px;
+}
+
+.reviewIcon {
+    width: 45px;
+    height: 45px;
+}
+
+.pagebtn {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.page_btn {
+    text-align: center;
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+    background-color: rgb(147, 197, 247);
+    border-radius: 5px;
+}
+
+.prevbtn, .nextbtn {
+    height: 30px;
+    width: 40px;
+    margin-right: 5px;
+}
+
+.arrowLeft {
+   margin-right: 30px; 
+}
+
+.arrowRight {
+    margin-left: 20px;
+}
