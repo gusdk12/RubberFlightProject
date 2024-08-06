@@ -13,15 +13,17 @@ const FlightInfoCard = ({ flight, index, tabKey }) => {
 
   return (
     <MotionBox
-      key={flight.id + tabKey} // tabKey를 추가하여 애니메이션 트리거
+      key={flight.id + tabKey} 
       className="flight-info-container flight-item"
       mb={10}
       onClick={() => navigate(`/member/mypage/flight-info/${flight.id}`)} 
-      initial={{ opacity: 0, x: -50 }} // 초기 상태
-      animate={{ opacity: 1, x: 0 }} // 애니메이션 상태
-      exit={{ opacity: 0, x: 50 }} // 퇴장 애니메이션 상태
+      initial={{ opacity: 0, x: -50, scale: 1 }}
+      animate={{ opacity: 1, x: 0, scale: 1 }}
+      whileHover={{ scale: 1.02 }}
+      exit={{ opacity: 0, x: 50 }} 
       transition={{
         default: { duration: 0.5, delay: index * 0.1 },
+        scale: { duration: 0.2 }
       }}
     >
       {/* 항공편 출발지 및 도착지 정보 */}
