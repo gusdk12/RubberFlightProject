@@ -35,8 +35,8 @@ public class ReserveController {
     public ResponseEntity<?> searchFlights(@RequestParam String iataCode,
                                            @RequestParam String depDate,
                                            @RequestParam String arrIataCode,
-                                           @RequestParam(required = false) String arrDate,
-                                           @RequestParam String mode) {
+                                           @RequestParam(required = false) String arrDate
+                                          ) {
 
         String type = "departure";
 
@@ -50,8 +50,8 @@ public class ReserveController {
                 ? fetchFlights(arrIataCode, iataCode, arrDate, type)
                 : Collections.emptyList();
 
-        if ("combine".equals(mode) && !outboundFlights.isEmpty() && !inboundFlights.isEmpty()) {
-            List<Map<String, Flight>> combinations = createFlightCombinations(outboundFlights, inboundFlights);
+        if (!outboundFlights.isEmpty() && !inboundFlights.isEmpty()) {
+            List<Map<String, Object>> combinations = createFlightCombinations(outboundFlights, inboundFlights);
             return new ResponseEntity<>(Collections.singletonMap("combinations", combinations), HttpStatus.OK);
         }
 
@@ -107,11 +107,12 @@ public class ReserveController {
         return flights;
     }
 
-    private List<Map<String, Flight>> createFlightCombinations(List<Flight> outboundFlights, List<Flight> inboundFlights) {
-        List<Map<String, Flight>> combinations = new ArrayList<>();
+    private List<Map<String, Object>> createFlightCombinations(List<Flight> outboundFlights, List<Flight> inboundFlights) {
+        List<Map<String, Object>> combinations = new ArrayList<>();
         for (Flight outbound : outboundFlights) {
             for (Flight inbound : inboundFlights) {
-                Map<String, Flight> combination = new HashMap<>();
+                Map<String, Object> combination = new HashMap<>();
+                combination.put("id", outbound.getId() + "_" + inbound.getId());
                 combination.put("outbound", outbound);
                 combination.put("inbound", inbound);
                 combinations.add(combination);
@@ -121,8 +122,11 @@ public class ReserveController {
     }
 
 
-    // 디테일 페이지(api 계속 가지고 있고, 사용자가 작성한 것도 필요해)
+    // 디테일 페이지
+//    @GetMapping("/reserve/{id}")
+//    public ResponseEntity<?> reserve(@PathVariable String id) {
+//        Flight flight = reserveService.
+//    }
 
-    // 결제 페이지(db 에 저장)
 }
 
