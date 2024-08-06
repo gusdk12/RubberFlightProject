@@ -2,6 +2,10 @@ package com.lec.spring.admin.coupon.controller;
 
 import com.lec.spring.admin.coupon.domain.Coupon;
 import com.lec.spring.admin.coupon.service.CouponService;
+import com.lec.spring.general.user.domain.User;
+import com.lec.spring.general.user.jwt.JWTUtil;
+import com.lec.spring.general.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 public class CouponController {
 
     private final CouponService couponService;
+    private final UserService userService;
+    private final JWTUtil jwtUtil;
 
+    /* 관리자 */
     @CrossOrigin
     @GetMapping("/list")
     public ResponseEntity<?> findAll(){
@@ -30,6 +37,28 @@ public class CouponController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         return new ResponseEntity<>(couponService.delete(id), HttpStatus.OK);
+    }
+
+    /* 사용자 */
+    @CrossOrigin
+    @PostMapping("/user/add/{couponCode}") // URL 경로 수정
+    public ResponseEntity<?> useCoupon(@PathVariable String couponCode, HttpServletRequest request) {
+        // JWT에서 사용자 ID 추출
+        String token = request.getHeader("Authorization").split(" ")[1];
+        Long userId = jwtUtil.getId(token);
+
+        // 쿠폰 사용 로직
+        Coupon coupon = couponService.findByCode(couponCode);
+        if (coupon != null) {
+            User user = userService.findById(userId);
+            // 쿠폰을 사용자에게 추가하는 로직
+            user.getCoupons().add(coupon);
+            userService.save(user);
+
+            return new ResponseEntity<>(HttpStatus.OK); // 성공적으로 쿠폰 사용
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // 쿠폰 코드가 유효하지 않은 경우
     }
 
 }

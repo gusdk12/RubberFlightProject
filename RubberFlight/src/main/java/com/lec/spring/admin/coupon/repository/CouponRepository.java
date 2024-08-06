@@ -8,4 +8,6 @@ import java.util.List;
 public interface CouponRepository extends JpaRepository<Coupon, Long>  {
 
     List<Coupon> findAllByOrderByIdDesc();
+
+    Coupon findByCode(String couponCode);
 }

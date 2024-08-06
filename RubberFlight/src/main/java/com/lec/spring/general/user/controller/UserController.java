@@ -1,5 +1,6 @@
 package com.lec.spring.general.user.controller;
 
+import com.lec.spring.admin.coupon.domain.Coupon;
 import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.domain.UserJoinDTO;
 import com.lec.spring.general.user.service.FileService;
@@ -14,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -117,5 +119,15 @@ public class UserController {
         Map<String, Boolean> response = new HashMap<>();
         response.put("exists", exists);
         return ResponseEntity.ok(response);
+    }
+
+    // 특정 사용자의 쿠폰 목록 조회
+    @GetMapping("/{id}/coupons")
+    public ResponseEntity<List<Coupon>> getUserCoupons(@PathVariable Long id) {
+        User user = userService.findById(id);
+        if (user != null) {
+            return new ResponseEntity<>(user.getCoupons(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

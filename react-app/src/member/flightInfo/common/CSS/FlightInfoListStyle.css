@@ -1,0 +1,62 @@
+.flight-label-container {
+  max-width: 700px;
+  min-width: 700px;
+  margin: auto;
+  width: 90%;
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+
+.flight-info-container {
+  max-width: 700px;
+  min-width: 700px;
+  margin: auto;
+  width: 90%;
+  border-width: 1px;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.flight-tab-container {
+  max-width: 700px;
+  min-width: 700px;
+  margin: auto;
+  width: 90%;
+  margin-top: 30px;
+}
+
+.flight-item {
+  cursor: pointer;
+  padding: 16px; 
+  border-radius: 8px; 
+  transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+
+.flight-section {
+  text-align: center;
+  margin-right: 32px; 
+}
+
+.flight-label {
+  font-size: 36px; 
+  font-weight: bold;
+}
+
+.flight-info-text {
+  font-size: 14px; 
+  margin-top: 12px;
+  color: #6fa8dc;
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

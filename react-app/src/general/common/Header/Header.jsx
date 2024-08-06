@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box, Button, ButtonGroup, CheckboxIcon, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, Heading, IconButton, Image, Menu, MenuButton, MenuItem, MenuList, Spacer, VStack, background, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, CheckboxIcon, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, Heading, IconButton, Image, Menu, MenuButton, MenuItem, MenuList, Spacer, VStack, background, useDisclosure } from '@chakra-ui/react';
 import { LoginContext } from '../../user/contexts/LoginContextProvider';
 import '../CSS/Header.css';
 import { CloseIcon, HamburgerIcon, StarIcon, ViewIcon } from '@chakra-ui/icons';
@@ -81,7 +81,15 @@ const Header = ({isMain}) => {
                 <DrawerHeader>메뉴</DrawerHeader>
                 <DrawerBody>
                   <VStack spacing={2} align="stretch">
-                    <Button variant="outline" onClick={myPage}>마이페이지</Button>
+                    {isLogin ? (
+                          <>
+                          <Button variant="outline" onClick={myPage}>마이페이지</Button>
+                          <Button variant="outline">일정짜기</Button>
+                          <Divider my={5}/>
+                          </>
+                        )
+                        :
+                        (<></>)}
                     <Button variant="outline">항공권 검색</Button>
                     <Button variant="outline">비행기 실시간 추척</Button>
                     <Button variant="outline">항공사 리뷰</Button>
