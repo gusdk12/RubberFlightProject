@@ -1,0 +1,15 @@
+.google{
+    background-image: url('../../../../assets/images/login/google_login_btn.webp');
+}
+
+.naver{
+    background-image: url('../../../../assets/images/login/naver_login_btn.webp');
+}
+
+.kakao{
+    background-image: url('../../../../assets/images/login/kakao_login_btn.webp');
+}
+
+.facebook{
+    background-image: url('../../../../assets/images/login/facebook_login_btn.webp'); 
+}
