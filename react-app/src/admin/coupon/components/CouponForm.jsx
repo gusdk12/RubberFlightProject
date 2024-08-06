@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useCoupon } from '../contexts/CouponContext';
-import '../common/CSS/CouponStyle.css';
-import { Box } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Input, Select, Heading } from '@chakra-ui/react';
 
 const CouponForm = () => {
     const { addCoupon } = useCoupon();
@@ -38,53 +37,71 @@ const CouponForm = () => {
     };
 
     return (
-        <Box className="coupon-form-container">
-            <Box className="coupon-form-title">
-                <h2>쿠폰 추가하기</h2>
-            </Box>
-            <form onSubmit={handleSubmit} className="coupon-form">
-                <div className="form-group">
-                    <input
-                        type="text"
-                        placeholder="쿠폰 코드"
-                        value={couponCode}
-                        onChange={(e) => setCouponCode(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <input
-                        type="number"
-                        placeholder="할인 퍼센트"
-                        value={discountPercent}
-                        onChange={(e) => setDiscountPercent(e.target.value)}
-                        required
-                    />
-                    <span className="percent-sign">%</span>
-                </div>
-                <div className="form-group">
-                    <input
-                        type="text"
-                        placeholder="설명"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <select
-                        value={airlineName}
-                        onChange={(e) => setAirlineName(e.target.value)}
-                        required
+        <Box 
+            p={5} 
+            bg={'white'}
+            borderRadius="md" 
+            boxShadow="md" 
+            mb={5}
+            mr={5}
+            height="fit-content" 
+            width="700px"
+        >
+            <Box width="400px" ml={2} mt={7} mb={7}>
+                <form onSubmit={handleSubmit}>
+                    <FormControl mb={4}>
+                        <FormLabel>쿠폰 코드</FormLabel>
+                        <Input
+                            type="text"
+                            value={couponCode}
+                            onChange={(e) => setCouponCode(e.target.value)}
+                            required
+                        />
+                    </FormControl>
+                    <FormControl mb={4}>
+                        <FormLabel>할인 퍼센트</FormLabel>
+                        <Input
+                            type="number"
+                            value={discountPercent}
+                            onChange={(e) => setDiscountPercent(e.target.value)}
+                            required
+                        />
+                        <span>%</span>
+                    </FormControl>
+                    <FormControl mb={4}>
+                        <FormLabel>설명</FormLabel>
+                        <Input
+                            type="text"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            required
+                        />
+                    </FormControl>
+                    <FormControl mb={4}>
+                        <FormLabel>항공사 선택</FormLabel>
+                        <Select
+                            value={airlineName}
+                            onChange={(e) => setAirlineName(e.target.value)}
+                            required
+                        >
+                            <option value="" disabled>선택하세요</option>
+                            {airlineOptions.map((airline, index) => (
+                                <option key={index} value={airline}>{airline}</option>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <Button
+                        type="submit"
+                        bg="#dde6f5d7" 
+                        color="black"
+                        width="30%"
+                        _hover={{ bg: "#4da861", transform: "translateY(-2px)" }}
+                        transition="background-color 0.3s ease, transform 0.2s ease"
                     >
-                        <option value="" disabled>항공사 선택</option>
-                        {airlineOptions.map((airline, index) => (
-                            <option key={index} value={airline}>{airline}</option>
-                        ))}
-                    </select>
-                </div>
-                <button type="submit" className="btn-add">쿠폰 추가</button>
-            </form>
+                        쿠폰 추가
+                    </Button>
+                </form>
+            </Box>
         </Box>
     );
 };
