@@ -14,8 +14,9 @@ public class AirlineReviewController {
 
     @CrossOrigin
     @GetMapping("/general/review/list")
-    public ResponseEntity<?> list() {
-        return new ResponseEntity<>(reviewService.list(), HttpStatus.OK);
+    public ResponseEntity<?> list(@RequestParam int page,
+                                  @RequestParam int size) {
+        return new ResponseEntity<>(reviewService.list(page, size), HttpStatus.OK);
     }
 
     // 항공사별 리뷰 목록 조회
