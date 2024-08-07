@@ -123,3 +123,12 @@ VALUES ('WINTER2024', 25, '겨울 할인 쿠폰', 'All');
 
 INSERT INTO FT_COUPON (code, percent, description, airline_name)
 VALUES ('SPRING2024', 10, '봄 맞이 할인 쿠폰', 'All');
+
+# 쿠폰
+INSERT INTO ft_schedule (user_id, title, team_usernames, edit_date)
+VALUES (1, '제주도 가자!', '유인아', "2024-07-21T15:50:00");
+INSERT INTO ft_schedule (user_id, title, team_usernames, edit_date)
+VALUES (1, '프랑스 가자!', '유인아', "2024-07-30T3:50:00");
+INSERT INTO ft_schedule (user_id, title, team_usernames, edit_date)
+VALUES (1, '흑흑', '유인아', "2024-08-01T3:50:00");
+

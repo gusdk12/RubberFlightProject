@@ -36,11 +36,9 @@ public class UserService {
         String username = user.getUsername();
         String password = user.getPassword();
 
-
         if(userRepository.existsByUsername(username)){
             return null;  // 회원 가입 실패
         }
-
 
         user.setUsername(user.getUsername().toUpperCase());
         user.setPassword(passwordEncoder.encode(password));
