@@ -3,6 +3,7 @@ package com.lec.spring.general.user.controller;
 import com.lec.spring.admin.coupon.domain.Coupon;
 import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.domain.UserJoinDTO;
+import com.lec.spring.general.user.jwt.JWTUtil;
 import com.lec.spring.general.user.service.FileService;
 import com.lec.spring.general.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -25,13 +26,16 @@ public class UserController {
     private final UserService userService;
     private final FileService fileService;
 
-    public UserController(UserService userService, FileService fileService) {
+    private final JWTUtil jwtUtil;
+
+    public UserController(UserService userService, FileService fileService, JWTUtil jwtUtil) {
         this.userService = userService;
         this.fileService = fileService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/join/user")
-    public ResponseEntity<String> join(
+    public ResponseEntity<Map<String, String>> join(
             @RequestParam("username") String username,
             @RequestParam("password") String password,
             @RequestParam("name") String name,
@@ -39,20 +43,25 @@ public class UserController {
             @RequestParam("tel") String tel,
             @RequestParam("file") MultipartFile file) {
 
+        System.out.println("Received data:");
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
+        System.out.println("Name: " + name);
+        System.out.println("Email: " + email);
+        System.out.println("Tel: " + tel);
+
         String filePath = "uploads/user.png";
 
         // 파일 처리 (예: 저장, 검사 등)
         if (!file.isEmpty()) {
-            // 파일을 저장하는 로직을 구현
             String fileName = file.getOriginalFilename();
             try {
-                // 파일 저장 경로를 설정
                 Path path = Paths.get("uploads/" + fileName);
                 Files.write(path, file.getBytes());
                 filePath = path.toString().replace("\\", "/");
             } catch (IOException e) {
                 e.printStackTrace();
-                return new ResponseEntity<>("File upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
@@ -63,12 +72,27 @@ public class UserController {
                 .name(name)
                 .email(email)
                 .tel(tel)
-                .image(filePath) // 파일 경로를 저장
+                .image(filePath)
                 .build();
 
         user = userService.join(user);
-        if (user == null) return new ResponseEntity<>("JOIN FAILED", HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>("JOIN OK : " + user, HttpStatus.OK);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        // JWT 토큰 생성
+        String token = jwtUtil.createJwt(
+                user.getId().toString(),
+                user.getUsername(),
+                user.getRole(),
+                60 * 60 * 600L
+        );
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "JOIN OK");
+        response.put("token", token);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/join/admin")
