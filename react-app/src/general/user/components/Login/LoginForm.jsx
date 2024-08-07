@@ -3,7 +3,7 @@ import { Box, Button, Checkbox, FormControl, FormLabel, HStack, Input, Stack, us
 import Cookies from 'js-cookie';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-// import '.Form.css';
+import './loginForm.css';
 
 const LoginForm = () => {
   const { login } = useContext(LoginContext);
