@@ -9,6 +9,7 @@ import '../css/UserInfo.css';
 const UserInfo = () => {
     return (
       <>
+      <div className='mypage_body'> 
         <Header/>
         <Flex className='info_body'>
         <MenuBar />
@@ -16,6 +17,7 @@ const UserInfo = () => {
           <Outlet />
         </Box>
         </Flex>
+      </div>
       </>
     );
 };
