@@ -155,7 +155,7 @@ useEffect(() => {
             setDisplayDate(`${formattedStartDate} ~ ${formattedEndDate}`);
         } else if (selectedDates.length === 1) {
             const formattedStartDate = format(selectedDates[0], 'yyyy-MM-dd');
-            setDisplayDate(`${formattedStartDate} ~`);
+            setDisplayDate(`${formattedStartDate}`);
         } else {
             setDisplayDate('');
         }
@@ -319,7 +319,7 @@ useEffect(() => {
                                     }}
                                     value={dates}
                                     onChange={handleDateChange}
-                                    className={style.flatpickrInput}
+                                    className={style.flatInput}
                                     />
                                 </div>
                             )
@@ -331,7 +331,7 @@ useEffect(() => {
                                         options={{ mode: "single" }}
                                         value={dates}
                                         onChange={handleDateChange}
-                                        className={style.flatpickrInput}
+                                        className={style.flatInput}
                                     />
                                 </div>
                             )
@@ -368,7 +368,7 @@ useEffect(() => {
                         </div>
                         )}
                     </div>
-                    <div id={style.submitButton} onClick={handleSubmit}>항공권 검색</div>
+                    <div id={style.submitButton} onClick={handleSubmit}>검색</div>
                 </div>
             </Box>
         </div>
