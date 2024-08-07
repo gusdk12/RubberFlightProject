@@ -3,7 +3,7 @@ import axios from 'axios';
 import { getCountryInfo } from '../../../apis/countryApis';
 import { getAirportInfo } from '../../../apis/airportApis';
 import { Input, Button } from '@chakra-ui/react';
-2import '../CSS/EditCA.css'
+import '../CSS/EditCA.css'
 import styles from '../CSS/EditCA.css';
 import '../../../Global/font.css';
 import Header from '../../../general/common/Header/Header';
