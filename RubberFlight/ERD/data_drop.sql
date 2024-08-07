@@ -4,3 +4,7 @@ DROP TABLE IF EXISTS ft_review;
 DROP TABLE IF EXISTS ft_airline;
 DROP TABLE IF EXISTS ft_reservation;
 DROP TABLE IF EXISTS ft_flightinfo;
+DROP TABLE IF EXISTS ft_user;
+DROP TABLE IF EXISTS ft_coupons;
+DROP TABLE IF EXISTS ft_coupon_users;
+DROP TABLE IF EXISTS ft_user_coupons;
