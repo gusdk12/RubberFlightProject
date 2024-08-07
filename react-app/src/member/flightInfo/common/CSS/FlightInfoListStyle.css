@@ -29,6 +29,7 @@
 }
 
 .flight-item {
+  background-color: white;
   cursor: pointer;
   padding: 16px; 
   border-radius: 8px; 

@@ -1,7 +1,11 @@
-.info_body {
+.mypage_body {
     width: 1300px;
+    height: 100px;
+    top: 15px;
     left: 50%;
     transform: translateX(-50%);
     position: relative;
-    padding-top: 190px;
+    align-content: center;
+    z-index: 1000;
+    margin-bottom: 20px;
 }

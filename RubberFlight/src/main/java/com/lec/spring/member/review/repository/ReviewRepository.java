@@ -21,7 +21,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
                  JOIN ft_flightinfo f ON r.id = f.review_id
                  JOIN ft_reservation re ON f.reservation_id = re.id
                  JOIN ft_user u ON re.user_id = u.id
-        where u.id = 1
+        where u.id = :id
         ORDER BY r.date DESC
         """, nativeQuery = true)
     Page<Review> findByUser(@Param("id") Long user, PageRequest pageRequest);  // 해당 유저 리뷰 목록

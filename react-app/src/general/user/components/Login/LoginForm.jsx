@@ -3,6 +3,7 @@ import { Box, Button, Checkbox, FormControl, FormLabel, HStack, Input, Stack, us
 import Cookies from 'js-cookie';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
+import './loginForm.css';
 
 const LoginForm = () => {
   const { login } = useContext(LoginContext);
@@ -13,6 +14,7 @@ const LoginForm = () => {
   const home = () => {
     navigate("/");
   }
+
 
   const onLogin = (e) => {
     e.preventDefault();
@@ -46,6 +48,7 @@ const LoginForm = () => {
     // 쿠키에 저장된 username(아이디) 가져오기
     const rememberId = Cookies.get('rememberId');
     setRememberUserId(rememberId || '');
+    document.body.style.overflowY = 'scroll'; // 스크롤 허용
   }, []);
 
   return (
@@ -95,6 +98,8 @@ const LoginForm = () => {
               name="password"
               autoComplete="off"
               backgroundColor={'white'}
+              color={'black'}
+              fontFamily="system-ui, sans-serif"
             />
           </FormControl>
 
@@ -124,9 +129,9 @@ const LoginForm = () => {
           }}>
 
              {/* 구글 */}
-         <div
+         <div className='google'
           style={{
-            backgroundImage: 'url(/images/btns/google_login_btn.png)',
+            // url('../../../assets/images/main/cloud.webp');
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
@@ -141,9 +146,8 @@ const LoginForm = () => {
         />
 
             {/* 카카오 */}
-            <div
+            <div className='kakao'
               style={{
-                backgroundImage: 'url(/images/btns/kakao_login_btn.png)',
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
@@ -158,9 +162,8 @@ const LoginForm = () => {
             />
 
              {/* 네이버 */}
-             <div
+             <div className='naver'
           style={{
-            backgroundImage: 'url(/images/btns/naver_login_btn.png)',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
@@ -176,9 +179,8 @@ const LoginForm = () => {
 
 
           {/* 페이스북 */}
-          <div
+          <div className='facebook'
           style={{
-            backgroundImage: 'url(/images/btns/facebook_login_btn.png)',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
