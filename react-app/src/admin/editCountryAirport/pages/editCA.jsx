@@ -3,8 +3,7 @@ import axios from 'axios';
 import { getCountryInfo } from '../../../apis/countryApis';
 import { getAirportInfo } from '../../../apis/airportApis';
 import { Input, Button } from '@chakra-ui/react';
-import '../CSS/EditCA.css'
-import styles from '../CSS/EditCA.css';
+import styles from '../CSS/EditCA.module.css';
 import '../../../Global/font.css';
 import Header from '../../../general/common/Header/Header';
 
@@ -239,44 +238,47 @@ const EditCA = () => {
     return (
             <>
             <Header isMain={true}/>
-            <div className='edit-all-con'>
-                <div className="edit-countryInfo">
-                    <div className="edit-countryPlus">
+            <div className={styles.allCon}>
+                <div className={styles.countryInfo}>
+                    <div className={styles.countryPlus}>
                         <Input
-                            id="edit-countryInput"
+                            id={styles.countryInput}
                             type="text"
                             placeholder="나라 ISO 코드 입력하기"
                             name="countryIso"
                             value={countryIsoInput}
                             onChange={(e) => setCountryIsoInput(e.target.value)}
                         />
-                        <Button onClick={addCountry} id='edit-countryButton'>Add</Button>
+                        <Button onClick={addCountry} id={styles.countryButton}>Add</Button>
                     </div>
 
-                    <div className="edit-countryList">
+                    <div className={styles.countryList}>
                         {countrys.map(country => (
                             <div
                                 key={country.countryId}
-                                className={`edit-countryDetails ${selectedCountry && selectedCountry.countryIso === country.countryIso ? 'active' : ''}`}
+                                className={selectedCountry && selectedCountry.countryIso === country.countryIso 
+                                    ? `${styles.countryDetails} ${styles.active}` 
+                                    : styles.countryDetails
+                                }
                                 onClick={() => handleCountryClick(country.id)}
                             >
-                                <div className="edit-cn">{country.countryName}</div>
+                                <div className={styles.cn}>{country.countryName}</div>
                             </div>
                         ))}
                     </div>
 
                     <img 
                         src={DelAirport} 
-                        id='edit-delCountryIcon' 
+                        id={styles.delCountryIcon} 
                         alt="Delete Country" 
                         onClick={() => deleteCountry(selectedCountry.countryIso)} 
                     />
                 </div>
 
-                <div className='edit-airportInfo'>
-                    <div className='edit-airportPlus'>
+                <div className={styles.airportInfo}>
+                    <div className={styles.airportPlus}>
                         <Input
-                            id="edit-airportInput"
+                            id={styles.airportInput}
                             type="text"
                             placeholder='공항 Iata 코드 입력하기'
                             _placeholder={{ opacity: 1, color: 'black.500' }}
@@ -284,15 +286,18 @@ const EditCA = () => {
                             value={airportIataInput}
                             onChange={(e) => setAirportIataInput(e.target.value)}
                         />
-                        <Button onClick={addAirport} id='edit-airportButton'>Add</Button>
+                        <Button onClick={addAirport} id={styles.airportButton}>Add</Button>
                     </div>
 
-                    <div className='edit-lataBox'>
+                    <div className={styles.lataBox}>
                         {airports.length > 0 ? (
                             airports.map(airport => (
                                 <div
                                     key={airport.airportId}
-                                    className={`edit-ai ${selectedAirport && selectedAirport.airportIso === airport.airportIso ? 'active' : ''}`}
+                                    className={selectedAirport && selectedAirport.airportIso === airport.airportIso 
+                                        ? `${styles.ai} ${styles.active}`
+                                        : styles.ai
+                                    }
                                     onClick={() => handleAirportClick(airport.airportIso)}
                                 >
                                     {airport.airportIso}
@@ -301,7 +306,7 @@ const EditCA = () => {
                         ) : (
                             <img 
                                 src={Airport} 
-                                id='edit-airportIMG' 
+                                id={styles.airportIMG} 
                                 alt="airport Icon" 
                             />
                         )}
@@ -309,42 +314,42 @@ const EditCA = () => {
 
                     
                     {selectedAirport ? (
-                        <div className="edit-airportDetails">
-                            <div className="edit-airName">{selectedAirport.airportName}</div>
-                            <table className="edit-airportTable">
+                        <div className={styles.airportDetails}>
+                            <div className={styles.airName}>{selectedAirport.airportName}</div>
+                            <table className={styles.airportTable}>
                                 <tr>
-                                    <td className="edit-tableHeader">Airport Iata Code</td>
-                                    <td className='edit-tdd'>{selectedAirport.airportIso}</td>
+                                    <td className={styles.tableHeader}>Airport Iata Code</td>
+                                    <td className={styles.tdd}>{selectedAirport.airportIso}</td>
                                 </tr>
                                 <tr>
-                                    <td className="edit-tableHeader">Airport Id</td>
-                                    <td className='edit-tdd'>{selectedAirport.airportId}</td>
+                                    <td className={styles.tableHeader}>Airport Id</td>
+                                    <td className={styles.tdd}>{selectedAirport.airportId}</td>
                                 </tr>
                                 <tr>
-                                    <td className="edit-tableHeader">Airport Latitude</td>
-                                    <td className='edit-tdd'>{selectedAirport.latitudeAirport}</td>
+                                    <td className={styles.tableHeader}>Airport Latitude</td>
+                                    <td className={styles.tdd}>{selectedAirport.latitudeAirport}</td>
                                 </tr>
                                 <tr>
-                                    <td className="edit-tableHeader">Airport Longitude</td>
-                                    <td className='edit-tdd'>{selectedAirport.longitudeAirport}</td>
+                                    <td className={styles.tableHeader}>Airport Longitude</td>
+                                    <td className={styles.tdd}>{selectedAirport.longitudeAirport}</td>
                                 </tr>
                             </table>
                             <img 
                                 src={DelAirport} 
-                                id='edit-delAirportIcon' 
+                                id={styles.delAirportIcon} 
                                 alt="Delete Airport" 
                                 onClick={() => deleteAirport(selectedAirport.airportIso)} 
                             />
                         </div>
                     ) : (
-                        <div className="edit-airportDetailText">
+                        <div className={styles.airportDetailText}>
                             <p>공항을 추가해주세요</p>
                         </div>
                     )}
 
                     <img 
                         src={Airplain}
-                        id='edit-airplainIMG'
+                        id={styles.airplainIMG}
                     />
                 </div>
             </div>
