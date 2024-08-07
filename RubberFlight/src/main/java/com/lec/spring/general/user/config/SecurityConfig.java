@@ -90,8 +90,9 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/").permitAll()
-                        .anyRequest().authenticated());
+                        .requestMatchers("/", "/user/**").permitAll()
+                        .anyRequest().authenticated()
+                );
 
         // 세션 설정
         http
@@ -135,7 +136,6 @@ public class SecurityConfig {
                     configuration.setAllowCredentials(true);
                     configuration.setAllowedHeaders(Collections.singletonList("*")); // List.of("*")와 동일
                     configuration.setMaxAge(3600L);
-
                     configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
                     configuration.setExposedHeaders(List.of("Authorization")); // ★
                     return configuration;
