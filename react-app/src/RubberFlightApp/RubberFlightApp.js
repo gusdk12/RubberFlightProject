@@ -8,7 +8,7 @@ import JoinAdmin from '../general/user/pages/JoinAdmin';
 import Search from '../general/reserve/pages/search';
 import Reserve from '../general/reserve/pages/reserve';
 import customTheme from '../general/user/components/Join/customTheme'
-import EditCountryAirport from '../admin/editCountryAirport/pages/editCA';
+import EditCA from '../admin/editCountryAirport/pages/EditCA';
 import SelectJoin from '../general/user/pages/SelectJoin';
 import UserInfo from '../member/user/pages/UserInfo';
 import ReviewList from '../member/review/pages/ReviewList';
@@ -35,7 +35,7 @@ function RubberFlightApp() {
               <Route path="/join/admin" element={<JoinAdmin />} />
               <Route path="/search" element={<Search />} />
                 <Route path="/reserve/:id" element={<Reserve/>}/>
-              <Route path="/admin/edit" element={<EditCountryAirport />} />
+              <Route path="/admin/edit" element={<EditCA />} />
               <Route path="/schedule" element={<ScheduleMain />} />
               <Route path="/coupon" element={<CouponProvider><CouponPage/></CouponProvider>} />
               <Route path="/mypage" element={<UserInfo />}>

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Input, Button } from '@chakra-ui/react';
 import { getLiveInfo } from '../../../apis/liveInfoApis';
 
+import Header from '../../../general/common/Header/Header';
+import '../CSS/LiveFlight.css';
+
 const LiveFlight = () => {
     const [flightIataInput, setFlightIataInput] = useState("");
     const [flightData, setFlightData] = useState(null);
@@ -36,7 +39,14 @@ const LiveFlight = () => {
     }
 
     return (
-        <div>
+        <>
+            <Header isMain={true}/>
+
+            <div className='live-scheduleHeader'>일정과 체크리스트를 한번에 - </div>
+            <div className='live-scheduleInfo'>
+                나만의 체크리스트를 만들어 놓치는 물건이 없나 확인해보세요.<br/>
+                함께 여행하는 가족, 친구와 함께 일정을 짤 수도 있어요.
+            </div>
             <Input
                 id="flightIata"
                 type="text"
@@ -62,7 +72,7 @@ const LiveFlight = () => {
                     <p><strong>Airline IATA Code:</strong> {flightData.airlineIata}</p>
                 </div>
             )} */}
-        </div>
+        </>
     );
 };
 

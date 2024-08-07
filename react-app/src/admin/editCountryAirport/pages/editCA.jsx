@@ -3,7 +3,8 @@ import axios from 'axios';
 import { getCountryInfo } from '../../../apis/countryApis';
 import { getAirportInfo } from '../../../apis/airportApis';
 import { Input, Button } from '@chakra-ui/react';
-import '../CSS/editCA.css';
+2import '../CSS/EditCA.css'
+import styles from '../CSS/EditCA.css';
 import '../../../Global/font.css';
 import Header from '../../../general/common/Header/Header';
 
@@ -11,7 +12,7 @@ import DelAirport from '../../../assets/images/admin/trash.webp'
 import Airplain from '../../../assets/images/admin/airplane.webp'
 import Airport from '../../../assets/images/admin/airport.webp'
 
-const AdminPage2 = () => {
+const EditCA = () => {
     const [countrys, setCountry] = useState([]);
     const [countryIsoInput, setCountryIsoInput] = useState("");
     const [selectedCountry, setSelectedCountry] = useState(null);
@@ -351,4 +352,4 @@ const AdminPage2 = () => {
     );
 };
 
-export default AdminPage2;
+export default EditCA;
