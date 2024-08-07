@@ -1,16 +1,18 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getCountryInfo, getSafeInfo } from '../../../apis/countryApis';
+import { getCountryInfo } from '../../../apis/countryApis';
 import { getAirportInfo } from '../../../apis/airportApis';
 import { Input, Button } from '@chakra-ui/react';
-import { Canvas } from '@react-three/fiber';
-
-import '../CSS/AdminPage2.css';
+import '../CSS/EditCA.css'
+import styles from '../CSS/EditCA.css';
 import '../../../Global/font.css';
-import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
+import Header from '../../../general/common/Header/Header';
 
-const AdminPage2 = () => {
-    // const [isLogin, roles] = useContext(LoginContext)
+import DelAirport from '../../../assets/images/admin/trash.webp'
+import Airplain from '../../../assets/images/admin/airplane.webp'
+import Airport from '../../../assets/images/admin/airport.webp'
+
+const EditCA = () => {
     const [countrys, setCountry] = useState([]);
     const [countryIsoInput, setCountryIsoInput] = useState("");
     const [selectedCountry, setSelectedCountry] = useState(null);
@@ -18,6 +20,12 @@ const AdminPage2 = () => {
     const [airports, setAirport] = useState([]);
     const [airportIataInput, setAirportIataInput] = useState("");
     const [selectedAirport, setSelectedAirport] = useState(null);
+
+    useEffect(() => {
+        document.body.style.backgroundColor = '#dde6f5';
+        document.body.style.overflowY = 'scroll';
+        document.body.style.overflowX = 'hidden';
+    }, []);
 
     // 전체 나라 목록 가져오기
     const fetchCountries = async () => {
@@ -46,10 +54,13 @@ const AdminPage2 = () => {
                 setAirport(data);
                 if (data.length > 0) {
                     setSelectedAirport(data[0]);
+                }else {
+                    setSelectedAirport(null); // 공항 정보가 없을 때 null로 설정
                 }
             }
         } catch (error) {
             console.error("Error fetching airport list:", error);
+            setSelectedAirport(null);
         }
     };
 
@@ -62,6 +73,7 @@ const AdminPage2 = () => {
     const handleCountryClick = (countryId) => {
         const selected = countrys.find(country => country.id === countryId);
         setSelectedCountry(selected);
+        setSelectedAirport(null);
         fetchAirportsByCountry(countryId);
     };
 
@@ -134,10 +146,10 @@ const AdminPage2 = () => {
             });
 
             if (response.status === 200) {
-                window.alert('삭제 성공');
-                await fetchCountries(); // 목록을 다시 가져와서 UI를 업데이트합니다.
+                window.alert(selectedCountry.countryName + '삭제 성공');
+                await fetchCountries(); 
                 setSelectedCountry(null);
-                setAirport([]); // 공항 목록 초기화
+                setAirport([]); 
             } else {
                 window.alert('삭제 실패');
             }
@@ -186,7 +198,7 @@ const AdminPage2 = () => {
 
             if (saveResponse.status === 200) {
                 window.alert('저장 성공');
-                await fetchAirportsByCountry(selectedCountry.id); // 선택한 나라의 공항 목록을 다시 가져옴
+                await fetchAirportsByCountry(selectedCountry.id);
             } else {
                 window.alert('저장 실패');
             }
@@ -212,9 +224,9 @@ const AdminPage2 = () => {
             });
 
             if (response.status === 200) {
-                window.alert('삭제 성공');
-                await fetchAirportsByCountry(selectedCountry.id); // 선택한 나라의 공항 목록을 다시 가져와서 UI를 업데이트합니다.
-                setAirport(prev => prev.filter(airport => airport.airportIso !== airportIso)); // 현재 공항 목록에서 삭제
+                window.alert(selectedAirport.airportName+'삭제 성공');
+                await fetchAirportsByCountry(selectedCountry.id); 
+                setAirport(prev => prev.filter(airport => airport.airportIso !== airportIso));
             } else {
                 window.alert('삭제 실패');
             }
@@ -225,101 +237,119 @@ const AdminPage2 = () => {
     };
 
     return (
-        <>
-        {
-            // isLogin && roles.isAdmin &&
             <>
-            <Canvas
-                style={{
-                    width: '100vw',
-                    height: '100vh',
-                    background: '#dde6f5',
-                    position: 'absolute',
-                    zIndex: -1
-                }}
-            />
-
-            <div className="countryInfo">
-                <div className="countryPlus">
-                    <Input
-                        id="countryInput"
-                        type="text"
-                        placeholder="나라 ISO 코드 입력하기"
-                        name="countryIso"
-                        value={countryIsoInput}
-                        onChange={(e) => setCountryIsoInput(e.target.value)}
-                    />
-                    <Button onClick={addCountry} id='countryButton'>Add</Button>
-                </div>
-
-                <div className="countryList">
-                    {countrys.map(country => (
-                        <div
-                            key={country.countryId}
-                            className={`countryDetails ${selectedCountry && selectedCountry.countryIso === country.countryIso ? 'active' : ''}`}
-                            onClick={() => handleCountryClick(country.id)}
-                        >
-                            <div className="cn">{country.countryName}</div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            <div className='airportInfo'>
-                <div className='airportPlus'>
-                    <Input
-                        id="airportInput"
-                        type="text"
-                        placeholder='공항 Iata 코드 입력하기'
-                        _placeholder={{ opacity: 1, color: 'black.500' }}
-                        name="airportIata"
-                        value={airportIataInput}
-                        onChange={(e) => setAirportIataInput(e.target.value)}
-                    />
-                    <Button onClick={addAirport} id='airportButton'>Add</Button>
-                </div>
-
-                <div className='lataBox'>
-                    {airports.map(airport => (
-                        <div
-                            key={airport.airportId}
-                            className={`ai ${selectedAirport && selectedAirport.airportIso === airport.airportIso ? 'active' : ''}`}
-                            onClick={() => handleAirportClick(airport.airportIso)}
-                        >
-                            {airport.airportIso}
-                        </div>
-                    ))}
-                </div>
-                
-                {selectedAirport && ( // 선택된 공항 정보만 렌더링
-                    <div className="airportDetails">
-                        <div className="airName">{selectedAirport.airportName}</div>
-                        <table className="airportTable">
-                            <tr>
-                                <td className="tableHeader">Airport Iata Code</td>
-                                <td>{selectedAirport.airportIso}</td>
-                            </tr>
-                            <tr>
-                                <td className="tableHeader">Airport Id</td>
-                                <td>{selectedAirport.airportId}</td>
-                            </tr>
-                            <tr>
-                                <td className="tableHeader">Airport Latitude</td>
-                                <td>{selectedAirport.latitudeAirport}</td>
-                            </tr>
-                            <tr>
-                                <td className="tableHeader">Airport Longitude</td>
-                                <td>{selectedAirport.longitudeAirport}</td>
-                            </tr>
-
-                        </table>
+            <Header isMain={true}/>
+            <div className='edit-all-con'>
+                <div className="edit-countryInfo">
+                    <div className="edit-countryPlus">
+                        <Input
+                            id="edit-countryInput"
+                            type="text"
+                            placeholder="나라 ISO 코드 입력하기"
+                            name="countryIso"
+                            value={countryIsoInput}
+                            onChange={(e) => setCountryIsoInput(e.target.value)}
+                        />
+                        <Button onClick={addCountry} id='edit-countryButton'>Add</Button>
                     </div>
-                )}
+
+                    <div className="edit-countryList">
+                        {countrys.map(country => (
+                            <div
+                                key={country.countryId}
+                                className={`edit-countryDetails ${selectedCountry && selectedCountry.countryIso === country.countryIso ? 'active' : ''}`}
+                                onClick={() => handleCountryClick(country.id)}
+                            >
+                                <div className="edit-cn">{country.countryName}</div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <img 
+                        src={DelAirport} 
+                        id='edit-delCountryIcon' 
+                        alt="Delete Country" 
+                        onClick={() => deleteCountry(selectedCountry.countryIso)} 
+                    />
+                </div>
+
+                <div className='edit-airportInfo'>
+                    <div className='edit-airportPlus'>
+                        <Input
+                            id="edit-airportInput"
+                            type="text"
+                            placeholder='공항 Iata 코드 입력하기'
+                            _placeholder={{ opacity: 1, color: 'black.500' }}
+                            name="airportIata"
+                            value={airportIataInput}
+                            onChange={(e) => setAirportIataInput(e.target.value)}
+                        />
+                        <Button onClick={addAirport} id='edit-airportButton'>Add</Button>
+                    </div>
+
+                    <div className='edit-lataBox'>
+                        {airports.length > 0 ? (
+                            airports.map(airport => (
+                                <div
+                                    key={airport.airportId}
+                                    className={`edit-ai ${selectedAirport && selectedAirport.airportIso === airport.airportIso ? 'active' : ''}`}
+                                    onClick={() => handleAirportClick(airport.airportIso)}
+                                >
+                                    {airport.airportIso}
+                                </div>
+                            ))
+                        ) : (
+                            <img 
+                                src={Airport} 
+                                id='edit-airportIMG' 
+                                alt="airport Icon" 
+                            />
+                        )}
+                    </div>
+
+                    
+                    {selectedAirport ? (
+                        <div className="edit-airportDetails">
+                            <div className="edit-airName">{selectedAirport.airportName}</div>
+                            <table className="edit-airportTable">
+                                <tr>
+                                    <td className="edit-tableHeader">Airport Iata Code</td>
+                                    <td className='edit-tdd'>{selectedAirport.airportIso}</td>
+                                </tr>
+                                <tr>
+                                    <td className="edit-tableHeader">Airport Id</td>
+                                    <td className='edit-tdd'>{selectedAirport.airportId}</td>
+                                </tr>
+                                <tr>
+                                    <td className="edit-tableHeader">Airport Latitude</td>
+                                    <td className='edit-tdd'>{selectedAirport.latitudeAirport}</td>
+                                </tr>
+                                <tr>
+                                    <td className="edit-tableHeader">Airport Longitude</td>
+                                    <td className='edit-tdd'>{selectedAirport.longitudeAirport}</td>
+                                </tr>
+                            </table>
+                            <img 
+                                src={DelAirport} 
+                                id='edit-delAirportIcon' 
+                                alt="Delete Airport" 
+                                onClick={() => deleteAirport(selectedAirport.airportIso)} 
+                            />
+                        </div>
+                    ) : (
+                        <div className="edit-airportDetailText">
+                            <p>공항을 추가해주세요</p>
+                        </div>
+                    )}
+
+                    <img 
+                        src={Airplain}
+                        id='edit-airplainIMG'
+                    />
+                </div>
             </div>
-            </>
-        }
         </>
     );
 };
 
-export default AdminPage2;
+export default EditCA;

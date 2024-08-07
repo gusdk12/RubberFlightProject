@@ -1,0 +1,11 @@
+.mypage_body {
+    width: 1300px;
+    height: 100px;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: relative;
+    align-content: center;
+    z-index: 1000;
+    margin-bottom: 20px;
+}

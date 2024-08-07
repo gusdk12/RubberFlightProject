@@ -1,13 +1,6 @@
 *{
     font-family: 'KIMM_Bold';
 }
-.reviewList {
-    background: none;
-    background-image: url(../img/reviewlist2.webp);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-}
 
 .rate {
     width: 30px;
@@ -27,11 +20,15 @@
 }
 
 img {
-    width: 27px;
+    width: 30px;
 }
 
-.total_rate{
-    width: 35px;
+.total_rate {
+    display: flex;
+}
+
+.total_rate img {
+    width: 50px;
 }
 
 .reviewHead {
@@ -41,7 +38,7 @@ img {
 .showbtn {
     width: 100px;
     height: 30px;
-    margin-left: 585px;
+    margin-left: 500px;
     margin-top: -34px;
     display: block;
     background-color: rgb(147, 197, 247);
@@ -112,4 +109,8 @@ img {
     margin: 50px 90px;
     border: 2px dotted #2aa7dc;
     padding: 30px
+}
+
+.rate_body {
+    margin-left: 40px;
 }

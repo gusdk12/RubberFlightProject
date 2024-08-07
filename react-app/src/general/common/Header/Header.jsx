@@ -11,7 +11,7 @@ const CustomIcon = () => {
 };
 
 const Header = ({isMain}) => {
-  const { isLogin, logout, userInfo } = useContext(LoginContext);
+  const { isLogin, logout, userInfo, roles } = useContext(LoginContext);
   const [isScrolled, setIsScrolled] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
@@ -33,10 +33,26 @@ const Header = ({isMain}) => {
 
   const navigate = useNavigate();
   const myPage= () => {
-    navigate('/member/mypage')
+    navigate('/mypage')
+  }
+
+  const adminPage = () => {
+    navigate('/admin/edit')
+  }
+
+  const couponPage = () => {
+    navigate('/coupon')
   }
 
 
+  const schedulePage= () => {
+    navigate('/schedule')
+  }
+
+  const liveFlight = () => {
+    navigate('/live')
+  }
+  
   const backgroundImageUrl = process.env.PUBLIC_URL + '/images/icons/commercial-plane.png';
 
   return (
@@ -63,7 +79,8 @@ const Header = ({isMain}) => {
                   boxShadow='md'
                   width="53px"
                   height="53px"
-                  borderRadius="50%">
+                  borderRadius="50%"
+                  pointerEvents={"all"}>
               </Button>
               <Drawer
                 isOpen={isOpen}
@@ -79,19 +96,26 @@ const Header = ({isMain}) => {
                   <VStack spacing={2} align="stretch">
                     {isLogin ? (
                           <>
-                          <Button variant="outline" onClick={myPage}>마이페이지</Button>
-                          <Button variant="outline">일정짜기</Button>
-                          <Divider my={5}/>
+                            {roles.isAdmin && (
+                              <>
+                                <Button variant="outline" onClick={adminPage}>나라 및 공항 관리</Button>
+                                <Button variant="outline" onClick={couponPage}>쿠폰 관리</Button>
+                              </>
+                            )}
+                            {roles.isMember && (
+                              <>
+                                <Button variant="outline" onClick={myPage}>마이페이지</Button>
+                                <Button variant="outline" onClick={schedulePage}>일정짜기</Button>
+                              </>
+                            )}
+                            <Divider my={5}/>
                           </>
                         )
                         :
                         (<></>)}
                     <Button variant="outline">항공권 검색</Button>
-                    <Button variant="outline">비행기 실시간 추척</Button>
+                    <Button variant="outline" onClick={liveFlight}>비행기 실시간 추척</Button>
                     <Button variant="outline">항공사 리뷰</Button>
-                    <Link to="/admin2">
-                      <Button variant="outline">나라 및 공항 관리</Button>
-                    </Link>
                   </VStack>
                 </DrawerBody>
       

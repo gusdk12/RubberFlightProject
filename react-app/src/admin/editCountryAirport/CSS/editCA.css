@@ -1,0 +1,209 @@
+.edit-all-con {
+    width: 1300px;
+    left: 50%;
+    top: 190px;
+    height: calc(100vh - 190px);
+    transform: translateX(-50%);
+    position: relative;
+}
+
+.edit-countryInfo {
+    background-color: white;
+    border-radius: 10px;
+    width: 300px;
+    height: 500px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-countryList {
+    flex: 1; 
+    overflow-y: auto; 
+}
+
+.edit-countryList::-webkit-scrollbar {
+    display: none;
+}
+
+.edit-countryDetails {
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-countryDetails.active {
+    background-color: #e9e9e9;
+    color: black;
+}
+
+.edit-lataBox {
+    font-family: "KIMM_Light";
+    background-color: white;
+    width: 180px;
+    height: 300px;
+    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+
+    overflow-y: auto;
+
+    position: absolute;
+    left: -60px;
+    top: 80px;
+}
+
+.edit-lataBox::-webkit-scrollbar {
+    display: none; 
+}
+
+.edit-lataBox .edit-ai {
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 10px;
+
+    cursor: pointer;
+}
+
+.edit-ai.active {
+    /* color: #618eddd2;  */
+    /* color: #4faa1b74;  */
+    /* color: #B1E095;  */
+    color: #2A4B7C; 
+    font-weight: bold;
+    background-color: #ffffff; 
+}
+
+
+.edit-airportInfo {
+    background-color: white;
+    border-radius: 10px;
+    width: 800px;
+    height: 600px;
+    padding-top: 100px;
+    padding-left: 200px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+
+    position: fixed;
+    right: 0;
+}
+
+.edit-airportInfo .edit-airName {
+    font-size: 50px;
+    margin-bottom: 30px;
+}
+
+.edit-airportTable tr {
+    height: 50px; 
+}
+
+.edit-airportTable td {
+    padding: 10px;
+    text-align: left;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.edit-airportTable .edit-tdd{
+    color: #2A4B7C;
+    /* color: #B1E095; */
+    padding-left: 25px;
+}
+
+.edit-tableHeader {
+    font-weight: bold; /* 굵은 글씨 */
+    width: 30%; 
+}
+
+.edit-airportDetailText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+    font-size: 20px;
+    color: #6a6a6a;
+}
+
+#edit-airplainIMG {
+    width: 506px;
+    height: 130px;
+
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    opacity: 0.6
+}
+
+#edit-airportIMG {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    filter: invert(43%) sepia(1%) saturate(14%) hue-rotate(330deg) brightness(93%) contrast(90%);
+}
+
+/* 검색 관련 css */
+
+.edit-countryPlus, .edit-airportPlus {
+    display: flex;
+    align-items: center;
+}
+
+.edit-countryPlus {
+    padding: 20px;
+}
+
+.edit-airportPlus {
+    position: absolute;
+    z-index: 1;
+    top: 20px;
+    left: 120px;
+}
+
+.edit-countryPlus #edit-countryInput,
+.edit-airportPlus #edit-airportInput {
+    font-family: "KIMM_Light";
+    font-size: 14px;
+    font-weight: 700;
+    margin-right: 10px; 
+}
+
+.edit-countryPlus #edit-countryButton,
+.edit-airportPlus #edit-airportButton { 
+    background-color: #d7e4faa9;
+}
+
+/* 삭제 */
+#edit-delCountryIcon {
+    z-index: 300;
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    right: 5px;
+    /* bottom: -40px; */
+    bottom: 5px;
+    cursor: pointer;
+    filter: invert(72%) sepia(9%) saturate(0%) hue-rotate(215deg) brightness(98%) contrast(77%);
+}
+
+#edit-delAirportIcon {
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    cursor: pointer;
+    filter: invert(72%) sepia(9%) saturate(0%) hue-rotate(215deg) brightness(98%) contrast(77%);
+}
+
+#edit-delCountryIcon:hover,
+#edit-delAirportIcon:hover{
+    filter: invert(0%) sepia(100%) saturate(7441%) hue-rotate(150deg) brightness(93%) contrast(112%);
+}

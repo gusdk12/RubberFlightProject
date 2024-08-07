@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid, Image } from "@chakra-ui/react";
+import { Box, Flex, Heading, Image } from "@chakra-ui/react";
 import axios from "axios";
 import ReviewItem from "../components/ReviewItem";
 import { useUser } from "../../../general/user/contexts/LoginContextProvider";
+import Review from "../../../assets/images/review/review.webp";
 import "../css/ReviewList.css";
-import MenuBar from "../../../general/common/SideMenu/MenuBar";
-import { Canvas } from "@react-three/fiber";
-import Review from "../img/review.webp";
+import "../../../Global/font.css";
 
 const ReviewList = () => {
   const { userInfo } = useUser();
@@ -30,6 +29,7 @@ const ReviewList = () => {
   useEffect(() => {
     if (userInfo && userInfo.id) {
       fetchReviews(currentPage);
+      document.body.style.backgroundColor = '#dde6f5';
     }
   }, [userInfo, currentPage, totalPages]); // userInfo가 변경될 때마다 호출
 
@@ -71,26 +71,15 @@ const ReviewList = () => {
 
   return (
     <>
-      <Canvas
-        style={{
-          margin: 0,
-          width: "100vw",
-          height: "100vh",
-          background: "linear-gradient(to bottom, #B0C9E6, #D5E1EB, #EFF3F6)",
-          position: "absolute",
-          zIndex: -1,
-        }}
-      />
-      <Grid templateColumns="repeat(5, 1fr)" className="container">
-        <MenuBar colSpan={2} />
-        <Box colSpan={4} className="card_container">
-          <div className="subject">
-            <Image src={Review} className="reviewIcon" />
-            &nbsp;&nbsp;나의 리뷰
-          </div>
-          {reviews.map((review) => (
+      <Box p={4} className="container">
+        <Flex align="center" className="flight-label-container" mb={4}>
+          <Image src={Review} width="30px" />
+          <Heading as="h1" size="lg" ml={3}>나의 리뷰</Heading>
+        </Flex>
+        <Box className="card_container" mb={4}>
+          {reviews.length > 0 ? reviews.map((review) => (
             <ReviewItem key={review.id} review={review} />
-          ))}
+          )) : (<p>작성된 리뷰가 없습니다.</p>)}
           {totalPages > 0 && (
             <Box className="pagebtn">
               <button className="page_btn prevbtn" onClick={() => handlePageChange(0)}>◀◀</button>
@@ -101,7 +90,7 @@ const ReviewList = () => {
             </Box>
           )}
         </Box>
-      </Grid>
+      </Box>
     </>
   );
 };

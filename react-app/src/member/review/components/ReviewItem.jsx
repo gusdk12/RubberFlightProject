@@ -1,31 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import {
-  Card,
-  Heading,
-  Flex,
-  Box,
-  Spacer,
-  Grid,
-  Text,
-  Stack,
-  ModalOverlay,
-  useDisclosure,
-  Modal,
-  ModalCloseButton,
-  ModalHeader,
-  ModalContent,
-  ModalBody,
-  Textarea,
-  ModalFooter,
-  background,
-} from "@chakra-ui/react";
-import Star from "../img/star_32.webp";
+import React, { useState } from "react";
+import { Card, Heading, Flex, Box, Spacer, Text, Stack, ModalOverlay, useDisclosure, Modal, ModalCloseButton, ModalContent, ModalFooter} from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import ReviewDetail from "../pages/ReviewDetail";
+import ReviewUpdate from "../pages/ReviewUpdate";
+import { StarRating } from "./Rating";
 import "../css/ReviewItem.css";
-import { useUser } from "../../../general/user/contexts/LoginContextProvider";
 import "../../../Global/font.css";
-import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-import { FlightInfoContext } from "../../flightInfo/contexts/FlightInfoContext";
 
 const ReviewItem = (props) => {
   const {
@@ -41,17 +21,23 @@ const ReviewItem = (props) => {
     date,
   } = props.review;
 
-  const { userInfo } = useUser();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure(); 
+  const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
- 
-  const ReivewUpdate = () => {
-    navigate("/member/review/update");
-  };
+  const totalRate = (seat_rate + service_rate + procedure_rate + flightmeal_rate + lounge_rate + clean_rate) / 6;
+
+  const onDetailOpen = () => {
+    setIsEditing(false); // Detail 모달창
+    onOpen();
+   }
+
+ const onUpdateOpen = () => {
+  setIsEditing(true); // Update 모달창
+ }
 
   return (
     <>
-      <Card className="reviewList" padding={5} paddingLeft={8} width={800} height={200} margin={5}>
+      <Card className="reviewList" padding={5} paddingLeft={8} width={700} height={200} margin={5}>
         <Flex>
           <Heading fontSize={28} className="reviewHead" marginLeft={35}>
             "{title}"
@@ -66,17 +52,9 @@ const ReviewItem = (props) => {
         <Stack mt="4" fontSize={18}>
           <Flex marginLeft={5}>
             총점:&nbsp;&nbsp;&nbsp;
-            <div className="star-ratings-base">
-              <img className="rate" src={Star} alt="별1" />
-              <img className="rate" src={Star} alt="별1" />
-              <img className="rate" src={Star} alt="별1" />
-              <img className="rate" src={Star} alt="별1" />
-              <img className="rate" src={Star} alt="별1" />
-            </div>
+            <StarRating rate={totalRate}/>
           </Flex>
-          <button type="button" className="showbtn" onClick={onOpen}>
-            리뷰 확인
-          </button>
+          <button type="button" className="showbtn" onClick={onDetailOpen}>리뷰 확인</button>
         </Stack>
       </Card>
 
@@ -87,100 +65,10 @@ const ReviewItem = (props) => {
           marginTop: '100px'
         }}>
           <ModalCloseButton margin={5} size='xl'/>
-          <ModalHeader className="reviewTitle" fontSize={50}>"{title}"</ModalHeader>
-          <Grid templateColumns="repeat(2, 1fr)" className="flightInfo">
-            <Flex paddingLeft={10} marginBottom={5}>
-              <Text fontSize={23}></Text>&nbsp;&nbsp;&nbsp;
-              <div className="star-ratings-base">
-                <img className="total_rate" src={Star} alt="별1" />
-                <img className="total_rate" src={Star} alt="별1" />
-                <img className="total_rate" src={Star} alt="별1" />
-                <img className="total_rate" src={Star} alt="별1" />
-                <img className="total_rate" src={Star} alt="별1" />
-              </div>
-            </Flex>
-            <Text marginTop={5} fontSize={18} className="userInfo">
-              작성자:&nbsp;&nbsp;&nbsp;{userInfo.name}
-            </Text>
-          </Grid>
-          <Grid templateColumns="repeat(2, 1fr)" fontSize={18} paddingLeft={10} gap={3}>
-            <Text className="flightInfo">탑승일:&nbsp;&nbsp;&nbsp;</Text>
-            <Text className="userInfo">작성일:&nbsp;&nbsp;&nbsp;{date}</Text>
-          </Grid>
-          <div className="review_body">
-            <Text className='review_content' width={940} fontSize={23}>
-              {content}
-            </Text>
-            <Grid templateColumns="repeat(2, 1fr)" fontSize={18} marginLeft={50} gap={50}>
-              <Flex paddingLeft={10} marginBottom={5}>
-                좌석 공간 및 편안함:&nbsp;&nbsp;&nbsp;
-                <div className="star-ratings-base">
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                </div>
-              </Flex>
-              <Flex paddingLeft={10} marginBottom={5}>
-                청결도:&nbsp;&nbsp;&nbsp;
-                <div className="star-ratings-base">
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                </div>
-              </Flex>
-            </Grid>
-            <Grid templateColumns="repeat(2, 1fr)" fontSize={18} marginLeft={50} gap={50}>
-              <Flex paddingLeft={10} marginBottom={5}>
-                체크인 및 탑승:&nbsp;&nbsp;&nbsp;
-                <div className="star-ratings-base">
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                </div>
-              </Flex>
-              <Flex paddingLeft={10} marginBottom={5}>
-                라운지:&nbsp;&nbsp;&nbsp;
-                <div className="star-ratings-base">
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                </div>
-              </Flex>
-            </Grid>
-            <Grid templateColumns="repeat(2, 1fr)" fontSize={18} marginLeft={50} marginBottom={35} gap={50}>
-              <Flex paddingLeft={10} marginBottom={5}>
-                기내 서비스:&nbsp;&nbsp;&nbsp;
-                <div className="star-ratings-base">
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                </div>
-              </Flex>
-              <Flex paddingLeft={10} marginBottom={5}>
-                기내식 및 음료:&nbsp;&nbsp;&nbsp;
-                <div className="star-ratings-base">
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                  <img src={Star} alt="별1" />
-                </div>
-              </Flex>
-            </Grid>
-          </div>
+          {isEditing ? (<ReviewUpdate review={props.review}/>) : (<ReviewDetail review={props.review}/>)}
           <ModalFooter className="review_btn">
-            <button className="modalbtn updatebtn" onClick={ReivewUpdate}>수정</button>
-            <button className="modalbtn deletebtn">삭제</button>
+            <button className="modalbtn updatebtn" onClick={onUpdateOpen}>{isEditing ? '이전' : '수정'}</button>
+            {isEditing ? (<button className="modalbtn updatebtn">수정</button>) : (<button className="modalbtn deletebtn">삭제</button>)}
           </ModalFooter>
           </ModalContent>
       </Modal>

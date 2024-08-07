@@ -31,6 +31,7 @@ const LoginForm = () => {
     // 쿠키에 저장된 username(아이디) 가져오기
     const rememberId = Cookies.get('rememberId');
     setRememberUserId(rememberId || '');
+    document.body.style.overflowY = 'scroll'; // 스크롤 허용
   }, []);
 
   return (
