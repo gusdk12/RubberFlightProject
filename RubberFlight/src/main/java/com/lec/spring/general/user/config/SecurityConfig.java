@@ -3,6 +3,7 @@ package com.lec.spring.general.user.config;
 import com.lec.spring.general.user.jwt.LoginFilter;
 import com.lec.spring.general.user.jwt.JWTFilter;
 import com.lec.spring.general.user.jwt.JWTUtil;
+import com.lec.spring.general.user.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,11 +16,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,10 +37,14 @@ public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
 
+    private final CustomSuccessHandler customSuccessHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
     private final JWTUtil jwtUtil;
 
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, CustomSuccessHandler customSuccessHandler, CustomOAuth2UserService customOAuth2UserService, JWTUtil jwtUtil) {
         this.authenticationConfiguration = authenticationConfiguration;
+        this.customSuccessHandler = customSuccessHandler;
+        this.customOAuth2UserService = customOAuth2UserService;
         this.jwtUtil = jwtUtil;
     }
 
@@ -69,10 +76,17 @@ public class SecurityConfig {
         // Http basic 인증방식 disable
         http.httpBasic((auth) -> auth.disable());
 
+        //JWTFilter 추가
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
         // oauth2
         http
-                .oauth2Login(Customizer.withDefaults());
-
+                .oauth2Login((oauth2) -> oauth2
+                        .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
+                                .userService(customOAuth2UserService)))
+                        .successHandler(customSuccessHandler)
+                );
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
@@ -90,6 +104,9 @@ public class SecurityConfig {
         // JWTFilter 등록. LoginFilter 앞에 위치
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+
+        http
+                .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
         //필터 추가 LoginFilter()는 AuthenticationManager 인자를 받음
         // authenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
@@ -119,6 +136,7 @@ public class SecurityConfig {
                     configuration.setAllowedHeaders(Collections.singletonList("*")); // List.of("*")와 동일
                     configuration.setMaxAge(3600L);
 
+                    configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
                     configuration.setExposedHeaders(List.of("Authorization")); // ★
                     return configuration;
                 }

@@ -172,7 +172,7 @@ const LoginForm = () => {
           }}
           onClick={() => {
             // 클릭 시 이동할 URL을 여기서 설정
-            window.location.href = '/';
+            window.location.href = "http://localhost:8282/oauth2/authorization/naver";
           }}
         />
 
