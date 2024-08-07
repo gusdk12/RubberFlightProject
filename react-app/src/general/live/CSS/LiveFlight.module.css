@@ -1,0 +1,50 @@
+.allCon {
+    width: 1300px;
+    left: 50%;
+    top: 190px;
+    height: calc(100vh - 190px);
+    transform: translateX(-50%);
+    position: relative;
+}
+
+
+.scheduleHeader{
+    max-width: 1200px;
+    height: 150px;
+    margin: auto;
+    display: flex;
+    align-items: end;
+    font-size: 35px;
+    padding-left: 50px;
+    padding-bottom: 20px;
+    color: #00235A;
+}
+
+.scheduleInfo{
+    font-family: 'KIMM_Light';
+    max-width: 1200px;
+    height: 140px;
+    margin: auto;
+    display: flex;
+    align-items:start;
+    font-size: 25px;
+    padding-left: 50px;
+    color: #00235A;
+}
+
+.searchCon {
+    display: flex;
+    align-items: center;
+    width: 800px;
+    margin: 50px auto;
+}
+
+#searchBtn {
+    margin-left: 10px;
+}
+
+.earthCon {
+    max-width: 1200px;
+    height: 600px;
+    margin: 50px auto;
+}

@@ -1,79 +1,286 @@
-import React, { useState, useEffect } from 'react';
-import { Input, Button } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { Input, Button, Divider } from '@chakra-ui/react';
 import { getLiveInfo } from '../../../apis/liveInfoApis';
-
 import Header from '../../../general/common/Header/Header';
-import '../CSS/LiveFlight.css';
+import styles from '../CSS/LiveFlight.module.css';
+import { getAirportInfo } from '../../../apis/airportApis';
 
-const LiveFlight = () => {
+import ArrPin from '../../../assets/images/live/pin1.webp'
+import DepPin from '../../../assets/images/live/pin2.webp'
+import Flight from '../../../assets/images/live/earthPlane.webp'
+
+const containerStyle = {
+  width: '1200px',
+  height: '600px'
+};
+
+const center = {
+  lat: 54.254,
+  lng: 170.546
+};
+
+const darkModeStyles = [
+    {
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#242f3e"
+        }
+      ]
+    },
+    {
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#746855"
+        }
+      ]
+    },
+    {
+      "elementType": "labels.text.stroke",
+      "stylers": [
+        {
+          "color": "#242f3e"
+        }
+      ]
+    },
+    {
+      "featureType": "administrative.locality",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#d59563"
+        }
+      ]
+    },
+    {
+      "featureType": "poi",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#d59563"
+        }
+      ]
+    },
+    {
+      "featureType": "poi.park",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#263c3f"
+        }
+      ]
+    },
+    {
+      "featureType": "poi.park",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#6b9a76"
+        }
+      ]
+    },
+    {
+      "featureType": "road",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#38414e"
+        }
+      ]
+    },
+    {
+      "featureType": "road",
+      "elementType": "geometry.stroke",
+      "stylers": [
+        {
+          "color": "#212a37"
+        }
+      ]
+    },
+    {
+      "featureType": "road",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#9ca5b3"
+        }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#746855"
+        }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "geometry.stroke",
+      "stylers": [
+        {
+          "color": "#1f2835"
+        }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#f3d19c"
+        }
+      ]
+    },
+    {
+      "featureType": "transit",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#2f3948"
+        }
+      ]
+    },
+    {
+      "featureType": "transit.station",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#d59563"
+        }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#17263c"
+        }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#515c6d"
+        }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "labels.text.stroke",
+      "stylers": [
+        {
+          "color": "#17263c"
+        }
+      ]
+    }
+  ];
+
+  const LiveFlight = () => {
     const [flightIataInput, setFlightIataInput] = useState("");
     const [flightData, setFlightData] = useState(null);
-
+    const [arrAirportData, setAirportData] = useState(null);
+  
     const searchFly = async () => {
-        try {
-            const response = await getLiveInfo(flightIataInput);
-            const data = response.data[0];
-
-            if (!data) {
-                window.alert("해당 IATA 코드에 대한 비행 정보가 없습니다.");
-                setFlightIataInput('');
-                return;
-            }
-
-            const extractedData = {
-                flightIata: data.flight.iataNumber,
-                arrIataCode: data.arrival.iataCode, // 도착 공항
-                depIataCode: data.departure.iataCode, // 출발 공항
-                latitude: data.geography.latitude, // 위도
-                longitude: data.geography.longitude, // 경도
-                direction: data.geography.direction, // 방향
-                altitude: data.geography.altitude, // 고도
-                horizontal: data.speed.horizontal, // 속도
-                airlineIata: data.airline.iataCode, // 항공사 정보
-            };
-
-            setFlightData(extractedData);
-        } catch (error) {
-            window.alert("존재하지 않습니다.");
+      try {
+        const response = await getLiveInfo(flightIataInput);
+        const data = response.data[0];
+  
+        if (!data) {
+          window.alert("해당 IATA 코드에 대한 비행 정보가 없습니다.");
+          setFlightIataInput('');
+          return;
         }
-    }
+  
+        const extractedData = {
+          flightIata: data.flight.iataNumber,
+          arrIataCode: data.arrival.iataCode,
+          depIataCode: data.departure.iataCode,
+          latitude: data.geography.latitude,
+          longitude: data.geography.longitude,
+          direction: data.geography.direction,
+          altitude: data.geography.altitude,
+          horizontal: data.speed.horizontal,
+          airlineIata: data.airline.iataCode,
+        };
+  
+        setFlightData(extractedData);
+  
+        // Fetch airport data using the departure IATA code
+        const airportResponse = await getAirportInfo(data.departure.iataCode);
+        if (airportResponse.data) {
+          setAirportData({
+            name: airportResponse.data.nameAirport,
+            latitude: airportResponse.data.latitudeAirport,
+            longitude: airportResponse.data.longitudeAirport,
+          });
+        }
+  
+      } catch (error) {
+        window.alert("존재하지 않습니다.");
+      }
+    };
 
-    return (
-        <>
-            <Header isMain={true}/>
+ return (
+    <>
+      <Header isMain={true}/>
 
-            <div className='live-scheduleHeader'>일정과 체크리스트를 한번에 - </div>
-            <div className='live-scheduleInfo'>
-                나만의 체크리스트를 만들어 놓치는 물건이 없나 확인해보세요.<br/>
-                함께 여행하는 가족, 친구와 함께 일정을 짤 수도 있어요.
-            </div>
-            <Input
-                id="flightIata"
-                type="text"
-                placeholder='비행 코드 입력하기'
-                _placeholder={{ opacity: 1, color: 'black.500' }}
-                name="flightIata"
-                value={flightIataInput}
-                onChange={(e) => setFlightIataInput(e.target.value)}
-            />
-            <Button onClick={searchFly} id='searchBtn'>Search</Button>
+      <div className={styles.allCon}>
+        <div className={styles.scheduleHeader}>비행기 위치를 실시간으로 - </div>
+        <div className={styles.scheduleInfo}>
+          비행기 코드를 통해 위치를 검색해보세요. <br/>
+          친구나 가족들이 타고있는 항공편의 실시간 위치를 알 수 있어요.
+        </div>
 
-            {/* {flightData && (
-                <div>
-                    <h2>Flight Information</h2>
-                    <p><strong>Flight IATA Code:</strong> {flightData.flightIata}</p>
-                    <p><strong>Departure Airport IATA Code:</strong> {flightData.depIataCode}</p>
-                    <p><strong>Arrival Airport IATA Code:</strong> {flightData.arrIataCode}</p>
-                    <p><strong>Latitude:</strong> {flightData.latitude}</p>
-                    <p><strong>Longitude:</strong> {flightData.longitude}</p>
-                    <p><strong>Direction:</strong> {flightData.direction}</p>
-                    <p><strong>Altitude:</strong> {flightData.altitude}</p>
-                    <p><strong>Horizontal Speed:</strong> {flightData.horizontal}</p>
-                    <p><strong>Airline IATA Code:</strong> {flightData.airlineIata}</p>
-                </div>
-            )} */}
-        </>
-    );
+        <Divider my={7}/>
+
+        <div className={styles.searchCon}>
+          <Input
+            id={styles.flightIata}
+            type="text"
+            placeholder='비행 코드 입력하기'
+            _placeholder={{ opacity: 1, color: 'black.500' }}
+            name="flightIata"
+            value={flightIataInput}
+            onChange={(e) => setFlightIataInput(e.target.value)}
+          />
+          <Button onClick={searchFly} id={styles.searchBtn}>Search</Button>
+        </div>
+
+        <LoadScript googleMapsApiKey="AIzaSyAUE-qzPob_mpqr2KUELbQjHwuRe8-CUXc">
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={4}
+            options={{
+              disableDefaultUI: true,
+              styles: darkModeStyles, 
+            }}
+          >
+            {flightData && (
+              <Marker
+                position={{ lat: flightData.latitude, lng: flightData.longitude }}
+                label={`Flight ${flightData.flightIata}`}
+              />
+            )}
+            {airportData && (
+              <Marker
+                position={{ lat: airportData.latitude, lng: airportData.longitude }}
+                label={`Airport ${airportData.name}`}
+                icon="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" // Custom icon for the airport
+              />
+            )}
+          </GoogleMap>
+        </LoadScript>
+      </div>
+    </>
+  );
 };
 
 export default LiveFlight;
