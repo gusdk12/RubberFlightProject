@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import '../css/search.css';
+import '../css/flatpickr.css';
 import { searchFlight } from '../../../apis/flightApis';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import 'flatpickr/dist/flatpickr.min.css';
 import Flatpickr from 'react-flatpickr';
 import { format } from 'date-fns';
+import style from '../css/search.module.css'
 
 const Search = () => {
   const [passengers, setPassengers] = useState(1);
@@ -228,144 +229,171 @@ const handleDecrement = (type) => {
     handleSearch();
   }, [tripType, departure, arrival, departureDate, returnDate, passengers]);
 
-
   const handleTripTypeChange = (type) => {
     setTripType(type);
-    if (type === 'one-way') {
+
+    if (type === 'round-trip') {
+      setDates(dates.length === 1 ? [dates[0], dates[0]] : dates);
+      setDepartureDate(dates[0] ? format(dates[0], 'yyyy-MM-dd') : '');
+      setReturnDate(dates[1] ? format(dates[1], 'yyyy-MM-dd') : '');
+    } else if (type === 'one-way') {
+      setDates([dates[0]]);
+      setDepartureDate(dates[0] ? format(dates[0], 'yyyy-MM-dd') : '');
       setReturnDate('');
     }
   };
 
 
   return (
-    <div className="search-bar">
-    <div className="trip-type">
-      <button onClick={() => handleTripTypeChange('round-trip')}>왕복</button>
-      <button onClick={() => handleTripTypeChange('one-way')}>편도</button>
-    </div>
-    <div className="input-group">
-      <div id='depPart' className="autocomplete-container">
-      {isEditing.departure ? (
-              <input
-                  className='search'
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => {
-                      setSearchTerm(e.target.value);
-                      handleSearchTermChange(e);
-                  }}
-                  onFocus={() => handleFocus('departure')}
-                  placeholder="출발"
-              />
-          ) : (
-              <div className="editable-div" onClick={() => handleClickEdit('departure')}>
-                  <div className='airportName'>{departure || '출발'}</div>
-                  <div className='selectArrow' />
-              </div>
-          )}
-          {focusedInput === 'departure' && searchTerm && (
-              <div className="autocomplete-results" ref={autocompleteRef}>
-                  {filteredAirports.length > 0 ? (
-                      filteredAirports.map((airport) => (
-                          <div
-                              key={airport.airportIso}
-                              onClick={() => handleSelectAirport(airport.airportIso)}
-                          >
-                              {airport.airportName} ({airport.airportIso})
-                          </div>
-                      ))
-                  ) : (
-                      <div>No results found</div>
-                  )}
-              </div>
-          )}
+    <div className={style.searchBar}>
+    <div className={style.contentpart}>
+      <div className={style.wayBox}>
+      <button onClick={() => handleTripTypeChange('round-trip')} className={`${style.wButton} ${tripType === 'round-trip' ? style.searchActives : ''}`}>왕복</button>
+      <button onClick={() => handleTripTypeChange('one-way')} className={`${style.wButton} ${tripType === 'one-way' ? style.searchActives : ''}`}>편도</button>
       </div>
-
-        <div className="autocomplete-container" id='arrPart'>
-        {isEditing.arrival ? (
+    <div className={style.selectBox}>
+      <div id={style.searchAirport}>
+      <div id={style.searchDepPart}>
+      {isEditing.departure ? (
           <input
+              className={style.searchAirport}
               type="text"
-              className='search'
               value={searchTerm}
               onChange={(e) => {
                   setSearchTerm(e.target.value);
                   handleSearchTermChange(e);
               }}
-              onFocus={() => handleFocus('arrival')}
-              placeholder="도착"
+              onFocus={() => handleFocus('departure')}
+              placeholder="출발"
           />
-          ) : (
-              <div className="editable-div" onClick={() => handleClickEdit('arrival')}>
-                  <div className='airportName'>{arrival || '도착'}</div>
-                  <div className='selectArrow' />
-              </div>
-          )}
-          {focusedInput === 'arrival' && searchTerm && (
-              <div className="autocomplete-results" ref={autocompleteRef}>
-                  {filteredAirports.length > 0 ? (
-                      filteredAirports.map((airport) => (
-                          <div
-                              key={airport.airportIso}
-                              onClick={() => handleSelectAirport(airport.airportIso)}
-                          >
-                              {airport.airportName} ({airport.airportIso})
-                          </div>
-                      ))
-                  ) : (
-                      <div>No results found</div>
-                  )}
-              </div>
-          )}
-        </div>
-        {tripType === 'round-trip' && (
-          <div>
-            <input type="date" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} />
-            <input type="date" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
+      ) : (
+          <div className="editable-div" onClick={() => handleClickEdit('departure')}>
+              <div className='airportName'>{departure || '출발'}</div>
+              <div className={style.selectArrow} />
           </div>
+      )}
+      {focusedInput === 'departure' && searchTerm && (
+          <div className={style.autocompleteResults} ref={autocompleteRef}>
+              {filteredAirports.length > 0 ? (
+                  filteredAirports.map((airport) => (
+                      <div
+                          key={airport.airportIso}
+                          onClick={() => handleSelectAirport(airport.airportIso)}
+                      >
+                          {airport.airportName} ({airport.airportIso})
+                      </div>
+                  ))
+              ) : (
+                  <div>No results found</div>
+              )}
+          </div>
+      )}
+      </div>
+
+        <div id={style.searchArrPart}>
+        {isEditing.arrival ? (
+                <input
+                type="text"
+                className={style.searchAirport}
+                value={searchTerm}
+                onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                    handleSearchTermChange(e);
+                }}
+                onFocus={() => handleFocus('arrival')}
+                placeholder="도착"
+            />
+        ) : (
+            <div className="search-editable-div" onClick={() => handleClickEdit('arrival')}>
+                <div className='airportName'>{arrival || '도착'}</div>
+                <div className={style.selectArrow} />
+            </div>
+        )}
+        {focusedInput === 'arrival' && searchTerm && (
+            <div className={style.autocompleteResults} ref={autocompleteRef}>
+                {filteredAirports.length > 0 ? (
+                    filteredAirports.map((airport) => (
+                        <div
+                            key={airport.airportIso}
+                            onClick={() => handleSelectAirport(airport.airportIso)}
+                        >
+                            {airport.airportName} ({airport.airportIso})
+                        </div>
+                    ))
+                ) : (
+                    <div>No results found</div>
+                )}
+            </div>
+        )}
+        </div>
+      </div>
+      <div className={style.DatePart}>
+        {tripType === 'round-trip' && (
+          <div className={style.datePickerContainer}>
+           <Flatpickr
+           placeholder='날짜를 선택하세요'
+           options={{ 
+               mode: "range",
+           }}
+           value={dates}
+           onChange={handleDateChange}
+           className={style.searchFlatpickrInput}
+           />
+       </div>
         )}
         {tripType === 'one-way' && (
-          <div>
-            <input type="date" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} />
+          <div className={style.datePickerContainer}>
+          <Flatpickr
+           placeholder='날짜를 선택하세요'
+                  options={{ mode: "single" }}
+                  value={dates}
+                  onChange={handleDateChange}
+                  className={style.searchFlatpickrInput}
+              />
           </div>
         )}
-        <div id='peoplePart' ref={menuRef}>
-                        <button 
-                            className="dropdown-button" 
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            value={passengers}
-                        >
-                            {`성인 ${adults}, 소아 ${children}, 유아 ${infants}`}
-                        </button>
-                        {isMenuOpen && (
-                            <div className="menu-container">
-                                <div className="menu-item">
-                                    <button onClick={() => handleDecrement('adults')}>-</button>
-                                    <label>성인 </label>
-                                    <span>{adults}명</span>
-                                    <button onClick={() => handleIncrement('adults')}>+</button>
-                                </div>
-                                <div className="menu-item">
-                                    <button onClick={() => handleDecrement('children')}>-</button>
-                                    <label>소아 </label>
-                                    <span>{children}명</span>
-                                    <button onClick={() => handleIncrement('children')}>+</button>
-                                </div>
-                                <div className="menu-item">
-                                    <button onClick={() => handleDecrement('infants')}>-</button>
-                                    <label>유아 </label>
-                                    <span>{infants}명</span>
-                                    <button onClick={() => handleIncrement('infants')}>+</button>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-        <button className='search-button' onClick={handleSearch}>항공권 검색</button>
+        </div>
+        <div className={style.peoplePart} ref={menuRef}>
+          <button 
+              className={style.dropdownButton}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              value={passengers}
+          >
+              {`성인 ${adults}, 소아 ${children}, 유아 ${infants}`}
+          </button>
+          {isMenuOpen && (
+              <div className={style.cntContainer}>
+                  <div className={style.cntContainerItem}>
+                      <button onClick={() => handleDecrement('adults')}>-</button>
+                      <label>성인 </label>
+                      <span>{adults}명</span>
+                      <button onClick={() => handleIncrement('adults')}>+</button>
+                  </div>
+                  <div className={style.cntContainerItem}>
+                      <button onClick={() => handleDecrement('children')}>-</button>
+                      <label>소아 </label>
+                      <span>{children}명</span>
+                      <button onClick={() => handleIncrement('children')}>+</button>
+                  </div>
+                  <div className={style.cntContainerItem}>
+                      <button onClick={() => handleDecrement('infants')}>-</button>
+                      <label>유아 </label>
+                      <span>{infants}명</span>
+                      <button onClick={() => handleIncrement('infants')}>+</button>
+                  </div>
+              </div>
+          )}
       </div>
-      <div className="search-results">
+        <div className={style.submit}>
+        <button className={style.subButton} onClick={handleSearch}>항공권 검색</button>
+        </div>              
+      </div>
+      </div>
 
+      <div className={style.results}>
       { results.combinations.length > 0 && (
-        <div>
-          <h3>왕복 항공권 조합</h3>
+         <div className={style.resultsContents}>
+          {/* <h3>왕복 항공권 조합</h3> */}
           <ul>
             {results.combinations.map((combination, index) => (
               <li key={index} onClick={() => handleClick(combination)}>
@@ -378,11 +406,11 @@ const handleDecrement = (type) => {
               </li>
             ))}
           </ul>
-        </div>
+      </div>
       )}
  
       {isRoundWay == false && results.outboundFlights.length > 0 && (
-        <div>
+           <div className={style.resultsContents}>
           <h3>출발 항공권</h3>
           <ul>
             {results.outboundFlights.map((flight, index) => (

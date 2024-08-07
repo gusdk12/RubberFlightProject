@@ -1,0 +1,9 @@
+.flatpickr-monthDropdown-months {
+    width: 57% !important;
+  }
+  
+.flatpickr-calendar {
+    /* outline: 2px solid palegoldenrod; */
+    margin: 0 auto;
+    margin-left: 20px;
+}  
