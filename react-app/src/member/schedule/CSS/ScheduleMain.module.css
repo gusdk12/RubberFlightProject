@@ -207,13 +207,8 @@ body{
     flex-direction: column;
     margin-bottom: 15px;
 }
-.scheduleItem:hover{
-    .scheduleTitle{
-        background-color: #e3e5f0;
-    }
-    .scheduleDate{
-        background-color: #cc8eab;
-    }
+.scheduleTitle:hover{
+    background-color: #e3e5f0;
 }
 .scheduleTitle{
     width: 100%;
@@ -228,8 +223,9 @@ body{
     height: 30%;
     background-color: #f1adcd;
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
     align-items: center;
+    padding-left: 20px;
     padding-right: 20px;
 }
 
