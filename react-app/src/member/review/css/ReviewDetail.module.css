@@ -1,0 +1,37 @@
+.reviewContent {
+    margin: 50px 90px;
+    border: 2px dotted #2aa7dc;
+    padding: 30px
+}
+
+.rateBody {
+    margin-left: 40px;
+}
+
+.reviewBtn {
+    text-align: right;
+    margin: 0 40px 60px 0;
+}
+
+.btn {
+    font-size: 20px;
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.updatebtn, .prevbtn {
+    margin-right: 20px;
+    background-color: rgb(140, 243, 243);
+}
+.updatebtn:hover, .prevbtn:hover {
+    background-color: rgb(126, 236, 236);
+}
+
+.deletebtn {
+    background-color: rgb(241, 147, 166);
+}
+
+.deletebtn:hover {
+    background-color: rgb(243, 121, 145);
+}
