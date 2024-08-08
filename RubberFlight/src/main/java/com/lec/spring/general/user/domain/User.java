@@ -45,4 +45,7 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Coupon> coupons = new ArrayList<>(); ; // 사용자가 가진 쿠폰들
+
+    private String provider;
+    private String providerId;
 }
