@@ -87,10 +87,17 @@ INSERT INTO FT_COUPON (code, percent, description, airline_name)
 VALUES ('SPRING2024', 10, '봄 맞이 할인 쿠폰', 'All');
 
 # 쿠폰
-INSERT INTO ft_schedule (user_id, title, team_usernames, edit_date)
-VALUES (1, '제주도 가자!', '유인아', "2024-07-21T15:50:00");
-INSERT INTO ft_schedule (user_id, title, team_usernames, edit_date)
-VALUES (1, '프랑스 가자!', '유인아', "2024-07-30T3:50:00");
-INSERT INTO ft_schedule (user_id, title, team_usernames, edit_date)
-VALUES (1, '흑흑', '유인아', "2024-08-01T3:50:00");
+INSERT INTO ft_schedule (title, edit_date)
+VALUES ('제주도 가자!', "2024-07-21T15:50:00");
+INSERT INTO ft_schedule (title, edit_date)
+VALUES ('프랑스 가자!', "2024-07-30T3:50:00");
+INSERT INTO ft_schedule (title, edit_date)
+VALUES ('흑흑', "2024-08-01T3:50:00");
+
+INSERT INTO ft_participation (user_id, schedule_id)
+VALUES (1, 1);
+INSERT INTO ft_participation (user_id, schedule_id)
+VALUES (1, 2);
+INSERT INTO ft_participation (user_id, schedule_id)
+VALUES (1, 3);
 

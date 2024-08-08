@@ -99,7 +99,7 @@ const LoginForm = () => {
               {
                 fontWeight: '500'
               }
-            }>Log in using your account on ></h4>
+            }>Log in using your account on</h4>
           </div>
           {/* 로그인 버튼 목록 */}
           <div
