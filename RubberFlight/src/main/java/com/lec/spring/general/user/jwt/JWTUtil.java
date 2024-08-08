@@ -24,15 +24,12 @@ public class JWTUtil {
     // JWT 생성
     // Payload 에 저장될 정보
     // - id, username, role, 생성일, 만료일
-    public String createJwt(Long id, String username, String role, String name, String email, String tel, String image, Long expiredMs) {
+    public String createJwt(Long id, String username, String role, String name, Long expiredMs) {
         return Jwts.builder()
+                .claim("id", id)
                 .claim("username", username)
                 .claim("role", role)
-                .claim("id", id)
                 .claim("name", name)
-                .claim("email", email)
-                .claim("tel", tel)
-                .claim("image", image)
                 .issuedAt(new Date(System.currentTimeMillis())) //생성일
                 .expiration(new Date(System.currentTimeMillis() + expiredMs)) // 만료일시
                 .signWith(secretKey)

@@ -1,0 +1,75 @@
+.allCon {
+    border: 1px solid blue;
+    width: 1300px;
+    left: 50%;
+    top: 190px;
+    transform: translateX(-50%);
+    position: relative;
+}
+
+
+.scheduleHeader{
+    max-width: 1200px;
+    height: 150px;
+    margin: auto;
+    display: flex;
+    align-items: end;
+    font-size: 35px;
+    padding-left: 50px;
+    padding-bottom: 20px;
+    color: #00235A;
+}
+
+.scheduleInfo{
+    font-family: 'KIMM_Light';
+    max-width: 1200px;
+    height: 140px;
+    margin: auto;
+    display: flex;
+    align-items:start;
+    font-size: 25px;
+    padding-left: 50px;
+    color: #00235A;
+}
+
+.searchCon {
+    display: flex;
+    align-items: center;
+    width: 800px;
+    margin: 50px auto;
+}
+
+#searchBtn {
+    margin-left: 10px;
+}
+
+
+.earthCon {
+    position: relative;
+    width: 1600px;
+    height: 1000px;
+    margin: 0 auto;
+    transform: translateX(-150px);
+    overflow: hidden;
+    border: 1px solid red;
+}
+
+.aboutFlight {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    width: 800px;
+    height: 200px;
+    border: 1px solid skyblue;
+    z-index: 500px;
+
+    color: white;
+    font-weight: bold;
+}
+
+.loadingOverlay {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 10;
+}

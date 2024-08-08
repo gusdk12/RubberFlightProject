@@ -1,15 +1,17 @@
-import React from 'react';
-import { Box, Flex, Heading, Text, Image } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Box, Flex, Heading, Text, Image, Button } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { calculateFlightDuration, getStatusText } from './FlightUtils';
 import img1 from '../../../assets/images/flightInfo/img1.webp';
 
 const MotionBox = motion(Box);
+const MotionButton = motion(Button); 
 
-const FlightInfoCard = ({ flight, index, tabKey }) => {
+const FlightInfoCard = ({ flight, index, tabKey, isPast }) => {
   const navigate = useNavigate(); 
   const status = getStatusText(flight);
+  const [isHovered, setIsHovered] = useState(false); 
 
   return (
     <MotionBox
@@ -17,6 +19,8 @@ const FlightInfoCard = ({ flight, index, tabKey }) => {
       className="flight-info-container flight-item"
       mb={10}
       onClick={() => navigate(`/mypage/flight-info/${flight.id}`)} 
+      onMouseEnter={() => setIsHovered(true)} 
+      onMouseLeave={() => setIsHovered(false)} 
       initial={{ opacity: 0, x: -50, scale: 1 }}
       animate={{ opacity: 1, x: 0, scale: 1 }}
       whileHover={{ scale: 1.02 }}
@@ -25,6 +29,8 @@ const FlightInfoCard = ({ flight, index, tabKey }) => {
         default: { duration: 0.5, delay: index * 0.1 },
         scale: { duration: 0.2 }
       }}
+      position="relative"
+      paddingBottom={isHovered ? '80px' : '20px'} 
     >
       {/* 항공편 출발지 및 도착지 정보 */}
       <Flex justify="space-between" align="center" ml={2} mt={1}>
@@ -33,9 +39,9 @@ const FlightInfoCard = ({ flight, index, tabKey }) => {
         </Heading>
         <Text fontSize="md" color="#c17777" fontWeight="bold" mr={7}>{flight.airlineName}</Text>
       </Flex>
+      
       <Flex direction="row" justify="center" align="center">
         <Flex flex="3" direction="row" justify="center" align="center" mt={5}>
-
           {/* 출발지 정보 */}
           <Box className="flight-section">
             <Text className="flight-label">{flight.depIata}</Text>
@@ -81,6 +87,23 @@ const FlightInfoCard = ({ flight, index, tabKey }) => {
           </Text>
         </Box>
       </Flex>
+
+      {isPast && (
+        <MotionButton 
+          className="review-button"
+          position="absolute"
+          bottom="15px" 
+          right="20px"
+          size="lg" 
+          display={isHovered ? 'block' : 'none'} 
+          onClick={(e) => {
+            e.stopPropagation(); 
+            navigate(`/review`); // 현아 언니 여기야 !!!!!!!!!!!!!!!!! 
+          }}
+        >
+          리뷰 작성
+        </MotionButton>
+      )}
     </MotionBox>
   );
 };

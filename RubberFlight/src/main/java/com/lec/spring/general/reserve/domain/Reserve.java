@@ -34,7 +34,7 @@ public class Reserve {
     private LocalDateTime reserveDate;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
-    boolean isended = false;
+    boolean isended;
 
     // ft_user:ft_reservation 1:N
     @ManyToOne

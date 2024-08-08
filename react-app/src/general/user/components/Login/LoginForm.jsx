@@ -3,7 +3,7 @@ import { Box, Button, Checkbox, FormControl, FormLabel, HStack, Input, Stack, us
 import Cookies from 'js-cookie';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-import './loginForm.css';
+import './loginForm.module.css';
 
 const LoginForm = () => {
   const { login } = useContext(LoginContext);
@@ -24,24 +24,7 @@ const LoginForm = () => {
 
 
     login(username, password, rememberId)
-      // .then(() => {
-      //   toast({
-      //     title: "Login successful.",
-      //     description: "You have been logged in successfully.",
-      //     status: "success",
-      //     duration: 9000,
-      //     isClosable: true,
-      //   });
-      // })
-      // .catch((error) => {
-      //   toast({
-      //     title: "Login failed.",
-      //     description: error.message,
-      //     status: "error",
-      //     duration: 9000,
-      //     isClosable: true,
-      //   });
-      // });
+   
   };
 
   useEffect(() => {
@@ -116,7 +99,7 @@ const LoginForm = () => {
               {
                 fontWeight: '500'
               }
-            }>Log in using your account on ></h4>
+            }>Log in using your account on</h4>
           </div>
           {/* 로그인 버튼 목록 */}
           <div
@@ -140,8 +123,7 @@ const LoginForm = () => {
             cursor: 'pointer',
           }}
           onClick={() => {
-            // 클릭 시 이동할 URL을 여기서 설정
-            window.location.href = '/';
+            window.location.href = "http://localhost:8282/oauth2/authorization/google";
           }}
         />
 
@@ -157,12 +139,12 @@ const LoginForm = () => {
               }}
               onClick={() => {
                 // 클릭 시 이동할 URL을 여기서 설정
-                window.location.href = '/';
+                window.location.href = "http://localhost:8282/oauth2/authorization/kakao";
               }}
             />
 
              {/* 네이버 */}
-             <div className='naver'
+          <div className='naver'
           style={{
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
@@ -173,7 +155,7 @@ const LoginForm = () => {
           }}
           onClick={() => {
             // 클릭 시 이동할 URL을 여기서 설정
-            window.location.href = '/';
+            window.location.href = "http://localhost:8282/oauth2/authorization/naver";
           }}
         />
 
@@ -190,7 +172,7 @@ const LoginForm = () => {
           }}
           onClick={() => {
             // 클릭 시 이동할 URL을 여기서 설정
-            window.location.href = '/';
+            window.location.href = "http://localhost:8282/oauth2/authorization/facebook";
           }}
         />
         </div>

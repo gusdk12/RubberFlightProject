@@ -23,7 +23,7 @@ const FlightInfoTabs = ({ pastFlights, upcomingFlights }) => {
         <TabPanel>
           {upcomingFlights.length > 0 ? (
             upcomingFlights.map((flight, index) => (
-              <FlightInfoCard key={flight.id} flight={flight} index={index} tabKey={tabIndex} />
+              <FlightInfoCard key={flight.id} flight={flight} index={index} tabKey={tabIndex} isPast={false} />
             ))
           ) : (
             <Text>예약된 항공편이 없습니다.</Text>
@@ -32,7 +32,7 @@ const FlightInfoTabs = ({ pastFlights, upcomingFlights }) => {
         <TabPanel>
           {pastFlights.length > 0 ? (
             pastFlights.map((flight, index) => (
-              <FlightInfoCard key={flight.id} flight={flight} index={index} tabKey={tabIndex} />
+              <FlightInfoCard key={flight.id} flight={flight} index={index} tabKey={tabIndex} isPast={true} />
             ))
           ) : (
             <Text>지난 예약된 항공편이 없습니다.</Text>

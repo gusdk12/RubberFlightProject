@@ -3,6 +3,7 @@ package com.lec.spring.general.user.controller;
 import com.lec.spring.admin.coupon.domain.Coupon;
 import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.domain.UserJoinDTO;
+import com.lec.spring.general.user.jwt.JWTUtil;
 import com.lec.spring.general.user.service.FileService;
 import com.lec.spring.general.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -25,9 +26,12 @@ public class UserController {
     private final UserService userService;
     private final FileService fileService;
 
-    public UserController(UserService userService, FileService fileService) {
+    private final JWTUtil jwtUtil;
+
+    public UserController(UserService userService, FileService fileService, JWTUtil jwtUtil) {
         this.userService = userService;
         this.fileService = fileService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/join/user")
