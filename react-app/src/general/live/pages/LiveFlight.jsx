@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Button, Divider } from '@chakra-ui/react';
+import { Input, Button, Divider, Image } from '@chakra-ui/react';
 import { getLiveInfo } from '../../../apis/liveInfoApis';
 import { getAirportInfo1 } from '../../../apis/airportApis';
 import Header from '../../../general/common/Header/Header';
 import styles from '../CSS/LiveFlight.module.css';
-
-import ArrPin from '../../../assets/images/live/pin1.webp';
-import DepPin from '../../../assets/images/live/pin2.webp';
-import Flight from '../../../assets/images/live/earthPlane.webp';
+import loadingImage from '../../../assets/images/main/loading.webp';
 
 const LiveFlight = () => {
   const [flightIataInput, setFlightIataInput] = useState("");
   const [flightData, setFlightData] = useState(null);
   const [depAirportData, setDepAirportData] = useState(null);
   const [arrAirportData, setArrAirportData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     document.body.style.backgroundColor = '#dde6f5';
@@ -22,6 +20,8 @@ const LiveFlight = () => {
   }, []);
 
   const searchFly = async () => {
+    setLoading(true);
+
     try {
       const response = await getLiveInfo(flightIataInput);
       const data = response.data[0];
@@ -29,6 +29,7 @@ const LiveFlight = () => {
       if (!data) {
         window.alert("해당 IATA 코드에 대한 비행 정보가 없습니다.");
         setFlightIataInput('');
+        setLoading(false);
         return;
       }
 
@@ -46,12 +47,10 @@ const LiveFlight = () => {
 
       setFlightData(extractedData);
 
-      console.log(flightData.arrIataCode);
-      console.log(flightData.depIataCode);
-      const arrAirportResponse = await getAirportInfo1(flightData.arrIataCode);
-      const depAirportResponse = await getAirportInfo1(flightData.depIataCode);
-      console.log(arrAirportResponse);
-      console.log(depAirportResponse);
+      const [arrAirportResponse, depAirportResponse] = await Promise.all([
+        getAirportInfo1(extractedData.arrIataCode),
+        getAirportInfo1(extractedData.depIataCode),
+      ]);
 
       if (arrAirportResponse.data[0]) {
         setArrAirportData({
@@ -69,33 +68,34 @@ const LiveFlight = () => {
         });
       }
 
+      // 데이터가 모두 준비되었을 때 iframe에 메시지 전달
+      if (extractedData && arrAirportResponse.data[0] && depAirportResponse.data[0]) {
+        const iframe = document.getElementById('map-iframe');
 
+        // Check if iframe and its contentWindow are available
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage({
+            type: 'UPDATE_COORDINATES',
+            liveLat: extractedData.latitude,
+            liveLng: extractedData.longitude,
+            arrAirportLat: arrAirportResponse.data[0].latitudeAirport,
+            arrAirportLng: arrAirportResponse.data[0].longitudeAirport,
+            depAirportLat: depAirportResponse.data[0].latitudeAirport,
+            depAirportLng: depAirportResponse.data[0].longitudeAirport,
+          }, '*');
+        } else {
+          console.error('iframe or contentWindow is not available.');
+        }
+      } else {
+        window.alert('해당 비행 정보가 없습니다.');
+      }
     } catch (error) {
       console.error("Error fetching flight or airport data:", error);
       window.alert("존재하지 않습니다.");
+    } finally {
+      setLoading(false);
     }
   };
-
-  const sendCoordinatesToIframe = () => {
-    const iframe = document.getElementById('map-iframe');
-
-    if(flightData && arrAirportData && depAirportData) {
-        iframe.contentWindow.postMessage({
-        type: 'UPDATE_COORDINATES',
-        liveLat: flightData.latitude,
-        liveLng: flightData.longitude,
-        arrAirportLat: arrAirportData.latitude,
-        arrAirportLng: arrAirportData.longitude,
-        depAirportLat: depAirportData.latitude,
-        depAirportLng: depAirportData.longitude,
-      }, '*');
-    }else {
-      window.alert('해당 비행 정보가 없습니다.');
-      return;
-    }
-
-  };
-
 
   return (
     <>
@@ -120,19 +120,26 @@ const LiveFlight = () => {
             value={flightIataInput}
             onChange={(e) => setFlightIataInput(e.target.value)}
           />
-          <Button onClick={searchFly} id={styles.searchBtn}>Search</Button>
+          <Button onClick={searchFly} id={styles.searchBtn} isLoading={loading}>Search</Button>
         </div>
-{/* 
-        <div className={styles.earthCon} style={{ margin: 'auto', position: 'relative', width: '80%', height: '1000px', overflow: 'hidden' }}>
-          <iframe
+
+        <div className={styles.earthCon}>
+          <div className={styles.aboutFlight}>
+            about
+          </div>
+          {/* <iframe
             id="map-iframe"
             src="/ApiTest.html"
             width="100%"
             height="100%"
             title="Google Map"
           ></iframe>
-        </div> */}
-
+          {loading && (
+            <div className={styles.loadingOverlay}>
+              <Image src={loadingImage} alt="Loading" />
+            </div>
+          )} */}
+        </div>
       </div>
     </>
   );

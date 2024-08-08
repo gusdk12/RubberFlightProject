@@ -1,8 +1,8 @@
 .allCon {
+    border: 1px solid blue;
     width: 1300px;
     left: 50%;
     top: 190px;
-    height: calc(100vh - 190px);
     transform: translateX(-50%);
     position: relative;
 }
@@ -43,5 +43,31 @@
     margin-left: 10px;
 }
 
-/* .earthCon {
-} */
+
+.earthCon {
+    position: relative;
+    width: 1600px;
+    height: 1000px;
+    margin: 0 auto;
+    transform: translateX(-150px);
+    overflow: hidden;
+    border: 1px solid red;
+}
+
+.aboutFlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 300px;
+    border: 1px solid skyblue;
+
+    z-index: 500px;
+}
+
+.loadingOverlay {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 10;
+}
