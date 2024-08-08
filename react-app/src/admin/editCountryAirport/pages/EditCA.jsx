@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { getCountryInfo } from '../../../apis/countryApis';
-import { getAirportInfo } from '../../../apis/airportApis';
+import { getAirportInfo2 } from '../../../apis/airportApis';
 import { Input, Button } from '@chakra-ui/react';
 import styles from '../CSS/EditCA.module.css';
 import '../../../Global/font.css';
@@ -172,7 +172,7 @@ const EditCA = () => {
         }
 
         try {
-            const response = await getAirportInfo(airportIataInput, selectedCountry.countryIso);
+            const response = await getAirportInfo2(airportIataInput, selectedCountry.countryIso);
             const data = response.data[0];
 
             if (!data) {

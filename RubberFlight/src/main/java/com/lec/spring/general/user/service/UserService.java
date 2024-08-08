@@ -63,4 +63,14 @@ public class UserService {
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
+
+    public int register(User user){
+        user.setUsername(user.getUsername().toUpperCase());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user = userRepository.save(user);
+
+        user.setRole("ROLE_MEMBER");
+        userRepository.save(user);
+        return 1;
+    };
 }

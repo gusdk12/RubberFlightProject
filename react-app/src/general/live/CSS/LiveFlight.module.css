@@ -1,4 +1,14 @@
-.live-scheduleHeader{
+.allCon {
+    width: 1300px;
+    left: 50%;
+    top: 190px;
+    height: calc(100vh - 190px);
+    transform: translateX(-50%);
+    position: relative;
+}
+
+
+.scheduleHeader{
     max-width: 1200px;
     height: 150px;
     margin: auto;
@@ -10,7 +20,7 @@
     color: #00235A;
 }
 
-.live-scheduleInfo{
+.scheduleInfo{
     font-family: 'KIMM_Light';
     max-width: 1200px;
     height: 140px;
@@ -21,3 +31,17 @@
     padding-left: 50px;
     color: #00235A;
 }
+
+.searchCon {
+    display: flex;
+    align-items: center;
+    width: 800px;
+    margin: 50px auto;
+}
+
+#searchBtn {
+    margin-left: 10px;
+}
+
+/* .earthCon {
+} */

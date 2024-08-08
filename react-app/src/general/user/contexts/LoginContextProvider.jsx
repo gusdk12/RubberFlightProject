@@ -87,6 +87,7 @@ const LoginContextProvider = ({ children }) => {
   // 로그인 세팅
   const loginSetting = (userData, accessToken) => {
     const { id, username, role, name } = userData;
+    console.log(userData);
 
     api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
     setIsLogin(true);
