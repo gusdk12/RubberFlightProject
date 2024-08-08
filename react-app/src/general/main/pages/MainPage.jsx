@@ -64,9 +64,20 @@ const MainPage = () => {
         document.body.style.overflow = 'hidden';
     }, []);
     useEffect(() => {
-        isAirplaneLoaded && reserveButtonRef.current.classList.add(style.showReserveClass);
-        isSearhMode && reserveButtonRef.current.classList.remove(style.showReserveClass);
-        isSearhMode && searchBoxRef.current.classList.add(style.showSeachClass);
+        // isAirplaneLoaded && reserveButtonRef.current.classList.add(style.showReserveClass);
+        // isSearhMode && reserveButtonRef.current.classList.remove(style.showReserveClass);
+        // isSearhMode && searchBoxRef.current.classList.add(style.showSeachClass);
+
+        // console.log('reserveButtonRef.current:', reserveButtonRef.current);
+        // console.log('searchBoxRef.current:', searchBoxRef.current);
+
+        if (reserveButtonRef.current) {
+            isAirplaneLoaded && reserveButtonRef.current.classList.add(style.showReserveClass);
+            isSearhMode && reserveButtonRef.current.classList.remove(style.showReserveClass);
+        }
+        if (searchBoxRef.current) {
+            isSearhMode && searchBoxRef.current.classList.add(style.showSeachClass);
+        }
     }, [isAirplaneLoaded, isSearhMode]);
 
     // 공항 찾기
@@ -85,12 +96,12 @@ const MainPage = () => {
 // 공항 검색
 useEffect(() => {
     const handleClickOutside = (event) => {
-      if (autocompleteRef.current && !autocompleteRef.current.contains(event.target)) {
-        setSearchTerm('');
-        setFilteredAirports(airports);
-        setFocusedInput(null);
-        setIsEditing({ departure: false, arrival: false }); // Close editing mode
-      }
+        if (autocompleteRef.current && !autocompleteRef.current.contains(event.target)) {
+            setSearchTerm('');
+            setFilteredAirports(airports);
+            setFocusedInput(null);
+            setIsEditing({ departure: false, arrival: false });
+        }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -102,8 +113,8 @@ useEffect(() => {
     if (term) {
         setFilteredAirports(
             airports.filter(airport =>
-                airport.airportName.toLowerCase().includes(term.toLowerCase()) ||
-                airport.airportIso.toLowerCase().includes(term.toLowerCase())
+                (airport.airportName?.toLowerCase() || '').includes(term.toLowerCase()) ||
+                (airport.airportIso?.toLowerCase() || '').includes(term.toLowerCase())
             )
         );
     } else {
@@ -269,7 +280,7 @@ useEffect(() => {
                         </div>
                         ) : (
                             <div className="editable-div" onClick={() => handleClickEdit('departure')}>
-                                <div className={style.airportName}>{departure || '출발'}</div>
+                                <div className="airportName">{departure || '출발'}</div>
                                 <div className={style.selectArrow} />
                             </div>
                         )}
