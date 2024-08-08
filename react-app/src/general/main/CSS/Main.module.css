@@ -425,6 +425,22 @@ body{
     background-color:#8696ac 
 }
 
+.autocompleteResults::-webkit-scrollbar {
+    width: 5px; /* 스크롤바 너비 */
+    height: 5px; /*가로 스크롤바 높이*/
+}
+.autocompleteResults::-webkit-scrollbar-track {
+    background: none; /* 트랙 배경 색상 */
+    border-radius: 10px; /* 트랙 모서리 둥글게 */
+}
+.autocompleteResults::-webkit-scrollbar-thumb {
+    background: #737297; /* 핸들 색상 */
+    border-radius: 10px; /* 핸들 모서리 둥글게 */
+}
+.autocompleteResults::-webkit-scrollbar-thumb:hover {
+    background: #504f6f; /* 호버 시 핸들 색상 */
+}
+
 .autocompleteActive {
     background-color: DodgerBlue !important; 
     color: #ffffff; 
