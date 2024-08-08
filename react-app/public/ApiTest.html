@@ -15,8 +15,8 @@
   </style>
 </head>
 <body>
-  <gmp-map-3d id="map" center="37.841157, -122.551679" tilt="67.5"></gmp-map-3d>
-  <!-- <s/cript async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUE-qzPob_mpqr2KUELbQjHwuRe8-CUXc&v=alpha&libraries=maps3d" onload="initMap()"></script> -->
+  <!-- <gmp-map-3d id="map" center="37.841157, -122.551679" tilt="67.5"></gmp-map-3d> -->
+  <!-- <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUE-qzPob_mpqr2KUELbQjHwuRe8-CUXc&v=alpha&libraries=maps3d" onload="initMap()"></script> -->
   <script>
     let map, marker;
 
@@ -24,20 +24,20 @@
       map = document.getElementById("map");
 
       // 초기 마커 설정
-      marker = new google.maps.Marker({
-        position: { lat: 37.841157, lng: -122.551679 },
-        map: new google.maps.Map(map),
-        title: "Hello World!",
-      });
+      // marker = new google.maps.Marker({
+      //   position: { lat: 37.841157, lng: -122.551679 },
+      //   map: new google.maps.Map(map),
+      //   title: "Hello World!",
+      // });
     }
 
     window.addEventListener('message', (event) => {
       if (event.data.type === 'UPDATE_COORDINATES') {
         const { liveLat, liveLng, arrAirportLat, arrAirportLng, depAirportLat, depAirportLng } = event.data;
-        const newCenter = { lat: parseFloat(lat), lng: parseFloat(lng) };
+        const newCenter = { liveLat: parseFloat(liveLat), liveLng: parseFloat(liveLng) };
 
         // 지도 중심 업데이트
-        map.setAttribute('center', `${newCenter.lat}, ${newCenter.lng}`);
+        map.setAttribute('center', `${newCenter.liveLat}, ${newCenter.liveLng}`);
 
         // 마커 위치 업데이트
         marker.setPosition(newCenter);

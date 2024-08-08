@@ -122,7 +122,7 @@ const LiveFlight = () => {
           />
           <Button onClick={searchFly} id={styles.searchBtn}>Search</Button>
         </div>
-
+{/* 
         <div className={styles.earthCon} style={{ margin: 'auto', position: 'relative', width: '80%', height: '1000px', overflow: 'hidden' }}>
           <iframe
             id="map-iframe"
@@ -131,7 +131,7 @@ const LiveFlight = () => {
             height="100%"
             title="Google Map"
           ></iframe>
-        </div>
+        </div> */}
 
       </div>
     </>
