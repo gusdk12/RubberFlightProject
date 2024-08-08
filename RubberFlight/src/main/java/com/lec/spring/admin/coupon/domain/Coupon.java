@@ -39,6 +39,6 @@ public class Coupon {
 
     @ManyToMany
     @JsonIgnore
-    private List<User> users = new ArrayList<>(); // 쿠폰을 사용하는 사용자
+    private List<User> users; // 쿠폰을 사용하는 사용자
 
 }

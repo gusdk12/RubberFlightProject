@@ -102,7 +102,7 @@ body{
     transform: translateX(60%);
 }
 
-#loadingmessage {
+.loadingmessage {
     font-family: "KIMM_Bold";
     position: absolute;
     pointer-events: none;
@@ -124,6 +124,9 @@ body{
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+}
+.loadingEnd{
+    animation: slideOut 0.4s ease-out forwards;
 }
 
 @keyframes loading {

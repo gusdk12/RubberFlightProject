@@ -3,14 +3,15 @@ package com.lec.spring.general.user.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lec.spring.admin.coupon.domain.Coupon;
 import com.lec.spring.member.checklist.domain.Checklist;
+import com.lec.spring.member.schedule.domain.Participation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -52,4 +53,8 @@ public class User {
 
     private String provider;
     private String providerId;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Participation> participations;
 }
