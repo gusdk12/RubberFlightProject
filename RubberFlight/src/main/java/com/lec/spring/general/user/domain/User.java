@@ -5,16 +5,14 @@ import com.lec.spring.admin.coupon.domain.Coupon;
 import com.lec.spring.member.checklist.domain.Checklist;
 import com.lec.spring.member.schedule.domain.Participation;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -47,7 +45,7 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore
-    private List<Coupon> coupons = new ArrayList<>(); ; // 사용자가 가진 쿠폰들
+    private List<Coupon> coupons = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Checklist> checklists = new ArrayList<>();
@@ -58,4 +56,19 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Participation> participations;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", tel='" + tel + '\'' +
+                ", image='" + image + '\'' +
+                ", role='" + role + '\'' +
+                ", provider='" + provider + '\'' +
+                ", providerId='" + providerId + '\'' +
+                '}';
+    }
 }
