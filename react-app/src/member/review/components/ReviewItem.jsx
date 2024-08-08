@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { Card, Heading, Flex, Box, Spacer, Text, Stack, ModalOverlay, useDisclosure, Modal, ModalCloseButton, ModalContent, ModalFooter} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Card, Flex, Spacer, Text, ModalOverlay, useDisclosure, Modal, ModalCloseButton, ModalContent, ModalFooter, ModalBody} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import ReviewDetail from "../pages/ReviewDetail";
 import ReviewUpdate from "../pages/ReviewUpdate";
 import { StarRating } from "./Rating";
-import "../css/ReviewItem.css";
+import styles from "../css/ReviewItem.module.css";
 import "../../../Global/font.css";
+import { reviewContent, reviewListCard } from "./ReviewStyle";
 
 const ReviewItem = (props) => {
   const {
@@ -21,57 +22,32 @@ const ReviewItem = (props) => {
     date,
   } = props.review;
 
-  const { isOpen, onOpen, onClose } = useDisclosure(); 
-  const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
   const totalRate = (seat_rate + service_rate + procedure_rate + flightmeal_rate + lounge_rate + clean_rate) / 6;
 
-  const onDetailOpen = () => {
-    setIsEditing(false); // Detail 모달창
-    onOpen();
+  const DetailBtn = () => {
+    navigate('/mypage/review/' + id);
    }
-
- const onUpdateOpen = () => {
-  setIsEditing(true); // Update 모달창
- }
 
   return (
     <>
-      <Card className="reviewList" padding={5} paddingLeft={8} width={700} height={200} margin={5}>
-        <Flex>
-          <Heading fontSize={28} className="reviewHead" marginLeft={35}>
-            "{title}"
-          </Heading>
+      <Card sx={reviewListCard}>
+        <Flex mt='10px'mb='20px'>
+          <Text ml='25px' fontSize='30px'>"{title}"</Text>
           <Spacer />
-          <Box className="writedate">{date}</Box>
+          <Text mr='20px' mt='15px'>{date}</Text>
         </Flex>
-        <Flex fontSize={18}>
-          <Text className="airlineName">항공사:</Text>
-          <Text>탑승일: </Text>
+        <Flex sx={reviewContent}>
+          <div className="airlineName">항공사:</div>
+          <Spacer />
+          <div className="boarding_date">탑승일: </div>
         </Flex>
-        <Stack mt="4" fontSize={18}>
-          <Flex marginLeft={5}>
+          <Flex sx={reviewContent}>
             총점:&nbsp;&nbsp;&nbsp;
             <StarRating rate={totalRate}/>
           </Flex>
-          <button type="button" className="showbtn" onClick={onDetailOpen}>리뷰 확인</button>
-        </Stack>
+          <button type="button" className={styles.showbtn} onClick={DetailBtn}>리뷰 확인</button>
       </Card>
-
-      <Modal className="reviewBox" isOpen={isOpen} onClose={onClose} size='6xl'>
-        <ModalOverlay/>
-        <ModalContent sx={{
-          background: 'linear-gradient(to bottom, #e3f2f8, #d4eaf3, #8ecbe6)',
-          marginTop: '100px'
-        }}>
-          <ModalCloseButton margin={5} size='xl'/>
-          {isEditing ? (<ReviewUpdate review={props.review}/>) : (<ReviewDetail review={props.review}/>)}
-          <ModalFooter className="review_btn">
-            <button className="modalbtn updatebtn" onClick={onUpdateOpen}>{isEditing ? '이전' : '수정'}</button>
-            {isEditing ? (<button className="modalbtn updatebtn">수정</button>) : (<button className="modalbtn deletebtn">삭제</button>)}
-          </ModalFooter>
-          </ModalContent>
-      </Modal>
     </>
   );
 };
