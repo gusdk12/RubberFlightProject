@@ -27,8 +27,22 @@ public class AirportController {
     @Value("${app.api-key.aviation}")
     private String aviation_key;
 
+    @GetMapping("/{codeIataAirport}")
+    public ResponseEntity<?> find1(@PathVariable String codeIataAirport){
+        URI uri = UriComponentsBuilder
+                .fromUriString("https://aviation-edge.com/v2/public/airportDatabase")
+                .queryParam("key", aviation_key)
+                .queryParam("codeIataAirport", codeIataAirport)
+                .build()
+                .encode()
+                .toUri();
+
+        String forObject = new RestTemplate().getForObject(uri, String.class);
+        return new ResponseEntity<>(forObject, HttpStatus.OK);
+    }
+
     @GetMapping("/{codeIataAirport}/{codeIso2Country}")
-    public ResponseEntity<?> find(@PathVariable String codeIataAirport, @PathVariable String codeIso2Country){
+    public ResponseEntity<?> find2(@PathVariable String codeIataAirport, @PathVariable String codeIso2Country){
         URI uri = UriComponentsBuilder
                 .fromUriString("https://aviation-edge.com/v2/public/airportDatabase")
                 .queryParam("key", aviation_key)

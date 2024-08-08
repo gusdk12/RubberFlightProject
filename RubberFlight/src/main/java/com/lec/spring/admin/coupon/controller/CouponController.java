@@ -40,8 +40,31 @@ public class CouponController {
     }
 
     /* 사용자 */
+    // 사용자 쿠폰 추가
     @CrossOrigin
     @PostMapping("/user/add/{couponCode}")
+    public ResponseEntity<?> addCoupon(@PathVariable String couponCode, HttpServletRequest request) {
+        String token = request.getHeader("Authorization").split(" ")[1];
+        Long userId = jwtUtil.getId(token);
+
+        User user = userService.findById(userId);
+        if (user == null) {
+            return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
+        Coupon coupon = couponService.findByCode(couponCode);
+        if (coupon != null) {
+            user.getCoupons().add(coupon);
+            userService.save(user);
+            return new ResponseEntity<>(coupon, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("쿠폰 코드가 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
+    }
+
+
+    // 사용자 쿠폰 사용
+    @CrossOrigin
+    @PostMapping("/user/use/{couponCode}")
     public ResponseEntity<?> useCoupon(@PathVariable String couponCode, HttpServletRequest request) {
         String token = request.getHeader("Authorization").split(" ")[1];
         Long userId = jwtUtil.getId(token);
@@ -49,13 +72,15 @@ public class CouponController {
         Coupon coupon = couponService.findByCode(couponCode);
         if (coupon != null) {
             User user = userService.findById(userId);
-            user.getCoupons().add(coupon);
-            userService.save(user);
+            if (user.getCoupons().contains(coupon)) {
+                user.getCoupons().remove(coupon);
+                userService.save(user);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("사용자가 소유하지 않은 쿠폰입니다.", HttpStatus.BAD_REQUEST);
+            }
         }
-
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // 쿠폰 코드가 유효하지 않은 경우
+        return new ResponseEntity<>("쿠폰 코드가 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
-
 }

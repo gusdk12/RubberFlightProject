@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -43,5 +44,5 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore
-    private List<Coupon> coupons; // 사용자가 가진 쿠폰들
+    private List<Coupon> coupons = new ArrayList<>(); ; // 사용자가 가진 쿠폰들
 }

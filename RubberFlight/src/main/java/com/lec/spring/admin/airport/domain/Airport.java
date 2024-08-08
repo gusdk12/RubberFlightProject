@@ -37,4 +37,7 @@ public class Airport {
 
     @Column
     private Double longitudeAirport; // 공항 경도 : longitudeAirport
+
+    @Column
+    private String timezone; // 표준시간 : timezone
 }
