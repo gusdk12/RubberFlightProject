@@ -43,6 +43,7 @@ const LiveFlight = () => {
         altitude: data.geography.altitude,
         horizontal: data.speed.horizontal,
         airlineIata: data.airline.iataCode,
+        status: data.status,
       };
 
       setFlightData(extractedData);
@@ -124,10 +125,15 @@ const LiveFlight = () => {
         </div>
 
         <div className={styles.earthCon}>
-          <div className={styles.aboutFlight}>
-            about
-          </div>
-          {/* <iframe
+        {flightData && arrAirportData && depAirportData && (
+            <div className={styles.aboutFlight}>
+              Arrival Airport: {arrAirportData.name}<br />
+              Departure Airport: {depAirportData.name}<br />
+              Status: {flightData.status}<br />
+              Speed: {flightData.horizontal} km/h<br />
+            </div>
+          )}
+          <iframe
             id="map-iframe"
             src="/ApiTest.html"
             width="100%"
@@ -138,7 +144,7 @@ const LiveFlight = () => {
             <div className={styles.loadingOverlay}>
               <Image src={loadingImage} alt="Loading" />
             </div>
-          )} */}
+          )}
         </div>
       </div>
     </>
