@@ -39,13 +39,13 @@ const GoogleMapTest = () => {
       <div
         style={{ margin: 'auto', position: 'relative', width: '100%', height: '500px', overflow: 'hidden' }}
       >
-        <iframe
+        {/* <iframe
           id="map-iframe"
           src="/ApiTest.html"
           width="100%"
           height="100%"
           title="Google Map"
-        ></iframe>
+        ></iframe> */}
       </div>
     </div>
   );

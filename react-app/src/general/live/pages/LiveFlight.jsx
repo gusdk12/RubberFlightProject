@@ -76,6 +76,27 @@ const LiveFlight = () => {
     }
   };
 
+  const sendCoordinatesToIframe = () => {
+    const iframe = document.getElementById('map-iframe');
+
+    if(flightData && arrAirportData && depAirportData) {
+        iframe.contentWindow.postMessage({
+        type: 'UPDATE_COORDINATES',
+        liveLat: flightData.latitude,
+        liveLng: flightData.longitude,
+        arrAirportLat: arrAirportData.latitude,
+        arrAirportLng: arrAirportData.longitude,
+        depAirportLat: depAirportData.latitude,
+        depAirportLng: depAirportData.longitude,
+      }, '*');
+    }else {
+      window.alert('해당 비행 정보가 없습니다.');
+      return;
+    }
+
+  };
+
+
   return (
     <>
       <Header isMain={true} />
@@ -102,30 +123,15 @@ const LiveFlight = () => {
           <Button onClick={searchFly} id={styles.searchBtn}>Search</Button>
         </div>
 
-        {flightData && (
-          <div className={styles.flightInfo}>
-            <div>Flight IATA: {flightData.flightIata}</div>
-            <div>Current Latitude: {flightData.latitude}</div>
-            <div>Current Longitude: {flightData.longitude}</div>
-            <div>출발 공항 코드: {flightData.arrIataCode}</div>
-            <div>도착 공항 코드: {flightData.depIataCode}</div>
-          </div>
-        )}
-
-        {arrAirportData && (
-          <div className={styles.airportInfo}>
-            <div>Arrival Airport: {arrAirportData.name}</div>
-            <div>Arrival Latitude: {arrAirportData.latitude}</div>
-            <div>Arrival Longitude: {arrAirportData.longitude}</div>
-          </div>
-        )}    
-        {depAirportData && (
-          <div className={styles.airportInfo}>
-            <div>Departure Airport: {depAirportData.name}</div>
-            <div>Departure Latitude: {depAirportData.latitude}</div>
-            <div>Departure Longitude: {depAirportData.longitude}</div>
-          </div>
-        )}
+        <div className={styles.earthCon} style={{ margin: 'auto', position: 'relative', width: '80%', height: '1000px', overflow: 'hidden' }}>
+          <iframe
+            id="map-iframe"
+            src="/ApiTest.html"
+            width="100%"
+            height="100%"
+            title="Google Map"
+          ></iframe>
+        </div>
 
       </div>
     </>
