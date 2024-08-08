@@ -92,7 +92,7 @@ useEffect(() => {
   }, [airports]);
 
   const handleSearchTermChange = (e) => {
-    const term = e.target.value;
+    const term = e.target.value || '';
     setSearchTerm(term);
     if (term) {
         setFilteredAirports(
