@@ -1,25 +1,32 @@
 import React, { useContext, useEffect, useState } from 'react';
+import * as Swal from '../../../apis/alert.js';
 import Header from '../../../general/common/Header/Header';
 import style from '../CSS/ScheduleMain.module.css';
 import ScheduleItem from '../component/ScheduleItem';
 import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const ScheduleMain = () => {
     const { userInfo } = useContext(LoginContext);
     const {id} = useParams();
     const [schedules, setSchedules] = useState([]);
-
     useEffect(() => {
         document.body.style.backgroundColor = '#FFFFFF';
         document.body.style.overflowY = 'scroll';
-
-        userInfo.id !== id && console.log("권한이 없습니다");
-
     }, []);
     
     useEffect(()=>{
+        readAllSchedule();
+    }, []);
+
+    const navigate = useNavigate();
+    useEffect(()=>{
+        userInfo.id && id && userInfo.id != id && 
+            Swal.alert("권한이 없습니다.", "메인 화면으로 이동합니다.", "error", () => { navigate("/") });
+    }, [userInfo.id]);
+
+    const readAllSchedule = () => {
         axios({
             method: "get",
             url: "http://localhost:8282/schedule/" + id,
@@ -28,7 +35,28 @@ const ScheduleMain = () => {
             const {data, status, statusText} = response;
             setSchedules(data);
         });
-    }, []);
+    }
+
+    const createNewSchedule = (e) => {
+        e.preventDefault();
+
+        let newSchedule = {
+            title: "제목 없는 일정",
+        }
+
+        axios({
+            method: "post",
+            url: "http://localhost:8282/schedule/" + id,
+            headers: {
+                "Content-Type": 'application/json',
+            },
+            data: JSON.stringify(newSchedule), 
+        })
+        .then(response => {
+            const {data, status, statusText} = response;
+            navigate(`/schedule/edit/${data.id}`);
+        });
+    }
 
     return (
         <>
@@ -69,7 +97,7 @@ const ScheduleMain = () => {
                     <div className={style.partTitle}>Schedule</div>
                     <div id={style.schedulePartContainer}>
                         <div id={style.addPart}>
-                            <div id={style.addButton}><div id={style.addIcon}/></div>
+                            <div id={style.addButton} onClick={createNewSchedule}><div id={style.addIcon}/></div>
                         </div>
                         <div id={style.listPart}>
                             {schedules.length === 0 ? (
@@ -78,7 +106,7 @@ const ScheduleMain = () => {
                                 <>
                                     <div id={style.listHeader}>최근 일정 목록</div>
                                     <div id={style.listsContainer}>
-                                        {schedules.map(schedule => <ScheduleItem key={schedule.id} schedule={schedule}/>)}
+                                        {schedules.map(schedule => <ScheduleItem key={schedule.id} schedule={schedule} readAllSchedule={readAllSchedule}/>)}
                                     </div>
                                 </>
                             )}

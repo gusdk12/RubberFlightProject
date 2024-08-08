@@ -2,17 +2,12 @@ package com.lec.spring.general.user.domain;
 
 import java.util.Map;
 
-public class KakaoResponse implements OAuth2Response {
+public class KakaoResponse implements OAuth2Response{
+    private final Map<String, Object> attributes;
 
-    private Map<String, Object> attributes;
 
     public KakaoResponse(Map<String, Object> attributes) {
         this.attributes = attributes;
-    }
-
-    @Override
-    public String getProviderId() {
-        return (String) attributes.get("id").toString();
     }
 
     @Override
@@ -21,18 +16,24 @@ public class KakaoResponse implements OAuth2Response {
     }
 
     @Override
+    public String getProviderId() {
+        return String.valueOf(attributes.get("id"));
+    }
+
+    @Override
     public String getEmail() {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-        return kakaoAccount != null ? (String) kakaoAccount.get("email") : null;
+        return (String) kakaoAccount.get("email");
     }
 
     @Override
     public String getName() {
-        return (String) attributes.get("nickName");
+        Map<String, Object> profile = (Map<String, Object>) ((Map<String, Object>) attributes.get("kakao_account")).get("profile");
+        return (String) profile.get("nickname");
     }
 
     @Override
     public String getImgae() {
-        return (String) attributes.get("profileImageURL");
+        return null;
     }
 }

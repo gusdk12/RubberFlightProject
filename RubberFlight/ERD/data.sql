@@ -2,8 +2,8 @@
 
 
 #
-# INSERT INTO FT_USER (username, password, role , name, email, tel, image) VALUES ('USER1', '$2a$10$4Ebd4IBQaURqIBekekR/yeMKSuES6KnoRJ5SRYaQ8j5ScaYpW2tZK', 'ROLE_MEMBER', '유인아', 'berry@naver.com', '010-4567-5215', 'user.png');
-# INSERT INTO FT_USER (username, password, role , name, email, tel, image) VALUES ('ADMIN1', '$2a$10$4Ebd4IBQaURqIBekekR/yeMKSuES6KnoRJ5SRYaQ8j5ScaYpW2tZK', 'ROLE_ADMIN', '사장님', 'king@naver.com', '010-8956-1245', 'user.png');
+INSERT INTO FT_USER (username, password, role , name, email, tel, image) VALUES ('USER1', '$2a$10$4Ebd4IBQaURqIBekekR/yeMKSuES6KnoRJ5SRYaQ8j5ScaYpW2tZK', 'ROLE_MEMBER', '유인아', 'berry@naver.com', '010-4567-5215', 'user.png');
+INSERT INTO FT_USER (username, password, role , name, email, tel, image) VALUES ('ADMIN1', '$2a$10$4Ebd4IBQaURqIBekekR/yeMKSuES6KnoRJ5SRYaQ8j5ScaYpW2tZK', 'ROLE_ADMIN', '사장님', 'king@naver.com', '010-8956-1245', 'user.png');
 
 
 # 나라
@@ -87,10 +87,17 @@ INSERT INTO FT_COUPON (code, percent, description, airline_name)
 VALUES ('SPRING2024', 10, '봄 맞이 할인 쿠폰', 'All');
 
 # 쿠폰
-INSERT INTO ft_schedule (user_id, title, team_usernames, edit_date)
-VALUES (1, '제주도 가자!', '유인아', "2024-07-21T15:50:00");
-INSERT INTO ft_schedule (user_id, title, team_usernames, edit_date)
-VALUES (1, '프랑스 가자!', '유인아', "2024-07-30T3:50:00");
-INSERT INTO ft_schedule (user_id, title, team_usernames, edit_date)
-VALUES (1, '흑흑', '유인아', "2024-08-01T3:50:00");
+INSERT INTO ft_schedule (title, edit_date)
+VALUES ('제주도 가자!', "2024-07-21T15:50:00");
+INSERT INTO ft_schedule (title, edit_date)
+VALUES ('프랑스 가자!', "2024-07-30T3:50:00");
+INSERT INTO ft_schedule (title, edit_date)
+VALUES ('흑흑', "2024-08-01T3:50:00");
+
+INSERT INTO ft_participation (user_id, schedule_id)
+VALUES (1, 1);
+INSERT INTO ft_participation (user_id, schedule_id)
+VALUES (1, 2);
+INSERT INTO ft_participation (user_id, schedule_id)
+VALUES (1, 3);
 

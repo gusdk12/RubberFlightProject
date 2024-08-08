@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Box, Environment, useGLTF } from '@react-three/drei';
 import { EffectComposer } from '@react-three/postprocessing';
+import style from '../CSS/Main.module.css'
 
 function easeInOutQuad(t) {
   return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
@@ -64,7 +65,7 @@ function CameraAnimation({ isLoaded, isSearhMode }) {
   const { camera } = useThree();
   useFrame((state, delta) => {
     if(!isSearhMode){
-      const targetPosition = isLoaded ? [-150, -20, -250] : [-1500, 1000, -2500];
+      const targetPosition = isLoaded ? [-150, -20, -250] : [-1500, -20, -2500];
       camera.position.lerp(new THREE.Vector3(...targetPosition), delta * 4);
       camera.lookAt(10, 10, 0);
     }else{
@@ -82,26 +83,26 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
   const handleModelLoaded = () => {
     setIsLoaded(true);
     setIsAirplaneLoaded(true);
-    document.getElementById('loadingmessage').style.animation = 'slideOut 0.4s ease-out forwards';
+    document.querySelector(`.${style.loadingmessage}`).classList.add(style.loadingEnd);
   };
 
   return (
     <>
       <div style={{ position: 'absolute', width: '100vw', height: '100vh', background: 'linear-gradient(to bottom, #B0C9E6, #D5E1EB, #EFF3F6)' }}/>
-      <div className="backcloud" id="backcloud1" />
-      <div className="backcloud" id="backcloud2" />
-      <div className="backcloud" id="backcloud3" />
+      <div className={style.backcloud} id={style.backcloud1} />
+      <div className={style.backcloud} id={style.backcloud2} />
+      <div className={style.backcloud} id={style.backcloud3} />
 
-      <div className="frontcloud" id="frontcloud1" />
-      <div className="frontcloud" id="frontcloud2" />
-      <div className="frontcloud" id="frontcloud3" />
+      <div className={style.frontcloud} id={style.frontcloud1} />
+      <div className={style.frontcloud} id={style.frontcloud2} />
+      <div className={style.frontcloud} id={style.frontcloud3} />
 
-      <div id="loadingmessage"></div>
+      <div className={style.loadingmessage}></div>
       
       <Canvas 
         dpr={[1, 2]} 
         gl={{ antialias: true }}
-        camera={{ position: [-1500, 1000, -2500], fov: 45, near: 0.1, far: 1000 }} 
+        camera={{ position: [-1500, -20, -2500], fov: 45, near: 0.1, far: 1000 }} 
         style={{ width: '100vw', height: '100vh', background: '#B0C9E600', zIndex: '1' }}
       >
         <ambientLight intensity={1.2} color="#c2e6ff"/>

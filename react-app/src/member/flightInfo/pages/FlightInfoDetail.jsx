@@ -6,6 +6,7 @@ import img2 from '../../../assets/images/flightInfo/img2.webp';
 import FlightInfoItem from '../components/FlightInfoItem';
 import FlightDetails from '../components/FlightDetails';
 import { FlightInfoProvider } from '../contexts/FlightInfoContext';
+import { IoIosArrowDroprightCircle } from "react-icons/io";
 
 const FlightInfoDetail = () => {
   const { flightId } = useParams(); 
@@ -24,21 +25,30 @@ const FlightInfoDetail = () => {
     
     return (
       <Box className="flight-info-container">
+
+         {/* 상단 FlightDetails.jsx */}
         <FlightDetails info={flightInfo} />
         <Box borderBottom="1px" borderColor="gray.300" my={4} />
 
-        {/* 항공편 세부 정보 항목 */}
+        {/* 하단 FlightInfoItem.jsx */}
         <FlightInfoItem info={flightInfo} />
 
-        <Box mt={4}>
-          <Link href={``} color="blue.500" isExternal>
-          <Text fontWeight="bold">실시간 비행기 위치 보러가기 </Text>
+        <Flex justifyContent="flex-end" mt={10} mr={30}>
+          <Link href={``} color="blue.500" isExternal display="flex" alignItems="center">
+            <Text fontWeight="bold" mr={2}>실시간 비행기 위치 보러가기</Text>
+            <IoIosArrowDroprightCircle fontSize="20px" />
           </Link>
-        </Box>
+        </Flex>
 
-        <Box mt={4} p={3} borderWidth="1px" borderColor="gray.300" borderRadius="md">
-          <Text fontWeight="bold">비행기 탑승 주의사항</Text>
-          <Text fontSize="sm">탑승 시 개인 소지품을 잘 챙기시고, 주의사항을 반드시 숙지해 주세요.</Text>
+        <Box mt={10} p={10} borderWidth="1px" borderColor="gray.300" borderRadius="md">
+          <Text fontSize="xl" >비행기 탑승 주의사항</Text>
+          <Text fontSize="sm" pt={7}>탑승 시 개인 소지품을 잘 챙기시고, 주의사항을 반드시 숙지해 주세요.</Text>
+          <Text fontSize="sm" pt={7}>탑승 시 개인 소지품을 잘 챙기시고, 주의사항을 반드시 숙지해 주세요.</Text>
+          <Text fontSize="sm" pt={7}>탑승 시 개인 소지품을 잘 챙기시고, 주의사항을 반드시 숙지해 주세요.</Text>
+          <Text fontSize="sm" pt={7}>탑승 시 개인 소지품을 잘 챙기시고, 주의사항을 반드시 숙지해 주세요.</Text>
+          <Text fontSize="sm" pt={7}>탑승 시 개인 소지품을 잘 챙기시고, 주의사항을 반드시 숙지해 주세요.</Text>
+          <Text fontSize="sm" pt={7}>탑승 시 개인 소지품을 잘 챙기시고, 주의사항을 반드시 숙지해 주세요.</Text>
+          <Text fontSize="sm" pt={7}>탑승 시 개인 소지품을 잘 챙기시고, 주의사항을 반드시 숙지해 주세요.</Text>
         </Box>
       </Box>
     );
