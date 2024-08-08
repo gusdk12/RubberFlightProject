@@ -1,13 +1,10 @@
 package com.lec.spring.general.user.jwt;
 
 
-import com.lec.spring.general.user.config.CustomOAuth2User;
 import com.lec.spring.general.user.config.PrincipalDetails;
 import com.lec.spring.general.user.domain.User;
-import com.lec.spring.general.user.domain.UserDTO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,21 +29,15 @@ public class JWTFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("doFilterInternal() 호출");
 
         // request 에서 Authorization 헤더를 찾음 (JWT 있는지?)
-        String authorization = null;
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null) {
-            for (Cookie cookie : cookies) {
-                System.out.println(cookie.getName());
-                if (cookie.getName().equals("Authorization")) {
-                    authorization = cookie.getValue();
-                }
-            }
-        }
+        String authorization = request.getHeader("Authorization");
+
         // Authorization 헤더 검증
         if(authorization == null || !authorization.startsWith("Bearer ")){
             // JWT 가 없다 !
@@ -56,14 +47,7 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         // "Bearer " 부분 제거 후 JWT 토큰 획득.
-        // "Bearer " 부분 제거 후 JWT 토큰 획득.
-        String[] parts = authorization.split(" ");
-        if (parts.length != 2) {
-            // "Bearer " 형식이 아니거나 토큰이 없을 경우
-            filterChain.doFilter(request, response);
-            return;
-        }
-        String token = parts[1];
+        String token = authorization.split(" ")[1];
         System.out.println("\tauthorization now, token: " + token);
 
         // 토큰 소멸 시간 검증
@@ -81,11 +65,6 @@ public class JWTFilter extends OncePerRequestFilter {
         String tel = jwtUtil.getTel(token);
         String email = jwtUtil.getEmail(token);
 
-        if (id == null || username == null) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         // User 생성하여 로그인 진행
         User user = User.builder()
                 .id(id)
@@ -98,17 +77,11 @@ public class JWTFilter extends OncePerRequestFilter {
                 .image("image")
                 .build();
 
-        // userDTO를 생성하여 값 set
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(username);
-        userDTO.setRole(role);
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDTO);
-
         // UserDetails 에 User 담아 생성
         PrincipalDetails userDetails = new PrincipalDetails(user);
 
         // 스프링 시큐리티 인증 토큰 생성 => Authentication
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
+        Authentication authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
         // 세션에 위 Authentication 등록
         SecurityContextHolder.getContext().setAuthentication(authToken);

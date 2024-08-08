@@ -38,8 +38,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String role = auth.getAuthority();
 
         String name = customUserDetails.getName();
+        Long id = customUserDetails.getId();
 
-        String token = jwtUtil.createJwt(username, role, name,60*60*600L);
+        String token = jwtUtil.createJwt(id, username, role, name,60*60*600L);
 
         Cookie jwtCookie = new Cookie("accessToken", token);
         jwtCookie.setHttpOnly(false); // Allow JavaScript access
