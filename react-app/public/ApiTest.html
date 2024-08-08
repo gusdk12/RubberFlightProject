@@ -13,6 +13,10 @@
         height: 100%;
         width: 100%;
       }
+
+      .vAygCK-api-load-alpha-banner {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -22,18 +26,20 @@
       tilt="30"
       center="37.7905,-122.3989, 5000000" default-labels-disabled>
       
+      <!-- 남은 거리 -->
       <gmp-polyline-3d
         id="route-dep-to-live"
         altitude-mode="relative-to-ground"
-        stroke-color="#FF0000"
+        stroke-color="#FFFF00"
         stroke-width="10"
-        stroke-opacity="0.75">
+        stroke-opacity="0.3">
       </gmp-polyline-3d>
       
+      <!-- 지나온 거리 -->
       <gmp-polyline-3d
         id="route-live-to-arr"
         altitude-mode="relative-to-ground"
-        stroke-color="#0000FF"
+        stroke-color="#FFFF00"
         stroke-width="10"
         stroke-opacity="0.75">
       </gmp-polyline-3d>
@@ -53,12 +59,10 @@
         if (event.data.type === 'UPDATE_COORDINATES') {
           const { liveLat, liveLng, arrAirportLat, arrAirportLng, depAirportLat, depAirportLng } = event.data;
 
-          // Parse coordinates
           const livePosition = { lat: parseFloat(liveLat), lng: parseFloat(liveLng) };
           const depPosition = { lat: parseFloat(depAirportLat), lng: parseFloat(depAirportLng) };
           const arrPosition = { lat: parseFloat(arrAirportLat), lng: parseFloat(arrAirportLng) };
 
-          // Update polyline coordinates
           depToLivePolyline.coordinates = [
             depPosition,
             livePosition
@@ -70,7 +74,8 @@
           ];
 
           // Center the map on the live position
-          document.querySelector('gmp-map-3d').setAttribute('center', `${livePosition.lat},${livePosition.lng} ,5000000`);
+          document.querySelector('gmp-map-3d').setAttribute('center', `${livePosition.lat},${livePosition.lng} ,9900000`);
+          document.querySelector('gmp-map-3d').setAttribute('tilt', `1`);
         }
       });
     </script>
