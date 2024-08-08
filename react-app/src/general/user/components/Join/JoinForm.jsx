@@ -227,7 +227,7 @@ const JoinForm = ({ join }) => {
             Swal.fire({
                 icon: 'success',
                 title: '회원가입 성공',
-                text: '메인페이지로 이동합니다.',
+                text: '로그인페이지로 이동합니다.',
             });
         } catch (error) {
             console.error('Join request failed:', error);
