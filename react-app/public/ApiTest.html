@@ -1,48 +1,78 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <style>
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    #map {
-      height: 100%;
-      width: 100%;
-    }
-  </style>
-</head>
-<body>
-  <!-- <gmp-map-3d id="map" center="37.841157, -122.551679" tilt="67.5"></gmp-map-3d> -->
-  <!-- <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUE-qzPob_mpqr2KUELbQjHwuRe8-CUXc&v=alpha&libraries=maps3d" onload="initMap()"></script> -->
-  <script>
-    let map, marker;
-
-    function initMap() {
-      map = document.getElementById("map");
-
-      // 초기 마커 설정
-      // marker = new google.maps.Marker({
-      //   position: { lat: 37.841157, lng: -122.551679 },
-      //   map: new google.maps.Map(map),
-      //   title: "Hello World!",
-      // });
-    }
-
-    window.addEventListener('message', (event) => {
-      if (event.data.type === 'UPDATE_COORDINATES') {
-        const { liveLat, liveLng, arrAirportLat, arrAirportLng, depAirportLat, depAirportLng } = event.data;
-        const newCenter = { liveLat: parseFloat(liveLat), liveLng: parseFloat(liveLng) };
-
-        // 지도 중심 업데이트
-        map.setAttribute('center', `${newCenter.liveLat}, ${newCenter.liveLng}`);
-
-        // 마커 위치 업데이트
-        marker.setPosition(newCenter);
+  <head>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
       }
-    });
-  </script>
-</body>
+
+      gmp-map-3d {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <gmp-map-3d
+      heading="25"
+      range="2500"
+      tilt="30"
+      center="37.7905,-122.3989, 5000000" default-labels-disabled>
+      
+      <gmp-polyline-3d
+        id="route-dep-to-live"
+        altitude-mode="relative-to-ground"
+        stroke-color="#FF0000"
+        stroke-width="10"
+        stroke-opacity="0.75">
+      </gmp-polyline-3d>
+      
+      <gmp-polyline-3d
+        id="route-live-to-arr"
+        altitude-mode="relative-to-ground"
+        stroke-color="#0000FF"
+        stroke-width="10"
+        stroke-opacity="0.75">
+      </gmp-polyline-3d>
+    </gmp-map-3d>
+
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUE-qzPob_mpqr2KUELbQjHwuRe8-CUXc&v=alpha&libraries=maps3d"></script>
+    <script>
+      const depToLivePolyline = document.querySelector('#route-dep-to-live');
+      const liveToArrPolyline = document.querySelector('#route-live-to-arr');
+
+      customElements.whenDefined(depToLivePolyline.localName).then(() => {
+        depToLivePolyline.coordinates = [];
+        liveToArrPolyline.coordinates = [];
+      });
+
+      window.addEventListener('message', (event) => {
+        if (event.data.type === 'UPDATE_COORDINATES') {
+          const { liveLat, liveLng, arrAirportLat, arrAirportLng, depAirportLat, depAirportLng } = event.data;
+
+          // Parse coordinates
+          const livePosition = { lat: parseFloat(liveLat), lng: parseFloat(liveLng) };
+          const depPosition = { lat: parseFloat(depAirportLat), lng: parseFloat(depAirportLng) };
+          const arrPosition = { lat: parseFloat(arrAirportLat), lng: parseFloat(arrAirportLng) };
+
+          // Update polyline coordinates
+          depToLivePolyline.coordinates = [
+            depPosition,
+            livePosition
+          ];
+          
+          liveToArrPolyline.coordinates = [
+            livePosition,
+            arrPosition
+          ];
+
+          // Center the map on the live position
+          document.querySelector('gmp-map-3d').setAttribute('center', `${livePosition.lat},${livePosition.lng} ,5000000`);
+        }
+      });
+    </script>
+  </body>
 </html>
