@@ -24,8 +24,9 @@ public class JWTUtil {
     // JWT 생성
     // Payload 에 저장될 정보
     // - id, username, role, 생성일, 만료일
-    public String createJwt(String username, String role, String name, Long expiredMs) {
+    public String createJwt(Long id, String username, String role, String name, Long expiredMs) {
         return Jwts.builder()
+                .claim("id", id)
                 .claim("username", username)
                 .claim("role", role)
                 .claim("name", name)
