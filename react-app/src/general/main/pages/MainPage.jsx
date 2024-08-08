@@ -4,7 +4,7 @@ import { Box, Input } from '@chakra-ui/react';
 import Header from '../../common/Header/Header.jsx';
 import ThreeScene from '../component/ThreeScene.jsx';
 import '../../../Global/font.css'
-import '../CSS/Main.css';
+// import '../CSS/Main.css';
 import 'flatpickr/dist/flatpickr.min.css';
 import Flatpickr from 'react-flatpickr';
 import axios from 'axios';
@@ -12,8 +12,10 @@ import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { color } from 'framer-motion';
+import style from '../CSS/Main.module.css'
+import '../../reserve/css/flatpickr.css'
 
-
+ 
 const MainPage = () => {
     const [isAirplaneLoaded, setIsAirplaneLoaded] = useState(false);
     const [isSearhMode, setIsSearhMode] = useState(false);
@@ -40,15 +42,27 @@ const MainPage = () => {
     const menuRef = useRef(null);
 
     const navigate = useNavigate();
-    
 
+    const reserveButtonRef = useRef(null);
+    const searchBoxRef = useRef(null);
+
+    // useEffect(() => {
+    //     document.body.style.overflow = 'hidden';
+    // }, []);
+    // useEffect(() => {
+    //     isAirplaneLoaded && document.querySelector(`#${style.reserveButton}`).classList.add(style.showReserveClass);
+    //     isSearhMode && document.querySelector(`#${style.reserveButton}`).classList.remove(style.showReserveClass);
+    //     isSearhMode && document.querySelector(`#${style.searchBox}`).classList.add(style.showSeachClass);
+    // }, [isAirplaneLoaded, isSearhMode]);
+
+    
     useEffect(() => {
         document.body.style.overflow = 'hidden';
     }, []);
     useEffect(() => {
-        isAirplaneLoaded && document.querySelector(".reserveButton").classList.add("showReserveClass");
-        isSearhMode && document.querySelector(".reserveButton").classList.remove("showReserveClass");
-        isSearhMode && document.querySelector(".searchBox").classList.add("showSeachClass");
+        isAirplaneLoaded && reserveButtonRef.current.classList.add(style.showReserveClass);
+        isSearhMode && reserveButtonRef.current.classList.remove(style.showReserveClass);
+        isSearhMode && searchBoxRef.current.classList.add(style.showSeachClass);
     }, [isAirplaneLoaded, isSearhMode]);
 
     // 공항 찾기
@@ -141,7 +155,7 @@ useEffect(() => {
             setDisplayDate(`${formattedStartDate} ~ ${formattedEndDate}`);
         } else if (selectedDates.length === 1) {
             const formattedStartDate = format(selectedDates[0], 'yyyy-MM-dd');
-            setDisplayDate(`${formattedStartDate} ~`);
+            setDisplayDate(`${formattedStartDate}`);
         } else {
             setDisplayDate('');
         }
@@ -193,7 +207,6 @@ useEffect(() => {
         }
     };
 
-
     const handleSubmit = () =>{
         navigate('/search', { state: { 
             isRoundWay: isRoundWay ? true : false,
@@ -210,20 +223,20 @@ useEffect(() => {
     return (
         <>
         <Header isMain={true}/>
-        <div className="contentpart">
+        <div className={style.contentpart}>
             <ThreeScene setIsAirplaneLoaded={setIsAirplaneLoaded} isSearhMode={isSearhMode}/>
-            <Box onClick={() => setIsSearhMode(true)} className="reserveButton">항공권 조회하기</Box>
-            <Box className="searchBox">
-                <div id='wayBox'>
-                    <div id='roundway' onClick={() => handleWayChange(true)} className={isRoundWay ? 'active' : ''}>왕복</div> 
-                    <div id='oneway' onClick={() => handleWayChange(false)} className={isRoundWay ? '' : 'active'}>편도</div>
+            <Box ref={reserveButtonRef} id={style.reserveButton} onClick={() => setIsSearhMode(true)} className="reserveButton">항공권 조회하기</Box>
+            <Box ref={searchBoxRef} id={style.searchBox} className="seachBox">
+                <div id={style.wayBox}>
+                    <div id={style.roundway} onClick={() => handleWayChange(true)} className={isRoundWay ? style.actives : ''}>왕복</div> 
+                    <div id={style.oneway} onClick={() => handleWayChange(false)} className={isRoundWay ? '' : style.actives}>편도</div>
                 </div>
-                <div id='selectBox'>
-                    <div id='airportPart'>
-                    <div id='depPart'>
+                <div id={style.selectBox}>
+                    <div id={style.airportPart}>
+                    <div id={style.depPart}>
                         {isEditing.departure ? (
                             <input
-                                className='search'
+                                className={style.searchAirport}
                                 type="text"
                                 value={searchTerm}
                                 onChange={(e) => {
@@ -236,11 +249,11 @@ useEffect(() => {
                         ) : (
                             <div className="editable-div" onClick={() => handleClickEdit('departure')}>
                                 <div className='airportName'>{departure || '출발'}</div>
-                                <div className='selectArrow' />
+                                <div className={style.selectArrow} />
                             </div>
                         )}
                         {focusedInput === 'departure' && searchTerm && (
-                            <div className="autocomplete-results" ref={autocompleteRef}>
+                            <div className={style.autocompleteResults} ref={autocompleteRef}>
                                 {filteredAirports.length > 0 ? (
                                     filteredAirports.map((airport) => (
                                         <div
@@ -257,11 +270,11 @@ useEffect(() => {
                         )}
                     </div>
 
-                    <div id='arrPart'>
+                    <div id={style.arrPart}>
                         {isEditing.arrival ? (
                             <input
+                                className={style.searchAirport}
                                 type="text"
-                                className='search'
                                 value={searchTerm}
                                 onChange={(e) => {
                                     setSearchTerm(e.target.value);
@@ -273,11 +286,11 @@ useEffect(() => {
                         ) : (
                             <div className="editable-div" onClick={() => handleClickEdit('arrival')}>
                                 <div className='airportName'>{arrival || '도착'}</div>
-                                <div className='selectArrow' />
+                                <div className={style.selectArrow} />
                             </div>
                         )}
                         {focusedInput === 'arrival' && searchTerm && (
-                            <div className="autocomplete-results" ref={autocompleteRef}>
+                            <div className={style.autocompleteResults} ref={autocompleteRef}>
                                 {filteredAirports.length > 0 ? (
                                     filteredAirports.map((airport) => (
                                         <div
@@ -293,12 +306,12 @@ useEffect(() => {
                             </div>
                         )}
                     </div>
-                </div>
+                    </div>
 
-                    <div id='datePart'>
+                    <div className={style.datePart}>
                         {isRoundWay ?
                             (
-                                <div className="date-picker-container">
+                                <div className={style.datePickerContainer}>
                                     <Flatpickr
                                     placeholder='날짜를 선택하세요'
                                     options={{ 
@@ -306,56 +319,56 @@ useEffect(() => {
                                     }}
                                     value={dates}
                                     onChange={handleDateChange}
-                                    className="flatpickr-input"
+                                    className={style.flatInput}
                                     />
                                 </div>
                             )
                             :
                             (
-                                <div className="date-picker-container">
+                                <div className={style.datePickerContainer}>
                                 <Flatpickr
                                  placeholder='날짜를 선택하세요'
                                         options={{ mode: "single" }}
                                         value={dates}
                                         onChange={handleDateChange}
-                                        className="flatpickr-input"
+                                        className={style.flatInput}
                                     />
                                 </div>
                             )
                         }
                     </div>
                     
-                    <div id='peoplePart' ref={menuRef}>
+                    <div className={style.peoplePart} ref={menuRef}>
                         <button 
-                            className="dropdown-button" 
+                            className={style.dropdownButton}
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                         >
-                            {`성인 ${adults}명, 소아 ${children}명, 유아 ${infants}명`}
+                            {`성인 ${adults}, 소아 ${children}, 유아 ${infants}`}
                         </button>
                         {isMenuOpen && (
-                            <div className="menu-container">
-                                <div className="menu-item">
-                                    <button onClick={() => handleDecrement('adults')}>-</button>
-                                    <label>성인 </label>
-                                    <span>{adults}명</span>
-                                    <button onClick={() => handleIncrement('adults')}>+</button>
-                                </div>
-                                <div className="menu-item">
-                                    <button onClick={() => handleDecrement('children')}>-</button>
-                                    <label>소아 </label>
-                                    <span>{children}명</span>
-                                    <button onClick={() => handleIncrement('children')}>+</button>
-                                </div>
-                                <div className="menu-item">
-                                    <button onClick={() => handleDecrement('infants')}>-</button>
-                                    <label>유아 </label>
-                                    <span>{infants}명</span>
-                                    <button onClick={() => handleIncrement('infants')}>+</button>
-                                </div>
+                            <div className={style.cntContainer}>
+                            <div className={style.cntContainerItem}>
+                                <button onClick={() => handleDecrement('adults')}>-</button>
+                                <label>성인 </label>
+                                <span>{adults}명</span>
+                                <button onClick={() => handleIncrement('adults')}>+</button>
                             </div>
+                            <div className={style.cntContainerItem}>
+                                <button onClick={() => handleDecrement('children')}>-</button>
+                                <label>소아 </label>
+                                <span>{children}명</span>
+                                <button onClick={() => handleIncrement('children')}>+</button>
+                            </div>
+                            <div className={style.cntContainerItem}>
+                                <button onClick={() => handleDecrement('infants')}>-</button>
+                                <label>유아 </label>
+                                <span>{infants}명</span>
+                                <button onClick={() => handleIncrement('infants')}>+</button>
+                            </div>
+                        </div>
                         )}
                     </div>
-                    <div id='submitButton' onClick={handleSubmit}>항공권 검색</div>
+                    <div id={style.submitButton} onClick={handleSubmit}>검색</div>
                 </div>
             </Box>
         </div>

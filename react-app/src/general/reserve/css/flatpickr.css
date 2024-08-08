@@ -1,0 +1,20 @@
+.flatpickr-monthDropdown-months {
+  font-family: "KIMM_Bold";
+    width: 57% !important;
+  }
+  
+.flatpickr-calendar {
+  font-family: "KIMM_Bold";
+    /* outline: 2px solid palegoldenrod; */
+    margin: 0 auto;
+    margin-left: 20px;
+}  
+
+.flatpickr-input {
+  font-family: "KIMM_Bold" !important;
+  text-align: center !important;
+  outline: none !important;
+  border: none !important;  /* 원하는 경우, border도 제거 */
+  box-shadow: none !important;
+  color: #6c6f74 !important;
+}
