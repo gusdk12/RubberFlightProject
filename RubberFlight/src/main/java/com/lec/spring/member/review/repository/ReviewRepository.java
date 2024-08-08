@@ -14,7 +14,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query(value = """
         SELECT r.id, r.content, r.clean_rate, r.date, r.flightinfo_id, r.flightmeal_rate, r.lounge_rate,
-               r.procedure_rate, r.seat_rate, r.service_rate, r.title, r.airline_id, f.id AS flight_id, f.airline_name,
+               r.procedure_rate, r.seat_rate, r.service_rate, r.title, r.airline_id, f.id AS flight_id, f.airlineName,
                re.id AS reservation_id, u.id AS user_id, u.name
         FROM ft_review r
                  JOIN ft_airline a ON r.airline_id = a.id
