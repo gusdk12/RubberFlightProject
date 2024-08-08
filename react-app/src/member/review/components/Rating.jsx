@@ -1,6 +1,7 @@
 import React from "react";
 import FullStar from "../../../assets/images/review/yellow_star.webp";
 import EmptyStar from "../../../assets/images/review/grey_star.webp";
+import styles from "../css/ReviewItem.module.css"
 
 const fullStar = FullStar;
 const emptyStar = EmptyStar;
@@ -19,7 +20,7 @@ export const StarRating = ({ rate }) => {
     stars.push(<img key={`empty-${index}`} src={emptyStar} className="star-ratings" alt="empty Star" />);
   });
 
-  return <div className="star-ratings-base">{stars}</div>;
+  return <div className={styles.starRatingsBase}>{stars}</div>;
 };
 
 // 항공사별 총 평균 (큰 별)
@@ -36,5 +37,5 @@ export const TotalStarRating = ({ rate }) => {
     stars.push(<img key={`emptyTotal-${index}`} src={emptyStar} className="star-ratings" alt="empty Star" />);
   });
 
-  return <div className="total_rate">{stars}</div>;
+  return <div className={styles.totalRate}>{stars}</div>;
 };

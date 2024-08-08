@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'; // SweetAlert2를 사용
 
-import * as Swal from '../../../apis/alert';
 import * as auth from '../../../apis/auth';
 import api from '../../../apis/api';
 
@@ -59,10 +59,38 @@ const LoginContextProvider = ({ children }) => {
       if (status === 200) {
         Cookies.set("accessToken", accessToken);
         loginCheck();
-        Swal.alert("로그인 성공", "메인화면으로 이동합니다", "success", () => { navigate("/") });
+        Swal.fire({
+          title: '로그인 성공',
+          text: '메인화면으로 이동합니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          backdrop: true, // 백드롭을 사용하여 화면을 흐리게 하고, 알림이 제일 앞에 나타나게 함
+          position: 'center',
+          customClass: {
+            container: 'swal-container'
+          },
+          didOpen: () => {
+            document.querySelector('.swal2-container').style.zIndex = 9999; // zIndex 조정
+          }
+        }).then(() => {
+          navigate("/");
+        });
       }
     } catch (error) {
-      Swal.alert('로그인 실패', '아이디 또는 비밀번호가 일치하지 않습니다.', "error");
+      Swal.fire({
+        title: '로그인 실패',
+        text: '아이디 또는 비밀번호가 일치하지 않습니다.',
+        icon: 'error',
+        confirmButtonText: '확인',
+        backdrop: true,
+        position: 'center',
+        customClass: {
+          container: 'swal-container'
+        },
+        didOpen: () => {
+          document.querySelector('.swal2-container').style.zIndex = 9999; // zIndex 조정
+        }
+      });
     }
   };
 
@@ -70,18 +98,61 @@ const LoginContextProvider = ({ children }) => {
   const logout = (force = false) => {
     if (force) {
       logoutSetting();
-      navigate("/");
+      Swal.fire({
+        title: '로그아웃되었습니다.',
+        text: '메인화면으로 이동합니다.',
+        icon: 'success',
+        confirmButtonText: '확인',
+        backdrop: true,
+        position: 'center',
+        customClass: {
+          container: 'swal-container'
+        },
+        didOpen: () => {
+          document.querySelector('.swal2-container').style.zIndex = 9999; // zIndex 조정
+        }
+      }).then(() => {
+        navigate("/");
+      });
       return;
     }
 
-    Swal.confirm("로그아웃 하시겠습니까?", "로그아웃을 진행합니다", "warning",
-      (result) => {
-        if (result.isConfirmed) {
-          logoutSetting();
-          navigate("/");
-        }
+    Swal.fire({
+      title: '로그아웃 하시겠습니까?',
+      text: '로그아웃을 진행합니다.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: '로그아웃',
+      cancelButtonText: '취소',
+      backdrop: true,
+      position: 'center',
+      customClass: {
+        container: 'swal-container'
+      },
+      didOpen: () => {
+        document.querySelector('.swal2-container').style.zIndex = 9999; // zIndex 조정
       }
-    );
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logoutSetting();
+        Swal.fire({
+          title: '로그아웃되었습니다.',
+          text: '메인화면으로 이동합니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          backdrop: true,
+          position: 'center',
+          customClass: {
+            container: 'swal-container'
+          },
+          didOpen: () => {
+            document.querySelector('.swal2-container').style.zIndex = 9999; // zIndex 조정
+          }
+        }).then(() => {
+          window.location.reload();
+        });
+      }
+    });
   };
 
   // 로그인 세팅

@@ -3,6 +3,7 @@ package com.lec.spring.general.reserve.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.lec.spring.admin.airport.service.AirportService;
 import com.lec.spring.general.reserve.domain.Flight;
 import com.lec.spring.general.reserve.service.ReserveService;
 import lombok.RequiredArgsConstructor;
@@ -30,24 +31,33 @@ public class ReserveController {
     @Autowired
     private ReserveService reserveService;
 
+    @Autowired
+    private AirportService airportService;
+
     // 검색 페이지(api)
     @GetMapping("/search")
     public ResponseEntity<?> searchFlights(@RequestParam String iataCode,
                                            @RequestParam String depDate,
                                            @RequestParam String arrIataCode,
                                            @RequestParam(required = false) String arrDate
+//                                           @RequestParam String depTimezone,
+//                                           @RequestParam String arrTimezone
                                           ) {
 
         String type = "departure";
 
+        String depTimezone = airportService.findByIso(iataCode).getTimezone();
+        String arrTimezone = airportService.findByIso(arrIataCode).getTimezone();
+
+        System.out.println(depTimezone);
+        System.out.println(arrTimezone) ;
         System.out.println("arrDate: " + arrDate); // 로깅 추가
 
 
-
-        List<Flight> outboundFlights = fetchFlights(iataCode, arrIataCode, depDate, type);
+        List<Flight> outboundFlights = fetchFlights(iataCode, arrIataCode, depDate, type, depTimezone, arrTimezone);
 
         List<Flight> inboundFlights = (arrDate != null && !arrDate.isEmpty())
-                ? fetchFlights(arrIataCode, iataCode, arrDate, type)
+                ? fetchFlights(arrIataCode, iataCode, arrDate, type, arrTimezone, depTimezone)
                 : Collections.emptyList();
 
         if (!outboundFlights.isEmpty() && !inboundFlights.isEmpty()) {
@@ -65,7 +75,7 @@ public class ReserveController {
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
 
-    private List<Flight> fetchFlights(String depIata, String arrIata, String date, String type) {
+    private List<Flight> fetchFlights(String depIata, String arrIata, String date, String type, String depTimezone, String arrTimezone) {   // TIMEZONE
         URI uri = UriComponentsBuilder
                 .fromUriString("https://aviation-edge.com/v2/public/flightsFuture")
                 .queryParam("key", aviation_key)
@@ -80,10 +90,10 @@ public class ReserveController {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
 
-        return parseFlightInfo(response.getBody(), depIata, arrIata, date);
+        return parseFlightInfo(response.getBody(), depIata, arrIata, date, depTimezone, arrTimezone);
     }
 
-    private List<Flight> parseFlightInfo(String response, String depIata, String arrIata, String date) {
+    private List<Flight> parseFlightInfo(String response, String depIata, String arrIata, String date, String depTimezone, String arrTimezone) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<Flight> flights = new ArrayList<>();
 
@@ -93,7 +103,7 @@ public class ReserveController {
                 for (JsonNode jsonNode : root) {
                     double distance = reserveService.calculateDistance(depIata, arrIata);
                     int price = reserveService.calculateRandomPrice(distance);
-                    Flight flight = new Flight(jsonNode, depIata, arrIata, date, price);
+                    Flight flight = new Flight(jsonNode, depIata, arrIata, date, price, depTimezone, arrTimezone);
 
                     if(!flight.getAirlineName().equals("") && !flight.getAirlineName().trim().isEmpty()) {
                         flights.add(flight);
@@ -115,6 +125,15 @@ public class ReserveController {
                 combination.put("id", outbound.getId() + "_" + inbound.getId());
                 combination.put("outbound", outbound);
                 combination.put("inbound", inbound);
+
+                if (outbound.getDepAirport().equals(inbound.getArrAirport()) && outbound.getArrAirport().equals(inbound.getDepAirport())) {
+                    combination.put("depTimezone", outbound.getDepTimezone());
+                    combination.put("arrTimezone", inbound.getArrTimezone());
+                } else {
+                    combination.put("depTimezone", outbound.getDepTimezone());
+                    combination.put("arrTimezone", inbound.getArrTimezone());
+                }
+
                 combinations.add(combination);
             }
         }

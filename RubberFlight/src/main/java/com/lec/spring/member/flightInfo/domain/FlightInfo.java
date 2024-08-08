@@ -25,31 +25,31 @@ public class FlightInfo {
     @JoinColumn(name = "reservation_id", nullable = false)
     private Reserve reserve;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "dep_airport")
     private String depAirport;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "dep_iata")
     private String depIata;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "arr_airport")
     private String arrAirport;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "arr_iata")
     private String arrIata;
 
     @Column(nullable = false)
     private int price;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "flight_iat")
     private String flightIat;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "dep_sch")
     private LocalDateTime depSch;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "arr_sch")
     private LocalDateTime arrSch;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "airline_name")
     private String airlineName;
 
     @OneToOne

@@ -3,7 +3,7 @@ import { Box, Button, Checkbox, FormControl, FormLabel, HStack, Input, Stack, us
 import Cookies from 'js-cookie';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-import './loginForm.css';
+import styles from './loginForm.module.css';
 
 const LoginForm = () => {
   const { login } = useContext(LoginContext);
@@ -112,7 +112,7 @@ const LoginForm = () => {
           }}>
 
              {/* 구글 */}
-         <div className='google'
+             <div className={styles.google}
           style={{
             // url('../../../assets/images/main/cloud.webp');
             backgroundSize: 'cover',
@@ -128,7 +128,7 @@ const LoginForm = () => {
         />
 
             {/* 카카오 */}
-            <div className='kakao'
+            <div className={styles.kakao}
               style={{
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
@@ -144,7 +144,7 @@ const LoginForm = () => {
             />
 
              {/* 네이버 */}
-          <div className='naver'
+             <div className={styles.naver}
           style={{
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
@@ -161,7 +161,7 @@ const LoginForm = () => {
 
 
           {/* 페이스북 */}
-          <div className='facebook'
+          <div className={styles.facebook}
           style={{
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',

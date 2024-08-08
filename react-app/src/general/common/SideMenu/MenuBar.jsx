@@ -30,7 +30,7 @@ const MenuBar = () => {
         {[
           { name: "내 정보", path: "/mypage" },
           { name: "예약 정보", path: "/mypage/flight-info" },
-          { name: "리뷰 내역", path: "/mypage/review" }
+          { name: "리뷰 내역", path: "/mypage/review" },
         ].map((item, index) => (
           <ScaleFade key={index} in={true} initialScale={0.9} delay={index * 0.1}>
             <div

@@ -1,31 +1,80 @@
-import { Flex, Grid, ModalHeader, Text } from "@chakra-ui/react";
-import React from "react";
+import { Flex, Grid, Heading, Text } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "../../../general/user/contexts/LoginContextProvider";
 import { StarRating, TotalStarRating } from "../components/Rating";
+import styles from "../css/ReviewDetail.module.css";
+import axios from "axios";
+import { alert, confirm } from "../../../apis/alert";
+import { useNavigate, useParams } from "react-router-dom";
 
-const ReviewDetail = (props) => {
-
-  const {
-    id, 
-    title,
-    seat_rate,
-    service_rate,
-    procedure_rate,
-    flightmeal_rate,
-    lounge_rate,
-    clean_rate,
-    content,
-    date,
-  } = props.review;
-
+const ReviewDetail = () => {
+  const { id } = useParams();
   const { userInfo } = useUser();
-  const totalRate = (seat_rate + service_rate + procedure_rate + flightmeal_rate + lounge_rate + clean_rate) / 6;
+  const navigate = useNavigate();
+  const [review, setReview] = useState({
+    title: "",
+    seat_rate: "",
+    service_rate: "",
+    procedure_rate: "",
+    flightmeal_rate: "",
+    lounge_rate: "",
+    clean_rate: "",
+    content: "",
+  });
+
+  // 리뷰 조회하기
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "http://localhost:8282/member/review/detail/" + id,
+    }).then((response) => {
+      const { data, status, statusText } = response;
+      if (status === 200) {
+        setReview(data);
+      } else {
+        alert("Error", "조회 실패", "error");
+      }
+    });
+  }, []);
+
+  const UpdateBtn = () => {
+    navigate("/mypage/review/update/" + id);
+  };
+
+  // 리뷰 삭제하기
+  const DeleteBtn = () => {
+    confirm("정말 삭제하시겠습니까?", "작성한 리뷰를 삭제합니다", "warning", 
+      (result) => {
+      if (result.isConfirmed) {
+        axios({
+          method: "delete",
+          url: "http://localhost:8282/member/review/delete/" + id,
+        }).then((response) => {
+          const { data, status, statusText } = response;
+          if (data === 1) {
+            alert("Success", "삭제 성공", "success", () =>
+              navigate(`/mypage/review`)
+            );
+          } else {
+            alert("Error", "삭제 실패", "error");
+          }
+        });
+      }
+    });
+  };
+
+  const totalRate =
+    (review.seat_rate +
+      review.service_rate +
+      review.procedure_rate +
+      review.flightmeal_rate +
+      review.lounge_rate +
+      review.clean_rate) /
+    6;
 
   return (
     <>
-      <ModalHeader className="reviewTitle" fontSize={50}>
-        "{title}"
-      </ModalHeader>
+      <Heading fontSize={50}>"{review.title}"</Heading>
       <Grid templateColumns="repeat(2, 1fr)" className="flightInfo">
         <Flex paddingLeft={10} marginBottom={5}>
           <Text fontSize={23}></Text>&nbsp;&nbsp;&nbsp;
@@ -35,46 +84,63 @@ const ReviewDetail = (props) => {
           작성자:&nbsp;&nbsp;&nbsp;{userInfo.name}
         </Text>
       </Grid>
-      <Grid templateColumns="repeat(2, 1fr)" fontSize={18} paddingLeft={10} gap={3}>
+      <Grid templateColumns="repeat(2, 1fr)" fontSize={18} paddingLeft={10}>
         <Text className="flightInfo">탑승일:&nbsp;&nbsp;&nbsp;</Text>
-        <Text className="userInfo">작성일:&nbsp;&nbsp;&nbsp;{date}</Text>
+        <Text className="userInfo">작성일:&nbsp;&nbsp;&nbsp;{review.date}</Text>
       </Grid>
       <div className="review_body">
-        <Text className="review_content" width={940} fontSize={23}>
-          {content}
-        </Text>
-        <div className="rate_body">
-          <Grid templateColumns="repeat(2, 1fr)" fontSize={20} marginLeft={50} gap={50}>
+        <Text className={styles.reviewContent}>{review.content}</Text>
+        <div className={styles.rateBody}>
+          <Grid templateColumns="repeat(2, 1fr)" fontSize={20} gap={50}>
             <Flex paddingLeft={10} marginBottom={5}>
               좌석 공간 및 편안함:&nbsp;&nbsp;&nbsp;
-              <StarRating rate={seat_rate} />
+              <StarRating rate={review.seat_rate} />
             </Flex>
             <Flex paddingLeft={10} marginBottom={5}>
               청결도:&nbsp;&nbsp;&nbsp;
-              <StarRating rate={clean_rate} />
+              <StarRating rate={review.clean_rate} />
             </Flex>
           </Grid>
-          <Grid templateColumns="repeat(2, 1fr)" fontSize={20} marginLeft={50} gap={50}>
+          <Grid templateColumns="repeat(2, 1fr)" fontSize={20} gap={50}>
             <Flex paddingLeft={10} marginBottom={5}>
               체크인 및 탑승:&nbsp;&nbsp;&nbsp;
-              <StarRating rate={procedure_rate} />
+              <StarRating rate={review.procedure_rate} />
             </Flex>
             <Flex paddingLeft={10} marginBottom={5}>
               라운지:&nbsp;&nbsp;&nbsp;
-              <StarRating rate={lounge_rate} />
+              <StarRating rate={review.lounge_rate} />
             </Flex>
           </Grid>
-          <Grid templateColumns="repeat(2, 1fr)" fontSize={20} marginLeft={50} marginBottom={35} gap={50}>
+          <Grid
+            templateColumns="repeat(2, 1fr)"
+            fontSize={20}
+            marginBottom={35}
+            gap={50}
+          >
             <Flex paddingLeft={10} marginBottom={5}>
               기내 서비스:&nbsp;&nbsp;&nbsp;
-              <StarRating rate={service_rate} />
+              <StarRating rate={review.service_rate} />
             </Flex>
             <Flex paddingLeft={10} marginBottom={5}>
               기내식 및 음료:&nbsp;&nbsp;&nbsp;
-              <StarRating rate={flightmeal_rate} />
+              <StarRating rate={review.flightmeal_rate} />
             </Flex>
           </Grid>
         </div>
+      </div>
+      <div className={styles.reviewBtn}>
+        <button
+          className={`${styles.btn} ${styles.updatebtn}`}
+          onClick={UpdateBtn}
+        >
+          수정
+        </button>
+        <button
+          className={`${styles.btn} ${styles.deletebtn}`}
+          onClick={DeleteBtn}
+        >
+          삭제
+        </button>
       </div>
     </>
   );

@@ -83,7 +83,7 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
   const handleModelLoaded = () => {
     setIsLoaded(true);
     setIsAirplaneLoaded(true);
-    document.querySelector(`.${style.loadingmessage}`).classList.add(style.loadingEnd);
+    // document.querySelector(`.${style.loadingmessage}`).classList.add(style.loadingEnd);
   };
 
   return (

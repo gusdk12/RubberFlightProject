@@ -3,11 +3,11 @@ package com.lec.spring.general.reserve.domain;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.text.NumberFormat;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+
 
 @Data
 public class Flight {
@@ -15,19 +15,28 @@ public class Flight {
     String depAirport;
     String arrAirport;
     String airlineIata;
-    LocalDateTime depTime;
-    LocalDateTime arrTime;
+    String depTime;
+    String arrTime;
     int takeTime;
     int price;
     String airlineName;
+    String depTimezone;
+    String arrTimezone;
+    String takeTimeFormat;
+    String priceFormat;
+
+    LocalDateTime depTimeUTC;
+    LocalDateTime arrTimeUTC;
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public Flight(JsonNode jsonNode, String iataCode, String arrIataCode, String date, int price) {
+    public Flight(JsonNode jsonNode, String iataCode, String arrIataCode, String date, int price, String depTimezone, String arrTimezone) {
         this.id = generateId();
         this.depAirport = iataCode;
         this.arrAirport = arrIataCode;
+        this.depTimezone = depTimezone;
+        this.arrTimezone = arrTimezone;
 
         this.airlineIata = jsonNode.path("airline").path("iataCode").asText(null);
         this.airlineName = jsonNode.path("airline").path("name").asText(null);
@@ -44,18 +53,46 @@ public class Flight {
             arrTime = arrTime.plusDays(1);
         }
 
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
         System.out.println("예상 출발 시간" + depTime);
         System.out.println("예상 도착 시간" + arrTime);
 
-        this.depTime = depTime;
-        this.arrTime = arrTime;
+        this.depTime = depTime.format(timeFormatter);
+        this.arrTime = arrTime.format(timeFormatter);
 
-        Duration duration = Duration.between(depTime, arrTime);
+        this.depTimeUTC = convertToUTC(depTime, depTimezone);
+        this.arrTimeUTC = convertToUTC(arrTime, arrTimezone);
+
+        Duration duration = Duration.between(depTimeUTC, arrTimeUTC);
         this.takeTime = (int) duration.toMinutes();
 
+        System.out.println("UTC 기준 출발 시간" + depTimeUTC);
+        System.out.println("UTC 기준 도착 시간" + arrTimeUTC);
+
+        this.takeTimeFormat = convertMinutesToHoursAndMinutes(this.takeTime);
 
         this.price = price;
+        this.priceFormat = getFormattedPrice(this.price);
+    }
+
+    private String getFormattedPrice(int price) {
+        NumberFormat format = NumberFormat.getNumberInstance();
+        return format.format(price);
+    }
+
+    private String convertMinutesToHoursAndMinutes(int takeTime) {
+        int hours = takeTime / 60;
+        int remainingMinutes = takeTime % 60;
+        return String.format("%d시간 %d분", hours, remainingMinutes);
+    }
+
+
+    private LocalDateTime convertToUTC(LocalDateTime time, String timezone) {
+        ZoneId zoneId = ZoneId.of(timezone);
+        ZonedDateTime zonedDateTime = time.atZone(zoneId);
+        ZonedDateTime utcDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC"));
+        return utcDateTime.toLocalDateTime();
     }
 
     private String generateId() {

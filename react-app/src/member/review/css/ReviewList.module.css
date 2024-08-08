@@ -1,14 +1,8 @@
-.container {
+.reviewlistContainer {
     width: 800px;
     left: 50%;
     transform: translateX(-50%);
     position: relative;
-}
-
-.subject {
-    font-size: 30px;
-    display: flex;
-    margin-left: 50px;
 }
 
 .reviewIcon {
@@ -16,12 +10,13 @@
     height: 45px;
 }
 
-.pagebtn {
+.reviewPagebtn {
     text-align: center;
+    margin-top: 10px;
     margin-bottom: 20px;
 }
 
-.page_btn {
+.reviewPageBtn {
     text-align: center;
     height: 40px;
     width: 40px;
@@ -30,16 +25,16 @@
     border-radius: 5px;
 }
 
-.prevbtn, .nextbtn {
+.reviewPrevbtn, .reviewNextbtn {
     height: 30px;
     width: 40px;
     margin-right: 5px;
 }
 
-.arrowLeft {
+.reviewArrowLeft {
    margin-right: 30px; 
 }
 
-.arrowRight {
+.reviewArrowRight {
     margin-left: 20px;
 }
