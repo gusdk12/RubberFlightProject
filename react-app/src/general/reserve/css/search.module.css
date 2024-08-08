@@ -1,0 +1,342 @@
+/* search.css */
+
+.searchBar {
+  width: 80%;
+  padding: 0 0 5px 0;
+  /* outline: 2px solid red; */
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.contentpart {
+  padding: 0;
+  width: 100%;
+  /* outline: 2px solid saddlebrown; */
+}
+
+.wayBox{
+  font-family: "KIMM_Bold";
+  color: #1d212e;
+  width: 100%;
+  height: 75px;
+  position: relative;
+  /* background-color: #495176; */
+  border-bottom: #a9afcb 1px solid;
+  display: flex;
+  gap: 5px;
+  padding: 25px 0 10px 0;
+  align-items: flex-start;
+  overflow: hidden;
+  margin-bottom: 10px;
+  padding-top: 2.5%;
+  /* outline: 2px solid black; */
+}
+
+.wButton {
+  font-family: "KIMM_Bold";
+  color: #636676;
+  margin-left: 2%;
+  width: 5%;
+  height: 42px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: -15px;
+  padding-top: 0.8%;
+  /* outline: 2px solid red; */
+}
+
+.wButton:hover {
+  background-color: #c0cdf5;
+}
+
+.searchActives {
+  background-color: #6b8aef;  
+  pointer-events: none;
+  color: #ffffff !important;
+}
+
+.selectBox {
+  /* background-color: skyblue; */
+  font-family: "KIMM_Bold";
+     color: #636676;
+  width: 100%;
+  height: 100px;
+  position: relative;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+#searchAirport {
+  /* outline: 2px solid red; */
+  width: 28%;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+
+#searchDepPart {
+  /* background-color: blue; */
+  width: 48%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 26px;
+  padding-top: 2px;
+  margin-left: -10px;
+  margin-right: 10px;
+}
+
+#searchArrPart{
+  /* background-color: #28a745; */
+  width: 48%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 26px;
+  padding-top: 2px;
+  margin-right: 10px;
+  margin-left: -46px;
+}
+
+
+.selectArrow { 
+  background-image: url('../../../assets/images/arrow.webp');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 40px;
+  height: 10px;
+  /* background-color: red; */
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: -10px;
+}
+
+
+.searchAirport {
+  border: none;
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+  font: inherit;
+  color: #718096;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  margin-top: -1px;
+  /* outline: 2px solid red; */
+}
+
+.searchAirport:focus {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 26px;
+  /* outline: 2px solid salmon; */
+}
+
+.autocompleteResults {
+  /* outline: 2px solid blueviolet; */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 120%;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border: 1px solid #d4d4d4;
+  border-top: none;
+  z-index: 999;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 4px;
+}
+
+.autocompleteResults div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #ffffff; 
+  border-bottom: 1px solid #d4d4d4;
+  font-size: 15px;
+}
+
+.autocompleteResults div:hover {
+  background-color: #e9e9e9; 
+}
+
+.datePickerContainer {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  margin: 3px 1px 2.5px -40px;
+  color: #6c6f74;
+  text-align: center;
+  width: 115%;
+  /* outline: 2px solid aquamarine; */
+  font-size: 23px;
+}
+
+.DatePart {
+  /* outline: 2px solid seagreen; */
+  width: 32%;
+  margin-left: 3px;
+}
+
+.searchFlatpickrInput {
+  border-radius: 4px;
+  background-color: none;
+  background: transparent !important;
+  padding: 15px 0 ;
+  margin-top: -2px;
+  color: #6c6f74;
+  text-align: center;
+  font-size: 24.5px !important;
+  outline: none;
+}
+
+.searchFlatpickrInput:focus {
+  outline: none;
+  box-shadow: none;
+  color: #6c6f74;
+}
+.searchFlatpickrInput:placeholder {
+  color: #6c6f74;
+}
+
+.peoplePart {
+  /* background-color: rebeccapurple; */
+  width: 23%;
+  height: 60px;
+  margin-left: 10px;
+  margin-right: -5px;
+}
+
+.dropdownButton {
+  width: 100%;
+  height: 100%;
+  font-family: "KIMM_Bold";
+  font-size: 24.5px;
+  color: #ad697a;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  /* outline: 2px solid yellowgreen; */
+}
+
+.dropdownButton:active,
+.dropdownButton:focus,
+.dropdownButton:hover {
+  outline: none;
+  background: transparent;
+  color: #ad697a;
+}
+
+.cntContainer {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  width: 100%;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cntContainerItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.cntContainerItem label {
+  flex-grow: 1;
+  margin-left: 30px;
+  margin-right: 4px;
+  /* background-color: blue; */
+}
+
+.cntContainerItem button {
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 18px;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+.cntContainerItem span {
+  margin: 0 30px 0 4px;
+}
+
+.submit {
+  /* outline: 2px solid red; */
+  width: 19%;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 13px;
+}
+
+.subButton {
+  background-color: #6b8aef;
+  width: 70%;
+  height: 100%;
+  padding: 8px 0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 20px;
+  /* outline: 2px solid red; */
+}
+
+.results {
+  outline: 2px solid slateblue;
+  margin-top: 20px;
+  display: flex;
+}
+.resultsContents {
+  display: flex;
+}
+/* .results h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+} */
+
+.results ul {
+  list-style: none;
+  padding: 0;
+}
+
+.results li {
+  outline: 2px solid salmon;
+  /* margin-bottom: 5px; */
+  padding:30px 40px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+
