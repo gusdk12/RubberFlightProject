@@ -88,12 +88,22 @@ const FlightInfoCard = ({ flight, index, tabKey, isPast, review }) => {
         </Box>
       </Flex>
 
-      {(isPast && flight.review.id !== review.id) ? (<MotionButton className="review-button" position="absolute" 
-                    bottom="15px" right="20px" size="lg" display={isHovered ? 'block' : 'none'} 
-                    onClick={(e) => {e.stopPropagation();  navigate(`/mypage/review/write`);}}>리뷰 작성</MotionButton>)
-                    : (<MotionButton className="review-button" position="absolute" 
-                      bottom="15px" right="20px" size="lg" display={isHovered ? 'block' : 'none'} 
-                      onClick={(e) => {e.stopPropagation();  navigate(`/mypage/review/${review.id}`);}}>리뷰 확인</MotionButton>)}
+      {isPast && flight.review ? (
+          flight.review.id !== review.id ? (
+            <MotionButton className="review-button" position="absolute" 
+              bottom="15px" right="20px" size="lg" display={isHovered ? 'block' : 'none'} 
+              onClick={(e) => { e.stopPropagation(); navigate(`/mypage/review/write`); }}>
+              리뷰 작성
+            </MotionButton>
+          ) : (
+            <MotionButton className="review-button" position="absolute" 
+              bottom="15px" right="20px" size="lg" display={isHovered ? 'block' : 'none'} 
+              onClick={(e) => { e.stopPropagation(); navigate(`/mypage/review/${review.id}`); }}>
+              리뷰 확인
+            </MotionButton>
+          )
+        ) : null}
+
     </MotionBox>
   );
 };
