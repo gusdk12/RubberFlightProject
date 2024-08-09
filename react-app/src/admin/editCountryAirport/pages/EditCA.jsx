@@ -23,7 +23,6 @@ const EditCA = () => {
     useEffect(() => {
         document.body.style.backgroundColor = '#dde6f5';
         document.body.style.overflowY = 'scroll';
-        document.body.style.overflowX = 'hidden';
     }, []);
 
     // 전체 나라 목록 가져오기
@@ -244,7 +243,7 @@ const EditCA = () => {
                         <Input
                             id={styles.countryInput}
                             type="text"
-                            placeholder="나라 ISO 코드 입력하기"
+                            placeholder="나라 ISO 코드 입력"
                             name="countryIso"
                             value={countryIsoInput}
                             onChange={(e) => setCountryIsoInput(e.target.value)}
@@ -280,7 +279,7 @@ const EditCA = () => {
                         <Input
                             id={styles.airportInput}
                             type="text"
-                            placeholder='공항 Iata 코드 입력하기'
+                            placeholder='공항 Iata 코드 입력'
                             _placeholder={{ opacity: 1, color: 'black.500' }}
                             name="airportIata"
                             value={airportIataInput}

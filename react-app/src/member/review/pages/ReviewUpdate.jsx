@@ -26,7 +26,7 @@ const ReviewUpdate = () => {
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:8282/member/review/detail/" + id,
+      url: "http://localhost:8282/review/detail/" + id,
     })
       .then(response => {
         const { data, status, statusText } = response;
@@ -63,7 +63,7 @@ const validateForm = () => {
   if(!validationError.title){
     axios({
       method: "put",
-      url: "http://localhost:8282/member/review/update",
+      url: "http://localhost:8282/review/update",
       headers: {
           "Content-Type": 'application/json;charset=utf-8',
       },
