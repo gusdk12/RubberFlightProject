@@ -12,6 +12,7 @@ public class AirlineReviewController {
 
     private final ReviewService reviewService;
 
+    // 모든 리뷰 목록 조회(최신순)
     @CrossOrigin
     @GetMapping("/general/review/list")
     public ResponseEntity<?> list(@RequestParam int page,
@@ -19,7 +20,15 @@ public class AirlineReviewController {
         return new ResponseEntity<>(reviewService.list(page, size), HttpStatus.OK);
     }
 
-    // 항공사별 리뷰 목록 조회
+    // 모든 리뷰 목록 조회(별점순)
+    @CrossOrigin
+    @GetMapping("/general/review/ratelist")
+    public ResponseEntity<?> rateList(@RequestParam int page,
+                                  @RequestParam int size) {
+        return new ResponseEntity<>(reviewService.rateList(page, size), HttpStatus.OK);
+    }
+
+    // 항공사별 리뷰 목록 조회(최신순)
     @CrossOrigin
     @GetMapping("/general/review/list/{id}")
     public ResponseEntity<?> airlineList(@PathVariable Long id,
@@ -28,6 +37,16 @@ public class AirlineReviewController {
         return new ResponseEntity<>(reviewService.airlineReviewList(id, page, size), HttpStatus.OK);
     }
 
+    // 항공사별 리뷰 목록 조회(별점순)
+    @CrossOrigin
+    @GetMapping("/general/review/ratelist/{id}")
+    public ResponseEntity<?> airlineRateList(@PathVariable Long id,
+                                         @RequestParam int page,
+                                         @RequestParam int size) {
+        return new ResponseEntity<>(reviewService.airlineReviewRateList(id, page, size), HttpStatus.OK);
+    }
+
+    // 각 리뷰 조회
     @CrossOrigin
     @GetMapping("general/review/detail/{id}")
     public ResponseEntity<?> detail(@PathVariable Long id){

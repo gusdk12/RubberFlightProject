@@ -9,43 +9,61 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/review")
 public class ReviewController {
 
     private final ReviewService reviewService;
 
-    // 해당 유저의 리뷰 목록
+    // 리뷰 정보 조회
     @CrossOrigin
-    @GetMapping("/member/review/list/{user}")
+    @GetMapping("/reviewlist/{user}")
+    public ResponseEntity<?> reviewList(@PathVariable Long user) {
+        return new ResponseEntity<>(reviewService.reviewList(user), HttpStatus.OK);
+    }
+
+
+    // 해당 유저의 리뷰 목록(최신순)
+    @CrossOrigin
+    @GetMapping("/list/{user}")
     public ResponseEntity<?> userReviewList(@PathVariable Long user,
                                             @RequestParam int page,
                                             @RequestParam int size) {
         return new ResponseEntity<>(reviewService.userReviewList(user, page, size), HttpStatus.OK);
     }
 
+    // 해당 유저의 리뷰 목록(별점순)
+    @CrossOrigin
+    @GetMapping("/ratelist/{user}")
+    public ResponseEntity<?> userReviewRateList(@PathVariable Long user,
+                                            @RequestParam int page,
+                                            @RequestParam int size) {
+        return new ResponseEntity<>(reviewService.userReviewRateList(user, page, size), HttpStatus.OK);
+    }
+
     // 리뷰 작성
     @CrossOrigin
-    @PostMapping("/member/review/write")
+    @PostMapping("/write")
     public ResponseEntity<?> write(@RequestBody Review review){
         return new ResponseEntity<>(reviewService.write(review), HttpStatus.CREATED);
     }
 
     // 리뷰 내용 조회
     @CrossOrigin
-    @GetMapping("/member/review/detail/{id}")
+    @GetMapping("/detail/{id}")
     public ResponseEntity<?> detail(@PathVariable Long id){
         return new ResponseEntity<>(reviewService.detail(id), HttpStatus.OK);
     }
 
     // 리뷰 수정
     @CrossOrigin
-    @PutMapping("/member/review/update")
+    @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody Review review){
         return new ResponseEntity<>(reviewService.update(review), HttpStatus.OK);
     }
 
     // 리뷰 삭제
     @CrossOrigin
-    @DeleteMapping("/member/review/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         return new ResponseEntity<>(reviewService.delete(id), HttpStatus.OK);
     }
