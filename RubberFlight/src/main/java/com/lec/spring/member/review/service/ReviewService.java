@@ -24,7 +24,14 @@ public class ReviewService {
     private final AirlineRepository airlineRepository;
     private final FlightInfoRepository flightInfoRepository;
 
-    // 모든 유저 목록 조회
+    // 리뷰 정보 정보 조회
+    @Transactional(readOnly = true)
+    public List<Review> reviewList(Long user) {
+        return reviewRepository.findBylist(user);
+    }
+
+
+    // 모든 유저 목록 조회(최신순)
     @Transactional(readOnly = true) // 변경사항 체크 X
     public Page<Review> list(int page, int size) {
         if (page < 0) {
@@ -36,7 +43,18 @@ public class ReviewService {
         return reviewRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Order.desc("id")))); // id 순으로 내림차순
     }
 
-    // 해당 유저의 리뷰 목록 조회
+    // 모든 유저 목록 조회(별점순)
+    @Transactional(readOnly = true) // 변경사항 체크 X
+    public Page<Review> rateList(int page, int size) {
+        if (page < 0) {
+            page = 0; // 페이지 번호가 음수일 경우 0으로 설정
+        }
+        if (size <= 0) {
+            size = 1; // 사이즈가 0 이하일 경우 1로 설정
+        }
+        return reviewRepository.findByRateList(PageRequest.of(page, size));    }
+
+    // 해당 유저의 리뷰 목록 조회(최신순)
     @Transactional(readOnly = true)
     public Page<Review> userReviewList(Long user, int page, int size) {
         if (page < 0) {
@@ -48,6 +66,19 @@ public class ReviewService {
         return reviewRepository.findByUser(user, PageRequest.of(page, size));
     }
 
+    // 해당 유저의 리뷰 목록 조회(별점순)
+    @Transactional(readOnly = true)
+    public Page<Review> userReviewRateList(Long user, int page, int size) {
+        if (page < 0) {
+            page = 0; // 페이지 번호가 음수일 경우 0으로 설정
+        }
+        if (size <= 0) {
+            size = 1; // 사이즈가 0 이하일 경우 1로 설정
+        }
+        return reviewRepository.findByUserRate(user, PageRequest.of(page, size));
+    }
+
+    // 해당 항공사의 리뷰 목록 조회(최신순)
     @Transactional(readOnly = true)
     public Page<Review> airlineReviewList(Long airline, int page, int size) {
         if (page < 0) {
@@ -57,6 +88,18 @@ public class ReviewService {
             size = 1; // 사이즈가 0 이하일 경우 1로 설정
         }
         return reviewRepository.findByAirline(airline, PageRequest.of(page, size));
+    }
+
+    // 해당 항공사의 리뷰 목록 조회(별점순)
+    @Transactional(readOnly = true)
+    public Page<Review> airlineReviewRateList(Long airline, int page, int size) {
+        if (page < 0) {
+            page = 0; // 페이지 번호가 음수일 경우 0으로 설정
+        }
+        if (size <= 0) {
+            size = 1; // 사이즈가 0 이하일 경우 1로 설정
+        }
+        return reviewRepository.findByAirlineRate(airline, PageRequest.of(page, size));
     }
 
     // 리뷰 작성

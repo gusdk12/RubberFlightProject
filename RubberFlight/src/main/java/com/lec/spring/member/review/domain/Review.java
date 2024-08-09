@@ -65,17 +65,6 @@ public class Review {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private FlightInfo flightInfo; // 비행정보
 
-//    @Column(name = "flightinfo_id", nullable = false, unique = true)
-//    private Long flightinfo;
-//
-//    @Column(name = "flightinfo_airlinename", nullable = false, unique = true)
-//    private String airline_name;
-
-
-//    private String airline_name; // 항공사 이름
-
     @Column(name = "airline_id")
     private Long airline;   // 어느 항공사의 리뷰 (FK)
-
-
 }
