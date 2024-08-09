@@ -30,7 +30,7 @@ const FlightInfoCard = ({ flight, index, tabKey, isPast, review }) => {
         scale: { duration: 0.2 }
       }}
       position="relative"
-      paddingBottom={isHovered ? '80px' : '20px'} 
+      paddingBottom={isPast && isHovered ? '80px' : '20px'}
     >
       {/* 항공편 출발지 및 도착지 정보 */}
       <Flex justify="space-between" align="center" ml={2} mt={1}>
