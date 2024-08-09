@@ -20,8 +20,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     // 해당 유저 리뷰 목록(최신순)
     @Query(value = """
         SELECT r.id, r.content, r.clean_rate, r.date, r.flightinfo_id, r.flightmeal_rate, r.lounge_rate,
-               r.procedure_rate, r.seat_rate, r.service_rate, r.title, r.airline_id, f.id AS flight_id, f.airlineName,
-               re.id AS reservation_id, u.id AS user_id, u.name
+               r.procedure_rate, r.seat_rate, r.service_rate, r.title, r.airline_id, f.id AS flight_id,
+               re.id AS reservation_id, u.id AS user_id
         FROM ft_review r
                  JOIN ft_airline a ON r.airline_id = a.id
                  JOIN ft_flightinfo f ON r.id = f.review_id
@@ -35,8 +35,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     // 해당 유저 리뷰 목록(총 평점순)
     @Query(value = """
         SELECT r.id, r.content, r.clean_rate, r.date, r.flightinfo_id, r.flightmeal_rate, r.lounge_rate,
-               r.procedure_rate, r.seat_rate, r.service_rate, r.title, r.airline_id, f.id AS flight_id, f.airlineName,
-               re.id AS reservation_id, u.id AS user_id, u.name
+               r.procedure_rate, r.seat_rate, r.service_rate, r.title, r.airline_id, f.id AS flight_id,
+               re.id AS reservation_id, u.id AS user_id
         FROM ft_review r
                  JOIN ft_airline a ON r.airline_id = a.id
                  JOIN ft_flightinfo f ON r.id = f.review_id
@@ -72,8 +72,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     // 해당 모든 리뷰 조회
     @Query(value = """
         SELECT r.id, r.content, r.clean_rate, r.date, r.flightinfo_id, r.flightmeal_rate, r.lounge_rate,
-               r.procedure_rate, r.seat_rate, r.service_rate, r.title, r.airline_id, f.id AS flight_id, f.airlineName,
-               re.id AS reservation_id, u.id AS user_id, u.name
+               r.procedure_rate, r.seat_rate, r.service_rate, r.title, r.airline_id, f.id AS flight_id,
+               re.id AS reservation_id, u.id AS user_id
         FROM ft_review r
                  JOIN ft_airline a ON r.airline_id = a.id
                  JOIN ft_flightinfo f ON r.id = f.review_id

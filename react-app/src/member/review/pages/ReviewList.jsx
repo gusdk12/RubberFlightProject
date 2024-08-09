@@ -1,16 +1,6 @@
+import Cookies from 'js-cookie';
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Flex,
-  Heading,
-  Image,
-  Spinner,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Image, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import axios from "axios";
 import { useUser } from "../../../general/user/contexts/LoginContextProvider";
 import Review from "../../../assets/images/review/review.webp";
@@ -30,14 +20,24 @@ const ReviewList = () => {
 
   // 비행정보 불러오기
   const fetchFlightInfo = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8282/flightInfo/list/${userInfo.id}`
-      );
-      setFlightInfos(response.data);
-    } catch (error) {
-      console.error("데이터를 가져오는 데 오류가 발생했습니다:", error);
-    }
+    const token = Cookies.get('accessToken');
+      if (!token) {
+        console.error("토큰을 찾을 수 없습니다.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await axios.get('http://localhost:8282/flightInfo/list', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setFlightInfos(response.data);
+        return response.data;
+      } catch (error) {
+        console.error("Error fetching flight info:", error);
+      } 
   };
 
   // 유저별 리뷰 목록 불러오기(최신순)

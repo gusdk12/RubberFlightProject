@@ -46,13 +46,6 @@ public class FlightInfoController {
         return new ResponseEntity<>(flightInfoList, HttpStatus.OK);
     }
 
-    // 유저별 예약 정보
-    @CrossOrigin
-    @GetMapping("/list/{user}")
-    public ResponseEntity<?> getUserFlightInfo(@PathVariable Long user){
-        return new ResponseEntity<>(flightInfoService.findByUser(user), HttpStatus.OK);
-    }
-
     // 사용자 예약 정보에 따른 항공편 정보
     @CrossOrigin
     @GetMapping("/flights/{id}")

@@ -1,4 +1,5 @@
-import { Flex, Grid, Heading, Spacer, Text } from "@chakra-ui/react";
+import Cookies from 'js-cookie';
+import { Flex, Grid, Heading, Spacer, Spinner, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useUser } from "../../../general/user/contexts/LoginContextProvider";
 import { StarRating, TotalStarRating } from "../components/Rating";
@@ -6,7 +7,6 @@ import styles from "../css/ReviewDetail.module.css";
 import axios from "axios";
 import { alert, confirm } from "../../../apis/alert";
 import { useNavigate, useParams } from "react-router-dom";
-import { useReducedMotion } from "framer-motion";
 
 const ReviewDetail = () => {
   const { id } = useParams();
@@ -23,18 +23,29 @@ const ReviewDetail = () => {
     content: "",
   });
   const [flightInfos, setFlightInfos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // 비행정보 불러오기
+  // // 비행정보 불러오기
   const fetchFlightInfo = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8282/flightInfo/list/${userInfo.id}`
-      );
-      setFlightInfos(response.data);
-    } catch (error) {
-      console.error("데이터를 가져오는 데 오류가 발생했습니다:", error);
-    }
-  };
+    const token = Cookies.get('accessToken');
+      if (!token) {
+        console.error("토큰을 찾을 수 없습니다.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await axios.get('http://localhost:8282/flightInfo/list', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setFlightInfos(response.data);
+        return response.data; // 리뷰 정보 조회에 활용하기 위해 반환
+      } catch (error) {
+        console.error("Error fetching flight info:", error);
+      }
+    };
 
   const fetchReviewInfo = async () => {
     try {
@@ -49,10 +60,21 @@ const ReviewDetail = () => {
 
   // 리뷰 조회하기
   useEffect (() => {
-    if(userInfo && userInfo.id){
-    fetchFlightInfo();
-    fetchReviewInfo();
-  }
+    const fetchData = async () => {
+      if (userInfo && userInfo.id) {
+        try {
+          const flightInfo = await fetchFlightInfo(); // 비행정보 먼저 가져오기
+          if (flightInfo) { // 유효성 체크한 후에 리뷰정보 호출
+            await fetchReviewInfo();
+          }
+        } catch (error) {
+          console.error("데이터를 가져오는 데 오류가 발생했습니다:", error);
+        } finally {
+          setLoading(false); // 로딩 종료
+        }
+      }
+    };
+    fetchData();
   }, [userInfo]);
 
   const flightInfo = flightInfos.find((info) => info.review.id === review.id);
@@ -60,6 +82,14 @@ const ReviewDetail = () => {
   const UpdateBtn = () => {
     navigate("/mypage/review/update/" + id);
   };
+
+  if (loading) {
+    return (
+      <Flex justify="center" align="center" height="100vh">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
 
   // 리뷰 삭제하기
   const DeleteBtn = () => {

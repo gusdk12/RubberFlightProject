@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Card, Flex, Spacer, Text} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { StarRating } from "./Rating";
 import styles from "../css/ReviewItem.module.css";
 import "../../../Global/font.css";
 import { reviewContent, reviewListCard } from "./ReviewStyle";
-import { useUser } from "../../../general/user/contexts/LoginContextProvider";
-import axios from "axios";
 
 const ReviewItem = ({review, flightInfo}) => {
   const navigate = useNavigate();
