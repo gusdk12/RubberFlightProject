@@ -25,22 +25,22 @@ INSERT INTO ft_country (countryIso, countryName, countryId) VALUES ('JP','Japan'
 # API : codeIataAirport, nameAirport, FK, airportId, latitudeAirport, longitudeAirport
 
 # 대한민국
-INSERT INTO ft_airport (airportIso, airportName, countryIso, country_id, airportId , latitudeAirport, longitudeAirport, timezone)
+INSERT INTO ft_airport (airportIso, airportName, countryIso, countryId, airportId , latitudeAirport, longitudeAirport, timezone)
 VALUES ('GMP', 'Gimpo Airport', 'KR', 1, 2660, 37.559288, 126.80351,"Asia/Seoul");
 
-INSERT INTO ft_airport (airportIso, airportName, countryIso, country_id, airportId , latitudeAirport, longitudeAirport, timezone)
+INSERT INTO ft_airport (airportIso, airportName, countryIso, countryId, airportId , latitudeAirport, longitudeAirport, timezone)
 VALUES ('ICN', 'Seoul (Incheon)', 'KR', 1, 3183, 37.448524, 126.45123, "Asia/Seoul");
 
 # 미국
-INSERT INTO ft_airport (airportIso, airportName, countryIso, country_id, airportId , latitudeAirport, longitudeAirport, timezone)
+INSERT INTO ft_airport (airportIso, airportName, countryIso, countryId, airportId , latitudeAirport, longitudeAirport, timezone)
 VALUES ('LAX', 'Los Angeles International', 'US', 6, 4189, 33.943398, -118.40828, "America/Los_Angeles");
 
 # 싱가포르
-INSERT INTO ft_airport (airportIso, airportName, countryIso, country_id, airportId , latitudeAirport, longitudeAirport, timezone)
+INSERT INTO ft_airport (airportIso, airportName, countryIso, countryId, airportId , latitudeAirport, longitudeAirport, timezone)
 VALUES ('SIN', 'Singapore Changi','SG', 9, 7111, 1.361173, 103.990204, "Asia/Singapore");
 
 # 일본(나리타)
-INSERT INTO ft_airport (airportIso, airportName, countryIso, country_id, airportId , latitudeAirport, longitudeAirport, timezone)
+INSERT INTO ft_airport (airportIso, airportName, countryIso, countryId, airportId , latitudeAirport, longitudeAirport, timezone)
 VALUES ('NRT', 'Narita', 'JP', 12, 5537, 35.773212, 140.38744, "Asia/Tokyo");
 
 INSERT INTO ft_airline (name) VALUE ('아시아나');

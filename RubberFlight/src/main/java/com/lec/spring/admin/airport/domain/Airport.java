@@ -16,28 +16,29 @@ public class Airport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(name = "airportId")
     private Integer airportId;  // 공항 ID : airportId
 
     @ManyToOne
     @ToString.Exclude
+    @JoinColumn(name = "countryId")
     private Country country; // FK : countryId
 
-    @Column
+    @Column(name = "countryIso")
     private String countryIso; // 나라 ISO 코드 : codeIso2Country
 
-    @Column
+    @Column(name = "airportName")
     private String airportName; // 공항 이름 : nameAirport
 
-    @Column(unique = true)
+    @Column(unique = true, name = "airportIso")
     private String airportIso; // 공항 ISO 코드 : codeIataAirport
 
-    @Column
+    @Column(name = "latitudeAirport")
     private Double latitudeAirport; // 공항 위도 : latitudeAirport
 
-    @Column
+    @Column(name = "longitudeAirport")
     private Double longitudeAirport; // 공항 경도 : longitudeAirport
 
-    @Column
+    @Column(name = "timezone")
     private String timezone; // 표준시간 : timezone
 }
