@@ -3,7 +3,7 @@ import { Box, Button, Checkbox, FormControl, FormLabel, HStack, Input, Stack, us
 import Cookies from 'js-cookie';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-import './loginForm.module.css';
+import styles from './loginForm.module.css';
 
 const LoginForm = () => {
   const { login } = useContext(LoginContext);
@@ -64,26 +64,24 @@ const LoginForm = () => {
           <FormControl id="username">
             <FormLabel>Username</FormLabel>
             <Input
-              type="text"
-              placeholder="Username"
-              name="username"
-              autoComplete="off"
-              defaultValue={rememberUserId}
-              backgroundColor={'white'}
-            />
+                type="text"
+                placeholder="Username"
+                name="username"
+                autoComplete="off"
+                defaultValue={rememberUserId}
+                className={styles.inputCustom}  // 스타일 적용
+              />
           </FormControl>
 
           <FormControl id="password">
             <FormLabel>Password</FormLabel>
             <Input
-              type="password"
-              placeholder="Password"
-              name="password"
-              autoComplete="off"
-              backgroundColor={'white'}
-              color={'black'}
-              fontFamily="system-ui, sans-serif"
-            />
+                type="password"
+                placeholder="Password"
+                name="password"
+                autoComplete="off"
+                className={styles.inputCustom}  // 스타일 적용
+              />
           </FormControl>
 
           <FormControl>
@@ -112,7 +110,7 @@ const LoginForm = () => {
           }}>
 
              {/* 구글 */}
-         <div className='google'
+             <div className={styles.google}
           style={{
             // url('../../../assets/images/main/cloud.webp');
             backgroundSize: 'cover',
@@ -128,7 +126,7 @@ const LoginForm = () => {
         />
 
             {/* 카카오 */}
-            <div className='kakao'
+            <div className={styles.kakao}
               style={{
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
@@ -144,7 +142,7 @@ const LoginForm = () => {
             />
 
              {/* 네이버 */}
-          <div className='naver'
+             <div className={styles.naver}
           style={{
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
@@ -161,7 +159,7 @@ const LoginForm = () => {
 
 
           {/* 페이스북 */}
-          <div className='facebook'
+          <div className={styles.facebook}
           style={{
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',

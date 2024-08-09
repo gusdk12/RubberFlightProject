@@ -33,7 +33,8 @@ public class KakaoResponse implements OAuth2Response{
     }
 
     @Override
-    public String getImgae() {
-        return null;
+    public String getImage() {
+        Map<String, Object> profile = (Map<String, Object>) ((Map<String, Object>) attributes.get("kakao_account")).get("profile");
+        return (String) profile.get("profile_image_url");  // profile_image_url 필드를 사용
     }
 }

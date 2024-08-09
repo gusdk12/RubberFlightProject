@@ -33,7 +33,8 @@ public class FacebookResponse implements OAuth2Response {
     }
 
     @Override
-    public String getImgae() {
-        return null;
+    public String getImage() {
+        Object image = attribute.get("profile_image");
+        return image != null ? image.toString() : null;  // null 체크 추가
     }
 }
