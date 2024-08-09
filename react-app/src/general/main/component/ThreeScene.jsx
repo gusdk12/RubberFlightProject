@@ -66,7 +66,7 @@ function CameraAnimation({ isLoaded, isSearhMode }) {
   useFrame((state, delta) => {
     if(!isSearhMode){
       const targetPosition = isLoaded ? [-150, -20, -250] : [-1500, -20, -2500];
-      camera.position.lerp(new THREE.Vector3(...targetPosition), delta * 4);
+      // camera.position.lerp(new THREE.Vector3(...targetPosition), delta * 4);
       camera.lookAt(10, 10, 0);
     }else{
       const targetPosition = [200, 120, -230];
@@ -103,7 +103,7 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
       <Canvas 
         dpr={[1, 2]} 
         gl={{ antialias: true }}
-        camera={{ position: [-1500, -20, -2500], fov: 45, near: 0.1, far: 1000 }} 
+        camera={{ position: [-150, -20, -250], fov: 45, near: 0.1, far: 1000 }} 
         style={{ width: '100vw', height: '100vh', background: '#B0C9E600', zIndex: '1' }}
       >
         <ambientLight intensity={1.2} color="#c2e6ff"/>
