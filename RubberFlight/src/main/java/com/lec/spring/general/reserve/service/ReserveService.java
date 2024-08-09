@@ -12,10 +12,10 @@ import com.lec.spring.member.flightInfo.repository.FlightInfoRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -117,4 +117,48 @@ public class ReserveService {
                 .collect(Collectors.toList());
     }
 
+    // DB 저장
+    @Transactional
+    public Reserve saveReservation(Long userId, String personnel, boolean isRoundTrip, Flight outboundFlight, Flight inboundFlight) {
+        Reserve reserve = new Reserve();
+        User user = userRepository.findById(userId).orElse(null);
+        reserve.setUser(user);
+        reserve.setPersonnel(personnel);
+        reserveRepository.save(reserve);
+
+        List<FlightInfo> flights = new ArrayList<>();
+
+        if(isRoundTrip) {
+            FlightInfo outbound = createFlgihtInfo(reserve, outboundFlight);
+            FlightInfo inbound = createFlgihtInfo(reserve, inboundFlight);
+            flights.add(outbound);
+            flights.add(inbound);
+        } else {
+            FlightInfo outbound = createFlgihtInfo(reserve, outboundFlight);
+            flights.add(outbound);
+        }
+
+        flightInfoRepository.saveAll(flights);
+        return reserve;
+    }
+
+    private FlightInfo createFlgihtInfo(Reserve reserve, Flight flight) {
+        FlightInfo flightInfo = new FlightInfo();
+        String depAirportName = airportRepository.findByAirportIso(flight.getDepAirport()).getAirportName();
+        String arrAirportName = airportRepository.findByAirportIso(flight.getArrAirport()).getAirportName();
+        System.out.println(depAirportName);
+        System.out.println(arrAirportName);
+        flightInfo.setReserve(reserve);
+        flightInfo.setDepAirport(depAirportName);
+        flightInfo.setDepIata(flight.getDepAirport());
+        flightInfo.setArrAirport(arrAirportName);
+        flightInfo.setArrIata(flight.getArrAirport());
+        flightInfo.setPrice(flight.getPrice());
+        flightInfo.setFlightIat(flight.getAirlineIata());
+        flightInfo.setDepSch(flight.getDepSch());
+        flightInfo.setArrSch(flight.getArrSch());
+        flightInfo.setAirlineName(flight.getAirlineName());
+
+        return flightInfo;
+    }
 }
