@@ -8,4 +8,9 @@ import java.util.List;
 public interface FlightInfoRepository extends JpaRepository<FlightInfo, Long> {
 
     List<FlightInfo> findByReserveId(Long reserveId);
+
+    List<FlightInfo> findByReserveUserId(Long userId);
+
+    FlightInfo findByIdAndReserveUserId(Long id, Long userId);
+
 }

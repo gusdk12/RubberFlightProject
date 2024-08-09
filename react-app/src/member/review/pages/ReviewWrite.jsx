@@ -1,20 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useUser } from "../../../general/user/contexts/LoginContextProvider";
-import {
-  Box,
-  Flex,
-  FormControl,
-  FormLabel,
-  Grid,
-  Heading,
-  HStack,
-  Image,
-  Input,
-  Radio,
-  RadioGroup,
-  Text,
-  Textarea,
-} from "@chakra-ui/react";
+import {Flex, FormLabel, Grid, Heading, Image, Text, Textarea} from "@chakra-ui/react";
 import Write from "../../../assets/images/review/reviewwrite.webp";
 import { RateFormUpdate } from "../components/Form";
 import { useNavigate } from "react-router-dom";
@@ -75,7 +61,7 @@ const ReviewWrite = () => {
     if (!validationError.title) {
       axios({
         method: "post",
-        url: "http://localhost:8282/member/review/write",
+        url: "http://localhost:8282/review/write",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },

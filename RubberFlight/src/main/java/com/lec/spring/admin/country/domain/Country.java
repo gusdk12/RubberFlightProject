@@ -21,13 +21,13 @@ public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(name = "countryId")
     private Integer countryId; // 나라 id : countryId
 
-    @Column(unique = true)
+    @Column(unique = true, name = "countryIso")
     private String countryIso; // 나라 ISO 코드 : codeIso2Country
 
-    @Column
+    @Column(name = "countryName")
     private String countryName; // 나라 이름 : nameCountry
 
     @OneToMany(mappedBy = "country", cascade = CascadeType.REMOVE, orphanRemoval = true)

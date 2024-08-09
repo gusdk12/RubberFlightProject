@@ -3,6 +3,7 @@ package com.lec.spring.general.user.service;
 import com.lec.spring.general.user.config.CustomOAuth2User;
 import com.lec.spring.general.user.domain.*;
 import com.lec.spring.general.user.repository.UserRepository;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -47,6 +48,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User existData = userRepository.findByUsername(username);
 
         String email = oAuth2Response.getEmail();
+
         System.out.println("Fetched email: " + email);
         if (email == null) {
             email = oAuth2Response.getProviderId() + "@kakao.com";
@@ -55,6 +57,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String name = oAuth2Response.getName();
         if (name == null) {
             name = "user";
+        }
+
+        String image = oAuth2Response.getImage();
+        if(image == null) {
+            image = "/uploads/user.png";
         }
 
 
@@ -68,7 +75,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user.setRole("ROLE_MEMBER");
             user.setPassword("defaultPassword");
             user.setTel("");
-            user.setImage("/uploads/user.png");
+            user.setImage(image);
 
             userRepository.save(user);
 
@@ -77,6 +84,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userDTO.setUsername(username);
             userDTO.setName(oAuth2Response.getName());
             userDTO.setRole("ROLE_MEMBER");
+            userDTO.setImage(image);
 
             System.out.println("Saving new user with email: " + user.getEmail());
 
@@ -84,6 +92,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         } else {
             existData.setEmail(email); // email 값을 null이 아닌 값으로 설정
             existData.setName(name);
+            existData.setImage(image);
 
             userRepository.save(existData);
 
@@ -92,6 +101,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userDTO.setUsername(existData.getUsername());
             userDTO.setName(name);
             userDTO.setRole(existData.getRole());
+            userDTO.setImage(existData.getImage());
 
             return new CustomOAuth2User(userDTO);
         }

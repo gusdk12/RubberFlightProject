@@ -166,10 +166,11 @@
 
 .countryPlus #countryInput,
 .airportPlus #airportInput {
-    font-family: "KIMM_Light";
-    font-size: 14px;
-    font-weight: 700;
     margin-right: 10px; 
+    font-size: 15px !important;
+    font-weight: 100 !important;
+    border: 1px solid #c1d6fca9 !important;
+    text-align: left !important;
 }
 
 .countryPlus #countryButton,

@@ -1,5 +1,4 @@
 .allCon {
-    border: 1px solid blue;
     width: 1300px;
     left: 50%;
     top: 190px;
@@ -8,7 +7,7 @@
 }
 
 
-.scheduleHeader{
+.livestart1{
     max-width: 1200px;
     height: 150px;
     margin: auto;
@@ -20,7 +19,7 @@
     color: #00235A;
 }
 
-.scheduleInfo{
+.livestart2{
     font-family: 'KIMM_Light';
     max-width: 1200px;
     height: 140px;
@@ -35,41 +34,87 @@
 .searchCon {
     display: flex;
     align-items: center;
-    width: 800px;
-    margin: 50px auto;
+    max-width: 1300px;
+    margin-bottom: 20px;
+    /* margin-right: 15px; */
+
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.flightIata {
+  font-size: 20px !important;
+  border: 1px solid #00235A !important;
+  text-align: left;
+  width: 350px !important;
 }
 
 #searchBtn {
     margin-left: 10px;
+    background-color: #1e3b69;
+    color: white;
 }
-
 
 .earthCon {
     position: relative;
-    width: 1600px;
+    width: 1400px;
+    /* width: 1300px; */
     height: 1000px;
-    margin: 0 auto;
-    transform: translateX(-150px);
+    margin-bottom: 500px;
+    transform: translateX(-50px);
     overflow: hidden;
-    border: 1px solid red;
 }
 
 .aboutFlight {
-    position: absolute;
-    top: 50px;
-    left: 20px;
-    width: 800px;
-    height: 200px;
-    border: 1px solid skyblue;
-    z-index: 500px;
+  position: absolute;
+  top: 100px;
+  left: 30px;
+  width: 800px;
+  height: 200px;
+  z-index: 5;
 
-    color: white;
-    font-weight: bold;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+.pp {
+  color: #b9b9b9;
+}
+
+#ppp {
+  color: #ffb84d;
 }
 
 .loadingOverlay {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    z-index: 10;
-}
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(166, 166, 166, 0.5); /* 배경을 어둡게 */
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    z-index: 10000; /* 모든 요소 위에 표시되도록 z-index 설정 */
+  }
+  
+  .loadingImg {
+    width: 100px;
+    height: 100px;
+    background-image: url('../../../assets/images/main/loading.webp'); /* 실제 이미지 경로로 변경 */
+    background-size: cover;
+    animation: rotate 4s linear infinite; /* 천천히 회전 */
+  }
+  
+  /* 회전 애니메이션 */
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }

@@ -46,7 +46,7 @@ const Header = ({isMain}) => {
 
 
   const schedulePage= () => {
-    navigate(`/schedule/${userInfo.id}`)
+    navigate(`/schedule`)
   }
 
   const liveFlight = () => {

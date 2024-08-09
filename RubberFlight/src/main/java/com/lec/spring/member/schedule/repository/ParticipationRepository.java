@@ -11,5 +11,6 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
 
     int deleteAllByScheduleId(Long schedule);
     List<Participation> findAllByUserId(Long user);
+    List<Participation> findAllByScheduleId(Long schedule);
 
 }
