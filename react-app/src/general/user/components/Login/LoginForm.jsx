@@ -64,26 +64,24 @@ const LoginForm = () => {
           <FormControl id="username">
             <FormLabel>Username</FormLabel>
             <Input
-              type="text"
-              placeholder="Username"
-              name="username"
-              autoComplete="off"
-              defaultValue={rememberUserId}
-              backgroundColor={'white'}
-            />
+                type="text"
+                placeholder="Username"
+                name="username"
+                autoComplete="off"
+                defaultValue={rememberUserId}
+                className={styles.inputCustom}  // 스타일 적용
+              />
           </FormControl>
 
           <FormControl id="password">
             <FormLabel>Password</FormLabel>
             <Input
-              type="password"
-              placeholder="Password"
-              name="password"
-              autoComplete="off"
-              backgroundColor={'white'}
-              color={'black'}
-              fontFamily="system-ui, sans-serif"
-            />
+                type="password"
+                placeholder="Password"
+                name="password"
+                autoComplete="off"
+                className={styles.inputCustom}  // 스타일 적용
+              />
           </FormControl>
 
           <FormControl>
