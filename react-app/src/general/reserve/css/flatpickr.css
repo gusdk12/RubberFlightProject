@@ -7,7 +7,7 @@
   font-family: "KIMM_Bold";
     /* outline: 2px solid palegoldenrod; */
     margin: 0 auto;
-    margin-left: 20px;
+    margin-left: 50px;
 }  
 
 .flatpickr-input {
@@ -17,4 +17,8 @@
   border: none !important;  /* 원하는 경우, border도 제거 */
   box-shadow: none !important;
   color: #6c6f74 !important;
+}
+
+.cur-year {
+  font-size: 20px !important;
 }

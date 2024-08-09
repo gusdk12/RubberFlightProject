@@ -58,7 +58,7 @@
 }
 
 .searchActives {
-  background-color: #6b8aef;  
+  background-color: #6b8aef;
   pointer-events: none;
   color: #ffffff !important;
 }
@@ -66,7 +66,7 @@
 .selectBox {
   /* background-color: skyblue; */
   font-family: "KIMM_Bold";
-     color: #636676;
+  color: #636676;
   width: 100%;
   height: 100px;
   position: relative;
@@ -84,8 +84,10 @@
   gap: 5px;
   align-items: center;
   justify-content: center;
+  outline: none !important;
 }
 
+#searchArrPart,
 #searchDepPart {
   /* background-color: blue; */
   width: 48%;
@@ -99,21 +101,74 @@
   padding-top: 2px;
   margin-left: -10px;
   margin-right: 10px;
+  outline: none !important;
 }
 
-#searchArrPart{
-  /* background-color: #28a745; */
-  width: 48%;
-  height: 100%;
-  display: flex;
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  font-size: 26px;
-  padding-top: 2px;
-  margin-right: 10px;
+#searchArrPart {
   margin-left: -46px;
+}
+
+.airportDefault {
+  /* outline: 2px solid green; */
+  margin-top: 40px;
+  /* width: 46%; */
+  text-align: center;
+  font-size: 26px;
+  /* margin-left: 18px; */
+}
+
+
+.searchAirportContainer {
+  outline: 2px solid red;
+  margin-top: 28px;
+  width: 180%;
+  /* margin-left: 90px; */
+  position: relative;
+  min-height: 900%;
+}
+
+.searchContainer {
+  background-color: #FFFFFF;
+  outline: 2px solid red;
+  opacity: 1;
+  padding: 10px;
+  border-radius: 5px;
+  position: relative;
+  margin-top: 10px;
+}
+
+
+.searchAirport {
+  outline: 2px solid black;
+  border: none;
+  outline: none !important;
+  background: transparent !important;
+  box-shadow: none;
+  font: inherit;
+  color: #718096;
+  width: 100%;
+  height: 100%;
+  /* margin-top: 49px; */
+  font-size: 20px !important;
+  outline: 2px solid #F7F7F9 !important;
+  display: flex;
+}
+
+.searchAirport:focus {
+  border: none;
+  outline: none !important;
+  width: 100%;
+  font-size: 20px !important;
+  outline: 1px solid #adb0b8d9 !important;
+  /* outline: 2px solid salmon; */
+}
+
+.searchAirport:blur {
+  border: none;
+  outline: none !important;
+  width: 100%;
+  font-size: 26px;
+  /* outline: 2px solid salmon; */
 }
 
 
@@ -130,56 +185,73 @@
   margin-bottom: -10px;
 }
 
+input {
+  font-family: "KIMM_Bold" !important;
+  background: transparent !important;
+  font-size: 26px !important;
+  border: none !important;
+  outline: none !important;
+  text-align: center;
+}
 
 .searchAirport {
   border: none;
-  outline: none;
-  background: transparent;
+  outline: none !important;
   box-shadow: none;
   font: inherit;
-  color: #718096;
+  background-color: #FFFFFF;
   width: 100%;
   height: 100%;
-  text-align: center;
+  text-align: left !important;
   margin-top: -1px;
   /* outline: 2px solid red; */
 }
 
 .searchAirport:focus {
-  border: none;
-  outline: none;
-  width: 100%;
-  font-size: 26px;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  /* width: 100%; */
+  /* font-size: 26px !important; */
+  text-align: center;
   /* outline: 2px solid salmon; */
 }
 
+.searchActives::placeholder {
+  text-align: center;
+  outline: none !important;
+  background-color: red;
+}
+
 .autocompleteResults {
-  /* outline: 2px solid blueviolet; */
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 120%;
-  max-height: 150px;
-  overflow-y: auto;
-  background-color: #ffffff;
-  border: 1px solid #d4d4d4;
-  border-top: none;
-  z-index: 999;
-  border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-top: 4px;
+    /* position: absolute; */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 150px;
+    overflow-y: auto;
+    background-color: #FFFFFF;
+    opacity: 1;
+    border: 1px solid #d4d4d4;
+    border-top: none;
+    z-index: 999;
+    border-radius: 4px;
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    margin-top: 10px;
 }
 
 .autocompleteResults div {
   padding: 10px;
   cursor: pointer;
-  background-color: #ffffff; 
+  background-color:#f1f1f1;
+  opacity: 1;
   border-bottom: 1px solid #d4d4d4;
   font-size: 15px;
 }
 
 .autocompleteResults div:hover {
-  background-color: #e9e9e9; 
+    background-color:#dadcdf 
 }
 
 .datePickerContainer {
@@ -197,7 +269,7 @@
 
 .DatePart {
   /* outline: 2px solid seagreen; */
-  width: 32%;
+  width: 34%;
   margin-left: 3px;
 }
 
@@ -209,7 +281,7 @@
   margin-top: -2px;
   color: #6c6f74;
   text-align: center;
-  font-size: 24.5px !important;
+  font-size: 23px !important;
   outline: none;
 }
 
@@ -234,7 +306,7 @@
   width: 100%;
   height: 100%;
   font-family: "KIMM_Bold";
-  font-size: 24.5px;
+  font-size: 23px;
   color: #ad697a;
   background: transparent;
   border: none;
@@ -318,6 +390,9 @@
 }
 .resultsContents {
   display: flex;
+  outline: 2px solid red;
+  width: 100%;
+
 }
 /* .results h3 {
   margin-bottom: 10px;
@@ -328,15 +403,88 @@
 .results ul {
   list-style: none;
   padding: 0;
+  /* outline: 2px solid red; */
 }
 
 .results li {
   outline: 2px solid salmon;
   /* margin-bottom: 5px; */
-  padding:30px 40px;
+  padding:60px 40px;
+  width: 140%;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #f9f9f9;
+  flex: 1;
 }
 
+.flightInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 필요에 따라 조정 가능 */
+  /* 다른 스타일 속성들도 추가할 수 있습니다 */
+}
 
+.flightAirline,
+.flightDepTime,
+.flightArrTime,
+.flightTakeTime,
+.flightPrice,
+.flightArrTimezone,
+.flightDepTimezone {
+  margin-right: 50px; /* 요소 간 간격 조정 */
+  display: flex;
+}
+
+.flightAirline {
+  margin-left: 20px;
+}
+
+.depAirport,
+.arrAirport {
+  font-size: 0.8rem; /* 폰트 크기 조정 */
+  color: #8351f8; /* 선택적으로 색상 추가 */
+  margin-left: 0.5rem; /* 폰트와 공항 코드 간의 여백 */
+}
+/* 
+.flightTakeTime,
+.flightPrice {
+  margin: 0 1rem;
+} */
+
+.verticalLine {
+  width: 1px; /* 세로줄의 두께 */
+  background-color: rgb(155, 155, 155); /* 세로줄 색상 */
+  height: 4rem; 
+}
+
+.resultsContents {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto 1fr; /* 두 개의 열은 자동 크기, 나머지는 동일한 크기 */
+  gap: 10px; /* 요소 간의 기본 간격 */
+  align-items: center; /* 수직 정렬을 가운데로 */
+}
+
+.flightDepTime {
+  display: flex;
+  flex-direction: column; /* 수직 정렬 */
+  gap: 4px; /* 내부 요소 간의 간격 */
+}
+
+.depAirport {
+  font-size: 0.8rem; /* 작은 글씨 */
+}
+
+.flightArrTime {
+  display: flex;
+  flex-direction: column; /* 수직 정렬 */
+  gap: 4px; /* 내부 요소 간의 간격 */
+}
+
+.arrAirport {
+  font-size: 0.8rem; /* 작은 글씨 */
+}
+
+.verticalLine {
+  border-left: 1px solid  rgb(155, 155, 155);
+  height: 4rem;  /* 전체 높이로 설정 */
+}

@@ -14,7 +14,6 @@ import { format } from 'date-fns';
 import { color } from 'framer-motion';
 import style from '../CSS/Main.module.css'
 import '../../reserve/css/flatpickr.css'
-
  
 const MainPage = () => {
     const [isAirplaneLoaded, setIsAirplaneLoaded] = useState(false);
@@ -24,7 +23,6 @@ const MainPage = () => {
     const [dates, setDates] = useState([]);
     const [departureDate, setDepartureDate] = useState('');
     const [returnDate, setReturnDate] = useState('');
-    const [displayDate, setDisplayDate] = useState('');
     
     const [departure, setDeparture] = useState('ICN');
     const [arrival, setArrival] = useState('');
@@ -34,6 +32,7 @@ const MainPage = () => {
     const [focusedInput, setFocusedInput] = useState(null);
     const [isEditing, setIsEditing] = useState({ departure: false, arrival: false });
     const autocompleteRef = useRef(null);
+    const [showSearch, setShowSearch] = useState(false);    // 공항 선택
 
     const [adults, setAdults] = useState(1);
     const [children, setChildren] = useState(0);
@@ -65,9 +64,20 @@ const MainPage = () => {
         document.body.style.overflow = 'hidden';
     }, []);
     useEffect(() => {
-        isAirplaneLoaded && reserveButtonRef.current.classList.add(style.showReserveClass);
-        isSearhMode && reserveButtonRef.current.classList.remove(style.showReserveClass);
-        isSearhMode && searchBoxRef.current.classList.add(style.showSeachClass);
+        // isAirplaneLoaded && reserveButtonRef.current.classList.add(style.showReserveClass);
+        // isSearhMode && reserveButtonRef.current.classList.remove(style.showReserveClass);
+        // isSearhMode && searchBoxRef.current.classList.add(style.showSeachClass);
+
+        // console.log('reserveButtonRef.current:', reserveButtonRef.current);
+        // console.log('searchBoxRef.current:', searchBoxRef.current);
+
+        if (reserveButtonRef.current) {
+            isAirplaneLoaded && reserveButtonRef.current.classList.add(style.showReserveClass);
+            isSearhMode && reserveButtonRef.current.classList.remove(style.showReserveClass);
+        }
+        if (searchBoxRef.current) {
+            isSearhMode && searchBoxRef.current.classList.add(style.showSeachClass);
+        }
     }, [isAirplaneLoaded, isSearhMode]);
 
     // 공항 찾기
@@ -86,25 +96,25 @@ const MainPage = () => {
 // 공항 검색
 useEffect(() => {
     const handleClickOutside = (event) => {
-      if (autocompleteRef.current && !autocompleteRef.current.contains(event.target)) {
-        setSearchTerm('');
-        setFilteredAirports(airports);
-        setFocusedInput(null);
-        setIsEditing({ departure: false, arrival: false }); // Close editing mode
-      }
+        if (autocompleteRef.current && !autocompleteRef.current.contains(event.target)) {
+            setSearchTerm('');
+            setFilteredAirports(airports);
+            setFocusedInput(null);
+            setIsEditing({ departure: false, arrival: false });
+        }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [airports]);
 
   const handleSearchTermChange = (e) => {
-    const term = e.target.value;
+    const term = e.target.value || '';
     setSearchTerm(term);
     if (term) {
         setFilteredAirports(
             airports.filter(airport =>
-                airport.airportName.toLowerCase().includes(term.toLowerCase()) ||
-                airport.airportIso.toLowerCase().includes(term.toLowerCase())
+                (airport.airportName?.toLowerCase() || '').includes(term.toLowerCase()) ||
+                (airport.airportIso?.toLowerCase() || '').includes(term.toLowerCase())
             )
         );
     } else {
@@ -121,7 +131,7 @@ useEffect(() => {
     setSearchTerm('');
     setFilteredAirports(airports);
     setFocusedInput(null);
-    setIsEditing({ departure: false, arrival: false }); // Close editing mode
+    setIsEditing({ departure: false, arrival: false }); // 편집모드 닫기
   };
 
   const handleFocus = (inputType) => {
@@ -151,18 +161,14 @@ useEffect(() => {
     }
   };
 
-      // 날짜 선택 핸들러
+    // 날짜 선택 핸들러
       const handleDateChange = (selectedDates) => {
+
         setDates(selectedDates);
         if (selectedDates.length === 2) {
-            const formattedStartDate = format(selectedDates[0], 'yyyy-MM-dd');
-            const formattedEndDate = format(selectedDates[1], 'yyyy-MM-dd');
-            setDisplayDate(`${formattedStartDate} ~ ${formattedEndDate}`);
-        } else if (selectedDates.length === 1) {
-            const formattedStartDate = format(selectedDates[0], 'yyyy-MM-dd');
-            setDisplayDate(`${formattedStartDate}`);
+            console.log(selectedDates);
         } else {
-            setDisplayDate('');
+            console.log(selectedDates);
         }
     };
 
@@ -240,6 +246,9 @@ useEffect(() => {
                     <div id={style.airportPart}>
                     <div id={style.depPart}>
                         {isEditing.departure ? (
+                        <div className={style.searchAirportContainer}>
+                                <div className={style.airportDefault}>{departure || '출발'}</div>
+                                <div className={style.searchContainer}>
                             <input
                                 className={style.searchAirport}
                                 type="text"
@@ -249,15 +258,9 @@ useEffect(() => {
                                     handleSearchTermChange(e);
                                 }}
                                 onFocus={() => handleFocus('departure')}
-                                placeholder="출발"
+                                placeholder="국가, 공항명 검색"
                             />
-                        ) : (
-                            <div className="editable-div" onClick={() => handleClickEdit('departure')}>
-                                <div className='airportName'>{departure || '출발'}</div>
-                                <div className={style.selectArrow} />
-                            </div>
-                        )}
-                        {focusedInput === 'departure' && searchTerm && (
+                            {focusedInput === 'departure' && searchTerm && (
                             <div className={style.autocompleteResults} ref={autocompleteRef}>
                                 {filteredAirports.length > 0 ? (
                                     filteredAirports.map((airport) => (
@@ -273,10 +276,21 @@ useEffect(() => {
                                 )}
                             </div>
                         )}
-                    </div>
+                        </div>
+                        </div>
+                        ) : (
+                            <div className="editable-div" onClick={() => handleClickEdit('departure')}>
+                                <div className="airportName">{departure || '출발'}</div>
+                                <div className={style.selectArrow} />
+                            </div>
+                        )}
+                        </div>
 
                     <div id={style.arrPart}>
                         {isEditing.arrival ? (
+                            <div className={style.searchAirportContainer}>
+                                 <div className={style.airportDefault}>{arrival || '도착'}</div>
+                                 <div className={style.searchContainer}>
                             <input
                                 className={style.searchAirport}
                                 type="text"
@@ -286,15 +300,9 @@ useEffect(() => {
                                     handleSearchTermChange(e);
                                 }}
                                 onFocus={() => handleFocus('arrival')}
-                                placeholder="도착"
+                                placeholder="국가, 공항명 검색"
                             />
-                        ) : (
-                            <div className="editable-div" onClick={() => handleClickEdit('arrival')}>
-                                <div className='airportName'>{arrival || '도착'}</div>
-                                <div className={style.selectArrow} />
-                            </div>
-                        )}
-                        {focusedInput === 'arrival' && searchTerm && (
+                            {focusedInput === 'arrival' && searchTerm && (
                             <div className={style.autocompleteResults} ref={autocompleteRef}>
                                 {filteredAirports.length > 0 ? (
                                     filteredAirports.map((airport) => (
@@ -308,6 +316,14 @@ useEffect(() => {
                                 ) : (
                                     <div>No results found</div>
                                 )}
+                            </div>
+                        )}
+                            </div>
+                            </div>
+                        ) : (
+                            <div className="editable-div"  onClick={() => handleClickEdit('arrival')} >
+                                <div className='airportName'>{arrival || '도착'}</div>
+                                <div className={style.selectArrow}/>
                             </div>
                         )}
                     </div>

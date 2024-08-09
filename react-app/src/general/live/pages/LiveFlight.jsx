@@ -4,7 +4,6 @@ import { getLiveInfo } from '../../../apis/liveInfoApis';
 import { getAirportInfo1 } from '../../../apis/airportApis';
 import Header from '../../../general/common/Header/Header';
 import styles from '../CSS/LiveFlight.module.css';
-import loadingImage from '../../../assets/images/main/loading.webp';
 
 const LiveFlight = () => {
   const [flightIataInput, setFlightIataInput] = useState("");
@@ -103,13 +102,11 @@ const LiveFlight = () => {
       <Header isMain={true} />
 
       <div className={styles.allCon}>
-        <div className={styles.scheduleHeader}>비행기 위치를 실시간으로 - </div>
-        <div className={styles.scheduleInfo}>
+        <div className={styles.livestart1}>비행기 위치를 실시간으로 - </div>
+        <div className={styles.livestart2}>
           비행기 코드를 통해 위치를 검색해보세요. <br />
           친구나 가족들이 타고있는 항공편의 실시간 위치를 알 수 있어요.
         </div>
-
-        <Divider my={7} />
 
         <div className={styles.searchCon}>
           <Input
@@ -125,14 +122,15 @@ const LiveFlight = () => {
         </div>
 
         <div className={styles.earthCon}>
-        {flightData && arrAirportData && depAirportData && (
+          {flightData && arrAirportData && depAirportData && (
             <div className={styles.aboutFlight}>
-              Arrival Airport: {arrAirportData.name}<br />
-              Departure Airport: {depAirportData.name}<br />
-              Status: {flightData.status}<br />
-              Speed: {flightData.horizontal} km/h<br />
+              <span className={styles.pp}>Arrival Airport:</span> {arrAirportData.name}<br />
+              <span className={styles.pp}>Departure Airport:</span> {depAirportData.name}<br />
+              <span className={styles.pp}>Status:</span> {flightData.status}<br />
+              <span className={styles.pp}>Speed:</span> {flightData.horizontal} km/h<br />
             </div>
           )}
+
           <iframe
             id="map-iframe"
             src="/ApiTest.html"
@@ -140,11 +138,15 @@ const LiveFlight = () => {
             height="100%"
             title="Google Map"
           ></iframe>
+
           {loading && (
             <div className={styles.loadingOverlay}>
-              <Image src={loadingImage} alt="Loading" />
+              <div className={styles.loadingImg}></div>
             </div>
           )}
+
+
+
         </div>
       </div>
     </>

@@ -44,4 +44,10 @@ public class AirportService {
             return 0; // Not found
         }
     }
+
+    @Transactional
+    public Airport findByIso(String airport_iso) {
+        return airportRepository.findByAirportIso(airport_iso);
+    }
+
 }
