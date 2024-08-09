@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, Flex, Heading, Spinner, Image } from '@chakra-ui/react';
@@ -15,8 +16,19 @@ const FlightInfoList = () => {
 
   useEffect(() => {
     const fetchFlightInfo = async () => {
+      const token = Cookies.get('accessToken'); 
+      if (!token) {
+        console.error("토큰을 찾을 수 없습니다.");
+        setLoading(false);
+        return;
+      }
+
       try {
-        const response = await axios.get('http://localhost:8282/flightInfo/list');
+        const response = await axios.get('http://localhost:8282/flightInfo/list', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setFlightInfoList(response.data);
       } catch (error) {
         console.error("Error fetching flight info:", error);

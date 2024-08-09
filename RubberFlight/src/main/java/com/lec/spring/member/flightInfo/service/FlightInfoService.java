@@ -23,4 +23,14 @@ public class FlightInfoService {
     public FlightInfo findById(Long id) {
         return flightInfoRepository.findById(id).orElse(null);
     }
+
+    @Transactional
+    public List<FlightInfo> findByUserId(Long userId) {
+        return flightInfoRepository.findByReserveUserId(userId);
+    }
+
+    @Transactional
+    public FlightInfo findByIdAndUserId(Long id, Long userId) {
+        return flightInfoRepository.findByIdAndReserveUserId(id, userId);
+    }
 }

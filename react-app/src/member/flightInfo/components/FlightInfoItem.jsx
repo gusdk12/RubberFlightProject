@@ -12,6 +12,14 @@ const FlightInfoItem = ({ info }) => {
     fontSize: 'xl',
   };
 
+    if (!info.timetable || info.timetable.length === 0) {
+      return (
+        <Flex direction="column" align="center" justify="center" pt={4}>
+          <Text fontSize="xl" fontWeight="bold">조회할 수 없는 항공 데이터 입니다.</Text>
+        </Flex>
+      );
+    }
+
   return (
     <Flex direction="column" spacing={3} gap={7} pt={4}>
       <Flex mb={2} ml={30}>
