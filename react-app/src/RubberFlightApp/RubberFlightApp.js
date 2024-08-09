@@ -22,7 +22,6 @@ import CouponPage from '../admin/coupon/pages/CouponPage';
 import { CouponProvider } from '../admin/coupon/contexts/CouponContext';
 import LiveFlight from '../general/live/pages/LiveFlight';
 import ScheduleEdit from '../member/schedule/pages/ScheduleEdit';
-import GoogleMapTest from '../general/live/pages/GoogleMapTest';
 import ReviewDetail from '../member/review/pages/ReviewDetail';
 
 function RubberFlightApp() {
@@ -53,7 +52,6 @@ function RubberFlightApp() {
               <Route path="/selectJoin" element={<SelectJoin />} />
               <Route path="/selectJoin" element={<SelectJoin />} />
               <Route path="/live" element={<LiveFlight />} />
-              <Route path="/googleMap" element={<GoogleMapTest />} />
             </Routes>
           </LoginContextProvider>
         </BrowserRouter>

@@ -124,7 +124,7 @@ const LiveFlight = () => {
 
         <div className={styles.searchCon}>
           <Input
-            id={styles.flightIata}
+            className={styles.flightIata}
             type="text"
             placeholder='비행 코드 입력하기'
             _placeholder={{ opacity: 1, color: 'black.500' }}
