@@ -1,5 +1,6 @@
 package com.lec.spring.member.schedule.service;
 
+import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.repository.UserRepository;
 import com.lec.spring.member.schedule.domain.Participation;
 import com.lec.spring.member.schedule.domain.Schedule;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,8 +40,16 @@ public class ScheduleService {
     }
 
     public List<Schedule> findAllByUser(Long user){
-        return participationRepository.findAllByUserId(user)
+        List<Schedule> allSchedules = participationRepository.findAllByUserId(user)
                 .stream().map(part -> part.getSchedule()).collect(Collectors.toList());
+
+        allSchedules.sort(Comparator.comparing(Schedule::getEdit_date).reversed());
+        return allSchedules;
+    }
+
+    public List<User> findAllBySchedule(Long schedule){
+        return participationRepository.findAllByScheduleId(schedule)
+                .stream().map(part -> part.getUser()).collect(Collectors.toList());
     }
 
     public boolean isExist(Long id){
@@ -86,4 +96,8 @@ public class ScheduleService {
         return "ok";
     }
 
+    @Transactional
+    public Schedule detail(Long id) {
+        return scheduleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("id를 확인해주세요"));
+    }
 }

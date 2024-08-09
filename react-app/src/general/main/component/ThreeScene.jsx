@@ -79,11 +79,12 @@ function CameraAnimation({ isLoaded, isSearhMode }) {
 
 function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
   const [isLoaded, setIsLoaded] = useState(false);
+  const loadingRef = useRef(null);
 
   const handleModelLoaded = () => {
     setIsLoaded(true);
     setIsAirplaneLoaded(true);
-    // document.querySelector(`.${style.loadingmessage}`).classList.add(style.loadingEnd);
+    loadingRef.current.classList.add(style.loadingEnd);
   };
 
   return (
@@ -97,7 +98,7 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
       <div className={style.frontcloud} id={style.frontcloud2} />
       <div className={style.frontcloud} id={style.frontcloud3} />
 
-      <div className={style.loadingmessage}></div>
+      <div className={style.loadingmessage} ref={loadingRef}></div>
       
       <Canvas 
         dpr={[1, 2]} 
