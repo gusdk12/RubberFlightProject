@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Button, Divider, Image } from '@chakra-ui/react';
+import { Input, Button } from '@chakra-ui/react';
 import { getLiveInfo } from '../../../apis/liveInfoApis';
 import { getAirportInfo1 } from '../../../apis/airportApis';
 import Header from '../../../general/common/Header/Header';
 import styles from '../CSS/LiveFlight.module.css';
+import * as Swal from '../../../apis/alert.js';
 
 const LiveFlight = () => {
   const [flightIataInput, setFlightIataInput] = useState("");
@@ -11,6 +12,7 @@ const LiveFlight = () => {
   const [depAirportData, setDepAirportData] = useState(null);
   const [arrAirportData, setArrAirportData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
   useEffect(() => {
     document.body.style.backgroundColor = '#dde6f5';
@@ -26,7 +28,7 @@ const LiveFlight = () => {
       const data = response.data[0];
 
       if (!data) {
-        window.alert("해당 IATA 코드에 대한 비행 정보가 없습니다.");
+        Swal.alert("조회 실패", "실시간 비행 정보가 없거나 잘못된 코드입니다.", "error" )
         setFlightIataInput('');
         setLoading(false);
         return;
@@ -68,11 +70,9 @@ const LiveFlight = () => {
         });
       }
 
-      // 데이터가 모두 준비되었을 때 iframe에 메시지 전달
       if (extractedData && arrAirportResponse.data[0] && depAirportResponse.data[0]) {
         const iframe = document.getElementById('map-iframe');
 
-        // Check if iframe and its contentWindow are available
         if (iframe && iframe.contentWindow) {
           iframe.contentWindow.postMessage({
             type: 'UPDATE_COORDINATES',
@@ -87,13 +87,27 @@ const LiveFlight = () => {
           console.error('iframe or contentWindow is not available.');
         }
       } else {
-        window.alert('해당 비행 정보가 없습니다.');
+        Swal.alert("조회실패", "현재 비행 정보가 없는 코드입니다.", "error" )
       }
     } catch (error) {
       console.error("Error fetching flight or airport data:", error);
       window.alert("존재하지 않습니다.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // 상태에 따른 메시지 변환
+  const getStatusMessage = (status) => {
+    switch (status) {
+      case "":
+        return "출발 전";
+      case "en-route":
+        return "비행 중";
+      case "landed":
+        return "도착";
+      default:
+        return "상태 정보 없음";
     }
   };
 
@@ -126,14 +140,14 @@ const LiveFlight = () => {
             <div className={styles.aboutFlight}>
               <span className={styles.pp}>Arrival Airport:</span> {arrAirportData.name}<br />
               <span className={styles.pp}>Departure Airport:</span> {depAirportData.name}<br />
-              <span className={styles.pp}>Status:</span> {flightData.status}<br />
+              <span className={styles.pp}>Status:</span> <span id={styles.ppp}>{getStatusMessage(flightData.status)}</span><br />
               <span className={styles.pp}>Speed:</span> {flightData.horizontal} km/h<br />
             </div>
           )}
 
           <iframe
             id="map-iframe"
-            src="/ApiTest.html"
+            src={`/ApiTest.html?apiKey=${apiKey}`}
             width="100%"
             height="100%"
             title="Google Map"
@@ -154,3 +168,4 @@ const LiveFlight = () => {
 };
 
 export default LiveFlight;
+
