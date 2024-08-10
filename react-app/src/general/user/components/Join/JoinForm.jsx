@@ -4,6 +4,7 @@ import CustomFileInput from '../Join/CustomFileInput';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styles from './JoinForm.module.css'
 
 // 비밀번호 입력 필드 컴포넌트
 const PasswordInput = ({ placeholder, name, value, onChange, onBlur }) => {
@@ -12,23 +13,26 @@ const PasswordInput = ({ placeholder, name, value, onChange, onBlur }) => {
 
     return (
         <InputGroup size='md'>
-            <Input
-                pr='4.5rem'
-                type={show ? 'text' : 'password'}
-                placeholder={placeholder}
-                name={name}
-                value={value}
-                onChange={onChange}
-                onBlur={onBlur}
-                backgroundColor={'white'}
-                fontFamily={show ? 'inherit' : 'system-ui, sans-serif'}
-            />
-            <InputRightElement width='4.5rem'>
-                <Button h='1.75rem' size='sm' onClick={handleClick} bg={'#586D92'} color={'white'}>
-                    {show ? 'Hide' : 'Show'}
-                </Button>
-            </InputRightElement>
-        </InputGroup>
+        <Input
+            pr='4.5rem'
+            type={show ? 'text' : 'password'}
+            placeholder={placeholder}
+            name={name}
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+            backgroundColor={'white'}
+            // Set font-family to a sans-serif font
+            fontFamily='system-ui, sans-serif !important'
+            textAlign={'left'}
+            fontSize={'18px !important'}
+        />
+        <InputRightElement width='4.5rem'>
+            <Button h='1.75rem' size='sm' onClick={handleClick} bg={'#586D92'} color={'white'}>
+                {show ? 'Hide' : 'Show'}
+            </Button>
+        </InputRightElement>
+    </InputGroup>
     );
 };
 
@@ -275,6 +279,7 @@ const JoinForm = ({ join }) => {
                     <FormLabel>Username <Text as="span" color="red">*</Text></FormLabel>
                     <Flex>
                         <Input
+                            className={styles.input}
                             type="text"
                             placeholder="Username"
                             name="username"
@@ -296,28 +301,31 @@ const JoinForm = ({ join }) => {
                     </Flex>
                 </FormControl>
                 <FormControl id="join-password" mb={4}>
-                    <FormLabel>Password <Text as="span" color="red">*</Text></FormLabel>
-                    <PasswordInput
-                        placeholder="Enter password"
-                        name="password"
-                        value={password}
-                        onChange={handlePasswordChange}
-                    />
-                </FormControl>
+    <FormLabel>Password <Text as="span" color="red">*</Text></FormLabel>
+    <PasswordInput
+        className={styles.input}
+        placeholder="Enter password"
+        name="password"
+        value={password}
+        onChange={handlePasswordChange}
+    />
+</FormControl>
 
-                <FormControl id="join-confirm-password" mb={4}>
-                    <FormLabel>Confirm Password <Text as="span" color="red">*</Text></FormLabel>
-                    <PasswordInput
-                        placeholder="Confirm password"
-                        name="confirmPassword"
-                        value={confirmPassword}
-                        onChange={handleConfirmPasswordChange}
-                    />
-                </FormControl>
+<FormControl id="join-confirm-password" mb={4}>
+    <FormLabel>Confirm Password <Text as="span" color="red">*</Text></FormLabel>
+    <PasswordInput
+        className={styles.input}
+        placeholder="Confirm password"
+        name="confirmPassword"
+        value={confirmPassword}
+        onChange={handleConfirmPasswordChange}
+    />
+</FormControl>
 
                 <FormControl id="join-name" mb={4}>
                     <FormLabel>Name <Text as="span" color="red">*</Text></FormLabel>
                     <Input
+                        className={styles.input}
                         type="text"
                         placeholder="Name"
                         name="name"
@@ -332,6 +340,7 @@ const JoinForm = ({ join }) => {
                     <FormLabel>Email <Text as="span" color="red">*</Text></FormLabel>
                     <Box display="flex" alignItems="center">
                         <Input
+                            className={styles.input}
                             type="text"
                             placeholder="Email"
                             name="email"
@@ -344,6 +353,7 @@ const JoinForm = ({ join }) => {
                         />
                         @
                         <Select
+                            className={styles.input}
                             name="emailDomain"
                             value={emailDomain}
                             onChange={handleEmailDomainChange}
@@ -351,13 +361,13 @@ const JoinForm = ({ join }) => {
                             backgroundColor={'white'}
                             id="join-email-domain"
                         >
-                            <option value="naver.com">naver.com</option>
-                            <option value="gmail.com">gmail.com</option>
-                            <option value="hanmail.net">hanmail.net</option>
-                            <option value="nate.com">nate.com</option>
-                            <option value="yahoo.com">yahoo.com</option>
-                            <option value="hotmail.com">hotmail.com</option>
-                            <option value="daum.net">daum.net</option>
+                            <option value="naver.com" className={styles.input}>naver.com</option>
+                            <option value="gmail.com" className={styles.input}>gmail.com</option>
+                            <option value="hanmail.net" className={styles.input}>hanmail.net</option>
+                            <option value="nate.com" className={styles.input}>nate.com</option>
+                            <option value="yahoo.com" className={styles.input}>yahoo.com</option>
+                            <option value="hotmail.com" className={styles.input}>hotmail.com</option>
+                            <option value="daum.net" className={styles.input}>daum.net</option>
                         </Select>
                     </Box>
                 </FormControl>
@@ -366,6 +376,7 @@ const JoinForm = ({ join }) => {
                     <FormLabel>Phone <Text as="span" color="red">*</Text></FormLabel>
                     <Flex>
                         <Input
+                            className={styles.input}
                             type="text"
                             placeholder=""
                             name="tel1"
@@ -377,6 +388,7 @@ const JoinForm = ({ join }) => {
                         />
                         -
                         <Input
+                            className={styles.input}
                             type="text"
                             placeholder=""
                             name="tel2"
@@ -389,6 +401,7 @@ const JoinForm = ({ join }) => {
                         />
                         -
                         <Input
+                            className={styles.input}
                             type="text"
                             placeholder=""
                             name="tel3"
