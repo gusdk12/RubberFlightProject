@@ -51,11 +51,14 @@ public class NoteController {
     @SendTo("/topic/users/{id}")
     public Set<String> joinUser(@RequestBody JoinRequestDTO request) {
         Long scheduleId = request.getScheduleId();
-        Long userId = request.getUserId();
+        Long userId = jwtUtil.getId(request.getUserToken());
         User enteredUser = userService.findById(userId);
+        String imageUrl = enteredUser.getImage();
+        if(imageUrl.equals("/uploads/user.png"))
+            imageUrl = "http://localhost:8282/uploads/user.png";
 
         System.out.println(enteredUser.getUsername() + "님이 입장하셨습니다.");
-        activeUsersMap.computeIfAbsent(scheduleId, k -> new ConcurrentSkipListSet<>()).add(enteredUser.getImage());
+        activeUsersMap.computeIfAbsent(scheduleId, k -> new ConcurrentSkipListSet<>()).add(imageUrl);
         Set<String> usersPics = activeUsersMap.get(scheduleId);
 
         return usersPics;
@@ -67,17 +70,33 @@ public class NoteController {
     @SendTo("/topic/users/{id}")
     public Set<String> leaveUser(@RequestBody JoinRequestDTO request) {
         Long scheduleId = request.getScheduleId();
-        Long userId = request.getUserId();
+        Long userId = jwtUtil.getId(request.getUserToken());
         User enteredUser = userService.findById(userId);
+        String imageUrl = enteredUser.getImage();
+        if(imageUrl.equals("/uploads/user.png"))
+            imageUrl = "http://localhost:8282/uploads/user.png";
 
         System.out.println(enteredUser.getUsername() + "님이 나가셨습니다.");
         Set<String> usersPics = activeUsersMap.get(scheduleId);
         if (usersPics != null) {
-            usersPics.remove(enteredUser.getImage());
+            usersPics.remove(imageUrl);
             if (usersPics.isEmpty()) {
                 activeUsersMap.remove(scheduleId);
             }
         }
+        return usersPics;
+    }
+
+    @CrossOrigin
+    @GetMapping("/users/{id}")
+    public Set<String> getUsers(@PathVariable Long id) {
+        Set<String> usersPics = activeUsersMap.get(id);
+        if(usersPics.isEmpty()){
+            Set<String> empty = new HashSet<>();
+            empty.add("empty");
+            return empty;
+        }
+
         return usersPics;
     }
 }

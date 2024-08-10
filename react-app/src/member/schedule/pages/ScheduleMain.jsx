@@ -51,8 +51,9 @@ const ScheduleMain = () => {
 
         axios({
             method: "post",
-            url: "http://localhost:8282/schedule/" + userInfo.id,
+            url: "http://localhost:8282/schedule",
             headers: {
+                Authorization: `Bearer ${token}`,
                 "Content-Type": 'application/json',
             },
             data: JSON.stringify(newSchedule), 

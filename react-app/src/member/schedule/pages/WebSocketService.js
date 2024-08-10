@@ -28,7 +28,7 @@ class WebSocketService {
                     // });
 
                     this._subscribe(`/topic/title/${id}`, callback);
-                    this._subscribe(`/topic/users/${id}`, callback);
+                    // this._subscribe(`/topic/users/${id}`, callback);
                     resolve();
                 }, (error) => {
                     console.error('Error connecting to WebSocket:', error);
@@ -70,10 +70,10 @@ class WebSocketService {
         });
     }
 
-    joinPage(id, userId) {
+    joinPage(id, userToken) {
         return this.ensureConnected(id).then(() => {
             if (this.stompClient && this.stompClient.connected) {
-                const payload = { scheduleId: id, userId: userId };
+                const payload = { scheduleId: id, userToken: userToken };
                 this.stompClient.send(`/app/join/${id}`, {}, JSON.stringify(payload));
             }
         }).catch((error) => {
@@ -81,10 +81,10 @@ class WebSocketService {
         });
     }
 
-    leavePage(id, userId) {
+    leavePage(id, userToken) {
         return this.ensureConnected(id).then(() => {
             if (this.stompClient && this.stompClient.connected) {
-                const payload = { scheduleId: id, userId: userId };
+                const payload = { scheduleId: id, userToken: userToken };
                 this.stompClient.send(`/app/leave/${id}`, {}, JSON.stringify(payload));
             }
         }).catch((error) => {
@@ -92,15 +92,15 @@ class WebSocketService {
         });
     }
 
-    // subscribeToUsers(id, callback) {
-    //     return this.ensureConnected(id).then(() => {
-    //         this.stompClient.subscribe(`/topic/users/${id}`, (message) => {
-    //             if (message.body) {
-    //                 callback(JSON.parse(message.body));
-    //             }
-    //         });
-    //     });
-    // }
+    subscribeToUsers(id, callback) {
+        return this.ensureConnected(id).then(() => {
+            this.stompClient.subscribe(`/topic/users/${id}`, (message) => {
+                if (message.body) {
+                    callback(JSON.parse(message.body));
+                }
+            });
+        });
+    }
 }
 
 const webSocketService = new WebSocketService();

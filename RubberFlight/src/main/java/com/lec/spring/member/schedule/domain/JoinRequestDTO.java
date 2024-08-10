@@ -2,20 +2,14 @@ package com.lec.spring.member.schedule.domain;
 
 public class JoinRequestDTO {
     private Long scheduleId;
-    private Long userId;
-
-    // Getters and Setters
-    public Long getUserId() {
-        return userId;
-    }
+    private String userToken;
     public Long getScheduleId() {
         return scheduleId;
     }
+    public String getUserToken() {return userToken;}
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
     public void setScheduleId(Long scheduleId) {
         this.scheduleId = scheduleId;
     }
+    public void setUserToken(String userToken) {this.userToken = userToken;}
 }

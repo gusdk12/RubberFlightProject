@@ -83,7 +83,7 @@ body{
 #headerImages{
     position: absolute;
     right: 97px;
-    width: 100px;
+    width: fit-content;
     height: 46px;
     /* background-color: #5f6b82; */
     display: flex;

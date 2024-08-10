@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import webSocketService from './WebSocketService';
 import style from '../CSS/ScheduleEdit.module.css';
+import Cookies from 'js-cookie';
 import * as Swal from '../../../apis/alert';
 import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
 import { useLocation, useNavigate, useParams, useNavigationType, useHistory  } from 'react-router-dom';
 import { Input } from '@chakra-ui/react';
 import axios from 'axios';
+import OnlineUserItem from '../component/OnlineUserItem';
 
 const ScheduleEdit = () => {
     const { userInfo } = useContext(LoginContext);
@@ -14,6 +16,7 @@ const ScheduleEdit = () => {
     const [shareUsername, setShareUsername] = useState("");
     const [shareTeam, setShareTeam] = useState([]);
     const [activeUsersPic, setActiveUsersPic] = useState([]);
+    const token = Cookies.get('accessToken');
     const titleRef = useRef(null);
     const titleInputRef = useRef(null);
     const titleWarningRef = useRef(null);
@@ -78,26 +81,24 @@ const ScheduleEdit = () => {
         webSocketService.connect((newContent) => {
             if (newContent.title) {
                 setTitle(newContent.title);
-            } else {
-                let pics = [];
-                newContent.forEach(pic => pics.push(pic));
-                setActiveUsersPic(pics);
-            }
+            } 
         }, id);
 
-        userInfo.id && webSocketService.joinPage(id, userInfo.id);
+        webSocketService.joinPage(id, token);
 
-    }, [id, userInfo.id]);
+        webSocketService.subscribeToUsers(id, setActiveUsersPic);
+
+    }, [id]);
 
     useEffect(() => {
         const handleBeforeUnload = (event) => {
-            webSocketService.leavePage(id, userInfo.id);
+            webSocketService.leavePage(id, token);
         };
     
         window.addEventListener('beforeunload', handleBeforeUnload);
         
         window.addEventListener('popstate', function(event) {
-            webSocketService.leavePage(id, userInfo.id);
+            webSocketService.leavePage(id, token);
         });
 
         return () => {
@@ -148,13 +149,10 @@ const ScheduleEdit = () => {
             showNotice("존재하지 않는 유저입니다", false);
         }
     }
-    
+
     return (
         <div id={style.contentBody}>
             <div id={style.headerPart}>
-                {/* <div id={style.activeUsers}>
-                    Active Users: {activeUsersPic}
-                </div> */}
                 <div id={style.backButton} onClick={()=>{navigate('/schedule')}}/>
                 <div ref={titleRef} id={style.headerTitle} onClick={(e) => {
                         titleRef.current.classList.add(`${style.hidden}`);
@@ -165,7 +163,8 @@ const ScheduleEdit = () => {
                     value={title || ""} onBlur={handleInput} onKeyDown={(e) => {e.key === 'Enter' && handleInput()}} />
                 <div ref={titleWarningRef} id={style.titleWarning} className={style.hidden}>30자 이내로 작성해주세요.</div>
                 <div id={style.headerImages}>
-                    {activeUsersPic.map(pic => <div className={style.onlinePics}
+                    {activeUsersPic.map((pic, index) => 
+                    <div className={style.onlinePics} key={index}
                         style={{
                             backgroundImage: `url(${pic})`,
                         }}>
