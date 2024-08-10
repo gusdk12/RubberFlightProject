@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Box, Button, ButtonGroup, CheckboxIcon, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, Heading, IconButton, Image, Menu, MenuButton, MenuItem, MenuList, Spacer, VStack, background, useDisclosure } from '@chakra-ui/react';
 import { LoginContext } from '../../user/contexts/LoginContextProvider';
-import '../CSS/Header.css';
+import style from '../CSS/Header.module.css';
 import { CloseIcon, HamburgerIcon, StarIcon, ViewIcon } from '@chakra-ui/icons';
 
 
@@ -57,7 +57,7 @@ const Header = ({isMain}) => {
 
   return (
     <>
-      <div className={`HeaderContainer ${isMain ? 'HeaderAbsolute' : '' } ${isScrolled ? 'scrolled' : ''}`}>
+      <div className={`${style.HeaderContainer} ${isMain ? style.HeaderAbsolute : '' }`}>
       <Flex minWidth='max-content' alignItems='space-between'>
         <div
           style={{
