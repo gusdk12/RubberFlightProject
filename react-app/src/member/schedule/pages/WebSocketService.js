@@ -16,11 +16,19 @@ class WebSocketService {
                 this.stompClient = Stomp.over(socket);
                 this.stompClient.connect({}, () => {
                     this.connected = true;
-                    this.stompClient.subscribe(`/topic/title/${id}`, (message) => {
-                        if (message.body) {
-                            callback(JSON.parse(message.body)); // Parse the received message
-                        }
-                    });
+                    // this.stompClient.subscribe(`/topic/title/${id}`, (message) => {
+                    //     if (message.body) {
+                    //         callback(JSON.parse(message.body)); // Parse the received message
+                    //     }
+                    // });
+                    // this.stompClient.subscribe(`/topic/users/${id}`, (message) => {
+                    //     if (message.body) {
+                    //         callback(JSON.parse(message.body));
+                    //     }
+                    // });
+
+                    this._subscribe(`/topic/title/${id}`, callback);
+                    this._subscribe(`/topic/users/${id}`, callback);
                     resolve();
                 }, (error) => {
                     console.error('Error connecting to WebSocket:', error);
@@ -29,6 +37,16 @@ class WebSocketService {
             });
         }
         return this.connectPromise;
+    }
+
+    _subscribe(destination, callback) {
+        if (this.stompClient) {
+            this.stompClient.subscribe(destination, (message) => {
+                if (message.body) {
+                    callback(JSON.parse(message.body));
+                }
+            });
+        }
     }
 
     ensureConnected(id) {
@@ -51,6 +69,38 @@ class WebSocketService {
             console.error('Failed to send content:', error);
         });
     }
+
+    joinPage(id, userId) {
+        return this.ensureConnected(id).then(() => {
+            if (this.stompClient && this.stompClient.connected) {
+                const payload = { scheduleId: id, userId: userId };
+                this.stompClient.send(`/app/join/${id}`, {}, JSON.stringify(payload));
+            }
+        }).catch((error) => {
+            console.error('Failed to join page:', error);
+        });
+    }
+
+    leavePage(id, userId) {
+        return this.ensureConnected(id).then(() => {
+            if (this.stompClient && this.stompClient.connected) {
+                const payload = { scheduleId: id, userId: userId };
+                this.stompClient.send(`/app/leave/${id}`, {}, JSON.stringify(payload));
+            }
+        }).catch((error) => {
+            console.error('Failed to leave page:', error);
+        });
+    }
+
+    // subscribeToUsers(id, callback) {
+    //     return this.ensureConnected(id).then(() => {
+    //         this.stompClient.subscribe(`/topic/users/${id}`, (message) => {
+    //             if (message.body) {
+    //                 callback(JSON.parse(message.body));
+    //             }
+    //         });
+    //     });
+    // }
 }
 
 const webSocketService = new WebSocketService();
