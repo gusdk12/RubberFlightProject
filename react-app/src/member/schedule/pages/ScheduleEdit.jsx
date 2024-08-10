@@ -1,21 +1,22 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import webSocketService from './WebSocketService';
 import style from '../CSS/ScheduleEdit.module.css';
+import Cookies from 'js-cookie';
 import * as Swal from '../../../apis/alert';
 import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
-import { Form, useNavigate, useParams } from 'react-router-dom';
-import { FocusLock, IconButton, Input, useDisclosure } from '@chakra-ui/react';
+import { useLocation, useNavigate, useParams, useNavigationType, useHistory  } from 'react-router-dom';
+import { Input } from '@chakra-ui/react';
 import axios from 'axios';
-import { Button, Popover, PopoverTrigger, PopoverContent, PopoverArrow, PopoverCloseButton, PopoverBody, PopoverFooter, Flex } from "@chakra-ui/react";
-import { EditIcon } from '@chakra-ui/icons';
+import OnlineUserItem from '../component/OnlineUserItem';
 
 const ScheduleEdit = () => {
     const { userInfo } = useContext(LoginContext);
     const {id} = useParams();
     const [title, setTitle] = useState([]);
-    const [shareMessage, setShareMessage] = useState([]);
     const [shareUsername, setShareUsername] = useState("");
     const [shareTeam, setShareTeam] = useState([]);
+    const [activeUsersPic, setActiveUsersPic] = useState([]);
+    const token = Cookies.get('accessToken');
     const titleRef = useRef(null);
     const titleInputRef = useRef(null);
     const titleWarningRef = useRef(null);
@@ -78,15 +79,34 @@ const ScheduleEdit = () => {
             .then(data => setTitle(data.title));
 
         webSocketService.connect((newContent) => {
-            setTitle(newContent.title); 
+            if (newContent.title) {
+                setTitle(newContent.title);
+            } 
         }, id);
+
+        webSocketService.joinPage(id, token);
+
+        webSocketService.subscribeToUsers(id, setActiveUsersPic);
+
     }, [id]);
 
     useEffect(() => {
-        webSocketService.connect((newContent) => {
-            setTitle(newContent.content);
-        }, id);
-    }, [id]);
+        const handleBeforeUnload = (event) => {
+            webSocketService.leavePage(id, token);
+        };
+    
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        
+        window.addEventListener('popstate', function(event) {
+            webSocketService.leavePage(id, token);
+        });
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            window.removeEventListener('popstate', handleBeforeUnload);
+        };
+    }, []);
+
 
     const handleContentChange = () => {
         webSocketService.sendContent(id, title);
@@ -142,7 +162,14 @@ const ScheduleEdit = () => {
                 <Input className={style.hidden} ref={titleInputRef} id={style.titleInput} name='title' onChange={changeValue} 
                     value={title || ""} onBlur={handleInput} onKeyDown={(e) => {e.key === 'Enter' && handleInput()}} />
                 <div ref={titleWarningRef} id={style.titleWarning} className={style.hidden}>30자 이내로 작성해주세요.</div>
-                <div id={style.headerImages}></div>
+                <div id={style.headerImages}>
+                    {activeUsersPic.map((pic, index) => 
+                    <div className={style.onlinePics} key={index}
+                        style={{
+                            backgroundImage: `url(${pic})`,
+                        }}>
+                    </div>)}
+                </div>
                 <div id={style.headerShare} onClick={() => {sharePopoverRef.current.classList.remove(`${style.opacityZero}`)}}>공유</div>
                 <div id={style.popoverShare} ref={sharePopoverRef} className={style.opacityZero} >
                     <Input id={style.usernameInput} name='shareusername' placeholder='유저의 아이디를 입력하세요' onChange={changeValue} value={shareUsername}></Input>
