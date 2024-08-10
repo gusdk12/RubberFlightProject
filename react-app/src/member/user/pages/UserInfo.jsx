@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import MenuBar from '../../../general/common/SideMenu/MenuBar';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Divider, Avatar, Text } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import Header from '../../../general/common/Header/Header';
 
@@ -11,38 +11,46 @@ const UserInfo = () => {
     document.body.style.backgroundColor = '#dde6f5d7';
   }, []);
 
-    return (
-      <>
+  return (
+    <>
+      {/* 마이페이지 화면 */}
       <div style={{ 
         width: '1300px', 
         top: '15px', 
         left: '50%', 
         transform: 'translateX(-50%)', 
         position: 'relative', 
-        alignContent: 'center', 
         zIndex: '1000', 
         marginBottom: '20px',
         padding: '20px',
         transition: 'all 0.3s ease'
       }}> 
-        <Header/>
+        <Header />
         <Flex>
           <MenuBar />
+
+          {/* 컨텐츠 박스 */}
           <Box flex="1" p={4} style={{ 
-            backgroundColor: 'white', 
-            borderRadius: '10px', 
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+            backgroundColor: '#fbfdff', 
             padding: '20px',
-            marginLeft: '20px',
-            minHeight: '120vh', 
+            marginLeft: '0px',  
+            minHeight: '120vh',
             height: 'auto',  
           }}>
+            {/* 유저 프로필과 이름 */}
+            <Flex alignItems="center" mb={4} mr={5} justifyContent="flex-end">
+              <Avatar size="sm" backgroundColor="#dde6f5d7"/>
+              <Text fontSize="lg" fontWeight="bold" ml={3}>User Name</Text>
+            </Flex>
+            <Divider mb={4} />
+            
+            {/* 컨텐츠 */}
             <Outlet />
           </Box>
         </Flex>
       </div>
-      </>
-    );
+    </>
+  );
 };
 
 export default UserInfo;

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/coupon")
@@ -40,6 +42,22 @@ public class CouponController {
     }
 
     /* 사용자 */
+    // 사용자 쿠폰 목록 확인
+    @CrossOrigin
+    @GetMapping("/user/coupons")
+    public ResponseEntity<?> getCoupons(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").split(" ")[1];
+        Long userId = jwtUtil.getId(token);
+
+        User user = userService.findById(userId);
+        if (user == null) {
+            return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
+        List<Coupon> coupons = user.getCoupons();
+        return new ResponseEntity<>(coupons, HttpStatus.OK);
+    }
+
     // 사용자 쿠폰 추가
     @CrossOrigin
     @PostMapping("/user/add/{couponCode}")

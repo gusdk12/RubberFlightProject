@@ -22,7 +22,6 @@ import CouponPage from '../admin/coupon/pages/CouponPage';
 import { CouponProvider } from '../admin/coupon/contexts/CouponContext';
 import LiveFlight from '../general/live/pages/LiveFlight';
 import ScheduleEdit from '../member/schedule/pages/ScheduleEdit';
-import GoogleMapTest from '../general/live/pages/GoogleMapTest';
 import ReviewDetail from '../member/review/pages/ReviewDetail';
 
 function RubberFlightApp() {
@@ -37,9 +36,9 @@ function RubberFlightApp() {
               <Route path="/join/user" element={<Join />} />
               <Route path="/join/admin" element={<JoinAdmin />} />
               <Route path="/search" element={<Search />} />
-                <Route path="/reserve/:id" element={<Reserve/>}/>
+                <Route path="/reserve" element={<Reserve/>}/>
               <Route path="/admin/edit" element={<EditCA />} />
-              <Route path="/schedule/:id" element={<ScheduleMain />} />
+              <Route path="/schedule" element={<ScheduleMain />} />
               <Route path="/schedule/edit/:id" element={<ScheduleEdit />} />
               <Route path="/coupon" element={<CouponProvider><CouponPage/></CouponProvider>} />
               <Route path="/mypage" element={<UserInfo />}>
@@ -53,7 +52,6 @@ function RubberFlightApp() {
               <Route path="/selectJoin" element={<SelectJoin />} />
               <Route path="/selectJoin" element={<SelectJoin />} />
               <Route path="/live" element={<LiveFlight />} />
-              <Route path="/googleMap" element={<GoogleMapTest />} />
             </Routes>
           </LoginContextProvider>
         </BrowserRouter>

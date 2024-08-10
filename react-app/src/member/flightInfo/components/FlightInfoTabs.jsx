@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Tabs, Tab, TabList, TabPanels, TabPanel, Text } from '@chakra-ui/react';
 import FlightInfoCard from './FlightInfoCard';
 
-const FlightInfoTabs = ({ pastFlights, upcomingFlights }) => {
+const FlightInfoTabs = ({ pastFlights, upcomingFlights, reviewList }) => {
   const [tabIndex, setTabIndex] = useState(0); 
 
   const handleTabChange = (index) => {
@@ -31,9 +31,9 @@ const FlightInfoTabs = ({ pastFlights, upcomingFlights }) => {
         </TabPanel>
         <TabPanel>
           {pastFlights.length > 0 ? (
-            pastFlights.map((flight, index) => (
-              <FlightInfoCard key={flight.id} flight={flight} index={index} tabKey={tabIndex} isPast={true} />
-            ))
+            pastFlights.map((flight, index) => {
+              const review = reviewList.find((review) => review.id === flight.id)
+              return (<FlightInfoCard key={flight.id} flight={flight} index={index} tabKey={tabIndex} isPast={true} review={review}/>)})
           ) : (
             <Text>지난 예약된 항공편이 없습니다.</Text>
           )}

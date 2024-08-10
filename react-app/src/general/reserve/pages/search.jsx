@@ -7,6 +7,8 @@ import 'flatpickr/dist/flatpickr.min.css';
 import Flatpickr from 'react-flatpickr';
 import { format } from 'date-fns';
 import style from '../css/search.module.css'
+import { IoAirplane } from "react-icons/io5";
+import { useUser } from '../../user/contexts/LoginContextProvider'; 
 
 const Search = () => {
   const [passengers, setPassengers] = useState(1);
@@ -40,23 +42,23 @@ const Search = () => {
   const [isSearchReady, setIsSearchReady] = useState(false);
   const navigate = useNavigate();
 
-  // 시간 계산
-  const convertMinutesToHoursAndMinutes = (minutes) => {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    return `${hours}시간 ${remainingMinutes}분`;
-  };
+  // 로그인 여부
+  const {isLogin, loginCheck} = useUser();
 
-  const handleClick = (flight) => {
-    setSelectedFlight(flight); // 클릭된 항공권 정보를 상태에 저장
-    navigate(`/reserve/${flight.id}`, { 
-      state: {
+  const handleClick  = (flight) =>{
+    if(!isLogin) {
+      window.alert('로그인 후 이용해주세요.');
+      navigate('/login');
+      return;
+    }
+
+    setSelectedFlight(flight);
+    const formattedPassengers = `성인 ${adults}명, 소아 ${children}명, 유아 ${infants}명`;
+    navigate('/reserve', { state: { 
         flight,
-        departure,
-        arrival,
-        passengers
-     } }); // `reserve` 페이지로 이동
-  };
+        passengers: formattedPassengers
+    } });
+}
 
   useEffect(() => {
     document.body.style.overflowY = 'scroll';
@@ -124,7 +126,6 @@ const Search = () => {
   // useEffect(() => {
   //   console.log("Departure Timezone:", depTimezone); // depTimezone 상태 값 확인
   // }, [depTimezone]);
-
 
   const handleFocus = (inputType) => {
     setFocusedInput(inputType);
@@ -238,9 +239,6 @@ const handleDecrement = (type) => {
     }
   }, [isSearchReady, departure, arrival, departureDate]);
 
-
-
-
   // 항공권 검색
   // timezone
   const handleSearch = async () => {
@@ -281,6 +279,11 @@ const handleDecrement = (type) => {
     }
   };
 
+  // 비행기 이름 처리
+  const getFormattedAirlineName = (airlineName) => {
+    const indexOfParenthesis = airlineName.indexOf('(');
+    return indexOfParenthesis !== -1 ? airlineName.substring(0, indexOfParenthesis).trim() : airlineName;
+  };
 
   return (
     <div className={style.searchBar}>
@@ -446,13 +449,53 @@ const handleDecrement = (type) => {
           <ul>
             {results.combinations.map((combination, index) => (
               <li key={index} onClick={() => handleClick(combination)}>
-                <div>항공사: {combination.outbound.airlineName} | 출발 공항: {combination.outbound.depAirport} | 도착 공항: {combination.outbound.arrAirport}
-                  | 출발 날짜: {combination.outbound.depTime} | 도착 날짜: {combination.outbound.arrTime} | 가격: {combination.outbound.price} | 출발 timezone: {combination.outbound.depTimezone} 
-                  | 도착 timezone: {combination.outbound.arrTimezone}| 소요시간: {combination.outbound.takeTime}
-                </div>
-                <div>항공사: {combination.inbound.airlineName} | 출발 공항: {combination.inbound.depAirport} | 도착 공항: {combination.inbound.arrAirport}
-                  | 출발 날짜: {combination.inbound.depTime} | 도착 날짜: {combination.inbound.arrTime} | 가격: {combination.inbound.price} | 출발 timezone: {combination.inbound.depTimezone} |
-                  도착 timezone: {combination.inbound.arrTimezone} | 소요시간: {combination.inbound.takeTime}
+                 <div className={style.flights}>
+                  <div className={style.flightInfo}>
+                    <div className={style.flightAirline}>
+                    {getFormattedAirlineName(combination.outbound.airlineName) === getFormattedAirlineName(combination.inbound.airlineName) 
+                    ? getFormattedAirlineName(combination.outbound.airlineName)
+                    : (
+                      <>
+                        <div>{getFormattedAirlineName(combination.outbound.airlineName)}</div>
+                        <div>{getFormattedAirlineName(combination.inbound.airlineName)}</div>
+                      </>
+                        )}
+                    </div>
+                    <div className={style.flightTimes}>
+                      <div className={style.flightDepTime}>
+                        {combination.outbound.depTime}
+                        <div className={style.depAirport}>{combination.outbound.depAirport}</div>
+                      </div>
+                      <div className={style.flightArrTime}>
+                        {combination.outbound.arrTime}
+                        <div className={style.arrAirport}>{combination.outbound.arrAirport}</div>
+                      </div>
+                    </div>
+                    <div className={style.airplane}>
+                      <div className={style.airplane1}><IoAirplane /></div>
+                      <IoAirplane />
+                    </div>
+                    <div className={style.flightTimes2}>
+                      <div className={style.flightDepTime}>
+                        {combination.inbound.depTime}
+                        <div className={style.depAirport}>{combination.inbound.depAirport}</div>
+                      </div>
+                      <div className={style.flightArrTime}>
+                        {combination.inbound.arrTime}
+                        <div className={style.arrAirport}>{combination.inbound.arrAirport}</div>
+                      </div>
+                    </div>
+                    <div className={style.flightTakeTimes}>
+                      <div className={style.flightTakeTime}>{combination.outbound.takeTimeFormat}</div>
+                      <div className={style.flightTakeTime}>{combination.inbound.takeTimeFormat}</div>
+                      </div>
+                  </div>
+                  <div className={style.flightPrice}>
+                    <div className={style.verticalLine}></div>
+                    <div className={style.totalPrice}>
+                      왕복 {(combination.outbound.price + combination.inbound.price).toLocaleString('ko-KR')}원
+                    </div>
+                  </div>
                 </div>
               </li>
             ))}

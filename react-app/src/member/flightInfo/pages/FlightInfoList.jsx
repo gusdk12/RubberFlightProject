@@ -1,13 +1,31 @@
+import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, Flex, Heading, Spinner, Image } from '@chakra-ui/react';
 import FlightInfoTabs from '../components/FlightInfoTabs';
 import img2 from '../../../assets/images/flightInfo/img2.webp';
 import '../common/CSS/FlightInfoListStyle.css';
+import { useUser } from '../../../general/user/contexts/LoginContextProvider';
 
 const FlightInfoList = () => {
   const [flightInfoList, setFlightInfoList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [reviewList, setReviewList] =useState([]);
+  const {userInfo} = useUser();
+
+  // 유저 리뷰 데이터 불러오기
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8282/review/reviewlist/${userInfo.id}`
+      );
+      setReviewList(response.data); // 리뷰 목록 리스트
+    } catch (error) {
+      console.error("리뷰를 가져오는 데 오류가 발생했습니다:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     document.body.style.overflowY = 'scroll';
@@ -15,8 +33,19 @@ const FlightInfoList = () => {
 
   useEffect(() => {
     const fetchFlightInfo = async () => {
+      const token = Cookies.get('accessToken'); 
+      if (!token) {
+        console.error("토큰을 찾을 수 없습니다.");
+        setLoading(false);
+        return;
+      }
+
       try {
-        const response = await axios.get('http://localhost:8282/flightInfo/list');
+        const response = await axios.get('http://localhost:8282/flightInfo/list', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setFlightInfoList(response.data);
       } catch (error) {
         console.error("Error fetching flight info:", error);
@@ -24,9 +53,11 @@ const FlightInfoList = () => {
         setLoading(false);
       }
     };
-
-    fetchFlightInfo();
-  }, []);
+    if (userInfo && userInfo.id){
+      fetchFlightInfo();
+      fetchReviews();
+    }
+  }, [userInfo]);  
 
   if (loading) {
     return (
@@ -47,7 +78,7 @@ const FlightInfoList = () => {
         <Image src={img2} width="30px" />
         <Heading as="h1" size="lg" ml={3}>나의 항공편</Heading>
       </Flex>
-      <FlightInfoTabs pastFlights={pastFlights} upcomingFlights={upcomingFlights} />
+      <FlightInfoTabs pastFlights={pastFlights} upcomingFlights={upcomingFlights} reviewList={reviewList}/>
     </Box>
   );
 };

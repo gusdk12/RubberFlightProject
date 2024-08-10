@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import RubberFlightApp from './RubberFlightApp/RubberFlightApp';
 import reportWebVitals from './reportWebVitals';
-import TestApp from './test/TestApp';
-
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

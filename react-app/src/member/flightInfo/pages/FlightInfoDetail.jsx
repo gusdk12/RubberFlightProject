@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { FlightInfoContext } from '../contexts/FlightInfoContext'; 
 import { useParams, useNavigate } from 'react-router-dom'; 
-import { Box, Flex, Heading, Button, Image, Text, Link } from '@chakra-ui/react'; 
+import { Box, Flex, Heading, Button, Image, Text, Link, Spinner } from '@chakra-ui/react'; 
 import img2 from '../../../assets/images/flightInfo/img2.webp';
 import FlightInfoItem from '../components/FlightInfoItem';
 import FlightDetails from '../components/FlightDetails';
@@ -66,7 +66,10 @@ const FlightInfoDetail = () => {
           <Button mb={4} onClick={() => navigate(-1)}>뒤로가기</Button>
           
           {flightInfo ? renderFlightDetails() : (
-            <Text>항공편 정보를 불러오는 중입니다...</Text>
+            <Flex direction="column" justify="center" align="center" height="75vh" width="85vh">
+              <Spinner size="lg" mb={5} />
+              <Text fontSize="lg">항공편 정보를 불러오는 중입니다...</Text>
+            </Flex>
           )}
         </Flex>
       </Box>

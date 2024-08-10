@@ -5,12 +5,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.lec.spring.admin.airport.service.AirportService;
 import com.lec.spring.general.reserve.domain.Flight;
+import com.lec.spring.general.reserve.domain.ReservationRequest;
+import com.lec.spring.general.reserve.domain.Reserve;
 import com.lec.spring.general.reserve.service.ReserveService;
+import com.lec.spring.general.user.domain.User;
+import com.lec.spring.general.user.jwt.JWTUtil;
+import com.lec.spring.general.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +26,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,14 +42,14 @@ public class ReserveController {
     @Autowired
     private AirportService airportService;
 
+    private final JWTUtil jwtUtil;
+
     // 검색 페이지(api)
     @GetMapping("/search")
     public ResponseEntity<?> searchFlights(@RequestParam String iataCode,
                                            @RequestParam String depDate,
                                            @RequestParam String arrIataCode,
                                            @RequestParam(required = false) String arrDate
-//                                           @RequestParam String depTimezone,
-//                                           @RequestParam String arrTimezone
                                           ) {
 
         String type = "departure";
@@ -53,11 +61,13 @@ public class ReserveController {
         System.out.println(arrTimezone) ;
         System.out.println("arrDate: " + arrDate); // 로깅 추가
 
+        String depAirportName = airportService.findByIso(iataCode).getAirportName();
+        String arrAirportName = airportService.findByIso(arrIataCode).getAirportName();
 
-        List<Flight> outboundFlights = fetchFlights(iataCode, arrIataCode, depDate, type, depTimezone, arrTimezone);
+        List<Flight> outboundFlights = fetchFlights(iataCode, arrIataCode, depDate, type, depTimezone, arrTimezone, depAirportName, arrAirportName);
 
         List<Flight> inboundFlights = (arrDate != null && !arrDate.isEmpty())
-                ? fetchFlights(arrIataCode, iataCode, arrDate, type, arrTimezone, depTimezone)
+                ? fetchFlights(arrIataCode, iataCode, arrDate, type, arrTimezone, depTimezone, arrAirportName, depAirportName)
                 : Collections.emptyList();
 
         if (!outboundFlights.isEmpty() && !inboundFlights.isEmpty()) {
@@ -75,7 +85,7 @@ public class ReserveController {
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
 
-    private List<Flight> fetchFlights(String depIata, String arrIata, String date, String type, String depTimezone, String arrTimezone) {   // TIMEZONE
+    private List<Flight> fetchFlights(String depIata, String arrIata, String date, String type, String depTimezone, String arrTimezone, String depAirportName, String arrAirportName) {   // TIMEZONE
         URI uri = UriComponentsBuilder
                 .fromUriString("https://aviation-edge.com/v2/public/flightsFuture")
                 .queryParam("key", aviation_key)
@@ -90,10 +100,10 @@ public class ReserveController {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
 
-        return parseFlightInfo(response.getBody(), depIata, arrIata, date, depTimezone, arrTimezone);
+        return parseFlightInfo(response.getBody(), depIata, arrIata, date, depTimezone, arrTimezone, depAirportName, arrAirportName);
     }
 
-    private List<Flight> parseFlightInfo(String response, String depIata, String arrIata, String date, String depTimezone, String arrTimezone) {
+    private List<Flight> parseFlightInfo(String response, String depIata, String arrIata, String date, String depTimezone, String arrTimezone, String depAirportName, String arrAirportName) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<Flight> flights = new ArrayList<>();
 
@@ -103,7 +113,7 @@ public class ReserveController {
                 for (JsonNode jsonNode : root) {
                     double distance = reserveService.calculateDistance(depIata, arrIata);
                     int price = reserveService.calculateRandomPrice(distance);
-                    Flight flight = new Flight(jsonNode, depIata, arrIata, date, price, depTimezone, arrTimezone);
+                    Flight flight = new Flight(jsonNode, depIata, arrIata, date, price, depTimezone, arrTimezone, depAirportName, arrAirportName);
 
                     if(!flight.getAirlineName().equals("") && !flight.getAirlineName().trim().isEmpty()) {
                         flights.add(flight);
@@ -140,12 +150,21 @@ public class ReserveController {
         return combinations;
     }
 
+    // db 정보 저장하기
+    @CrossOrigin
+    @PostMapping("/reservation")
+    public ResponseEntity<Reserve> saveReserve(@RequestBody ReservationRequest reserveRequest,
+                                               HttpServletRequest request
+                                                ) {
+        String token = request.getHeader("Authorization").split(" ")[1];
+        Long userId = jwtUtil.getId(token);
+        System.out.println("유저 아이디" + userId);
+        Reserve reserve = reserveService.saveReservation(userId, reserveRequest.getPersonnel(), reserveRequest.isRoundTrip(), reserveRequest.getOutboundFlight(), reserveRequest.getInboundFlight());
+        System.out.println("예약정보" + reserve);
+        return ResponseEntity.ok(reserve);
+    }
 
-    // 디테일 페이지
-//    @GetMapping("/reserve/{id}")
-//    public ResponseEntity<?> reserve(@PathVariable String id) {
-//        Flight flight = reserveService.
-//    }
+
 
 }
 

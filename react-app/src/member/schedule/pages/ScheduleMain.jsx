@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 import * as Swal from '../../../apis/alert.js';
 import Header from '../../../general/common/Header/Header';
 import style from '../CSS/ScheduleMain.module.css';
@@ -9,8 +10,9 @@ import axios from 'axios';
 
 const ScheduleMain = () => {
     const { userInfo } = useContext(LoginContext);
-    const {id} = useParams();
     const [schedules, setSchedules] = useState([]);
+    const token = Cookies.get('accessToken');
+
     useEffect(() => {
         document.body.style.backgroundColor = '#FFFFFF';
         document.body.style.overflowY = 'scroll';
@@ -21,15 +23,18 @@ const ScheduleMain = () => {
     }, []);
 
     const navigate = useNavigate();
-    useEffect(()=>{
-        userInfo.id && id && userInfo.id != id && 
-            Swal.alert("권한이 없습니다.", "메인 화면으로 이동합니다.", "error", () => { navigate("/") });
-    }, [userInfo.id]);
+    // useEffect(()=>{
+    //     userInfo.id && id && userInfo.id != id && 
+    //         Swal.alert("권한이 없습니다.", "메인 화면으로 이동합니다.", "error", () => { navigate("/") });
+    // }, [userInfo.id]);
 
     const readAllSchedule = () => {
         axios({
             method: "get",
-            url: "http://localhost:8282/schedule/" + id,
+            url: "http://localhost:8282/schedule",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         })
         .then(response => {
             const {data, status, statusText} = response;
@@ -46,7 +51,7 @@ const ScheduleMain = () => {
 
         axios({
             method: "post",
-            url: "http://localhost:8282/schedule/" + id,
+            url: "http://localhost:8282/schedule/" + userInfo.id,
             headers: {
                 "Content-Type": 'application/json',
             },

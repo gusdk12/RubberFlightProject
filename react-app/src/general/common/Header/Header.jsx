@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Box, Button, ButtonGroup, CheckboxIcon, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, Heading, IconButton, Image, Menu, MenuButton, MenuItem, MenuList, Spacer, VStack, background, useDisclosure } from '@chakra-ui/react';
 import { LoginContext } from '../../user/contexts/LoginContextProvider';
-import '../CSS/Header.css';
+import style from '../CSS/Header.module.css';
 import { CloseIcon, HamburgerIcon, StarIcon, ViewIcon } from '@chakra-ui/icons';
 
 
@@ -46,18 +46,22 @@ const Header = ({isMain}) => {
 
 
   const schedulePage= () => {
-    navigate(`/schedule/${userInfo.id}`)
+    navigate(`/schedule`)
   }
 
   const liveFlight = () => {
     navigate('/live')
+  }
+
+  const search = () => {
+    navigate('/search');
   }
   
   const backgroundImageUrl = process.env.PUBLIC_URL + '/images/icons/commercial-plane.png';
 
   return (
     <>
-      <div className={`HeaderContainer ${isMain ? 'HeaderAbsolute' : '' } ${isScrolled ? 'scrolled' : ''}`}>
+      <div className={`${style.HeaderContainer} ${isMain ? style.HeaderAbsolute : '' }`}>
       <Flex minWidth='max-content' alignItems='space-between'>
         <div
           style={{
@@ -113,7 +117,7 @@ const Header = ({isMain}) => {
                         )
                         :
                         (<></>)}
-                    <Button variant="outline">항공권 검색</Button>
+                    <Button variant="outline" onClick={search}>항공권 검색</Button>
                     <Button variant="outline" onClick={liveFlight}>비행기 실시간 추척</Button>
                     <Button variant="outline">항공사 리뷰</Button>
                   </VStack>
