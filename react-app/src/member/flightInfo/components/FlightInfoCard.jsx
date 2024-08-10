@@ -98,7 +98,7 @@ const FlightInfoCard = ({ flight, index, tabKey, isPast, review }) => {
             <MotionButton className="review-button" position="absolute" 
             bottom="15px" right="20px" size="lg" display={isHovered ? 'block' : 'none'} 
             onClick={(e) => { e.stopPropagation(); 
-            navigate(`/mypage/review/write`, { state: { flight } }); }}>{/* state 로 항공사 이름, 탑승일 전송 */}
+            navigate(`/mypage/review-write`, { state: { flight } }); }}>{/* state 로 항공사 이름, 탑승일 전송 */}
             리뷰 작성
           </MotionButton>
       ))}

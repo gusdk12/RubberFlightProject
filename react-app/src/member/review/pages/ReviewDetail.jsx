@@ -6,7 +6,7 @@ import { StarRating, TotalStarRating } from "../components/Rating";
 import styles from "../css/ReviewDetail.module.css";
 import axios from "axios";
 import { alert, confirm } from "../../../apis/alert";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const ReviewDetail = () => {
   const { id } = useParams();
@@ -76,9 +76,8 @@ const ReviewDetail = () => {
   }, []);
 
   const flightInfo = flightInfos.find((info) => info.review && info.review.id === review.id);
-
   const UpdateBtn = () => {
-    navigate("/mypage/review/update/" + id);
+    navigate("/mypage/review/update/" + id, { state: { flightInfo } });
   };
 
   // 리뷰 삭제하기

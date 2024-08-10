@@ -1,9 +1,8 @@
-import React, { useContext, useState } from "react";
-import { useUser } from "../../../general/user/contexts/LoginContextProvider";
+import React, { useState } from "react";
 import {Flex, FormLabel, Grid, Heading, Image, Spacer, Text, Textarea} from "@chakra-ui/react";
 import Write from "../../../assets/images/review/reviewwrite.webp";
 import { RateFormUpdate } from "../components/Form";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 import styles from "../css/ReviewWrite.module.css";
 import {alert} from '../../../apis/alert';
@@ -45,13 +44,20 @@ const ReviewWrite = () => {
       content: "",
     };
 
-    if (!review.title.trim()) newError.title = "제목을 작성해주세요";
+    if (!review.title.trim()){ 
+      newError.title = "제목을 작성해주세요";
+    } else if (review.title.trim().length > 30) {
+      newError.title = "제목은 30자 이내로 작성해주세요";
+    }
+
     if (!review.seat_rate) newError.seat_rate = "별점을 입력해주세요";
     if (!review.service_rate) newError.service_rate = "별점을 입력해주세요";
     if (!review.procedure_rate) newError.procedure_rate = "별점을 입력해주세요";
     if (!review.flightmeal_rate) newError.flightmeal_rate = "별점을 입력해주세요";
     if (!review.lounge_rate) newError.lounge_rate = "별점을 입력해주세요";
     if (!review.clean_rate) newError.clean_rate = "별점을 입력해주세요";
+    if (review.content.length > 50) newError.content = "내용은 50자 이내로 입력해주세요";
+
     setError(newError);
     return newError;
   };
@@ -60,18 +66,19 @@ const ReviewWrite = () => {
   const submitReview = (e) => {
     e.preventDefault();
     const validationError = validateForm();
-    if (!validationError.title) {   
+    if (!validationError) {   
       axios({
         method: "post",
-        url: `http://localhost:8282/review/${flight.id}/write`,
+        url: `http://localhost:8282/review/write/` + flight.id,
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
         data: JSON.stringify(review),
       }).then((response) => {
         const { data, status, statusText } = response;
-        if (status === 200) {
-          alert("Success", "작성 성공", "success");
+        if (status === 201) {
+          alert("Success", "작성 성공", "success",
+            () => navigate(`/mypage/review/${data.id}`));
         } else {
           alert("Error", "작성 실패", "error");
         }
@@ -82,6 +89,7 @@ const ReviewWrite = () => {
   const prev = () => {
     navigate(-1);
   };
+
   return (
     <>
       <Flex className="subject" mt={10} mb={10}>
@@ -171,6 +179,7 @@ const ReviewWrite = () => {
           value={review.content}
           onChange={(e) => changeValue(e.target.name, e.target.value)}
         />
+        {error && <div className={styles.errorMessage}>{error.content}</div>}
         <div className={styles.reviewBtn}>
           <button
             type="button"

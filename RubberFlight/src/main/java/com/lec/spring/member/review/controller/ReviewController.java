@@ -55,9 +55,9 @@ public class ReviewController {
 
     // 리뷰 작성
     @CrossOrigin
-    @PostMapping("/{flightInfo}/write")
-    public ResponseEntity<?> write(@PathVariable Long flightInfoId, @RequestBody Review review){
-        return new ResponseEntity<>(reviewService.write(flightInfoId, review), HttpStatus.CREATED);
+    @PostMapping("/write/{flightInfo}")
+    public ResponseEntity<?> write(@PathVariable Long flightInfo, @RequestBody Review review){
+        return new ResponseEntity<>(reviewService.write(flightInfo, review), HttpStatus.CREATED);
     }
 
     // 리뷰 내용 조회
