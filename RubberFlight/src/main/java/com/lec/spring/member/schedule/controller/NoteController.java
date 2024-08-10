@@ -57,7 +57,6 @@ public class NoteController {
         if(imageUrl.equals("/uploads/user.png"))
             imageUrl = "http://localhost:8282/uploads/user.png";
 
-        System.out.println(enteredUser.getUsername() + "님이 입장하셨습니다.");
         activeUsersMap.computeIfAbsent(scheduleId, k -> new ConcurrentSkipListSet<>()).add(imageUrl);
         Set<String> usersPics = activeUsersMap.get(scheduleId);
 
@@ -76,7 +75,6 @@ public class NoteController {
         if(imageUrl.equals("/uploads/user.png"))
             imageUrl = "http://localhost:8282/uploads/user.png";
 
-        System.out.println(enteredUser.getUsername() + "님이 나가셨습니다.");
         Set<String> usersPics = activeUsersMap.get(scheduleId);
         if (usersPics != null) {
             usersPics.remove(imageUrl);

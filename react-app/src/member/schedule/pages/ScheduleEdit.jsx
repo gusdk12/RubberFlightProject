@@ -4,10 +4,9 @@ import style from '../CSS/ScheduleEdit.module.css';
 import Cookies from 'js-cookie';
 import * as Swal from '../../../apis/alert';
 import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
-import { useLocation, useNavigate, useParams, useNavigationType, useHistory  } from 'react-router-dom';
+import { useNavigate, useParams  } from 'react-router-dom';
 import { Input } from '@chakra-ui/react';
 import axios from 'axios';
-import OnlineUserItem from '../component/OnlineUserItem';
 
 const ScheduleEdit = () => {
     const { userInfo } = useContext(LoginContext);
