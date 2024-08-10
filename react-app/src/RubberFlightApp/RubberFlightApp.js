@@ -23,6 +23,7 @@ import { CouponProvider } from '../admin/coupon/contexts/CouponContext';
 import LiveFlight from '../general/live/pages/LiveFlight';
 import ScheduleEdit from '../member/schedule/pages/ScheduleEdit';
 import ReviewDetail from '../member/review/pages/ReviewDetail';
+import UserProfile from '../general/user/pages/UserProfile';
 
 function RubberFlightApp() {
   return (
@@ -52,6 +53,7 @@ function RubberFlightApp() {
               <Route path="/selectJoin" element={<SelectJoin />} />
               <Route path="/selectJoin" element={<SelectJoin />} />
               <Route path="/live" element={<LiveFlight />} />
+              <Route path="/userProfile" element={<UserProfile/>}/>
             </Routes>
           </LoginContextProvider>
         </BrowserRouter>
