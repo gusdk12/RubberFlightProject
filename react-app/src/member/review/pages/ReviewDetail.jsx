@@ -38,7 +38,7 @@ const ReviewDetail = () => {
         const response = await axios.get('http://localhost:8282/flightInfo/list', {
           headers: {
             Authorization: `Bearer ${token}`,
-          },
+          },  
         });
         setFlightInfos(response.data);
         return response.data; // 리뷰 정보 조회에 활용하기 위해 반환
@@ -61,7 +61,6 @@ const ReviewDetail = () => {
   // 리뷰 조회하기
   useEffect (() => {
     const fetchData = async () => {
-      if (userInfo && userInfo.id) {
         try {
           const flightInfo = await fetchFlightInfo(); // 비행정보 먼저 가져오기
           if (flightInfo) { // 유효성 체크한 후에 리뷰정보 호출
@@ -72,24 +71,15 @@ const ReviewDetail = () => {
         } finally {
           setLoading(false); // 로딩 종료
         }
-      }
     };
     fetchData();
-  }, [userInfo]);
+  }, []);
 
-  const flightInfo = flightInfos.find((info) => info.review.id === review.id);
+  const flightInfo = flightInfos.find((info) => info.review && info.review.id === review.id);
 
   const UpdateBtn = () => {
     navigate("/mypage/review/update/" + id);
   };
-
-  if (loading) {
-    return (
-      <Flex justify="center" align="center" height="100vh">
-        <Spinner size="xl" />
-      </Flex>
-    );
-  }
 
   // 리뷰 삭제하기
   const DeleteBtn = () => {
@@ -119,6 +109,14 @@ const ReviewDetail = () => {
       review.flightmeal_rate +
       review.lounge_rate +
       review.clean_rate) / 6).toFixed(1);
+
+  if (loading) {
+    return (
+      <Flex justify="center" align="center" height="100vh">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
 
   return (
     <>

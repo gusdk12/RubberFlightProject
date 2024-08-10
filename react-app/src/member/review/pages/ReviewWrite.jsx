@@ -1,14 +1,16 @@
 import React, { useContext, useState } from "react";
 import { useUser } from "../../../general/user/contexts/LoginContextProvider";
-import {Flex, FormLabel, Grid, Heading, Image, Text, Textarea} from "@chakra-ui/react";
+import {Flex, FormLabel, Grid, Heading, Image, Spacer, Text, Textarea} from "@chakra-ui/react";
 import Write from "../../../assets/images/review/reviewwrite.webp";
 import { RateFormUpdate } from "../components/Form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import styles from "../css/ReviewWrite.module.css";
+import {alert} from '../../../apis/alert';
 
 const ReviewWrite = () => {
-  const { userInfo } = useUser();
+  const location = useLocation(); // 현재페이지의 위치 정보 가져오는 역할
+  const {flight} = location.state || {}; // location.state : navigate 함수가 전달한 state값 가지고 있음
   const navigate = useNavigate();
   const [review, setReview] = useState({
     title: "",
@@ -58,10 +60,10 @@ const ReviewWrite = () => {
   const submitReview = (e) => {
     e.preventDefault();
     const validationError = validateForm();
-    if (!validationError.title) {
+    if (!validationError.title) {   
       axios({
         method: "post",
-        url: "http://localhost:8282/review/write",
+        url: `http://localhost:8282/review/${flight.id}/write`,
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
@@ -88,27 +90,12 @@ const ReviewWrite = () => {
           리뷰 작성
         </Heading>
       </Flex>
-      <Grid
-        templateColumns="repeat(2, 1fr)"
-        fontSize={18}
-        paddingLeft={10}
-        gap={3}
-        className="flightInfo"
-      >
-        <Text>항공사:</Text>
-        <Text className="userInfo">
-          작성자:&nbsp;&nbsp;&nbsp;{userInfo.name}
-        </Text>
-      </Grid>
-      <Grid
-        templateColumns="repeat(2, 1fr)"
-        fontSize={18}
-        paddingLeft={10}
-        gap={3}
-      >
-        <Text className="flightInfo">탑승일:&nbsp;&nbsp;&nbsp;</Text>
-        <Text className="userInfo">작성일:&nbsp;&nbsp;&nbsp;{review.date}</Text>
-      </Grid>
+      <Flex>
+        <div>항공사: {flight.airlineName}</div>
+        <Spacer/>
+        <div>탑승일: {flight.depSch}</div>
+      </Flex>
+
       <form onSubmit={submitReview}>
         <FormLabel fontSize={25} ml={5} mt={8}>
           [제목]

@@ -1,11 +1,15 @@
 package com.lec.spring.member.review.controller;
 
+import com.lec.spring.general.user.jwt.JWTUtil;
 import com.lec.spring.member.review.domain.Review;
 import com.lec.spring.member.review.service.ReviewService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -13,38 +17,47 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final JWTUtil jwtUtil;
 
     // 리뷰 정보 조회
     @CrossOrigin
-    @GetMapping("/reviewlist/{user}")
-    public ResponseEntity<?> reviewList(@PathVariable Long user) {
-        return new ResponseEntity<>(reviewService.reviewList(user), HttpStatus.OK);
-    }
+    @GetMapping("/reviewlist")
+    public ResponseEntity<?> reviewList(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").split(" ")[1];
+        Long userId = jwtUtil.getId(token);
 
+        return new ResponseEntity<>(reviewService.reviewList(userId), HttpStatus.OK);
+    }
 
     // 해당 유저의 리뷰 목록(최신순)
     @CrossOrigin
-    @GetMapping("/list/{user}")
-    public ResponseEntity<?> userReviewList(@PathVariable Long user,
+    @GetMapping("/list")
+    public ResponseEntity<?> userReviewList(HttpServletRequest request,
                                             @RequestParam int page,
                                             @RequestParam int size) {
-        return new ResponseEntity<>(reviewService.userReviewList(user, page, size), HttpStatus.OK);
+        String token = request.getHeader("Authorization").split(" ")[1];
+        Long userId = jwtUtil.getId(token);
+
+        return new ResponseEntity<>(reviewService.userReviewList(userId, page, size), HttpStatus.OK);
     }
 
     // 해당 유저의 리뷰 목록(별점순)
     @CrossOrigin
-    @GetMapping("/ratelist/{user}")
-    public ResponseEntity<?> userReviewRateList(@PathVariable Long user,
+    @GetMapping("/ratelist")
+    public ResponseEntity<?> userReviewRateList(HttpServletRequest request,
                                             @RequestParam int page,
                                             @RequestParam int size) {
-        return new ResponseEntity<>(reviewService.userReviewRateList(user, page, size), HttpStatus.OK);
+        String token = request.getHeader("Authorization").split(" ")[1];
+        Long userId = jwtUtil.getId(token);
+
+        return new ResponseEntity<>(reviewService.userReviewRateList(userId, page, size), HttpStatus.OK);
     }
 
     // 리뷰 작성
     @CrossOrigin
-    @PostMapping("/write")
-    public ResponseEntity<?> write(@RequestBody Review review){
-        return new ResponseEntity<>(reviewService.write(review), HttpStatus.CREATED);
+    @PostMapping("/{flightInfo}/write")
+    public ResponseEntity<?> write(@PathVariable Long flightInfoId, @RequestBody Review review){
+        return new ResponseEntity<>(reviewService.write(flightInfoId, review), HttpStatus.CREATED);
     }
 
     // 리뷰 내용 조회

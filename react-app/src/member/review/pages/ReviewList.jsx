@@ -2,14 +2,12 @@ import Cookies from 'js-cookie';
 import React, { useEffect, useState } from "react";
 import { Box, Flex, Heading, Image, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import axios from "axios";
-import { useUser } from "../../../general/user/contexts/LoginContextProvider";
 import Review from "../../../assets/images/review/review.webp";
 import styles from "../css/ReviewList.module.css";
 import "../../../Global/font.css";
 import ReviewItem from "../components/ReviewItem";
 
 const ReviewList = () => {
-  const { userInfo } = useUser();
   const [reviews, setReviews] = useState([]);
   const [sortOrder, setSortOrder] = useState("latest");
   const [currentPage, setCurrentPage] = useState(0); // 초기 페이지 번호 설정
@@ -18,7 +16,7 @@ const ReviewList = () => {
   const [loading, setLoading] = useState(true);
   const [flightInfos, setFlightInfos] = useState([]);
 
-  // 비행정보 불러오기
+  // 해당 유저 비행정보 불러오기
   const fetchFlightInfo = async () => {
     const token = Cookies.get('accessToken');
       if (!token) {
@@ -39,12 +37,23 @@ const ReviewList = () => {
         console.error("Error fetching flight info:", error);
       } 
   };
-
-  // 유저별 리뷰 목록 불러오기(최신순)
-  const fetchReviews = async (page) => {
+ 
+  // 해당 유저 리뷰 목록 불러오기(최신순, 별점순)
+  const fetchReviewList = async (type, page) => {
+    const token = Cookies.get('accessToken');
+    if (!token) {
+      console.error("토큰을 찾을 수 없습니다.");
+      setLoading(false);
+      return;
+    }
+    
     try {
       const response = await axios.get(
-        `http://localhost:8282/review/list/${userInfo.id}?page=${page}&size=${pageSize}`
+        `http://localhost:8282/review/${type}?page=${page}&size=${pageSize}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setReviews(response.data.content); // 리뷰 목록 리스트
       setTotalPages(response.data.totalPages); // 총 페이지
@@ -55,33 +64,22 @@ const ReviewList = () => {
     }
   };
 
-  // 유저별 리뷰 목록 불러오기(별점순)
-  const fetchRateReviews = async (page) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8282/review/ratelist/${userInfo.id}?page=${page}&size=${pageSize}`
-      );
-      setReviews(response.data.content); // 리뷰 목록 리스트
-      setTotalPages(response.data.totalPages); // 총 페이지
-    } catch (error) {
-      console.error("리뷰를 가져오는 데 오류가 발생했습니다:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // 첫화면 로딩
   useEffect(() => {
-    if (userInfo && userInfo.id) {
-      fetchFlightInfo();
-      if (sortOrder === "latest") {
-        fetchReviews(currentPage);
-      } else {
-        fetchRateReviews(currentPage);
+    const fetchData = async () => {
+      const flightInfo = await fetchFlightInfo(); // 비행정보 먼저 가져오기
+      if (flightInfo) { // 유효성 체크한 후에 리뷰정보 호출
+        if (sortOrder === "latest") {
+          await fetchReviewList("list", currentPage);
+        } else {
+          await fetchReviewList("ratelist", currentPage);
+        }
       }
     }
+    fetchData();
     document.body.style.backgroundColor = "#dde6f5";
     document.body.style.overflowY = "scroll";
-  }, [userInfo, currentPage, sortOrder]); //  userInfo가 변경될 때마다 호출
+  }, [currentPage, sortOrder]);
 
   // 버튼 클릭 핸들러
   const handleLatestClick = () => {
@@ -137,16 +135,16 @@ const ReviewList = () => {
       <Box p={4} className={styles.reviewlistContainer}>
         <Flex align="center" className="flight-label-container" mb={4}>
           <Image src={Review} width="30px" />
-          <Heading as="h1" size="lg" ml={3}>
-            나의 리뷰
-          </Heading>
+          <Heading as="h1" size="lg" ml={3}>나의 리뷰</Heading>
         </Flex>
         <Tabs variant="line" className="review-tab-container">
           <TabList>
-            <Tab _selected={{color: "#6d9eeb", borderBottom: "2px solid #6d9eeb", fontWeight: "bold" }} onClick={handleLatestClick}>
+            <Tab _selected={{color: "#6d9eeb", borderBottom: "2px solid #6d9eeb", fontWeight: "bold" }}
+            onClick={handleLatestClick}>
               최신순
             </Tab>
-            <Tab _selected={{color: "#6d9eeb", borderBottom: "2px solid #6d9eeb", fontWeight: "bold" }} onClick={handleRateClick}>
+            <Tab _selected={{color: "#6d9eeb", borderBottom: "2px solid #6d9eeb", fontWeight: "bold" }}
+            onClick={handleRateClick}>
               별점순
             </Tab>
           </TabList>
@@ -154,14 +152,14 @@ const ReviewList = () => {
             <TabPanel>
               {reviews.length > 0 ? (
                 reviews.map((review) => {
-                  const flightInfo = flightInfos.find((info) => info.review.id === review.id);
+                  const flightInfo = flightInfos.find((info) => info.review && info.review.id === review.id);
                   return (<ReviewItem key={review.id} review={review} flightInfo={flightInfo} />);})
               ) : (<p>작성된 리뷰가 없습니다.</p>)}
             </TabPanel>
             <TabPanel>
               {reviews.length > 0 ? (
                 reviews.map((review) => {
-                  const flightInfo = flightInfos.find((info) => info.review.id === review.id);
+                  const flightInfo = flightInfos.find((info) => info.review && info.review.id === review.id);
                   return (<ReviewItem key={review.id} review={review} flightInfo={flightInfo}/>);})
               ) : (
                 <p>작성된 리뷰가 없습니다.</p>
@@ -171,31 +169,15 @@ const ReviewList = () => {
         </Tabs>
         {totalPages > 0 && (
           <Box className={styles.reviewPagebtn}>
-            <button
-              className={`${styles.reviewPagebtn} ${styles.reviewPageBtn} ${styles.reviewPrevbtn}`}
-              onClick={() => handlePageChange(0)}
-            >
-              ◀◀
-            </button>
-            <button
-              className={`${styles.reviewPageBtn} ${styles.reviewPrevbtn} ${styles.reviewArrowLeft}`}
-              onClick={() => handlePageChange(currentPage - 1)}
-            >
-              ◀
-            </button>
+            <button className={`${styles.reviewPagebtn} ${styles.reviewPageBtn} ${styles.reviewPrevbtn}`}
+              onClick={() => handlePageChange(0)}>◀◀</button>
+            <button className={`${styles.reviewPageBtn} ${styles.reviewPrevbtn} ${styles.reviewArrowLeft}`}
+              onClick={() => handlePageChange(currentPage - 1)}>◀</button>
             {pageButtons(totalPages)}
-            <button
-              className={`${styles.reviewPageBtn} ${styles.reviewNextbtn} ${styles.reviewArrowRight}`}
-              onClick={() => handlePageChange(currentPage + 1)}
-            >
-              ▶
-            </button>
-            <button
-              className={`${styles.reviewPageBtn} ${styles.reviewNextbtn}`}
-              onClick={() => handlePageChange(totalPages - 1)}
-            >
-              ▶▶
-            </button>
+            <button className={`${styles.reviewPageBtn} ${styles.reviewNextbtn} ${styles.reviewArrowRight}`}
+              onClick={() => handlePageChange(currentPage + 1)}>▶</button>
+            <button className={`${styles.reviewPageBtn} ${styles.reviewNextbtn}`}
+              onClick={() => handlePageChange(totalPages - 1)}>▶▶</button>
           </Box>
         )}
       </Box>
