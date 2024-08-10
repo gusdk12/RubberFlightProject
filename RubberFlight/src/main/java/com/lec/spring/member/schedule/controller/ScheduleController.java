@@ -1,7 +1,9 @@
 package com.lec.spring.member.schedule.controller;
 
 import com.lec.spring.general.user.config.PrincipalDetails;
+import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.jwt.JWTUtil;
+import com.lec.spring.general.user.service.UserService;
 import com.lec.spring.member.schedule.domain.Schedule;
 import com.lec.spring.member.schedule.service.ScheduleService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ScheduleController {
     private final ScheduleService scheduleService;
+    private final UserService userService;
     private final JWTUtil jwtUtil;
 
     @CrossOrigin // cross-origin 요청을 허용
@@ -31,6 +34,13 @@ public class ScheduleController {
     @GetMapping("/schedule/team/{scheduleId}")
     public ResponseEntity<?> findAllTeamUser(@PathVariable Long scheduleId){
         return new ResponseEntity<>(scheduleService.findAllBySchedule(scheduleId), HttpStatus.OK);
+    }
+
+    @CrossOrigin // cross-origin 요청을 허용
+    @PostMapping("/schedule/team/{scheduleId}/{userName}")
+    public ResponseEntity<?> inviteUserToSchedule(@PathVariable Long scheduleId, @PathVariable String userName){
+        User user = userService.findByUsername(userName);
+        return new ResponseEntity<>(scheduleService.participateUser(user.getId(), scheduleId), HttpStatus.OK);
     }
 
     @CrossOrigin // cross-origin 요청을 허용

@@ -2,15 +2,13 @@ package com.lec.spring.member.schedule.controller;
 
 import com.lec.spring.member.schedule.domain.Schedule;
 import com.lec.spring.member.schedule.service.ScheduleService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -33,6 +31,29 @@ public class NoteController {
     public Schedule getTitle(@PathVariable Long id) {
         Schedule schedule = scheduleService.detail(id);
         return schedule;
+    }
+
+
+    private final Set<UserSession> connectedUsers = new HashSet<>();
+
+    @MessageMapping("/user/join/{id}")
+    @SendTo("/topic/users/{id}")
+    public UserSession join(@PathVariable Long id, @RequestBody UserSession userSession) {
+        connectedUsers.add(userSession);
+        return userSession;
+    }
+
+    @MessageMapping("/user/leave/{id}")
+    @SendTo("/topic/users/{id}")
+    public UserSession leave(@PathVariable Long id, @RequestBody UserSession userSession) {
+        connectedUsers.remove(userSession);
+        return userSession;
+    }
+
+    @Data
+    public static class UserSession {
+        private String username;
+        private Long id;
     }
 
 }
