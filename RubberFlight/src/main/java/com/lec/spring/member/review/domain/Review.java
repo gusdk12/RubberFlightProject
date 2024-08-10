@@ -1,7 +1,8 @@
 package com.lec.spring.member.review.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lec.spring.general.review.domain.Airline;
 import com.lec.spring.member.flightInfo.domain.FlightInfo;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,8 +14,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(callSuper = true)
-//@EqualsAndHashCode(callSuper = true)
 @Entity(name = "ft_review")
 public class Review {
 
@@ -62,9 +61,11 @@ public class Review {
 
     @OneToOne
     @JoinColumn(name = "flightinfo_id")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private FlightInfo flightInfo; // 비행정보
 
-    @Column(name = "airline_id")
-    private Long airline;   // 어느 항공사의 리뷰 (FK)
+    @ManyToOne
+    @JoinColumn(name = "airline_id")
+    private Airline airline;   // 어느 항공사의 리뷰 (FK)
 }

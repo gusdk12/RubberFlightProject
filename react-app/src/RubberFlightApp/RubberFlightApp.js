@@ -46,7 +46,7 @@ function RubberFlightApp() {
                 <Route path="flight-info" element={<FlightInfoList />} />
                 <Route path="flight-info/:flightId" element={<FlightInfoProvider><FlightInfoDetail/></FlightInfoProvider>} />
                 <Route path="review" element={<ReviewList />} />
-                <Route path="review/write" element={<ReviewWrite />} />
+                <Route path="review-write" element={<ReviewWrite />} />
                 <Route path="review/:id" element={<ReviewDetail />} />
                 <Route path="review/update/:id" element={<ReviewUpdate />} />
               </Route>

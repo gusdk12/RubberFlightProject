@@ -10,7 +10,7 @@ const ReviewItem = ({review, flightInfo}) => {
   const navigate = useNavigate();
   const totalRate = ((review.seat_rate + review.service_rate + review.procedure_rate + review.flightmeal_rate + review.lounge_rate + review.clean_rate) / 6).toFixed(1);
   const DetailBtn = () => {
-    navigate('/mypage/review/' + review.id);
+    navigate('/mypage/review/' + review.id); 
    }
  
   return (
