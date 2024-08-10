@@ -5,20 +5,28 @@ import { Box, Flex, Heading, Spinner, Image } from '@chakra-ui/react';
 import FlightInfoTabs from '../components/FlightInfoTabs';
 import img2 from '../../../assets/images/flightInfo/img2.webp';
 import '../common/CSS/FlightInfoListStyle.css';
-import { useUser } from '../../../general/user/contexts/LoginContextProvider';
 
 const FlightInfoList = () => {
   const [flightInfoList, setFlightInfoList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [reviewList, setReviewList] =useState([]);
-  const {userInfo} = useUser();
+  const [reviewList, setReviewList] = useState([]);
 
   // 유저 리뷰 데이터 불러오기
   const fetchReviews = async () => {
+    const token = Cookies.get('accessToken'); 
+    if (!token) {
+      console.error("토큰을 찾을 수 없습니다.");
+      setLoading(false);
+      return;
+    }
+    
     try {
       const response = await axios.get(
-        `http://localhost:8282/review/reviewlist/${userInfo.id}`
-      );
+        `http://localhost:8282/review/reviewlist`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+    });
       setReviewList(response.data); // 리뷰 목록 리스트
     } catch (error) {
       console.error("리뷰를 가져오는 데 오류가 발생했습니다:", error);
@@ -47,17 +55,17 @@ const FlightInfoList = () => {
           },
         });
         setFlightInfoList(response.data);
+        return response.data;
       } catch (error) {
         console.error("Error fetching flight info:", error);
       } finally {
         setLoading(false);
       }
     };
-    if (userInfo && userInfo.id){
-      fetchFlightInfo();
-      fetchReviews();
-    }
-  }, [userInfo]);  
+    
+    fetchFlightInfo();
+    fetchReviews();
+  }, []);  
 
   if (loading) {
     return (
@@ -66,7 +74,7 @@ const FlightInfoList = () => {
       </Flex>
     );
   }
-
+ 
   // 현재 시각을 기준으로 과거와 미래 항공편을 분류
   const now = new Date();
   const pastFlights = flightInfoList.filter(flight => new Date(flight.arrSch) < now);

@@ -32,8 +32,9 @@ const FlightInfoTabs = ({ pastFlights, upcomingFlights, reviewList }) => {
         <TabPanel>
           {pastFlights.length > 0 ? (
             pastFlights.map((flight, index) => {
-              const review = reviewList.find((review) => review.id === flight.id)
-              return (<FlightInfoCard key={flight.id} flight={flight} index={index} tabKey={tabIndex} isPast={true} review={review}/>)})
+              const review = reviewList.find((review) => flight.review && flight.review.id === review.id);
+              console.log(review)
+              return (<FlightInfoCard key={flight.id} flight={flight} index={index} tabKey={tabIndex} isPast={true} review={review} />)})
           ) : (
             <Text>지난 예약된 항공편이 없습니다.</Text>
           )}
