@@ -56,6 +56,10 @@ const Header = ({isMain}) => {
   const search = () => {
     navigate('/search');
   }
+
+  const airlienReview = () => {
+    navigate('/review');
+  }
   
   const backgroundImageUrl = process.env.PUBLIC_URL + '/images/icons/commercial-plane.png';
 
@@ -119,7 +123,7 @@ const Header = ({isMain}) => {
                         (<></>)}
                     <Button variant="outline" onClick={search}>항공권 검색</Button>
                     <Button variant="outline" onClick={liveFlight}>비행기 실시간 추척</Button>
-                    <Button variant="outline">항공사 리뷰</Button>
+                    <Button variant="outline" onClick={airlienReview}>항공사 리뷰</Button>
                   </VStack>
                 </DrawerBody>
       
