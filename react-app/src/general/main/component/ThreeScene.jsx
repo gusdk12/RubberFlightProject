@@ -80,41 +80,55 @@ function CameraAnimation({ isLoaded, isSearhMode }) {
 function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
   const [isLoaded, setIsLoaded] = useState(false);
   const loadingRef = useRef(null);
+  const airplainContainerRef = useRef(null);
 
   const handleModelLoaded = () => {
     setIsLoaded(true);
     setIsAirplaneLoaded(true);
     loadingRef.current.classList.add(style.loadingEnd);
+    // airplainContainerRef.current.style.left = '0vh';
+    // airplainContainerRef.current.style.animation = 'moveAirplain 3s ease-out';
   };
 
   return (
     <>
       <div style={{ position: 'absolute', width: '100vw', height: '100vh', background: 'linear-gradient(to bottom, #B0C9E6, #D5E1EB, #EFF3F6)' }}/>
-      <div className={style.backcloud} id={style.backcloud1} />
-      <div className={style.backcloud} id={style.backcloud2} />
-      <div className={style.backcloud} id={style.backcloud3} />
+      
+      <div id={style.cloudContainer}>
+        <div className={style.backcloud} id={style.backcloud1} />
+        <div className={style.backcloud} id={style.backcloud2} />
+        <div className={style.backcloud} id={style.backcloud3} />
 
-      <div className={style.frontcloud} id={style.frontcloud1} />
-      <div className={style.frontcloud} id={style.frontcloud2} />
-      <div className={style.frontcloud} id={style.frontcloud3} />
+        <div className={style.frontcloud} id={style.frontcloud1} />
+        <div className={style.frontcloud} id={style.frontcloud2} />
+        <div className={style.frontcloud} id={style.frontcloud3} />
+      </div>
 
       <div className={style.loadingmessage} ref={loadingRef}></div>
       
-      <Canvas 
-        dpr={[1, 2]} 
-        gl={{ antialias: true }}
-        camera={{ position: [-150, -20, -250], fov: 45, near: 0.1, far: 1000 }} 
-        style={{ width: '100vw', height: '100vh', background: '#B0C9E600', zIndex: '1' }}
-      >
-        <ambientLight intensity={1.2} color="#c2e6ff"/>
-        <pointLight position={[0, 0, 0]} intensity={0.5}/>
+      <div id={style.airplainContainer} ref={airplainContainerRef}>
+        <Canvas 
+          dpr={[1, 2]} 
+          gl={{ antialias: true }}
+          camera={{ position: [-150, -20, -250], fov: 45, near: 0.1, far: 1000 }} 
+          style={{ 
+            position: 'absoute',
+            width: '100%', 
+            height: '100%', 
+            background: '#B0C9E600', 
+            zIndex: '1',
+          }}
+        >
+          <ambientLight intensity={1.2} color="#c2e6ff"/>
+          <pointLight position={[0, 0, 0]} intensity={0.5}/>
 
-        <EffectComposer/>
+          <EffectComposer/>
 
-        <Airplane onLoaded={handleModelLoaded} isSearhMode={isSearhMode}/>
-        <Environment preset="city" blur={0.8} />
-        <CameraAnimation isLoaded={isLoaded} isSearhMode={isSearhMode} setIsAirplaneLoaded={setIsAirplaneLoaded}/>
-      </Canvas>
+          <Airplane onLoaded={handleModelLoaded} isSearhMode={isSearhMode}/>
+          <Environment preset="city" blur={0.8} />
+          <CameraAnimation isLoaded={isLoaded} isSearhMode={isSearhMode} setIsAirplaneLoaded={setIsAirplaneLoaded}/>
+        </Canvas>
+      </div>
 
     </>
   );
