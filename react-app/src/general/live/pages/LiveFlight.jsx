@@ -4,7 +4,7 @@ import { getLiveInfo } from '../../../apis/liveInfoApis';
 import { getAirportInfo1 } from '../../../apis/airportApis';
 import Header from '../../../general/common/Header/Header';
 import styles from '../CSS/LiveFlight.module.css';
-import * as Swal from '../../../apis/alert.js';
+import '../../../apis/alert.js';
 
 const LiveFlight = () => {
   const [flightIataInput, setFlightIataInput] = useState("");
@@ -28,7 +28,7 @@ const LiveFlight = () => {
       const data = response.data[0];
 
       if (!data) {
-        Swal.alert("조회 실패", "실시간 비행 정보가 없거나 잘못된 코드입니다.", "error" )
+        alert("조회 실패", "실시간 비행 정보가 없거나 잘못된 코드입니다.", "error" )
         setFlightIataInput('');
         setLoading(false);
         return;
@@ -87,11 +87,11 @@ const LiveFlight = () => {
           console.error('iframe or contentWindow is not available.');
         }
       } else {
-        Swal.alert("조회실패", "현재 비행 정보가 없는 코드입니다.", "error" )
+        alert("조회실패", "현재 비행 정보가 없는 코드입니다.", "error" )
       }
     } catch (error) {
       console.error("Error fetching flight or airport data:", error);
-      window.alert("존재하지 않습니다.");
+      alert('Error','존재하지 않습니다','error');
     } finally {
       setLoading(false);
     }
@@ -101,11 +101,13 @@ const LiveFlight = () => {
   const getStatusMessage = (status) => {
     switch (status) {
       case "":
-        return "출발 전";
+        return "비행 중";
       case "en-route":
         return "비행 중";
       case "landed":
         return "도착";
+      case "unknown":
+        return "알수없음";
       default:
         return "상태 정보 없음";
     }

@@ -6,10 +6,12 @@ import { Input, Button } from '@chakra-ui/react';
 import styles from '../CSS/EditCA.module.css';
 import '../../../Global/font.css';
 import Header from '../../../general/common/Header/Header';
+import '../../../apis/alert.js';
 
-import DelAirport from '../../../assets/images/admin/trash.webp'
+import Delete from '../../../assets/images/admin/trash.webp'
 import Airplain from '../../../assets/images/admin/airplane.webp'
 import Airport from '../../../assets/images/admin/airport.webp'
+import { alert } from '../../../apis/alert.js';
 
 const EditCA = () => {
     const [countrys, setCountry] = useState([]);
@@ -84,20 +86,20 @@ const EditCA = () => {
     // 나라 추가
     const addCountry = async () => {
         if (!countryIsoInput) {
-            window.alert("ISO 코드를 입력해주세요.");
+            alert('Warning','ISO 코드를 입력해주세요.','warning');
             return;
         }
 
         const isoCodePattern = /^[A-Za-z]{2}$/;
         if (!isoCodePattern.test(countryIsoInput)) {
-            window.alert("ISO 코드는 두 글자의 영문자입니다.");
+            alert('Info','ISO 코드는 두 글자의 영문자입니다.','info');
             setCountryIsoInput('');
             return;
         }
 
         const existingCountry = countrys.find(country => country.countryIso === countryIsoInput);
         if (existingCountry) {
-            window.alert("해당 ISO 코드는 이미 존재합니다.");
+            alert('Warning',`${countryIsoInput}는 이미 존재합니다.`,'warning');
             setCountryIsoInput('');
             return;
         }
@@ -117,15 +119,15 @@ const EditCA = () => {
             });
 
             if (saveResponse.status === 200) {
-                window.alert('저장 성공');
+                alert('Success',`${countryIsoInput} 저장 성공.`,'success');
                 await fetchCountries();
                 setSelectedCountry(null);
             } else {
-                window.alert('저장 실패');
+                alert('Error',`${countryIsoInput} 저장 실패.`,'error');
             }
 
         } catch (error) {
-            window.alert("존재하지 않는 ISO 코드입니다.");
+            alert('Error','존재하지 않는 ISO 코드입니다.','error');
         } finally {
             setCountryIsoInput('');
         }
@@ -134,7 +136,7 @@ const EditCA = () => {
     // 나라 삭제
     const deleteCountry = async (countryIso) => {
         if (!countryIso) {
-            window.alert("삭제할 나라 ID를 제공해주세요.");
+            alert('Warning','삭제할 나라를 선택 해주세요.','warning');
             return;
         }
 
@@ -144,28 +146,29 @@ const EditCA = () => {
             });
 
             if (response.status === 200) {
-                window.alert(selectedCountry.countryName + '삭제 성공');
+                alert('Delete',`${selectedCountry.countryName} 삭제 성공.`,'warning');
                 await fetchCountries(); 
                 setSelectedCountry(null);
                 setAirport([]); 
             } else {
                 window.alert('삭제 실패');
+                alert('Error',`${selectedCountry.countryName} 삭제 실패.`,'error');
             }
         } catch (error) {
-            window.alert('삭제 중 오류가 발생했습니다.');
+            alert('Error','삭제 중 오류가 발생했습니다.','error');
         }
     };
 
     // 공항 추가
     const addAirport = async () => {
         if (!airportIataInput || !selectedCountry) {
-            window.alert("IATA 코드와 선택한 나라를 입력해주세요.");
+            alert('Warning',"IATA 코드와 선택한 나라를 입력해주세요.",'warning');
             return;
         }
 
         const existingAirport = airports.find(airport => airport.airportIso === airportIataInput);
         if (existingAirport) {
-            window.alert("해당 IATA 코드는 이미 존재합니다.");
+            alert('Warning',`${airportIataInput}는 이미 존재합니다.`,'warning');
             setAirportIataInput('');
             return;
         }
@@ -175,7 +178,7 @@ const EditCA = () => {
             const data = response.data[0];
 
             if (!data) {
-                window.alert("해당 IATA 코드에 대한 공항 정보를 찾을 수 없습니다.");
+                alert('Error',"해당 IATA 코드에 대한 공항 정보를 찾을 수 없습니다.",'error');
                 setAirportIataInput('');
                 return;
             }
@@ -195,15 +198,14 @@ const EditCA = () => {
             });
 
             if (saveResponse.status === 200) {
-                window.alert('저장 성공');
+                alert('Success',`${airportIataInput} 저장 성공.`,'success');
                 await fetchAirportsByCountry(selectedCountry.id);
             } else {
                 window.alert('저장 실패');
             }
 
         } catch (error) {
-            console.error("Error fetching or saving airport data:", error);
-            window.alert("데이터를 가져오거나 저장하는 중 오류가 발생했습니다.");
+            alert('Error',"데이터를 가져오거나 저장하는 중 오류가 발생했습니다.",'error');
         } finally {
             setAirportIataInput(''); 
         }
@@ -212,7 +214,7 @@ const EditCA = () => {
     // 공항 삭제
     const deleteAirport = async (airportIso) => {
         if (!airportIso) {
-            window.alert("삭제할 공항 IATA 코드를 제공해주세요.");
+            alert('Warning','삭제할 공항을 선택 해주세요.','warning');
             return;
         }
 
@@ -222,15 +224,14 @@ const EditCA = () => {
             });
 
             if (response.status === 200) {
-                window.alert(selectedAirport.airportName+'삭제 성공');
+                alert('Delete',`${selectedAirport.airportName} 삭제 성공.`,'warning');
                 await fetchAirportsByCountry(selectedCountry.id); 
                 setAirport(prev => prev.filter(airport => airport.airportIso !== airportIso));
             } else {
-                window.alert('삭제 실패');
+                alert('Error',`${selectedAirport.airportName} 삭제 실패.`,'error');
             }
         } catch (error) {
-            console.error("Error deleting airport:", error);
-            window.alert('삭제 중 오류가 발생했습니다.');
+            alert('Error','삭제 중 오류가 발생했습니다.','error');
         }
     };
 
@@ -266,12 +267,14 @@ const EditCA = () => {
                         ))}
                     </div>
 
-                    <img 
-                        src={DelAirport} 
-                        id={styles.delCountryIcon} 
-                        alt="Delete Country" 
-                        onClick={() => deleteCountry(selectedCountry.countryIso)} 
-                    />
+                    {selectedCountry && (
+                        <img 
+                            src={Delete} 
+                            id={styles.delCountryIcon} 
+                            alt="Delete Country" 
+                            onClick={() => deleteCountry(selectedCountry.countryIso)} 
+                        />
+                    )}
                 </div>
 
                 <div className={styles.airportInfo}>
@@ -316,25 +319,27 @@ const EditCA = () => {
                         <div className={styles.airportDetails}>
                             <div className={styles.airName}>{selectedAirport.airportName}</div>
                             <table className={styles.airportTable}>
-                                <tr>
-                                    <td className={styles.tableHeader}>Airport Iata Code</td>
-                                    <td className={styles.tdd}>{selectedAirport.airportIso}</td>
-                                </tr>
-                                <tr>
-                                    <td className={styles.tableHeader}>Airport Id</td>
-                                    <td className={styles.tdd}>{selectedAirport.airportId}</td>
-                                </tr>
-                                <tr>
-                                    <td className={styles.tableHeader}>Airport Latitude</td>
-                                    <td className={styles.tdd}>{selectedAirport.latitudeAirport}</td>
-                                </tr>
-                                <tr>
-                                    <td className={styles.tableHeader}>Airport Longitude</td>
-                                    <td className={styles.tdd}>{selectedAirport.longitudeAirport}</td>
-                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <td className={styles.tableHeader}>Airport Iata Code</td>
+                                        <td className={styles.tdd}>{selectedAirport.airportIso}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className={styles.tableHeader}>Airport Id</td>
+                                        <td className={styles.tdd}>{selectedAirport.airportId}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className={styles.tableHeader}>Airport Latitude</td>
+                                        <td className={styles.tdd}>{selectedAirport.latitudeAirport}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className={styles.tableHeader}>Airport Longitude</td>
+                                        <td className={styles.tdd}>{selectedAirport.longitudeAirport}</td>
+                                    </tr>
+                                </tbody>
                             </table>
                             <img 
-                                src={DelAirport} 
+                                src={Delete} 
                                 id={styles.delAirportIcon} 
                                 alt="Delete Airport" 
                                 onClick={() => deleteAirport(selectedAirport.airportIso)} 
