@@ -1,0 +1,121 @@
+.selectJoinContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: auto;
+    padding: 10px 40px;
+    margin-top: 5px;
+
+}
+
+.heading {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-family: "KIMM_Light" !important;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 1000px;
+    height: 450px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    background: #fff;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 20px;
+    margin: 15px 0;
+    /* border: 2px solid red; */
+}
+
+.leftbox, .rightbox {
+    width: 80%;
+    height: 260px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    background-color: rgb(240, 240, 240);
+}
+
+.leftbox{
+    /* background-color: rgb(240, 240, 240); */
+}
+
+.rightbox {
+    /* background-color: #f1f1f1; */
+}
+
+.header {
+    font-size: 18px;
+    font-weight: 800;
+    font-family: "KIMM_Light" !important;
+    text-align: center;
+    padding: 10px;
+}
+
+.leftimage{
+    background-image: url(../../../assets/images/join/user.webp);
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    width: 100%;
+    height: 90px;
+    background-position: center;
+    margin-top: 15px;
+    margin-bottom: 40px;
+}
+.rightimage{
+    background-image: url(../../../assets/images/join/admin.webp);
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    width: 80%;
+    height: 90px;
+    background-position: center;
+    margin-top: 15px;
+    margin-bottom: 40px;
+}
+
+.text {
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-family: "KIMM_Light" !important;
+    text-align: center;
+    align-content: end;
+    align-items: end;
+}
+
+.joinButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 80%;
+    font-family: "KIMM_Light" !important;
+}
+
+.joinButtonSelected {
+    background-color: #0056b3;
+    color: white;
+}
+
+.divider {
+    width: 1.5px;
+    background-color: #f1f1f1;
+    height: 100%;
+    margin: 0px -15px;
+}

@@ -85,7 +85,20 @@ body{
     right: 97px;
     width: fit-content;
     height: 46px;
-    background-color: #5f6b82;
+    /* background-color: #5f6b82; */
+    display: flex;
+    justify-content: end;
+    gap: 3px;
+}
+.onlinePics{
+    width: 46px;
+    height: 46px;
+    background-color: #5771ae;
+    border-radius: 30px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: #74acf5 3px solid;
 }
 
 #headerShare{

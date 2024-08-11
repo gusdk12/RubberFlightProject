@@ -43,7 +43,7 @@ public class UserController {
             @RequestParam("tel") String tel,
             @RequestParam("file") MultipartFile file) {
 
-        String filePath = "uploads/user.png";
+        String filePath = "/uploads/user.png";
 
         // 파일 처리 (예: 저장, 검사 등)
         if (!file.isEmpty()) {
@@ -51,7 +51,7 @@ public class UserController {
             String fileName = file.getOriginalFilename();
             try {
                 // 파일 저장 경로를 설정
-                Path path = Paths.get("uploads/" + fileName);
+                Path path = Paths.get("/uploads/" + fileName);
                 Files.write(path, file.getBytes());
                 filePath = path.toString().replace("\\", "/");
             } catch (IOException e) {

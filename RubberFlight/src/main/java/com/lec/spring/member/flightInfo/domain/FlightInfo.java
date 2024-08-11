@@ -55,7 +55,7 @@ public class FlightInfo {
     @Column(nullable = false, name = "airline_name")
     private String airlineName;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "review_id")
     private Review review;
 }

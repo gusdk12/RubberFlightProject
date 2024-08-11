@@ -44,9 +44,12 @@ public class ScheduleController {
     }
 
     @CrossOrigin // cross-origin 요청을 허용
-    @PostMapping("/schedule/{user}")
-    public ResponseEntity<?> save(@PathVariable Long user, @RequestBody Schedule schedule, HttpServletRequest request){
-        return new ResponseEntity<>(scheduleService.save(user, schedule), HttpStatus.CREATED); // 201
+    @PostMapping("/schedule")
+    public ResponseEntity<?> save(@RequestBody Schedule schedule, HttpServletRequest request){
+        String token = request.getHeader("Authorization").split(" ")[1];
+        Long userId = jwtUtil.getId(token);
+
+        return new ResponseEntity<>(scheduleService.save(userId, schedule), HttpStatus.CREATED); // 201
     }
 
     @CrossOrigin
