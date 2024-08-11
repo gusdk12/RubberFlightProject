@@ -45,12 +45,26 @@ const FlightInfoDetail = () => {
         {/* 하단 FlightInfoItem.jsx */}
         <FlightInfoItem info={flightInfo} />
 
-        <Flex justifyContent="flex-end" mt={10} mr={30}>
+        {/* <Flex justifyContent="flex-end" mt={10} mr={30}>
           <Link href={``} color="blue.500" isExternal display="flex" alignItems="center">
             <Text fontWeight="bold" mr={2}>실시간 비행기 위치 보러가기</Text>
             <IoIosArrowDroprightCircle fontSize="20px" />
           </Link>
-        </Flex>
+        </Flex> */}
+
+        {flightInfo?.timetable?.[0]?.flight?.iataNumber && (
+          <Flex justifyContent="flex-end" mt={10} mr={30}>
+            <Link 
+              href={`/live?flight=${flightInfo.timetable[0].flight.iataNumber}`} 
+              color="blue.500"
+              display="flex" 
+              alignItems="center"
+            >
+              <Text fontWeight="bold" mr={2}>실시간 비행기 위치 보러가기</Text>
+              <IoIosArrowDroprightCircle fontSize="20px" />
+            </Link>
+          </Flex>
+        )}
 
         <Box mt={10} p={10} borderWidth="1px" borderColor="gray.300" borderRadius="md">
           <Text fontSize="xl">비행기 탑승 주의사항</Text>

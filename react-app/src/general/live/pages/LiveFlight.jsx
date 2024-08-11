@@ -4,7 +4,7 @@ import { getLiveInfo } from '../../../apis/liveInfoApis';
 import { getAirportInfo1 } from '../../../apis/airportApis';
 import Header from '../../../general/common/Header/Header';
 import styles from '../CSS/LiveFlight.module.css';
-import '../../../apis/alert.js';
+import { alert } from '../../../apis/alert.js';
 
 const LiveFlight = () => {
   const [flightIataInput, setFlightIataInput] = useState("");
@@ -19,6 +19,14 @@ const LiveFlight = () => {
     document.body.style.overflowY = 'scroll';
     document.body.style.overflowX = 'hidden';
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const flightIata = params.get('flight');
+    if (flightIata) {
+      setFlightIataInput(flightIata);
+    }
+  },[]);
 
   const searchFly = async () => {
     setLoading(true);
