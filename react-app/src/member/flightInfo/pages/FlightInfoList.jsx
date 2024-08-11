@@ -4,7 +4,6 @@ import axios from 'axios';
 import { Box, Flex, Heading, Spinner, Image } from '@chakra-ui/react';
 import FlightInfoTabs from '../components/FlightInfoTabs';
 import img2 from '../../../assets/images/flightInfo/img2.webp';
-import '../common/CSS/FlightInfoListStyle.css';
 import { useUser } from '../../../general/user/contexts/LoginContextProvider';
 
 const FlightInfoList = () => {
@@ -74,7 +73,7 @@ const FlightInfoList = () => {
 
   return (
     <Box p={4} backgroundColor="linear-gradient(to left, #ffffff 0%, #ffffff00 3%, #ffffff00 97%,#ffffff 100%)">
-      <Flex align="center" className="flight-label-container" mb={4}>
+      <Flex align="center"  mb={4}>
         <Image src={img2} width="30px" />
         <Heading as="h1" size="lg" ml={3}>나의 항공편</Heading>
       </Flex>
