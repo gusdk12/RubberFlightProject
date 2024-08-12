@@ -132,6 +132,7 @@ const AirLineReviewList = () => {
         </div>
 
         <div className={styles.reviewcontainer}>
+
           {/* 사이드바 */}
           <div className={styles.airlineMenu}>
             <div className={styles.name}>
@@ -144,12 +145,14 @@ const AirLineReviewList = () => {
             <div className={styles.airlineList}>
               {airlineNames && airlineNames.map((airline) =>
                 <div key={airline.id} onClick={() => handleAirlineClick(airline.id)} className={styles.name}>
-                  <p>{airline.name}</p>
-                  <hr className={styles.nameline} />
+                  <p className={styles.airlineName}>{airline.name}</p>
+                  {/* <hr className={styles.nameline} /> */}
                 </div>
               )}
             </div>
           </div>
+
+
           <div className={styles.reviewBody}>
             <Tabs variant="line">
               <TabList>
