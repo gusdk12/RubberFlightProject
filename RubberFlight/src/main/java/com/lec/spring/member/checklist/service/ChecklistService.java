@@ -49,10 +49,20 @@ public class ChecklistService {
         return convertToDTO(checklistRepository.findById(checklist.getId()).orElseThrow());
     }
 
-    public ChecklistItemDTO createChecklistItem(ChecklistItemDTO checklistItemDTO) {
-        Checklist_item checklistItem = convertToEntity(checklistItemDTO);
-        Checklist_item createdItem = checklist_itemRepository.save(checklistItem);
-        return convertToDTO(createdItem);
+    public Checklist_item createChecklistItem(ChecklistItemDTO itemDTO) {
+        // Find the associated Checklist
+        Checklist checklist = checklistRepository.findById(itemDTO.getChecklistId())
+                .orElseThrow(() -> new RuntimeException("Checklist not found"));
+
+        // Convert DTO to Entity
+        Checklist_item item = Checklist_item.builder()
+                .itemName(itemDTO.getItemName())
+                .checked(itemDTO.isChecked())
+                .checklist(checklist) // Set the Checklist entity
+                .build();
+
+        // Save the entity
+        return checklist_itemRepository.save(item);
     }
 
     public List<ChecklistDTO> getChecklistsByUserId(Long userId) {
