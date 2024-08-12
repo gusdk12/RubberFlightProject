@@ -7,6 +7,7 @@ import { LoginContext } from '../../../general/user/contexts/LoginContextProvide
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Stack, Checkbox } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 
 const ScheduleMain = () => {
     const { userInfo } = useContext(LoginContext);
@@ -14,7 +15,8 @@ const ScheduleMain = () => {
     const [checklists, setChecklists] = useState([]);
     const [checklistItems, setChecklistItems] = useState([]);
     const [selectedChecklistId, setSelectedChecklistId] = useState(null);
-
+    const [isAddingItem, setIsAddingItem] = useState(false);
+    
     const token = Cookies.get('accessToken');
     const navigate = useNavigate();
 
@@ -25,137 +27,126 @@ const ScheduleMain = () => {
     
     useEffect(() => {
         if (userInfo.id) {
-            readAllChecklists();
+            readAllChecklistsAndItems();
             readAllSchedule();
         }
     }, [userInfo]);
-
-    useEffect(() => {
-        
-    })
-
-    useEffect(() => {
-        if (selectedChecklistId) {
-            readChecklistItems(selectedChecklistId);
-        }
-    }, [selectedChecklistId]);
 
     const readAllSchedule = async () => {
         try {
             const response = await axios.get("http://localhost:8282/schedule", {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            console.log("Schedule Response Data:", response.data); // 데이터 형식 확인
             if (Array.isArray(response.data)) {
                 setSchedules(response.data);
             } else {
-                console.error("예상과 다른 데이터 형식: ", response.data);
+                console.error("Unexpected data format: ", response.data);
             }
         } catch (error) {
-            console.error("일정 가져오기 오류: ", error);
+            console.error("Error fetching schedules: ", error);
         }
     };
 
-    const readAllChecklists = async () => {
+    const readAllChecklistsAndItems = async () => {
         try {
-            const response = await axios.get(`http://localhost:8282/checklist/user/${userInfo.id}`, {
+            const checklistsResponse = await axios.get(`http://localhost:8282/checklist/user/${userInfo.id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            setChecklists(response.data);
-            if (response.data.length > 0) {
-                setSelectedChecklistId(response.data[0].id);
-                readChecklistItems(response.data[0].id);
-            }
-        } catch (error) {
-            console.error("체크리스트 가져오기 오류: ", error);
-        }
-    };
-    const readChecklistItems = async (checklistId) => {
-        try {
-            const response = await axios.get(`http://localhost:8282/checklist/items/${checklistId}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            if (Array.isArray(response.data)) {
-                // `completed` 대신 `checked`를 사용하여 상태 업데이트
-                const itemsWithChecked = response.data.map(item => ({
+            setChecklists(checklistsResponse.data);
+    
+            // Initialize checklist items
+            setChecklistItems([]);
+    
+            if (checklistsResponse.data.length > 0) {
+                const checklistIds = checklistsResponse.data.map(checklist => checklist.id);
+                const itemsPromises = checklistIds.map(checklistId =>
+                    axios.get(`http://localhost:8282/checklist/items/${checklistId}`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                    })
+                );
+                const itemsResponses = await Promise.all(itemsPromises);
+    
+                const allItems = itemsResponses.flatMap(response => response.data);
+                const itemsWithChecked = allItems.map(item => ({
                     ...item,
-                    checked: item.checked !== undefined ? item.checked : false // 기본값 설정
+                    checked: item.checked !== undefined ? item.checked : false // Default value
                 }));
                 setChecklistItems(itemsWithChecked);
-            } else {
-                console.error("예상과 다른 데이터 형식: ", response.data);
             }
         } catch (error) {
-            console.error("체크리스트 아이템 목록 가져오기 오류: ", error);
+            console.error("Error fetching checklists and items: ", error);
         }
     };
-
-    const handleChecklistSelect = (checklistId) => {
-        setSelectedChecklistId(checklistId);
-        readChecklistItems(checklistId);
+    
+    const handleCheckboxChange = async (itemId, checked, itemName, checklistId) => {
+        const newCheckedStatus = !checked;
+        const updatedItems = checklistItems.map(item => 
+            item.id === itemId ? { ...item, checked: newCheckedStatus } : item
+        );
+        setChecklistItems(updatedItems); // Update UI immediately
+        
+        try {
+            await updateChecklistItem(itemId, itemName, newCheckedStatus, checklistId);
+        } catch (error) {
+            console.error("Error updating checklist item: ", error);
+            // Revert the checkbox change in case of error
+            readAllChecklistsAndItems(); // Re-fetch to ensure state consistency
+        }
     };
 
     const updateChecklistItem = async (itemId, itemName, checked, checklistId) => {
         try {
-            await axios.put(`http://localhost:8282/checklist/items/${itemId}`, {
-                checklistId,
+            const response = await axios.put(`http://localhost:8282/checklist/items/${itemId}`, {
                 itemName,
-                checked
+                checked,
+                checklistId
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": 'application/json'
                 }
             });
-    
-            // 서버 업데이트 후 체크리스트 아이템 목록을 다시 읽어옵니다.
-            await readChecklistItems(checklistId);
+            console.log("Server response:", response.data);
         } catch (error) {
-            console.error("체크리스트 아이템 수정 오류: ", error.response ? error.response.data : error.message);
-        }
-    };
-
-
-    const handleCheckboxChange = async (itemId, checked, itemName) => {
-        try {
-            // 먼저 상태를 비동기적으로 업데이트
-            await updateChecklistItem(itemId, itemName, !checked, selectedChecklistId);
-    
-            // 상태 업데이트
-            const updatedItems = checklistItems.map(item =>
-                item.id === itemId ? { ...item, checked: !checked } : item
-            );
-    
-            setChecklistItems(updatedItems);
-        } catch (error) {
-            console.error("체크리스트 아이템 수정 오류: ", error);
+            console.error("Error updating checklist item:", error.response ? error.response.data : error.message);
         }
     };
     
-    
-
-
     const createNewSchedule = (e) => {
         e.preventDefault();
-
-        let newSchedule = {
-            title: "제목 없는 일정",
-        }
-
-        axios({
-            method: "post",
-            url: "http://localhost:8282/schedule",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": 'application/json',
-            },
-            data: JSON.stringify(newSchedule), 
+        const newSchedule = { title: "제목 없는 일정" };
+        axios.post("http://localhost:8282/schedule", newSchedule, {
+            headers: { Authorization: `Bearer ${token}`, "Content-Type": 'application/json' }
         })
         .then(response => {
-            const {data, status, statusText} = response;
+            const { data } = response;
             navigate(`/schedule/edit/${data.id}`);
         });
-    }
+    };
+
+    const handleAddItem = async (e) => {
+        e.preventDefault();
+        const newItemName = e.target.elements.newItemName.value;
+        if (!newItemName || !selectedChecklistId) return;
+    
+        try {
+            await axios.post(`http://localhost:8282/checklist/items/create`, {
+                checklistId: selectedChecklistId,
+                itemName: newItemName,
+                checked: false
+            }, {
+                headers: { Authorization: `Bearer ${token}`, "Content-Type": 'application/json' }
+            });
+            readAllChecklistsAndItems(); // Refresh checklist items
+        } catch (error) {
+            console.error("Error adding checklist item: ", error);
+        }
+    };
+
+    const handleAddIconClick = (checklistId) => {
+        setSelectedChecklistId(checklistId);
+        setIsAddingItem(true);
+    };
 
     return (
         <>
@@ -179,30 +170,48 @@ const ScheduleMain = () => {
                                     <div 
                                         key={checklist.id}
                                         className={style.checkList}
-                                        onClick={() => handleChecklistSelect(checklist.id)}
                                     >
-                                        <div className={style.checkListTitle}>{checklist.category}</div>
+                                        <div className={style.checkListTitleContainer}>
+                                            <span className={style.checkListTitle}>{checklist.category}</span>
+                                            <AddIcon 
+                                                className={style.addIcon} 
+                                                boxSize={6} 
+                                                onClick={() => handleAddIconClick(checklist.id)}
+                                            />
+                                        </div>
+                                        {isAddingItem && selectedChecklistId === checklist.id && (
+                                            <form onSubmit={handleAddItem} className={style.addItemForm}>
+                                                <input
+                                                    type="text"
+                                                    name="newItemName"
+                                                    placeholder="새 항목 추가"
+                                                    className={style.addItemInput}
+                                                />
+                                                <button type="submit" className={style.addItemButton}>추가</button>
+                                            </form>
+                                        )}
                                         <div className={style.checkListContent}>
-                                        <Stack spacing={3} direction='column'>
-                                            {checklistItems.map(item => (
-                                                item.checklistId === checklist.id && (
-                                                    <Checkbox
-                                                        key={item.id}
-                                                        size='lg'
-                                                        isChecked={item.checked}
-                                                        onChange={() => handleCheckboxChange(item.id, item.checked, item.itemName)}
-                                                        colorScheme='blue'
-                                                        sx={{
-                                                            textDecoration: item.checked ? 'line-through 2px solid #a9a9a9' : 'none',
-                                                            transition: 'textDecoration 0.3s ease',
-                                                            color : item.checked ? 'lightgrey' : 'black',
-                                                        }}
-                                                    >
-                                                        {item.itemName}
-                                                    </Checkbox>
-                                                )
-                                            ))}
-                                        </Stack>
+                                            <Stack spacing={3} direction='column'>
+                                                {checklistItems
+                                                    .filter(item => item.checklistId === checklist.id)
+                                                    .map(item => (
+                                                        <Checkbox
+                                                            key={item.id}
+                                                            size='lg'
+                                                            isChecked={item.checked}
+                                                            onChange={() => handleCheckboxChange(item.id, item.checked, item.itemName, checklist.id)}
+                                                            colorScheme='blue'
+                                                            sx={{
+                                                                textDecoration: item.checked ? 'line-through 2px solid #a9a9a9' : 'none',
+                                                                transition: 'textDecoration 0.3s ease',
+                                                                color: item.checked ? 'lightgrey' : 'black',
+                                                            }}
+                                                        >
+                                                            {item.itemName}
+                                                        </Checkbox>
+                                                    ))
+                                                }
+                                            </Stack>
                                         </div>
                                     </div>
                                 ))

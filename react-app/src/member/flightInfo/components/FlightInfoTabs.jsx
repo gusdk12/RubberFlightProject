@@ -30,13 +30,13 @@ const FlightInfoTabs = ({ pastFlights, upcomingFlights, reviewList }) => {
         style={{
           maxWidth: '800px',
           minWidth: '800px',
-          margin: 'auto',
-          marginTop: '20px',
           width: '90%',
           height: '88vh', 
+          margin: 'auto',
+          marginTop: '20px',
           overflowY: 'auto', 
           scrollbarWidth: 'thin', 
-          scrollbarColor: '#6d9eeb #fbfdff', 
+          scrollbarColor: '#6d92cc #fbfdff', 
           scrollBehavior: 'smooth', 
         }}
       >
@@ -59,7 +59,7 @@ const FlightInfoTabs = ({ pastFlights, upcomingFlights, reviewList }) => {
             <Flex direction="row" align="flex-start">
               <Box flex="1">
                 {pastFlights.map((flight, index) => {
-                  const review = reviewList.find((review) => flight.review && flight.review.id === review.id);
+              const review = reviewList.find((review) => flight.id === review.flightInfo.id);
                   return (
                     <FlightInfoCard 
                       key={flight.id} 

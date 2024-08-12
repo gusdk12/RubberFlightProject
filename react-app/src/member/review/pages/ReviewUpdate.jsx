@@ -4,13 +4,11 @@ import { Box, Flex, Heading, Image, Spacer, Textarea } from "@chakra-ui/react";
 import { RateFormUpdate } from "../components/Form";
 import axios from "axios";
 import {alert} from '../../../apis/alert';
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Write from "../../../assets/images/review/reviewwrite.webp";
 import styles from '../css/ReviewUpdate.module.css';
 
 const ReviewUpdate = () => {
-  const location = useLocation(); // 현재페이지의 위치 정보 가져오는 역할
-  const {flightInfo} = location.state || {}; // location.state : navigate 함수가 전달한 state값 가지고 있음
   const {id} = useParams();
   const {userInfo} = useUser();
   const navigate = useNavigate();
@@ -33,6 +31,7 @@ const ReviewUpdate = () => {
       .then(response => {
         const { data, status, statusText } = response;
         if (status === 200) {
+          console.log(data)
           setReview(data);
         } else {
           alert('Error', '조회 실패', 'error');
@@ -78,22 +77,22 @@ const validateForm = () => {
       },
       data: JSON.stringify(review),
   })
-      .then(response => {
-          const { data, status, statusText } = response;
-          if (status === 200) {
-            alert('Success', '수정 성공', 'success',
-              () => navigate(`/mypage/review/${data.id}`));
-          } else {
-            alert('Error', '수정 실패', 'error');
-          }
-      });
+    .then(response => {
+        const { data, status, statusText } = response;
+        if (status === 200) {
+          alert('Success', '수정 성공', 'success',
+            () => navigate(`/mypage/review/${data.id}`));
+        } else {
+          alert('Error', '수정 실패', 'error');
+        }
+    });
   }    
 }
 
 const prev = () => {
   navigate(-1);
 }
-
+console.log(review)
   return (          
     <>
     <Box p={4}>
@@ -103,11 +102,12 @@ const prev = () => {
       </Flex>
         <div className={styles.writedate}>작성일:&nbsp;&nbsp;&nbsp;
         {new Date(review.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}</div>
-      <Flex paddingLeft={10} gap={3} mb='10px' mt='40px'>
-        <div className={styles.airlineName}>항공사: {flightInfo.airlineName}</div>
-        <div className={styles.boarding}>탑승일:&nbsp;&nbsp;&nbsp;
-        {new Date(flightInfo.depSch).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}</div>
-      </Flex>
+        {review.flightInfo && 
+        (<Flex paddingLeft={10} gap={3} mb='10px' mt='40px'>
+          <div className={styles.airlineName}>항공사: {review.flightInfo.airlineName}</div>
+          <div className={styles.boarding}>탑승일:&nbsp;&nbsp;&nbsp;
+          {new Date(review.flightInfo.depSch).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}</div>
+        </Flex>)}
       <hr/>
       <form onSubmit={submitReview}>
         <Box
