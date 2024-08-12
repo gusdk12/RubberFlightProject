@@ -31,6 +31,10 @@ const ScheduleMain = () => {
     }, [userInfo]);
 
     useEffect(() => {
+        
+    })
+
+    useEffect(() => {
         if (selectedChecklistId) {
             readChecklistItems(selectedChecklistId);
         }
