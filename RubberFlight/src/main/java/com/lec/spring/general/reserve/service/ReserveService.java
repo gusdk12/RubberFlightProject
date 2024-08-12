@@ -9,11 +9,13 @@ import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.repository.UserRepository;
 import com.lec.spring.member.flightInfo.domain.FlightInfo;
 import com.lec.spring.member.flightInfo.repository.FlightInfoRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -170,5 +172,33 @@ public class ReserveService {
         flightInfo.setArrGate(flight.getArrGate());
 
         return flightInfo;
+    }
+
+    @Scheduled(fixedRate = 60000) // 1분마다 실행
+    public void updateEndedReservations() {
+        LocalDateTime now = LocalDateTime.now();
+
+        // 모든 예약
+        List<Reserve> allReserves = reserveRepository.findAll();
+
+        for (Reserve reserve : allReserves) {
+            System.out.println("끝남 여부" + reserve.isIsended());
+            if (!reserve.isIsended()) {
+                List<FlightInfo> flightInfos = flightInfoRepository.findByReserve(reserve);
+
+                System.out.println(flightInfos);
+
+                // 왕복 예약인 경우, 마지막 도착 시간 찾기
+                LocalDateTime latestArrSch = flightInfos.stream()
+                        .map(FlightInfo::getArrSch)
+                        .max(LocalDateTime::compareTo)
+                        .orElse(null);
+
+                if (latestArrSch != null && latestArrSch.isBefore(now)) {
+                    reserve.setIsended(true);
+                    reserveRepository.save(reserve);
+                }
+            }
+        }
     }
 }
