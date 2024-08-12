@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import MenuBar from '../../../general/common/SideMenu/MenuBar';
 import { Box, Flex, Divider, Avatar, Text } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
@@ -34,9 +34,9 @@ const UserInfo = () => {
           <Box flex="1" p={4} style={{ 
             backgroundColor: '#fbfdff', 
             padding: '20px',
-            marginLeft: '0px',  
+            marginLeft: '0px', 
             minHeight: '120vh',
-            height: 'auto',  
+            height: '120vh',  
           }}>
             {/* 유저 프로필과 이름 */}
             <Flex alignItems="center" mb={4} mr={5} justifyContent="flex-end">
