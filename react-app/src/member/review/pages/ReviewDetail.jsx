@@ -22,30 +22,7 @@ const ReviewDetail = () => {
     clean_rate: "",
     content: "",
   });
-  const [flightInfos, setFlightInfos] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // // 비행정보 불러오기
-  const fetchFlightInfo = async () => {
-    const token = Cookies.get('accessToken');
-      if (!token) {
-        console.error("토큰을 찾을 수 없습니다.");
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await axios.get('http://localhost:8282/flightInfo/list', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },  
-        });
-        setFlightInfos(response.data);
-        return response.data; // 리뷰 정보 조회에 활용하기 위해 반환
-      } catch (error) {
-        console.error("Error fetching flight info:", error);
-      }
-    };
 
   const fetchReviewInfo = async () => {
     try {
@@ -55,29 +32,18 @@ const ReviewDetail = () => {
       setReview(response.data);
     } catch (error) {
       alert("Error", "조회 실패", "error");
+    } finally {
+      setLoading(false);
     }
   };
 
   // 리뷰 조회하기
   useEffect (() => {
-    const fetchData = async () => {
-        try {
-          const flightInfo = await fetchFlightInfo(); // 비행정보 먼저 가져오기
-          if (flightInfo) { // 유효성 체크한 후에 리뷰정보 호출
-            await fetchReviewInfo();
-          }
-        } catch (error) {
-          console.error("데이터를 가져오는 데 오류가 발생했습니다:", error);
-        } finally {
-          setLoading(false); // 로딩 종료
-        }
-    };
-    fetchData();
+   fetchReviewInfo();
   }, []);
 
-  const flightInfo = flightInfos.find((info) => info.review && info.review.id === review.id);
   const UpdateBtn = () => {
-    navigate("/mypage/review/update/" + id, { state: { flightInfo } });
+    navigate("/mypage/review/update/" + id);
   };
 
   const ListBtn = () => {
@@ -141,14 +107,14 @@ const ReviewDetail = () => {
       <div className={styles.writedate}>작성일:&nbsp;&nbsp;&nbsp;
       {new Date(review.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}</div>
         <div className={styles.reviewtitle}>"{review.title}"</div>
-        <div className={styles.airlineName}>[{flightInfo.airlineName}]</div>
+        <div className={styles.airlineName}>[{review.flightInfo.airlineName}]</div>
           <Flex>
             <div className={styles.reviewRate}><TotalStarRating rate={totalRate} /></div>
             <div className={styles.totalRate}>({totalRate})</div>
           </Flex>
           <div className={styles.date}>
             <div className={styles.boarding}>탑승일 | DATE</div>
-            <div className={styles.depSch}>{new Date(flightInfo.depSch).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}</div>
+            <div className={styles.depSch}>{new Date(review.flightInfo.depSch).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}</div>
           </div>
         <hr/>
         <div className={styles.reviewBody}>

@@ -27,6 +27,7 @@ const FlightInfoList = () => {
           },
     });
       setReviewList(response.data); // 리뷰 목록 리스트
+      
     } catch (error) {
       console.error("리뷰를 가져오는 데 오류가 발생했습니다:", error);
     } finally {
@@ -44,7 +45,6 @@ const FlightInfoList = () => {
       if (!token) {
         console.error("토큰을 찾을 수 없습니다.");
         setLoading(false);
-        return;
       }
 
       try {
@@ -78,7 +78,7 @@ const FlightInfoList = () => {
   const now = new Date();
   const pastFlights = flightInfoList.filter(flight => new Date(flight.arrSch) < now);
   const upcomingFlights = flightInfoList.filter(flight => new Date(flight.arrSch) >= now);
-
+console.log(reviewList)
   return (
     <Box p={4} backgroundColor="linear-gradient(to left, #ffffff 0%, #ffffff00 3%, #ffffff00 97%,#ffffff 100%)">
       <Flex align="center"  mb={4}>
