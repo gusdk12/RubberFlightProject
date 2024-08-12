@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import styles from "../css/ReviewItem.module.css";
 import "../../../Global/font.css";
 
-const ReviewItem = ({review, flightInfo}) => {
+const ReviewItem = ({review}) => {
   const navigate = useNavigate();
   const totalRate = ((review.seat_rate + review.service_rate + review.procedure_rate
      + review.flightmeal_rate + review.lounge_rate + review.clean_rate) / 6).toFixed(1);
@@ -42,18 +42,16 @@ const ReviewItem = ({review, flightInfo}) => {
           {new Date(review.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}</div>
         </Flex>
         <hr className={styles.line}/>
-        {flightInfo &&
-          (<Flex>
-            <div className={styles.airlineName}>[{flightInfo.airlineName}]</div>
+        <Flex>
+            <div className={styles.airlineName}>[{review.flightInfo.airlineName}]</div>
             <Spacer/>
             <div className={styles.boardingdate}>
               <div className={styles.date}>탑승일 | Date</div>
               <div className={styles.boarding}>
-              {new Date(flightInfo.depSch).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}
+              {new Date(review.flightInfo.depSch).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}
               </div>
             </div>
           </Flex>
-        )}
           <Flex>
             <div className={styles.reivewRate}><TotalStarRating rate={totalRate} /></div>
             <div className={styles.totalScore}>({totalRate})</div>

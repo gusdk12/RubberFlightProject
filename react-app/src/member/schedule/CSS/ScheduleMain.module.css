@@ -237,3 +237,43 @@ body{
 #footerPart{
     height: 500px;
 }
+
+/* ScheduleMain.module.css */
+.checkListTitleContainer {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+}
+
+.checkListTitle {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.addIcon {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.addIcon:hover {
+    color: #3182ce; /* Change color on hover if needed */
+}
+
+#checklistPart {
+    /* 기존 스타일 유지 */
+    /* ... */
+    max-height: 900px; /* 필요한 최대 높이로 설정 */
+    overflow-y: auto;  /* 수직 스크롤 활성화 */
+}
+
+.checklistPartContainer {
+    display: flex;
+    flex-direction: column;
+    /* 필요에 따라 높이 및 기타 스타일 조정 */
+}
+
+.checkList {
+    /* 기존 스타일 유지 */
+    /* ... */
+    margin-bottom: 16px; /* 체크리스트 항목 간의 간격 조정 */
+}

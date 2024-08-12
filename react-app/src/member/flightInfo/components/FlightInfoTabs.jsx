@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Tabs, Tab, TabList, TabPanels, TabPanel, Text } from '@chakra-ui/react';
+import { Tabs, Tab, TabList, TabPanels, TabPanel, Text, Box } from '@chakra-ui/react';
 import FlightInfoCard from './FlightInfoCard';
+import { Flex } from 'antd';
 
 const FlightInfoTabs = ({ pastFlights, upcomingFlights, reviewList }) => {
   const [tabIndex, setTabIndex] = useState(0); 
@@ -13,13 +14,9 @@ const FlightInfoTabs = ({ pastFlights, upcomingFlights, reviewList }) => {
     <Tabs
       variant="line"
       onChange={handleTabChange}
-      style={{
-        maxWidth: '700px',
-        minWidth: '700px',
-        margin: 'auto',
-        width: '90%',
-        marginTop: '30px',
-      }}
+      mt={7}
+      ml={7}
+      mr={7}
     >
       <TabList>
         <Tab _selected={{ color: "#6d9eeb", borderBottom: "2px solid #6d9eeb", fontWeight: "bold" }}>
@@ -29,21 +26,53 @@ const FlightInfoTabs = ({ pastFlights, upcomingFlights, reviewList }) => {
           지난 예약
         </Tab>
       </TabList>
-      <TabPanels>
+      <TabPanels
+        style={{
+          maxWidth: '800px',
+          minWidth: '800px',
+          width: '90%',
+          height: '88vh', 
+          margin: 'auto',
+          marginTop: '20px',
+          overflowY: 'auto', 
+          scrollbarWidth: 'thin', 
+          scrollbarColor: '#6d92cc #fbfdff', 
+          scrollBehavior: 'smooth', 
+        }}
+      >
         <TabPanel>
           {upcomingFlights.length > 0 ? (
-            upcomingFlights.map((flight, index) => (
-              <FlightInfoCard key={flight.id} flight={flight} index={index} tabKey={tabIndex} isPast={false} />
-            ))
+            <Flex direction="row" align="flex-start">
+              <Box flex="1">
+                {upcomingFlights.map((flight, index) => (
+                  <FlightInfoCard key={flight.id} flight={flight} index={index} tabKey={tabIndex} isPast={false} />
+                ))}
+              </Box>
+            </Flex>
           ) : (
             <Text>예약된 항공편이 없습니다.</Text>
           )}
         </TabPanel>
+
         <TabPanel>
           {pastFlights.length > 0 ? (
-            pastFlights.map((flight, index) => {
-              const review = reviewList.find((review) => flight.review && flight.review.id === review.id);
-              return (<FlightInfoCard key={flight.id} flight={flight} index={index} tabKey={tabIndex} isPast={true} review={review} />)})
+            <Flex direction="row" align="flex-start">
+              <Box flex="1">
+                {pastFlights.map((flight, index) => {
+              const review = reviewList.find((review) => flight.id === review.flightInfo.id);
+                  return (
+                    <FlightInfoCard 
+                      key={flight.id} 
+                      flight={flight} 
+                      index={index} 
+                      tabKey={tabIndex} 
+                      isPast={true} 
+                      review={review} 
+                    />
+                  );
+                })}
+              </Box>
+            </Flex>
           ) : (
             <Text>지난 예약된 항공편이 없습니다.</Text>
           )}
