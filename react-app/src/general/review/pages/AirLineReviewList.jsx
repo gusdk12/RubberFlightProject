@@ -11,7 +11,7 @@ const AirLineReviewList = () => {
   const [reviews, setReviews] = useState([]);
   const [sortOrder, setSortOrder] = useState("latest");
   const [currentPage, setCurrentPage] = useState(0); // 초기 페이지 번호 설정
-  const [pageSize] = useState(6); // 한 페이지에 보여줄 리뷰 개수
+  const [pageSize] = useState(4); // 한 페이지에 보여줄 리뷰 개수
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [flightInfos, setFlightInfos] = useState([]);
@@ -156,6 +156,7 @@ if (loading) {
                 </div>
                 <Flex justify="center">
                   <div className={styles.airlineMenu}>
+                    <div className={styles.name}><Link to={"/review"}>항공사 전체</Link></div><hr className={styles.nameline} />
                   {airlineNames && (airlineNames.map((airline) => 
                     <div key={airline.id} className={styles.name}><Link to={"/review/" + airline.id}>{airline.name}</Link><hr className={styles.nameline} /></div>))}</div>
                   <div>

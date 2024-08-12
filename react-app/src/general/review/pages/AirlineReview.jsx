@@ -139,6 +139,7 @@ if (loading) {
               </div>
               <Flex justify="center">
                 <div className={styles.airlineMenu}>
+                <div className={styles.name}><Link to={"/review"}>항공사 전체</Link></div><hr className={styles.nameline} />
                 {airlineNames && (airlineNames.map((airline) =>
                   <div key={airline.id} className={styles.name}><Link to={"/review/" + airline.id}>{airline.name}</Link><hr className={styles.nameline} /></div>))}
                 </div>

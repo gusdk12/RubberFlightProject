@@ -4,7 +4,6 @@ import axios from 'axios';
 import { Box, Flex, Heading, Spinner, Image } from '@chakra-ui/react';
 import FlightInfoTabs from '../components/FlightInfoTabs';
 import img2 from '../../../assets/images/flightInfo/img2.webp';
-import { useUser } from '../../../general/user/contexts/LoginContextProvider';
 
 const FlightInfoList = () => {
   const [flightInfoList, setFlightInfoList] = useState([]);
