@@ -10,6 +10,8 @@ SELECT * FROM ft_review;
 SELECT * FROM ft_airline;
 SELECT * FROM ft_reservation;
 SELECT * FROM ft_flightinfo;
+SELECT * FROM ft_checklist_list;
+SELECT * FROM ft_checklist_item;
 
 SELECT * FROM ft_schedule;
 SELECT * FROM ft_participation;
