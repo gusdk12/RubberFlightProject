@@ -4,8 +4,8 @@ import { Box, Flex, Heading, Image, Spinner, Tab, TabList, TabPanel, TabPanels, 
 import axios from "axios";
 import Review from "../../../assets/images/review/review.webp";
 import styles from "../css/ReviewList.module.css";
-import "../../../Global/font.css";
 import ReviewItem from "../components/ReviewItem";
+import "../../../Global/font.css";
 
 const ReviewList = () => {
   const [reviews, setReviews] = useState([]);
@@ -132,12 +132,19 @@ const ReviewList = () => {
 
   return (
     <>
-      <Box p={4} className={styles.reviewlistContainer}>
-        <Flex align="center" className="flight-label-container" mb={4}>
+      <Box p={4}>
+        <Flex align="center" mb={4}>
           <Image src={Review} width="30px" />
           <Heading as="h1" size="lg" ml={3}>나의 리뷰</Heading>
         </Flex>
-        <Tabs variant="line" className="review-tab-container">
+        <Tabs variant="line" 
+          style={{
+          maxWidth: '700px',
+          minWidth: '700px',
+          margin: 'auto',
+          width: '90%',
+          marginTop: '30px',
+        }}>
           <TabList>
             <Tab _selected={{color: "#6d9eeb", borderBottom: "2px solid #6d9eeb", fontWeight: "bold" }}
             onClick={handleLatestClick}>
@@ -154,7 +161,7 @@ const ReviewList = () => {
                 reviews.map((review) => {
                   const flightInfo = flightInfos.find((info) => info.review && info.review.id === review.id);
                   return (<ReviewItem key={review.id} review={review} flightInfo={flightInfo} />);})
-              ) : (<p>작성된 리뷰가 없습니다.</p>)}
+              ) : (<div>작성된 리뷰가 없습니다.</div>)}
             </TabPanel>
             <TabPanel>
               {reviews.length > 0 ? (
@@ -162,7 +169,7 @@ const ReviewList = () => {
                   const flightInfo = flightInfos.find((info) => info.review && info.review.id === review.id);
                   return (<ReviewItem key={review.id} review={review} flightInfo={flightInfo}/>);})
               ) : (
-                <p>작성된 리뷰가 없습니다.</p>
+                <div>작성된 리뷰가 없습니다.</div>
               )}
             </TabPanel>
           </TabPanels>

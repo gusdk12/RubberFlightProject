@@ -1,11 +1,129 @@
-.errorMessage {
-    color: red;
-    padding: 10px;
+*{
+    font-family: 'KIMM_Bold';
+}
+
+.writedate {
+    font-family: 'KIMM_Light';
+    font-size: 18px;
+    color: #9e9e9e;
+    text-align: right;
+    margin: -20px 30px 0 0 ;
+}
+
+.airlineName {
+    font-size: 20px;
+    margin-right: 50px;
+}
+
+.boarding {
+    font-size: 20px;
+}
+
+.reviewtitle {
+    font-size: 30px;
+    margin: 20px 0 10px 20px;
+}
+
+.inputTitle{
+    border: 1px solid rgb(153, 210, 245) !important;
+    border-radius: 10px;
+    width: 780px;
+    margin: 0 20px 10px 40px;
+    padding: 5px 5px 5px 20px;
+    text-align: left;
+}
+
+.inputTitle:focus {
+    border: 2px solid rgb(153, 210, 245) !important;
+}
+
+.line{
+    margin: 20px;
+    border: 1px solid rgb(153, 210, 245);
+}
+
+.rating {
+    display: flex; /* 플렉스 박스를 사용하여 정렬 */
+    flex-direction: row-reverse; /* 오른쪽부터 시작하도록 설정 */
+    align-items: center;
+    justify-content: center;
+}
+
+/* 기존 raido 없앰 */
+.rating > input[type="radio"] {
+    display: none;
+}
+
+/* 선택했을 때 */
+.rating > input:checked ~ label {
+    background-image: url(../../../assets/images/review/yellow_star.webp);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 30px;
+    height: 29px;
+    margin: 0 0;
+    margin-bottom: 2px;
+}
+
+/* 선택하지 않았을 때 */
+.rating > label {
+    display: inline-block;
+    background-image: url(../../../assets/images/review/grey_star.webp);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 30px;
+    height: 29px;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    margin: 0 0;
+    margin-bottom: 2px;
+}
+
+.question {
+    text-align: center;
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.formInput {
+    margin: 30px 0;
+}
+
+.reviewcontent {
+    width: 780px;
+    height: 100px;
+    resize: none;
+    border: 1px solid rgb(153, 210, 245);
+    border-radius: 10px;
+    margin: 0 20px 0px 40px;
+    padding: 10px 10px 10px 20px;
+    font-size: 18px;
+}
+
+.reviewcontent:focus {
+    border: 2px solid rgb(153, 210, 245);
+    font-size: 18px;
+    outline: none;
+}
+
+.reviewcontent::-webkit-scrollbar {
+    width: 5px; /* 스크롤바 너비 */
+    height: 5px; /*가로 스크롤바 높이*/
+}
+.reviewcontent::-webkit-scrollbar-track {
+    background: none; /* 트랙 배경 색상 */
+    border-radius: 10px; /* 트랙 모서리 둥글게 */
+}
+.reviewcontent::-webkit-scrollbar-thumb {
+    background: #737297; /* 핸들 색상 */
+    border-radius: 10px; /* 핸들 모서리 둥글게 */
+}
+.reviewcontent::-webkit-scrollbar-thumb:hover {
+    background: #504f6f; /* 호버 시 핸들 색상 */
 }
 
 .reviewBtn {
     text-align: right;
-    margin: 0 40px 60px 0;
+    margin-right: -10px;
 }
 
 .btn {
@@ -15,10 +133,30 @@
     border-radius: 5px;
 }
 
-.updatebtn, .prevbtn {
+.prevbtn {
     margin-right: 20px;
-    background-color: rgb(140, 243, 243);
+    background-color: rgb(200, 233, 253);
 }
-.updatebtn:hover, .prevbtn:hover {
-    background-color: rgb(126, 236, 236);
+.prevbtn:hover {
+    background-color: rgb(180, 224, 251);
+}
+
+.writebtn {
+    background-color: rgb(187, 227, 252);
+    margin-right: 20px;
+}
+.writebtn:hover {
+    background-color: rgb(159, 217, 253);
+}
+
+.errorMessage {
+    color: red;
+    margin: 10px 0 30px 0;
+    padding-left: 50px;
+}
+
+.errorMessagerRate {
+    color: red;
+    margin: 10px 0 30px 0;
+    text-align: center;
 }

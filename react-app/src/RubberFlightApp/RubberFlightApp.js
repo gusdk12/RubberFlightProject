@@ -24,6 +24,8 @@ import LiveFlight from '../general/live/pages/LiveFlight';
 import ScheduleEdit from '../member/schedule/pages/ScheduleEdit';
 import ReviewDetail from '../member/review/pages/ReviewDetail';
 import UserProfile from '../general/user/pages/UserProfile';
+import AirlineReview from '../general/review/pages/AirlineReview';
+import AirLineReviewList from '../general/review/pages/AirLineReviewList';
 
 function RubberFlightApp() {
   return (
@@ -54,6 +56,8 @@ function RubberFlightApp() {
               <Route path="/selectJoin" element={<SelectJoin />} />
               <Route path="/live" element={<LiveFlight />} />
               <Route path="/userProfile" element={<UserProfile/>}/>
+              <Route path="/review" element={<AirLineReviewList/>}/>
+              <Route path="/review/:id" element={<AirlineReview/>}/>
             </Routes>
           </LoginContextProvider>
         </BrowserRouter>

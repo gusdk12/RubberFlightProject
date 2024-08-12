@@ -1,0 +1,133 @@
+/* card 목록 */
+.userImg {
+    outline: 2px solid red;
+    width: 100px;
+    height: 100px;
+    margin-left: 270px;
+    margin-top: 5px;
+}
+
+.username {
+    font-family: 'KIMM_Light';
+    text-align: right;
+    margin-right: 25px;
+}
+
+.cardtitle {
+    font-family: 'KIMM_Bold';
+    font-size: 35px;
+    white-space: nowrap;    /* 텍스트를 한 줄로 유지 */
+    overflow: hidden;       /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트에 생략 기호 추가 */
+    margin:20px 0 0 10px;
+    width: 350px;
+}
+
+.line {
+    border: 1px solid #93c5f7;
+    margin: 10px 0;
+ }
+
+.airlinename {
+    font-family: 'KIMM_Bold';
+    font-size: 25px;
+    margin: -40px 0 10px 20px;
+}
+
+.airlinerate {
+    margin-left: 20px;
+}
+
+.totalscore {
+    margin: 10px;
+    font-family: 'KIMM_Light';
+    font-size: 25px;
+}
+
+.boardingDate {
+    font-family: 'KIMM_Light';
+    text-align: right;
+    margin-top: 28px;
+}
+
+.viewbtn {
+    display: block;
+    background-image: url(../../../assets/images/main_review/view1.webp);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 40px;
+    height: 40px;
+    margin-top: 20px;
+    opacity: 0.8;
+    filter: invert(78%) sepia(7%) saturate(3296%) hue-rotate(182deg) brightness(100%) contrast(94%);
+}
+
+.viewbtn:hover{
+    opacity: 1;
+}
+
+/* 리뷰 detail modal */
+.reviewwritedate {
+    font-family: 'KIMM_Light';
+    color: #9e9e9e;
+    font-size: 17px;
+    text-align: right;
+    margin: 0 -35px 20px 0;
+}
+
+.title {
+    font-size: 60px;
+    margin-left: 10px;
+}
+
+.reviewAirlineName {
+    font-family: 'KIMM_Bold';
+    font-size: 40px;
+    margin: 20px 0 0 40px;
+}
+
+.dateGroup{
+    margin-right: 50px;
+    font-family: 'KIMM_Bold';
+    font-size: 20px;
+}
+
+.reviewdate {
+    text-align: center;
+    color: #9e9e9e;
+    margin-top: 15px;
+}
+
+.reviewrate {
+    margin-left: 30px;
+}
+
+.reviewScore {
+    font-family: 'KIMM_Light';
+    font-size: 30px;
+    margin: 10px 0 0 10px;
+}
+
+.reviewBody {
+    margin-top: 40px;
+}
+
+.content {
+    border-radius: 10px;
+    border: dotted rgb(147, 197, 247);
+    padding: 15px;
+}
+
+.rateBody {
+    margin-top: 30px;
+}
+
+.ratename {
+    font-family: 'KIMM_Light';
+    font-size: 23px;
+    margin-left: 15px;
+}
+
+.reviewRate {
+    margin-left: 10px;
+}
