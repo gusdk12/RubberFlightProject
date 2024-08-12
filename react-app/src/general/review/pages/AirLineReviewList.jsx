@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from '../css/AirLineReviewList.module.css';
-import { Box, Flex, Grid, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Box, Button, Flex, Grid, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
 import AirlineReviewItem from '../components/AirlineReviewItem';
 import Header from '../../common/Header/Header';
 import "../../../Global/font.css";
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
+import MenuBar from '../../common/SideMenu/MenuBar';
+import { IoAirplaneOutline } from 'react-icons/io5';
 
 const AirLineReviewList = () => {
   const [reviews, setReviews] = useState([]);
@@ -18,22 +20,30 @@ const AirLineReviewList = () => {
   const [airlineNames, setAirlineNames] = useState([]);
   const [users, setUsers] = useState([]);
 
-// 유저 정보 불러오기
-// const fetchUser = async () => {
-//   try {
-//     const response = await axios.get(
-//       'http://localhost:8282/airlinereview/userlist'
-//     );
-//     console.log(response.data)
-//     setUsers(response.data);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error fetching flight info:", error);
-//   } 
-// }
+  useEffect(() => {
+    document.body.style.backgroundColor = '#dde6f5';
+    document.body.style.overflowY = 'scroll';
+    document.body.style.boxSizing = 'border-box';
+  }, []);
 
-// 비행정보 불러오기
-const fetchFlightInfo = async () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const flightInfo = await fetchFlightInfo(); 
+      if (flightInfo) {
+        if (sortOrder === "latest") {
+          await fetchReviews("list", currentPage);
+          await fetchAirline();
+        } else {
+          await fetchReviews("ratelist", currentPage);
+          await fetchAirline();
+        }
+      }
+    }
+    fetchData();
+  }, [currentPage, sortOrder]);
+
+  // 비행정보 불러오기
+  const fetchFlightInfo = async () => {
     try {
       const response = await axios.get(
         'http://localhost:8282/flightInfo/infolist'
@@ -43,22 +53,22 @@ const fetchFlightInfo = async () => {
     } catch (error) {
       console.error("Error fetching flight info:", error);
     } 
-};
+  };
 
-// 모든 리뷰 목록 불러오기(최신순, 별점순)
-const fetchReviews = async (type, page) => {
-  try {
-    const response = await axios.get(
-      `http://localhost:8282/airlinereview/${type}?page=${page}&size=${pageSize}`
-    );
-    setReviews(response.data.content); // 리뷰 목록 리스트
-    setTotalPages(response.data.totalPages); // 총 페이지
-  } catch (error) {
-    console.error("리뷰를 가져오는 데 오류가 발생했습니다:", error);
-  } finally {
-    setLoading(false);
-  }
-};
+  // 모든 리뷰 목록 불러오기(최신순, 별점순)
+  const fetchReviews = async (type, page) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8282/airlinereview/${type}?page=${page}&size=${pageSize}`
+      );
+      setReviews(response.data.content); // 리뷰 목록 리스트
+      setTotalPages(response.data.totalPages); // 총 페이지
+    } catch (error) {
+      console.error("리뷰를 가져오는 데 오류가 발생했습니다:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 // 저장된 항공사 이름 불러오기
 const fetchAirline = async () => {
@@ -74,23 +84,7 @@ const fetchAirline = async () => {
   }
 }
 
-useEffect(() => {
-  const fetchData = async () => {
-    const flightInfo = await fetchFlightInfo(); // 비행정보 먼저 가져오기
-    if (flightInfo) { // 유효성 체크한 후에 리뷰정보 호출
-      if (sortOrder === "latest") {
-        await fetchReviews("list", currentPage);
-        await fetchAirline();
-      } else {
-        await fetchReviews("ratelist", currentPage);
-        await fetchAirline();
-      }
-    }
-  }
-  fetchData();
-  document.body.style.backgroundColor = "#dde6f5";
-  document.body.style.overflowY = "scroll";
-}, [currentPage, sortOrder]);
+
 
 // 버튼 클릭 핸들러
 const handleLatestClick = () => {
@@ -146,72 +140,72 @@ if (loading) {
         <Header isMain={false} />
 
           <div className={styles.container}>
-              <div className={styles.reviewcontainer}>
                 <div className={styles.title1}>
-                항공사들의 이용 후기를 한 번에 -
+                  항공사들의 이용 후기를 한 번에 -
                 </div>
                 <div className={styles.title2}>
-                예약한 항공사에 대해 궁금하신가요? <br/>
-                여러 사람들이 이용한 다양한 항공사들의 생생한 후기를 확인해보세요~
+                  예약한 항공사에 대해 궁금하신가요? <br/>
+                  여러 사람들이 이용한 다양한 항공사들의 생생한 후기를 확인해보세요~
                 </div>
-                <Flex justify="center">
+
+                <div className={styles.reviewcontainer}>
+
+                  {/* 사이드바 */}
                   <div className={styles.airlineMenu}>
-                    <div className={styles.name}><Link to={"/review"}>항공사 전체</Link></div><hr className={styles.nameline} />
-                  {airlineNames && (airlineNames.map((airline) => 
-                    <div key={airline.id} className={styles.name}><Link to={"/review/" + airline.id}>{airline.name}</Link><hr className={styles.nameline} /></div>))}</div>
-                  <div>
-                    <div className={styles.reviewBody}>
-                  <Tabs variant="line" >
-                    <TabList>
-                      <Tab fontSize={20}  _selected={{color: "#6d9eeb", borderBottom: "2px solid #6d9eeb", fontWeight: "bold" }} onClick={handleLatestClick}>
-                        최신순
-                      </Tab>
-                      <Tab fontSize={20} _selected={{color: "#6d9eeb", borderBottom: "2px solid #6d9eeb", fontWeight: "bold" }} onClick={handleRateClick}>
-                        별점순
-                      </Tab>
-                    </TabList>
-                  <TabPanels>
-                    <TabPanel>
-                    <Grid templateColumns='repeat(2, 1fr)' gap={6}>
-                      {reviews.length > 0 ? (
-                        reviews.map((review) => {
-                          const flightInfo = flightInfos.find((info) => info.review.id === review.id);
-                          return (<AirlineReviewItem key={review.id} review={review} flightInfo={flightInfo} />);})
-                      ) : (<div>작성된 리뷰가 없습니다.</div>)}
-                      </Grid>
-                    </TabPanel>
-                    <TabPanel>
-                    <Grid templateColumns='repeat(2, 1fr)' gap={6}>
-                      {reviews.length > 0 ? (
-                        reviews.map((review) => {
-                          const flightInfo = flightInfos.find((info) => info.review && info.review.id === review.id);
-                          return (<AirlineReviewItem key={review.id} review={review} flightInfo={flightInfo}/>);})
-                      ) : (
-                        <div>작성된 리뷰가 없습니다.</div>
-                      )}
-                      </Grid>
-                    </TabPanel>
-                  </TabPanels>
-                </Tabs>
+                    <div className={styles.name}>
+                      <Link to={"/review"}>항공사 전체</Link>
+                    </div>
+                      
+                    <hr className={styles.nameline} />
+
+                    {/* 항공사 리스트 */}
+                    <div className={styles.airlineList}>
+                      {airlineNames && (airlineNames.map((airline) => 
+                        <div key={airline.id} className={styles.name}>
+                          <Link to={"/review/" + airline.id}>
+                            {airline.name}
+                          </Link>
+                          <hr className={styles.nameline} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 리뷰들 리스트 */}
+                  <div className={styles.reviewBody}>
+                    <Tabs variant="line" >
+                      <TabList>
+                        <Tab fontSize={20}  _selected={{color: "#6d9eeb", borderBottom: "2px solid #6d9eeb", fontWeight: "bold" }} onClick={handleLatestClick}>
+                          최신순
+                        </Tab>
+                        <Tab fontSize={20} _selected={{color: "#6d9eeb", borderBottom: "2px solid #6d9eeb", fontWeight: "bold" }} onClick={handleRateClick}>
+                          별점순
+                        </Tab>
+                      </TabList>
+
+                      <TabPanels>
+                        <TabPanel>
+                          <Grid templateColumns='repeat(2, 1fr)' gap={6}>
+                          {flightInfos.length > 0 ? (
+                            flightInfos.filter(flightInfo => flightInfo.review).map(flightInfo => (
+                              <AirlineReviewItem key={flightInfo.id} flightInfo={flightInfo} />
+                            ))
+                          ) : (
+                            <div>작성된 리뷰가 없습니다.</div>
+                          )}
+                          </Grid>
+                        </TabPanel>
+                      </TabPanels>
+                    </Tabs>
+
+                  </div>
                 </div>
-                {totalPages > 0 && (
-                  <Box className={styles.reviewPagebtn}>
-                    <button className={`${styles.reviewPagebtn} ${styles.reviewPageBtn} ${styles.reviewPrevbtn}`}
-                      onClick={() => handlePageChange(0)}>◀◀</button>
-                    <button className={`${styles.reviewPageBtn} ${styles.reviewPrevbtn} ${styles.reviewArrowLeft}`}
-                      onClick={() => handlePageChange(currentPage - 1)}>◀</button>
-                    {pageButtons(totalPages)}
-                    <button className={`${styles.reviewPageBtn} ${styles.reviewNextbtn} ${styles.reviewArrowRight}`}
-                      onClick={() => handlePageChange(currentPage + 1)}>▶</button>
-                    <button className={`${styles.reviewPageBtn} ${styles.reviewNextbtn}`}
-                      onClick={() => handlePageChange(totalPages - 1)}>▶▶</button>
-                  </Box>
-                )}
-                </div>
-              </Flex>
+
+
+
+
               
             </div>
-        </div>
         </>
     );
 };

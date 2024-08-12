@@ -58,15 +58,24 @@ const ReviewWrite = () => {
     if (!review.clean_rate) newError.clean_rate = "별점을 입력해주세요";
     if (review.content.length > 50) newError.content = "내용은 50자 이내로 입력해주세요";
 
+    // To. 현아언니. 제출시 오류 수정 부분//
+    // setError(newError);
+    // return newError;  
+    // 이 코드에서는 newError 객체 자체를 반환합니다. newError는 모든 필드에 대한 유효성 검사 결과를 담고 있으며, 오류 메시지가 없는 필드에도 빈 문자열이 들어있습니다. 
+    // 따라서 submitReview 함수에서 if (!validationError)를 사용해 유효성 검사가 통과했는지를 확인하려고 하면, 
+    // validationError는 항상 객체이므로 이 조건은 항상 false가 됩니다. 즉, 유효성 검사가 통과되지 않은 것으로 간주되고, 폼이 제출되지 않습니다.
+    const hasError = Object.keys(newError).some(key => newError[key]);
+
     setError(newError);
-    return newError;
+    console.log('Validation error object:', newError);
+    return hasError ? newError : null;
   };
 
   // 리뷰 작성하기
   const submitReview = (e) => {
     e.preventDefault();
     const validationError = validateForm();
-    if (!validationError) {   
+    if (!validationError) {
       axios({
         method: "post",
         url: `http://localhost:8282/review/write/` + flight.id,
@@ -85,7 +94,7 @@ const ReviewWrite = () => {
       });
     }
   };
-
+  
   const prev = () => {
     navigate(-1);
   };

@@ -60,8 +60,14 @@ const validateForm = () => {
   }
   if (review.content.length > 50) newError.content = "내용은 50자 이내로 입력해주세요";
   
+  // To. 현아언니 ReviewWrite 와 같은 오류 해결
+  // setError(newError);
+  // return newError;
+  const hasError = Object.keys(newError).some(key => newError[key]);
+
   setError(newError);
-  return newError;
+  console.log('Validation error object:', newError);
+  return hasError ? newError : null;
 };
 
  // 데이터 수정하기
