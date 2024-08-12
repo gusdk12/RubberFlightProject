@@ -34,9 +34,19 @@ public class ChecklistService {
     }
 
     public ChecklistDTO createChecklist(ChecklistDTO checklistDTO) {
+        // 체크리스트 엔티티로 변환 및 저장
         Checklist checklist = convertToEntity(checklistDTO);
-        Checklist createdChecklist = checklistRepository.save(checklist);
-        return convertToDTO(createdChecklist);
+        checklist = checklistRepository.save(checklist);
+
+        // 체크리스트 아이템을 체크리스트와 연결하고 저장
+        for (ChecklistItemDTO itemDTO : checklistDTO.getItems()) {
+            Checklist_item item = convertToEntity(itemDTO);
+            item.setChecklist(checklist);  // 아이템에 체크리스트 설정
+            checklist_itemRepository.save(item);
+        }
+
+        // 체크리스트를 다시 로드하고 DTO로 변환하여 반환
+        return convertToDTO(checklistRepository.findById(checklist.getId()).orElseThrow());
     }
 
     public ChecklistItemDTO createChecklistItem(ChecklistItemDTO checklistItemDTO) {
@@ -113,7 +123,7 @@ public class ChecklistService {
         dto.setId(checklist.getId());
         dto.setCategory(checklist.getCategory());
         dto.setUserId(checklist.getUser().getId());
-        dto.setItems(items); // 항목 추가
+        dto.setItems(items);  // 항목 추가
         return dto;
     }
 
@@ -130,7 +140,6 @@ public class ChecklistService {
         Checklist checklist = new Checklist();
         checklist.setId(dto.getId());
         checklist.setCategory(dto.getCategory());
-        // User는 id로 설정하거나 User 객체를 조회하여 설정
         checklist.setUser(userRepository.findById(dto.getUserId()).orElse(null));
         return checklist;
     }
@@ -139,8 +148,6 @@ public class ChecklistService {
         Checklist_item item = new Checklist_item();
         item.setId(dto.getId());
         item.setItem(dto.getItemName());
-        // Checklist는 id로 설정하거나 Checklist 객체를 조회하여 설정
-        item.setChecklist(checklistRepository.findById(dto.getChecklistId()).orElse(null));
         return item;
     }
 }
