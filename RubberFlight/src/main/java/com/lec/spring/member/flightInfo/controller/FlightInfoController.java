@@ -1,6 +1,7 @@
 package com.lec.spring.member.flightInfo.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lec.spring.general.reserve.domain.Reserve;
 import com.lec.spring.general.reserve.service.ReserveService;
@@ -18,6 +19,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -54,10 +57,10 @@ public class FlightInfoController {
         return new ResponseEntity<>(flightInfoList, HttpStatus.OK);
     }
 
-    // 사용자 예약 정보에 따른 항공편 정보
+    // 사용자 예약 정보에 따른 예정된 항공편 정보
     @CrossOrigin
     @GetMapping("/flights/{id}")
-    public ResponseEntity<?> getFlightInfoById(@PathVariable Long id, HttpServletRequest request) throws IOException {
+    public ResponseEntity<?> getFlightTimetable(@PathVariable Long id, HttpServletRequest request) throws IOException {
         String token = request.getHeader("Authorization").split(" ")[1];
         Long userId = jwtUtil.getId(token);
 
@@ -69,7 +72,6 @@ public class FlightInfoController {
 
         // 출발 및 도착 IATA 코드 가져오기
         String depIata = flightInfo.getDepIata();
-        String arrIata = flightInfo.getArrIata();
         String flightIat = flightInfo.getFlightIat();
 
         // 항공편 일정 API
@@ -79,12 +81,13 @@ public class FlightInfoController {
                 .queryParam("key", aviation_key)
                 .queryParam("iataCode", depIata)
                 .queryParam("type", "departure")
+                .queryParam("flight_iata", flightIat)
                 .build()
                 .encode()
                 .toUri();
 
         String response = restTemplate.getForObject(uri2, String.class);
-        List<Map<String, Object>> timetableList = parseTimetableResponse(response, arrIata, flightIat.toUpperCase()); // JSON 리스트로 변환
+        List<Map<String, Object>> timetableList = parseTimetableResponse(response); // JSON 리스트로 변환
 
         Map<String, Object> combinedResponse = new HashMap<>();
         combinedResponse.put("flightInfo", flightInfo);
@@ -94,14 +97,67 @@ public class FlightInfoController {
         return new ResponseEntity<>(combinedResponse, HttpStatus.OK);
     }
 
+    @CrossOrigin
+    @GetMapping("/flights/history/{id}")
+    public ResponseEntity<?> getFlightHistory(@PathVariable Long id, HttpServletRequest request) throws IOException {
+
+        String token = request.getHeader("Authorization").split(" ")[1];
+        Long userId = jwtUtil.getId(token);
+
+        FlightInfo flightInfo = flightInfoService.findByIdAndUserId(id, userId);
+        if (flightInfo == null) {
+            return new ResponseEntity<>("항공편 정보를 찾을 수 없거나 권한이 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
+        String depIata = flightInfo.getDepIata();
+        String flightIat = flightInfo.getFlightIat().replaceAll("[^0-9]", "");
+        LocalDateTime depSch = flightInfo.getDepSch();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String date = depSch.format(formatter);
+
+        // 항공편 과거 기록 API 호출
+        RestTemplate restTemplate = new RestTemplate();
+        URI uri = UriComponentsBuilder
+                .fromUriString("https://aviation-edge.com/v2/public/flightsHistory")
+                .queryParam("key", aviation_key)
+                .queryParam("code", depIata)
+                .queryParam("type", "departure")
+                .queryParam("date_from", date)
+                .queryParam("flight_number", flightIat)
+                .build()
+                .encode()
+                .toUri();
+
+        System.out.println("flightIat" + flightIat);
+        System.out.println("date" + date);
+        System.out.println("code" + depIata);
+
+        String response = restTemplate.getForObject(uri, String.class);
+        List<Map<String, Object>> historyList = parseTimetableResponse(response);
+
+        Map<String, Object> combinedResponse = new HashMap<>();
+        combinedResponse.put("flightInfo", flightInfo);
+        combinedResponse.put("history", historyList);
+
+        return new ResponseEntity<>(combinedResponse, HttpStatus.OK);
+    }
+
     // 항공편 일정 응답 JSON 파싱
-    private List<Map<String, Object>> parseTimetableResponse(String jsonResponse, String arrIata, String flightIat) throws IOException {
-        List<Map<String, Object>> timetableList = new ObjectMapper().readValue(jsonResponse, new TypeReference<List<Map<String, Object>>>() {});
+    private List<Map<String, Object>> parseTimetableResponse(String jsonResponse) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(jsonResponse);
+        List<Map<String, Object>> timetableList;
+
+        if (rootNode.isArray()) {
+            timetableList = objectMapper.convertValue(rootNode, new TypeReference<List<Map<String, Object>>>() {});
+        } else if (rootNode.isObject()) {
+            timetableList = Collections.singletonList(objectMapper.convertValue(rootNode, new TypeReference<Map<String, Object>>() {}));
+        } else {
+            return Collections.emptyList();
+        }
 
         return timetableList.stream()
-                .filter(timetable -> ((Map<String, Object>) timetable.get("arrival")).get("iataCode").equals(arrIata) &&
-                        ((Map<String, Object>) timetable.get("flight")).get("iataNumber").equals(flightIat))
+                .filter(timetable -> timetable.containsKey("arrival") && timetable.containsKey("flight"))
                 .collect(Collectors.toList());
-
     }
 }
