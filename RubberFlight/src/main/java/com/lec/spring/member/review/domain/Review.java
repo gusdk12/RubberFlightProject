@@ -61,8 +61,6 @@ public class Review {
 
     @OneToOne
     @JoinColumn(name = "flightinfo_id")
-    @JsonIgnore
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private FlightInfo flightInfo; // 비행정보
 
     @ManyToOne

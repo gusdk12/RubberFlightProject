@@ -9,11 +9,13 @@ import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.repository.UserRepository;
 import com.lec.spring.member.flightInfo.domain.FlightInfo;
 import com.lec.spring.member.flightInfo.repository.FlightInfoRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -120,6 +122,7 @@ public class ReserveService {
     // DB 저장
     @Transactional
     public Reserve saveReservation(Long userId, String personnel, boolean isRoundTrip, Flight outboundFlight, Flight inboundFlight) {
+        System.out.println("왕복인가요" + isRoundTrip);
         Reserve reserve = new Reserve();
         User user = userRepository.findById(userId).orElse(null);
         reserve.setUser(user);
@@ -129,10 +132,14 @@ public class ReserveService {
         List<FlightInfo> flights = new ArrayList<>();
 
         if(isRoundTrip) {
-            FlightInfo outbound = createFlgihtInfo(reserve, outboundFlight);
-            FlightInfo inbound = createFlgihtInfo(reserve, inboundFlight);
-            flights.add(outbound);
-            flights.add(inbound);
+            if (outboundFlight != null) {
+                FlightInfo outbound = createFlgihtInfo(reserve, outboundFlight);
+                flights.add(outbound);
+            }
+            if (inboundFlight != null) {
+                FlightInfo inbound = createFlgihtInfo(reserve, inboundFlight);
+                flights.add(inbound);
+            }
         } else {
             FlightInfo outbound = createFlgihtInfo(reserve, outboundFlight);
             flights.add(outbound);
@@ -144,8 +151,9 @@ public class ReserveService {
 
     private FlightInfo createFlgihtInfo(Reserve reserve, Flight flight) {
         FlightInfo flightInfo = new FlightInfo();
-        String depAirportName = airportRepository.findByAirportIso(flight.getDepAirport()).getAirportName();
-        String arrAirportName = airportRepository.findByAirportIso(flight.getArrAirport()).getAirportName();
+        String depAirportName = flight != null ? airportRepository.findByAirportIso(flight.getDepAirport()).getAirportName() : null;
+        String arrAirportName = flight != null ? airportRepository.findByAirportIso(flight.getArrAirport()).getAirportName() : null;
+
         System.out.println(depAirportName);
         System.out.println(arrAirportName);
         flightInfo.setReserve(reserve);
@@ -154,11 +162,43 @@ public class ReserveService {
         flightInfo.setArrAirport(arrAirportName);
         flightInfo.setArrIata(flight.getArrAirport());
         flightInfo.setPrice(flight.getPrice());
-        flightInfo.setFlightIat(flight.getAirlineIata());
+        flightInfo.setFlightIat(flight.getFlightIata());
         flightInfo.setDepSch(flight.getDepSch());
         flightInfo.setArrSch(flight.getArrSch());
         flightInfo.setAirlineName(flight.getAirlineName());
+        flightInfo.setDepTerminal(flight.getDepTerminal());
+        flightInfo.setDepGate(flight.getDepGate());
+        flightInfo.setArrTerminal(flight.getArrTerminal());
+        flightInfo.setArrGate(flight.getArrGate());
 
         return flightInfo;
+    }
+
+    @Scheduled(fixedRate = 60000) // 1분마다 실행
+    public void updateEndedReservations() {
+        LocalDateTime now = LocalDateTime.now();
+
+        // 모든 예약
+        List<Reserve> allReserves = reserveRepository.findAll();
+
+        for (Reserve reserve : allReserves) {
+            System.out.println("끝남 여부" + reserve.isIsended());
+            if (!reserve.isIsended()) {
+                List<FlightInfo> flightInfos = flightInfoRepository.findByReserve(reserve);
+
+                System.out.println(flightInfos);
+
+                // 왕복 예약인 경우, 마지막 도착 시간 찾기
+                LocalDateTime latestArrSch = flightInfos.stream()
+                        .map(FlightInfo::getArrSch)
+                        .max(LocalDateTime::compareTo)
+                        .orElse(null);
+
+                if (latestArrSch != null && latestArrSch.isBefore(now)) {
+                    reserve.setIsended(true);
+                    reserveRepository.save(reserve);
+                }
+            }
+        }
     }
 }

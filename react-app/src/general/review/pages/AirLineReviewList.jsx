@@ -53,7 +53,7 @@ const AirLineReviewList = () => {
     } catch (error) {
       console.error("Error fetching flight info:", error);
     } 
-  };
+};
 
   // 모든 리뷰 목록 불러오기(최신순, 별점순)
   const fetchReviews = async (type, page) => {

@@ -1,13 +1,11 @@
 package com.lec.spring.member.flightInfo.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lec.spring.general.reserve.domain.Reserve;
 import com.lec.spring.member.review.domain.Review;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -57,5 +55,20 @@ public class FlightInfo {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "review_id")
+    @ToString.Exclude
+    @JsonIgnore
     private Review review;
+
+    @Column(nullable = false, name = "dep_terminal")
+    private String depTerminal;
+
+    @Column(nullable = true, name = "dep_gate")
+    private String depGate;
+
+    @Column(nullable = false, name = "arr_terminal")
+    private String arrTerminal;
+
+    @Column(nullable = true, name = "arr_gate")
+    private String arrGate;
+
 }

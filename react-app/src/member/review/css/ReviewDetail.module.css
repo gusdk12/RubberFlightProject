@@ -1,16 +1,54 @@
-.reviewContent {
-    margin: 50px 90px;
-    border: 2px dotted #2aa7dc;
-    padding: 30px
+.writedate {
+    font-family: 'KIMM_Light';
+    font-size: 18px;
+    text-align: right;
+    margin: 20px 30px 0 0;
+    color: #9e9e9e;
 }
 
-.rateBody {
-    margin-left: 40px;
+.reviewtitle{
+    font-size: 50px;
+    margin: 20px 0 0 50px;
+}
+
+.airlineName {
+    font-size: 35px;
+    margin: 18px 0px 0 40px;
+}
+
+.reviewRate {
+    margin: 15px 0 0 40px;
+}
+
+.totalRate {
+    font-size: 25px;
+    margin: 25px 0 0 10px;
+}
+
+.date {
+    text-align: right;
+    margin: -50px 30px 20px 30px;
+    font-size: 20px;
+}
+
+.boarding {
+    color: #9e9e9e;
+}
+
+.reviewBody {
+    margin-top : 40px;
+}
+
+.content {
+    border-radius: 10px;
+    border: dotted rgb(147, 197, 247);
+    padding: 15px;
+    margin: 0 0 30px 30px;
+    width: 800px;
 }
 
 .reviewBtn {
     text-align: right;
-    margin: 0 40px 60px 0;
 }
 
 .btn {
@@ -20,18 +58,26 @@
     border-radius: 5px;
 }
 
-.updatebtn, .prevbtn {
-    margin-right: 20px;
-    background-color: rgb(140, 243, 243);
+.listbtn {
+    margin-right: 580px;
+    background-color: rgb(211, 235, 250);
 }
-.updatebtn:hover, .prevbtn:hover {
-    background-color: rgb(126, 236, 236);
+.listbtn:hover {
+    background-color: rgb(200, 233, 253);
+}
+
+.updatebtn {
+    background-color: rgb(200, 233, 253);
+    margin-right: 20px;
+}
+.updatebtn:hover {
+    background-color: rgb(180, 224, 251);
 }
 
 .deletebtn {
-    background-color: rgb(241, 147, 166);
+    background-color: rgb(250, 190, 202);
 }
 
 .deletebtn:hover {
-    background-color: rgb(243, 121, 145);
+    background-color: rgb(252, 161, 179);
 }

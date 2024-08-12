@@ -33,4 +33,5 @@ public class FlightInfoService {
     public FlightInfo findByIdAndUserId(Long id, Long userId) {
         return flightInfoRepository.findByIdAndReserveUserId(id, userId);
     }
+
 }
