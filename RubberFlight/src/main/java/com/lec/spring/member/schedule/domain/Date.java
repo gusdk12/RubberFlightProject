@@ -1,6 +1,7 @@
 package com.lec.spring.member.schedule.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lec.spring.general.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,6 +24,7 @@ public class Date {
     // ft_schedule:ft_date 1:N
     @ManyToOne
     @ToString.Exclude
+    @JsonIgnore
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 

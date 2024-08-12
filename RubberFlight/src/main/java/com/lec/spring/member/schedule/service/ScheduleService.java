@@ -86,6 +86,16 @@ public class ScheduleService {
         return scheduleEntity;
     }
 
+    @Transactional // 내부적으로 종료될 때마다 체크하고 바뀐 부분이 있으면 UPDATE를 수행
+    public Schedule updateEditDate (Long schedule_id){
+        Schedule scheduleEntity = scheduleRepository.findById(schedule_id)
+                .orElseThrow(()-> new IllegalArgumentException("id를 확인해주세요"));
+
+        scheduleEntity.setEdit_date(LocalDateTime.now());
+
+        return scheduleEntity;
+    }
+
     @Transactional
     public String delete(Long id){
         if(!isExist(id)) return "failed";

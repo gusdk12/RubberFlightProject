@@ -7,6 +7,7 @@ import { LoginContext } from '../../../general/user/contexts/LoginContextProvide
 import { useNavigate, useParams  } from 'react-router-dom';
 import { Input } from '@chakra-ui/react';
 import axios from 'axios';
+import ScheduleEditPart from '../component/ScheduleEditPart';
 
 const ScheduleEdit = () => {
     const { userInfo } = useContext(LoginContext);
@@ -178,9 +179,7 @@ const ScheduleEdit = () => {
                     </div>
                 </div>
             </div>
-            <div id={style.editPart}>
-
-            </div>
+            <ScheduleEditPart ScheduleId={id}/>
         </div>
     );
 };

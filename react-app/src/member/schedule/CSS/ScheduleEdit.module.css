@@ -7,7 +7,9 @@ body{
     margin: auto;
     width: 100vw;
     height: 100vh;
-    background-color: #F1F5FC;
+    /* background-color: #F1F5FC; */
+    background: linear-gradient(to bottom, #F1F5FC 60%, #eaefff);
+    /* background: linear-gradient(to top, #F1F5FC, #e2edff); */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,10 +21,11 @@ body{
 #headerPart{
     /* background-color: aqua; */
     width: 100%;
-    height: 10%;
+    height: 13%;
     display: flex;
     align-items: center;
     position: relative;
+    border-bottom: #3854953a 1px solid;
 }
 #backButton{
     background-image: url('../../../assets/images/schedule/rescheduling.png');
@@ -56,16 +59,16 @@ body{
 }
 #titleInput{
     font-family: 'KIMM_Bold';
-    padding: 10px !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    background-color: #ffffff !important;
-    border: #E8ECF2 solid 2px !important;
+    padding: 10px ;
+    padding-left: 20px ;
+    padding-right: 20px ;
+    background-color: #ffffff ;
+    border: #E8ECF2 solid 2px ;
     color: #5f6b82;
     position: absolute;
-    left: 58px !important;
-    border-radius: 10px !important;
-    font-size: 18px !important;
+    left: 58px ;
+    border-radius: 10px ;
+    font-size: 18px ;
     width: 300px;
     text-align: left;
 }
@@ -125,7 +128,7 @@ body{
     right: 0;
     top: 8.5vh;
     border-radius: 10px;
-    box-shadow: 1px 10px 10px rgba(0, 0, 0, 0.26);
+    box-shadow: 1px 10px 10px rgba(69, 74, 102, 0.26);
     display: flex;
     flex-direction: column;
     gap: 13px;
@@ -183,7 +186,98 @@ body{
 }
 
 #editPart{
-    background-color:blueviolet;
+    /* background-color: #ffffff; */
     width: 100%;
     height: 90%;
+    border-radius: 30px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    overflow-x: scroll;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#editPart::-webkit-scrollbar {
+    width: 5px; /* 스크롤바 너비 */
+    height: 5px; /*가로 스크롤바 높이*/
+}
+#editPart::-webkit-scrollbar-track {
+    background: none; /* 트랙 배경 색상 */
+    border-radius: 10px; /* 트랙 모서리 둥글게 */
+}
+#editPart::-webkit-scrollbar-thumb {
+    background: #737297; /* 핸들 색상 */
+    border-radius: 10px; /* 핸들 모서리 둥글게 */
+}
+#editPart::-webkit-scrollbar-thumb:hover {
+    background: #504f6f; /* 호버 시 핸들 색상 */
+}
+#datelistcontainer{
+    /* background-color: #74acf5; */
+    width: 100%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    bottom: -6%;
+    gap: 10px;
+}
+.dateItem{
+    width: 250px;
+    height: 100%;
+    /* background-color: #F1F5FC; */
+    border-radius: 35px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 5px 10px 10px rgba(69, 74, 102, 0.26);
+    /* border: #44598a90 0.5px solid; */
+    /* background: linear-gradient(to bottom, #d9e6ff, #ffe3ea, #ffffff); */
+}
+.dateHeader{
+    width: 100%;
+    height: 18%;
+    /* background-color: #B7CDE7; */
+    background-color: #8B8BB4;
+    /* background: linear-gradient(to bottom, #adbddc, #ffd4df); */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #F1F5FC;
+    font-size: 18px;
+}
+.dateContent{
+    width: 100%;
+    height: 82%;
+    overflow-y: scroll;
+    display: flex;
+    align-items: first baseline;
+    justify-content: center;
+    padding: 10px;
+    padding-left: 17px;
+    padding-right: 15px;
+    font-size: 16px;
+    color: #3e4759d6;
+    background-color: #ffffff;
+    /* background-color: #f3f3ff; */
+}
+.dateContent::-webkit-scrollbar {
+    width: 5px; /* 스크롤바 너비 */
+    height: 5px; /*가로 스크롤바 높이*/
+}
+.dateContent::-webkit-scrollbar-track {
+    background: none; /* 트랙 배경 색상 */
+    border-radius: 10px; /* 트랙 모서리 둥글게 */
+}
+.dateContent::-webkit-scrollbar-thumb {
+    background: #737297; /* 핸들 색상 */
+    border-radius: 10px; /* 핸들 모서리 둥글게 */
+}
+.dateContent::-webkit-scrollbar-thumb:hover {
+    background: #504f6f; /* 호버 시 핸들 색상 */
 }

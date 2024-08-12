@@ -138,4 +138,7 @@ VALUES (1, 2);
 INSERT INTO ft_participation (user_id, schedule_id)
 VALUES (1, 3);
 
-
+INSERT INTO ft_date(schedule_id, date, content)
+VALUES (1, "2024-08-01", '흠 머할까여');
+INSERT INTO ft_date(schedule_id, date, content)
+VALUES (1, "2024-08-02", '이틀 째엔 역시 맛집가야지');

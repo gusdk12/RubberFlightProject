@@ -101,6 +101,31 @@ class WebSocketService {
             });
         });
     }
+
+    sendDates(id, dates) {
+        const payload = {
+            scheduleId: id,
+            dates: dates,
+        };
+        return this.ensureConnected(id).then(() => {
+            if (this.stompClient && this.stompClient.connected) {
+                this.stompClient.send(`/app/dates/${id}`, {}, JSON.stringify(payload));
+            }
+        }).catch((error) => {
+            console.error('Failed to send content:', error);
+        });
+    }
+
+    subscribeToDates(id, callback) {
+        return this.ensureConnected(id).then(() => {
+            this.stompClient.subscribe(`/topic/dates/${id}`, (message) => {
+                if (message.body) {
+                    console.log(message.body);
+                    callback(JSON.parse(message.body));
+                }
+            });
+        });
+    }
 }
 
 const webSocketService = new WebSocketService();
