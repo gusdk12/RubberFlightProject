@@ -74,8 +74,19 @@ public class ChecklistController {
     // 체크리스트 항목 추가하기
     @PostMapping("/items/create")
     public ResponseEntity<ChecklistItemDTO> createChecklistItem(@RequestBody ChecklistItemDTO itemDTO) {
-        ChecklistItemDTO createdItem = checklistService.createChecklistItem(itemDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdItem);
+        try {
+            Checklist_item createdItem = checklistService.createChecklistItem(itemDTO);
+            // Convert entity to DTO for response
+            ChecklistItemDTO responseDTO = new ChecklistItemDTO();
+            responseDTO.setId(createdItem.getId());
+            responseDTO.setItemName(createdItem.getItemName());
+            responseDTO.setChecked(createdItem.isChecked());
+            responseDTO.setChecklistId(createdItem.getChecklist().getId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        } catch (Exception e) {
+            // Log and handle the exception
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // 체크리스트 항목 조회하기
@@ -94,6 +105,9 @@ public class ChecklistController {
     public ResponseEntity<ChecklistItemDTO> updateChecklistItem(
             @PathVariable Long id,
             @RequestBody ChecklistItemDTO updatedItemDTO) {
+
+        System.out.println("Request ID: " + id);
+        System.out.println("Request Checklist ID: " + updatedItemDTO.getChecklistId());
 
         if (id == null || updatedItemDTO.getChecklistId() == null) {
             return ResponseEntity.badRequest().body(null); // ID가 null인 경우 잘못된 요청 반환
