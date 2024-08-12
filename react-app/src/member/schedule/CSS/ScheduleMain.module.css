@@ -237,3 +237,22 @@ body{
 #footerPart{
     height: 500px;
 }
+
+/* ScheduleMain.module.css */
+.checkbox-container {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    /* 기본 스타일 */
+}
+
+.checkbox-item.completed {
+    text-decoration: line-through;
+    color: #888; /* 취소선 적용 시 색상 조정 */
+}
