@@ -18,20 +18,6 @@ const AirLineReviewList = () => {
   const [airlineNames, setAirlineNames] = useState([]);
   const [users, setUsers] = useState([]);
 
-// 유저 정보 불러오기
-// const fetchUser = async () => {
-//   try {
-//     const response = await axios.get(
-//       'http://localhost:8282/airlinereview/userlist'
-//     );
-//     console.log(response.data)
-//     setUsers(response.data);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error fetching flight info:", error);
-//   } 
-// }
-
 // 비행정보 불러오기
 const fetchFlightInfo = async () => {
     try {
@@ -175,7 +161,7 @@ if (loading) {
                     <Grid templateColumns='repeat(2, 1fr)' gap={6}>
                       {reviews.length > 0 ? (
                         reviews.map((review) => {
-                          const flightInfo = flightInfos.find((info) => info.review.id === review.id);
+                          const flightInfo = flightInfos.find((info) => info.review && info.review.id === review.id);
                           return (<AirlineReviewItem key={review.id} review={review} flightInfo={flightInfo} />);})
                       ) : (<div>작성된 리뷰가 없습니다.</div>)}
                       </Grid>
