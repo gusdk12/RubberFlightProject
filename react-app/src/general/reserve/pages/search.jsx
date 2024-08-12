@@ -1,26 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
-import '../css/flatpickr.css';
 import { searchFlight } from '../../../apis/flightApis';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
-import 'flatpickr/dist/flatpickr.min.css';
-import Flatpickr from 'react-flatpickr';
 import { format } from 'date-fns';
 import style from '../css/search.module.css'
 import { IoAirplane } from "react-icons/io5";
 import { useUser } from '../../user/contexts/LoginContextProvider'; 
+import { DatePicker } from 'antd';
+import moment from 'moment';
 
 const Search = () => {
   const [passengers, setPassengers] = useState(1);
   const [results, setResults] = useState({ outboundFlights: [], inboundFlights: [], combinations: [] });
   const [selectedFlight, setSelectedFlight] = useState(null);
-
-  const [isRoundWay, setIsRoundWay] = useState(true);
+  // const [isRoundWay, setIsRoundWay] = useState(true);
   const [tripType, setTripType] = useState('round-trip')
 
-  const [dates, setDates] = useState([]);
+ 
   const [departureDate, setDepartureDate] = useState('');
   const [returnDate, setReturnDate] = useState('');
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const [dates, setDates] = useState([]);
   
   const [departure, setDeparture] = useState('ICN');
   const [arrival, setArrival] = useState('');
@@ -141,19 +143,31 @@ const Search = () => {
 
   // 날짜
   // 날짜를 형식화하여 상태를 업데이트
-const handleDateChange = (selectedDates) => {
-  setDates(selectedDates);
-  if (selectedDates.length === 2) {
-    setDepartureDate(format(selectedDates[0], 'yyyy-MM-dd'));
-    setReturnDate(format(selectedDates[1], 'yyyy-MM-dd'));
-  } else if (selectedDates.length === 1) {
-    setDepartureDate(format(selectedDates[0], 'yyyy-MM-dd'));
-    setReturnDate('');
-  } else {
-    setDepartureDate('');
-    setReturnDate('');
-  }
-};
+  const handleDateChange = (dates) => {
+    if (tripType === "round-trip") {
+      if (Array.isArray(dates) && dates.length === 2) {
+        setDateRange(dates);
+        setDepartureDate(dates[0] ? dates[0].format('YYYY-MM-DD') : '');
+        setReturnDate(dates[1] ? dates[1].format('YYYY-MM-DD') : '');
+      } else {
+        setDateRange([null, null]);
+        setDepartureDate('');
+        setReturnDate('');
+      }
+    } else {
+      setDateRange([dates[0], null]);
+      setDepartureDate(dates[0] ? dates[0].format('YYYY-MM-DD') : '');
+      setReturnDate('');
+    }
+  };
+
+
+  const handleOneWayDateChange = (date) => {
+    if (tripType === "one-way") {
+      setDepartureDate(date ? date.format('YYYY-MM-DD') : '');
+      setSelectedDate(date ? date.format('YYYY-MM-DD') : null);
+    }
+  };
 
 
 useEffect(() => {
@@ -208,13 +222,26 @@ const handleDecrement = (type) => {
     if (state) {
       const { isRoundWay, departure, arrival, departureDate, returnDate, adults, children, infants } = state;
 
-      if (departureDate) {
-        const parsedReturnDate = returnDate ? returnDate : null;
-        setDates(parsedReturnDate ? [departureDate, parsedReturnDate] : [departureDate]);
-      }
+      // if (departureDate) {
+      //   const parsedReturnDate = returnDate ? returnDate : null;
+      //   setDates(parsedReturnDate ? [departureDate, parsedReturnDate] : [departureDate]);
+      // }
 
-    const formattedDepartureDate = format(new Date(departureDate), 'yyyy-MM-dd');
-    const formattedReturnDate = returnDate ? format(new Date(returnDate), 'yyyy-MM-dd') : '';
+      const depDate = departureDate ? moment(departureDate, 'YYYY-MM-DD') : null;
+      const retDate = returnDate ? moment(returnDate, 'YYYY-MM-DD') : null;
+
+
+      if (isRoundWay) {
+        setDateRange(depDate && retDate ? [depDate, retDate] : [depDate]);
+        setDepartureDate(depDate ? depDate.format('YYYY-MM-DD') : '');
+        setReturnDate(retDate ? retDate.format('YYYY-MM-DD') : '');
+      } else {
+        setDates([depDate]);
+        setDepartureDate(depDate ? depDate.format('YYYY-MM-DD') : '');
+        setReturnDate('');
+        setSelectedDate(depDate);
+        
+      }
 
       setTripType(isRoundWay ? "round-trip" : "one-way" );
       setDeparture(departure);
@@ -222,11 +249,11 @@ const handleDecrement = (type) => {
       setAdults(adults);
       setChildren(children);
       setInfants(infants);
-      setDepartureDate(formattedDepartureDate);
-      setReturnDate(formattedReturnDate);
+      setDepartureDate(departureDate);
+      setReturnDate(returnDate);
       setIsSearchReady(true); 
-      console.log("날짜포맷", formattedDepartureDate);
-      console.log("날짜포맷2", formattedReturnDate);
+     console.log(departureDate);
+     console.log(returnDate);
       console.log(departure);
       console.log(arrival);
     }
@@ -278,6 +305,7 @@ const handleDecrement = (type) => {
       setReturnDate('');
     }
   };
+
 
   // 비행기 이름 처리
   const getFormattedAirlineName = (airlineName) => {
@@ -382,26 +410,23 @@ const handleDecrement = (type) => {
       <div className={style.DatePart}>
         {tripType === 'round-trip' && (
           <div className={style.datePickerContainer}>
-           <Flatpickr
-           placeholder='날짜를 선택하세요'
-           options={{ 
-               mode: "range",
-           }}
-           value={dates}
-           onChange={handleDateChange}
-           className={style.searchFlatpickrInput}
-           />
+           <DatePicker.RangePicker 
+            format="YYYY-MM-DD" 
+            onChange={handleDateChange} 
+            value={dateRange}
+            placeholder='날짜를 선택하세요'
+          />
        </div>
         )}
         {tripType === 'one-way' && (
           <div className={style.datePickerContainer}>
-          <Flatpickr
-           placeholder='날짜를 선택하세요'
-                  options={{ mode: "single" }}
-                  value={dates}
-                  onChange={handleDateChange}
-                  className={style.searchFlatpickrInput}
-              />
+           <DatePicker
+            format="YYYY-MM-DD"
+            onChange={handleOneWayDateChange}
+            placeholder='날짜를 선택하세요'
+            value={selectedDate}
+           />
+         {/* {selectedDate && <div>선택된 날짜: {selectedDate}</div>} */}
           </div>
         )}
         </div>

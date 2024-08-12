@@ -12,4 +12,14 @@ public class ChecklistItemDTO {
     private String itemName;  // 엔티티의 필드 이름과 일치해야 함
     private boolean checked;
     private Long checklistId; // 체크리스트 ID
+
+    @Override
+    public String toString() {
+        return "ChecklistItemDTO{" +
+                "id=" + id +
+                ", itemName='" + itemName + '\'' +
+                ", checked=" + checked +
+                ", checklistId=" + checklistId +
+                '}';
+    }
 }

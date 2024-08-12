@@ -122,7 +122,7 @@ public class ReserveService {
     // DB 저장
     @Transactional
     public Reserve saveReservation(Long userId, String personnel, boolean isRoundTrip, Flight outboundFlight, Flight inboundFlight) {
-        System.out.println("왕복인가요" + isRoundTrip);
+//        System.out.println("왕복인가요" + isRoundTrip);
         Reserve reserve = new Reserve();
         User user = userRepository.findById(userId).orElse(null);
         reserve.setUser(user);
@@ -182,11 +182,11 @@ public class ReserveService {
         List<Reserve> allReserves = reserveRepository.findAll();
 
         for (Reserve reserve : allReserves) {
-            System.out.println("끝남 여부" + reserve.isIsended());
+//            System.out.println("끝남 여부" + reserve.isIsended());
             if (!reserve.isIsended()) {
                 List<FlightInfo> flightInfos = flightInfoRepository.findByReserve(reserve);
 
-                System.out.println(flightInfos);
+//                System.out.println(flightInfos);
 
                 // 왕복 예약인 경우, 마지막 도착 시간 찾기
                 LocalDateTime latestArrSch = flightInfos.stream()

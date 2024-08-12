@@ -59,7 +59,7 @@ const FlightInfoTabs = ({ pastFlights, upcomingFlights, reviewList }) => {
             <Flex direction="row" align="flex-start">
               <Box flex="1">
                 {pastFlights.map((flight, index) => {
-                  const review = reviewList.find((review) => flight.review && flight.review.id === review.id);
+              const review = reviewList.find((review) => flight.id === review.flightInfo.id);
                   return (
                     <FlightInfoCard 
                       key={flight.id} 
