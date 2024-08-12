@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Flex, Heading, Image} from "@chakra-ui/react";
+import {Box, Flex, Heading, Image} from "@chakra-ui/react";
 import Write from "../../../assets/images/review/reviewwrite.webp";
 import { RateFormUpdate } from "../components/Form";
 import { useLocation, useNavigate} from "react-router-dom";
@@ -59,7 +59,7 @@ const ReviewWrite = () => {
     if (review.content.length > 50) newError.content = "내용은 50자 이내로 입력해주세요";
 
     setError(newError);
-    return newError;
+    return Object.keys(newError).some(key => newError[key]);
   };
 
   // 리뷰 작성하기
@@ -92,65 +92,78 @@ const ReviewWrite = () => {
 
   return (
     <>
-      <Flex align="center" m={4}>
-        <Image src={Write} width="30px" />
-        <Heading as="h1" size="xl" ml={3}>리뷰 작성</Heading>
-      </Flex>
-      <Flex paddingLeft={10} gap={3} mb='10px'>
-        <div className={styles.airlineName}>항공사: {flight.airlineName}</div>
-        <div className={styles.boarding}>탑승일: 
+      <Box p={4}>
+        <Flex align="center" m={4} >
+          <Image src={Write} width="30px" />
+          <Heading as="h1" size="lg" ml={3}>나의 리뷰</Heading>
+        </Flex>
+        <Flex paddingLeft={10} gap={3} mb='10px' mt='40px'>
+          <div className={styles.airlineName}>항공사: {flight.airlineName}</div>
+          <div className={styles.boarding}>탑승일:&nbsp;&nbsp;&nbsp;
           {new Date(flight.depSch).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}</div>
-      </Flex>
-      <hr/>
-
-      <form onSubmit={submitReview}>
-        <div>
-          <div className={styles.reviewtitle}>[제목]</div>
-          <input type="text" name="title" className={styles.inputTitle}
-            value={review.title} onChange={(e) => changeValue(e.target.name, e.target.value)}/>
-          {error && <div className={styles.errorMessage}>{error.title}</div>}
-        </div>
-        <div className={styles.formInput}>
-          <div className={styles.question}>Q. 라운지 시설과 이용은 어떠셨나요?</div>
-          <RateFormUpdate name='lounge_rate' rate={review.lounge_rate} changeValue={changeValue}/>
-          {error && <div className={styles.errorMessage}>{error.lounge_rate}</div>}
-        </div>
-        <div className={styles.formInput}>
-          <div className={styles.question}>Q. 체크인과 탑승이 원활히 이루어졌나요?</div>
-          <RateFormUpdate name='procedure_rate' rate={review.procedure_rate} changeValue={changeValue} />
-          {error && <div className={styles.errorMessage}>{error.procedure_rate}</div>}
-        </div>
-        <div className={styles.formInput}>
-          <div className={styles.question}>Q. 비행기의 시설은 깨끗했나요?</div>
-          <RateFormUpdate name='clean_rate' rate={review.clean_rate} changeValue={changeValue} />
-          {error && <div className={styles.errorMessage}>{error.clean_rate}</div>}
-        </div>
-        <div className={styles.formInput}>
-          <div className={styles.question}>Q. 비행기 좌석 공간과 편안함은 어떠셨나요?</div>
-          <RateFormUpdate name='seat_rate' rate={review.seat_rate} changeValue={changeValue} />
-          {error && <div className={styles.errorMessage}>{error.seat_rate}</div>}
-        </div>
-        <div className={styles.formInput}>
-          <div className={styles.question}>Q. 기내 서비스는 어떠셨나요?</div>
-          <RateFormUpdate name='service_rate' rate={review.service_rate} changeValue={changeValue} />
-          {error && <div className={styles.errorMessage}>{error.service_rate}</div>}
-        </div>
-        <div className={styles.formInput}>
-          <div className={styles.question}>Q. 기내식 및 음료는 잘 제공되었나요?</div>
-          <RateFormUpdate name='flightmeal_rate' rate={review.flightmeal_rate} changeValue={changeValue} />
-          {error && <div className={styles.errorMessage}>{error.flightmeal_rate}</div>}
-        </div>
-        <div className={styles.formInput}>
-        <div className={styles.question}>Q. 더 하고 싶은 말을 적어주세요~</div>
-        <textarea name="content" value={review.content}  className={styles.reviewcontent}
-          onChange={(e) => changeValue(e.target.name, e.target.value)}/>
-        {error && <div className={styles.errorMessage}>{error.content}</div>}
-        </div>
-        <div className={styles.reviewBtn}>
-        <button type='button' className={`${styles.btn} ${styles.listbtn}`} onClick={prev}>이전</button>
-        <button type='submit' className={`${styles.btn} ${styles.writebtn}`}>등록</button>
-        </div>
-      </form>
+        </Flex>
+        <hr/>
+        <form onSubmit={submitReview}>
+          <Box
+            style={{ 
+              maxWidth: '900px', minWidth: '900px',
+              margin: 'auto', width: '90%',
+              borderWidth: '1px', borderRadius: '8px',
+              padding: '20px', marginTop: '40px',
+              marginBottom: '40px',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+              backgroundColor: 'white'
+          }}>
+            <div>
+              <div className={styles.reviewtitle}>[제목]</div>
+              <input type="text" name="title" className={styles.inputTitle}
+                value={review.title} onChange={(e) => changeValue(e.target.name, e.target.value)}/>
+              {error && <div className={styles.errorMessage}>{error.title}</div>}
+              </div>
+              <hr className={styles.line}/>
+              <div className={styles.formInput}>
+                <div className={styles.question}>Q. 라운지 시설과 이용은 어떠셨나요?</div>
+                <RateFormUpdate name='lounge_rate' rate={review.lounge_rate} changeValue={changeValue}/>
+                {error && <div className={styles.errorMessagerRate}>{error.lounge_rate}</div>}
+              </div>
+              <div className={styles.formInput}>
+                <div className={styles.question}>Q. 체크인과 탑승이 원활히 이루어졌나요?</div>
+                <RateFormUpdate name='procedure_rate' rate={review.procedure_rate} changeValue={changeValue} />
+                {error && <div className={styles.errorMessagerRate}>{error.procedure_rate}</div>}
+              </div>
+              <div className={styles.formInput}>
+                <div className={styles.question}>Q. 비행기의 시설은 깨끗했나요?</div>
+                <RateFormUpdate name='clean_rate' rate={review.clean_rate} changeValue={changeValue} />
+                {error && <div className={styles.errorMessagerRate}>{error.clean_rate}</div>}
+              </div>
+              <div className={styles.formInput}>
+                <div className={styles.question}>Q. 비행기 좌석 공간과 편안함은 어떠셨나요?</div>
+                <RateFormUpdate name='seat_rate' rate={review.seat_rate} changeValue={changeValue} />
+                {error && <div className={styles.errorMessagerRate}>{error.seat_rate}</div>}
+              </div>
+              <div className={styles.formInput}>
+                <div className={styles.question}>Q. 기내 서비스는 어떠셨나요?</div>
+                <RateFormUpdate name='service_rate' rate={review.service_rate} changeValue={changeValue} />
+                {error && <div className={styles.errorMessagerRate}>{error.service_rate}</div>}
+              </div>
+              <div className={styles.formInput}>
+                <div className={styles.question}>Q. 기내식 및 음료는 잘 제공되었나요?</div>
+                <RateFormUpdate name='flightmeal_rate' rate={review.flightmeal_rate} changeValue={changeValue} />
+                {error && <div className={styles.errorMessagerRate}>{error.flightmeal_rate}</div>}
+              </div>
+              <div className={styles.formInput}>
+              <div className={styles.question}>Q. 더 하고 싶은 말을 적어주세요~</div>
+              <textarea name="content" value={review.content}  className={styles.reviewcontent}
+                onChange={(e) => changeValue(e.target.name, e.target.value)}/>
+              {error && <div className={styles.errorMessage}>{error.content}</div>}
+            </div>
+          </Box>
+          <div className={styles.reviewBtn}>
+            <button type='button' className={`${styles.btn} ${styles.prevbtn}`} onClick={prev}>이전</button>
+            <button type='submit' className={`${styles.btn} ${styles.writebtn}`}>등록</button>
+          </div>
+        </form>
+      </Box>
     </>
   );
 };
