@@ -90,7 +90,7 @@ const ScheduleMain = () => {
         } catch (error) {
             console.error("Error updating checklist item: ", error);
             // Revert the checkbox change in case of error
-            setChecklistItems(checklistItems); 
+            readAllChecklistsAndItems(); // Re-fetch to ensure state consistency
         }
     };
 
@@ -137,7 +137,7 @@ const ScheduleMain = () => {
             }, {
                 headers: { Authorization: `Bearer ${token}`, "Content-Type": 'application/json' }
             });
-            readAllChecklistsAndItems();
+            readAllChecklistsAndItems(); // Refresh checklist items
         } catch (error) {
             console.error("Error adding checklist item: ", error);
         }
@@ -196,19 +196,19 @@ const ScheduleMain = () => {
                                                     .filter(item => item.checklistId === checklist.id)
                                                     .map(item => (
                                                         <Checkbox
-                                                        key={item.id}
-                                                        size='lg'
-                                                        isChecked={item.checked}
-                                                        onChange={(e) => handleCheckboxChange(item.id, item.checked, item.itemName, checklist.id, e)}
-                                                        colorScheme='blue'
-                                                        sx={{
-                                                            textDecoration: item.checked ? 'line-through 2px solid #a9a9a9' : 'none',
-                                                            transition: 'textDecoration 0.3s ease',
-                                                            color: item.checked ? 'lightgrey' : 'black',
-                                                        }}
-                                                    >
-                                                        {item.itemName}
-                                                    </Checkbox>
+                                                            key={item.id}
+                                                            size='lg'
+                                                            isChecked={item.checked}
+                                                            onChange={() => handleCheckboxChange(item.id, item.checked, item.itemName, checklist.id)}
+                                                            colorScheme='blue'
+                                                            sx={{
+                                                                textDecoration: item.checked ? 'line-through 2px solid #a9a9a9' : 'none',
+                                                                transition: 'textDecoration 0.3s ease',
+                                                                color: item.checked ? 'lightgrey' : 'black',
+                                                            }}
+                                                        >
+                                                            {item.itemName}
+                                                        </Checkbox>
                                                     ))
                                                 }
                                             </Stack>
