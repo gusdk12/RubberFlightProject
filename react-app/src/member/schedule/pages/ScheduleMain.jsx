@@ -1,46 +1,135 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import * as Swal from '../../../apis/alert.js';
 import Header from '../../../general/common/Header/Header';
 import style from '../CSS/ScheduleMain.module.css';
 import ScheduleItem from '../component/ScheduleItem';
 import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Stack, Checkbox } from '@chakra-ui/react';
 
 const ScheduleMain = () => {
     const { userInfo } = useContext(LoginContext);
     const [schedules, setSchedules] = useState([]);
+    const [checklists, setChecklists] = useState([]);
+    const [checklistItems, setChecklistItems] = useState([]);
+    const [selectedChecklistId, setSelectedChecklistId] = useState(null);
+
     const token = Cookies.get('accessToken');
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.body.style.backgroundColor = '#FFFFFF';
         document.body.style.overflowY = 'scroll';
     }, []);
     
-    useEffect(()=>{
-        readAllSchedule();
-    }, []);
+    useEffect(() => {
+        if (userInfo.id) {
+            readAllChecklists();
+            readAllSchedule();
+        }
+    }, [userInfo]);
 
-    const navigate = useNavigate();
-    // useEffect(()=>{
-    //     userInfo.id && id && userInfo.id != id && 
-    //         Swal.alert("권한이 없습니다.", "메인 화면으로 이동합니다.", "error", () => { navigate("/") });
-    // }, [userInfo.id]);
+    useEffect(() => {
+        if (selectedChecklistId) {
+            readChecklistItems(selectedChecklistId);
+        }
+    }, [selectedChecklistId]);
 
-    const readAllSchedule = () => {
-        axios({
-            method: "get",
-            url: "http://localhost:8282/schedule",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-        .then(response => {
-            const {data, status, statusText} = response;
-            setSchedules(data);
-        });
-    }
+    const readAllSchedule = async () => {
+        try {
+            const response = await axios.get("http://localhost:8282/schedule", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log("Schedule Response Data:", response.data); // 데이터 형식 확인
+            if (Array.isArray(response.data)) {
+                setSchedules(response.data);
+            } else {
+                console.error("예상과 다른 데이터 형식: ", response.data);
+            }
+        } catch (error) {
+            console.error("일정 가져오기 오류: ", error);
+        }
+    };
+
+    const readAllChecklists = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8282/checklist/user/${userInfo.id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setChecklists(response.data);
+            if (response.data.length > 0) {
+                setSelectedChecklistId(response.data[0].id);
+                readChecklistItems(response.data[0].id);
+            }
+        } catch (error) {
+            console.error("체크리스트 가져오기 오류: ", error);
+        }
+    };
+    const readChecklistItems = async (checklistId) => {
+        try {
+            const response = await axios.get(`http://localhost:8282/checklist/items/${checklistId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (Array.isArray(response.data)) {
+                // `completed` 대신 `checked`를 사용하여 상태 업데이트
+                const itemsWithChecked = response.data.map(item => ({
+                    ...item,
+                    checked: item.checked !== undefined ? item.checked : false // 기본값 설정
+                }));
+                setChecklistItems(itemsWithChecked);
+            } else {
+                console.error("예상과 다른 데이터 형식: ", response.data);
+            }
+        } catch (error) {
+            console.error("체크리스트 아이템 목록 가져오기 오류: ", error);
+        }
+    };
+
+    const handleChecklistSelect = (checklistId) => {
+        setSelectedChecklistId(checklistId);
+        readChecklistItems(checklistId);
+    };
+
+    const updateChecklistItem = async (itemId, itemName, checked, checklistId) => {
+        try {
+            await axios.put(`http://localhost:8282/checklist/items/${itemId}`, {
+                checklistId,
+                itemName,
+                checked
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": 'application/json'
+                }
+            });
+    
+            // 서버 업데이트 후 체크리스트 아이템 목록을 다시 읽어옵니다.
+            await readChecklistItems(checklistId);
+        } catch (error) {
+            console.error("체크리스트 아이템 수정 오류: ", error.response ? error.response.data : error.message);
+        }
+    };
+
+
+    const handleCheckboxChange = async (itemId, checked, itemName) => {
+        try {
+            // 먼저 상태를 비동기적으로 업데이트
+            await updateChecklistItem(itemId, itemName, !checked, selectedChecklistId);
+    
+            // 상태 업데이트
+            const updatedItems = checklistItems.map(item =>
+                item.id === itemId ? { ...item, checked: !checked } : item
+            );
+    
+            setChecklistItems(updatedItems);
+        } catch (error) {
+            console.error("체크리스트 아이템 수정 오류: ", error);
+        }
+    };
+    
+    
+
 
     const createNewSchedule = (e) => {
         e.preventDefault();
@@ -74,31 +163,51 @@ const ScheduleMain = () => {
             </div>
             
             <div id={style.contentPart}>
+                {/* 체크리스트 부분 */}
                 <div id={style.checklistPart}>
                     <div className={style.partTitle}>Checklist</div>
                     <div id={style.checklistPartContainer}>
                         <div className={style.ListsColumn}>
-                            <div className={style.checkList}>
-                                <div className={style.checkListTitle}>상비약</div>
-                                <div className={style.checkListContent}>배탈약<br/>감기약</div>
-                            </div>
-                            <div className={style.checkList}>
-                                <div className={style.checkListTitle}>옷</div>
-                                <div className={style.checkListContent}>드레스<br/>반바지<br/>잠옷</div>
-                            </div>
-                        </div>
-                        <div className={style.ListsColumn}>
-                            <div className={style.checkList}>
-                                <div className={style.checkListTitle}>필수품</div>
-                                <div className={style.checkListContent}>여권+볼펜<br/>지갑<br/>유심/포켓와이파이<br/>신분증<br/>현지화폐<br/>신용카드</div>
-                            </div>
-                            <div className={style.checkList}>
-                                <div className={style.checkListTitle}>기타</div>
-                                <div className={style.checkListContent}>우산/우비<br/>휴지<br/>지퍼백<br/>샤워기필터</div>
-                            </div>
+                            {checklists.length === 0 ? (
+                                <div>체크리스트가 없습니다.</div>
+                            ) : (
+                                checklists.map(checklist => (
+                                    <div 
+                                        key={checklist.id}
+                                        className={style.checkList}
+                                        onClick={() => handleChecklistSelect(checklist.id)}
+                                    >
+                                        <div className={style.checkListTitle}>{checklist.category}</div>
+                                        <div className={style.checkListContent}>
+                                        <Stack spacing={3} direction='column'>
+                                            {checklistItems.map(item => (
+                                                item.checklistId === checklist.id && (
+                                                    <Checkbox
+                                                        key={item.id}
+                                                        size='lg'
+                                                        isChecked={item.checked}
+                                                        onChange={() => handleCheckboxChange(item.id, item.checked, item.itemName)}
+                                                        colorScheme='blue'
+                                                        sx={{
+                                                            textDecoration: item.checked ? 'line-through 2px solid #a9a9a9' : 'none',
+                                                            transition: 'textDecoration 0.3s ease',
+                                                            color : item.checked ? 'lightgrey' : 'black',
+                                                        }}
+                                                    >
+                                                        {item.itemName}
+                                                    </Checkbox>
+                                                )
+                                            ))}
+                                        </Stack>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
                         </div>
                     </div>
                 </div>
+
+                {/* 일정 부분 */}
                 <div id={style.schedulePart}>
                     <div className={style.partTitle}>Schedule</div>
                     <div id={style.schedulePartContainer}>
@@ -121,8 +230,7 @@ const ScheduleMain = () => {
                 </div>
             </div>
 
-            <div id={style.footerPart}>
-            </div>
+            <div id={style.footerPart}></div>
         </>
     );
 };

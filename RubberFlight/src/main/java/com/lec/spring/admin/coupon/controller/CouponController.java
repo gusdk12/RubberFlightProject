@@ -79,7 +79,6 @@ public class CouponController {
         return new ResponseEntity<>("쿠폰 코드가 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
 
-
     // 사용자 쿠폰 사용
     @CrossOrigin
     @PostMapping("/user/use/{couponCode}")
