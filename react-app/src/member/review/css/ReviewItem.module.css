@@ -2,17 +2,34 @@
     font-family: 'KIMM_Bold';
 }
 
-.review_title {
-    font-size: 50px;
+.reviewTitle {
+    font-size: 35px;
+    margin: 20px 0 0 20px;
 }
 
-.writedate {
-    margin-right: 20px;
+.writeDate {
+    font-family: 'KIMM_Light';
+    color: #9e9e9e;
+    font-size: 13px;
+}
+
+.line {
+    border: 1px solid #93c5f7;
+    margin-bottom: 20px;
 }
 
 .airlineName {
-    margin-left: 20px;
-    margin-right: 180px;
+    margin-left: 30px;
+    font-size: 30px;
+}
+
+.date {
+    text-align: center;
+    color: #9e9e9e;
+}
+
+.boardingdate {
+   margin-right: 30px;
 }
 
 .starRatingsBase {
@@ -31,40 +48,11 @@ img {
     width: 50px;
 }
 
-.reviewHead {
-    margin-top: 30px;
+.reivewRate {
+    margin: 10px 0 0 30px;
 }
 
-.showbtn {
-    width: 100px;
-    height: 30px;
-    margin-left: 650px;
-    margin-top: -30px;
-    display: block;
-    background-color: rgb(147, 197, 247);
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 5px;
-}
-
-.showbtn:hover{
-    background-color: rgb(99, 173, 247);
-}
-
-.reviewDetail {
-    width: 100%;
-    height: 100%;
-    background-color: lightgray;
-}
-
-.detailTitle{
-    font-size: 50px;
-}
-
-.userInfo {
-    margin-left: 100px;
-}
-
-.flightInfo{
-    margin-left: 50px;
+.totalScore {
+    font-size: 25px;
+    margin: 20px 0 0 15px;
 }

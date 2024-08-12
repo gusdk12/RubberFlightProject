@@ -6,7 +6,7 @@ import { StarRating, TotalStarRating } from "../components/Rating";
 import styles from "../css/ReviewDetail.module.css";
 import axios from "axios";
 import { alert, confirm } from "../../../apis/alert";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ReviewDetail = () => {
   const { id } = useParams();
