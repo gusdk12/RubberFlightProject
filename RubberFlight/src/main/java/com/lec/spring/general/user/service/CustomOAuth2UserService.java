@@ -61,7 +61,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         String image = oAuth2Response.getImage();
         if(image == null) {
-            image = "/uploads/user.png";
+            image = "http://localhost:8282/uploads/user.png";
         }
 
 
