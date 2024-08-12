@@ -40,7 +40,11 @@
 }
 
 .content {
-    border-radius: 10px
+    border-radius: 10px;
+    border: dotted rgb(147, 197, 247);
+    padding: 15px;
+    margin: 0 0 30px 30px;
+    width: 800px;
 }
 
 .reviewBtn {

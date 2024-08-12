@@ -4,6 +4,8 @@ import com.lec.spring.member.checklist.domain.ChecklistDTO;
 import com.lec.spring.member.checklist.domain.Checklist;
 import com.lec.spring.member.checklist.domain.ChecklistItemDTO;
 import com.lec.spring.member.checklist.domain.Checklist_item;
+import com.lec.spring.member.checklist.repository.ChecklistRepository;
+import com.lec.spring.member.checklist.repository.Checklist_itemRepository;
 import com.lec.spring.member.checklist.service.ChecklistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,12 @@ public class ChecklistController {
 
     @Autowired
     private ChecklistService checklistService;
+
+    @Autowired
+    Checklist_itemRepository checklist_itemRepository;
+
+    @Autowired
+    ChecklistRepository checklistRepository;
 
     // 유저 아이디로 체크리스트 목록 불러오기
     @GetMapping("/user/{userId}")
@@ -74,6 +82,7 @@ public class ChecklistController {
     @GetMapping("/items/{checklistId}")
     public ResponseEntity<List<ChecklistItemDTO>> getChecklistItemsByChecklistId(@PathVariable Long checklistId) {
         List<ChecklistItemDTO> items = checklistService.getChecklistItemsByChecklistId(checklistId);
+        System.out.println("체크리스트 ID: " + checklistId + "에 대한 아이템: " + items); // 로그 추가
         if (items.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -82,13 +91,48 @@ public class ChecklistController {
 
     // 체크리스트 항목 수정하기
     @PutMapping("/items/{id}")
-    public ResponseEntity<ChecklistItemDTO> updateChecklistItem(@PathVariable Long id, @RequestBody ChecklistItemDTO updatedItemDTO) {
-        ChecklistItemDTO updatedItem = checklistService.updateChecklistItem(id, updatedItemDTO);
-        if (updatedItem == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<ChecklistItemDTO> updateChecklistItem(
+            @PathVariable Long id,
+            @RequestBody ChecklistItemDTO updatedItemDTO) {
+
+        if (id == null || updatedItemDTO.getChecklistId() == null) {
+            return ResponseEntity.badRequest().body(null); // ID가 null인 경우 잘못된 요청 반환
         }
-        return ResponseEntity.ok(updatedItem);
+
+        try {
+            // 체크리스트 아이템 조회
+            Checklist_item item = checklist_itemRepository.findById(id).orElse(null);
+            if (item == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // 체크리스트 객체 설정
+            Checklist checklist = checklistRepository.findById(updatedItemDTO.getChecklistId()).orElse(null);
+            if (checklist == null) {
+                return ResponseEntity.badRequest().body(null); // 체크리스트가 없는 경우 잘못된 요청 반환
+            }
+
+            // 아이템 업데이트
+            item.setItemName(updatedItemDTO.getItemName()); // 수정: setItemName 사용
+            item.setChecked(updatedItemDTO.isChecked());    // 수정: setChecked 사용
+            item.setChecklist(checklist);  // 체크리스트 설정
+
+            Checklist_item updatedItem = checklist_itemRepository.save(item);
+
+            // DTO로 변환하여 반환
+            ChecklistItemDTO responseDTO = new ChecklistItemDTO();
+            responseDTO.setId(updatedItem.getId());
+            responseDTO.setItemName(updatedItem.getItemName());
+            responseDTO.setChecked(updatedItem.isChecked());
+            responseDTO.setChecklistId(updatedItem.getChecklist() != null ? updatedItem.getChecklist().getId() : null); // 수정: checklistId 가져오기
+
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            e.printStackTrace(); // 스택 트레이스를 로그에 출력
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
+
 
     // 체크리스트 항목 삭제하기
     @DeleteMapping("/items/{id}")

@@ -2,10 +2,7 @@ package com.lec.spring.member.checklist.domain;
 
 import com.lec.spring.general.user.domain.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity(name = "FT_CHECKLIST_LIST")
+@ToString(exclude = "items")
 public class Checklist {
 
     @Id
