@@ -103,18 +103,18 @@ const FlightInfoCard = ({ flight, index, tabKey, isPast, review }) => {
       </Flex>
 
       {isPast && ( flight.review && flight.review.id === review.id ? (
-            <MotionButton className="review-button" position="absolute"
-            bottom="15px" right="20px" size="lg" display={isHovered ? 'block' : 'none'}
-            onClick={(e) => { e.stopPropagation(); navigate(`/mypage/review/${review.id}`); }}>
-            리뷰 확인
-          </MotionButton>
-          ) : (
-            <MotionButton className="review-button" position="absolute" 
-            bottom="15px" right="20px" size="lg" display={isHovered ? 'block' : 'none'}
-            onClick={(e) => { e.stopPropagation();
-            navigate(`/mypage/review-write`, { state: { flight } }); }}>{/* state 로 항공사 이름, 탑승일 전송 */}
-            리뷰 작성
-          </MotionButton>
+        <MotionButton className="review-button" position="absolute"
+          bottom="15px" right="20px" size="lg" display={isHovered ? 'block' : 'none'}
+          onClick={(e) => { e.stopPropagation(); navigate(`/mypage/review/${review.id}`); }}>
+          리뷰 확인
+        </MotionButton>
+        ) : (
+        <MotionButton className="review-button" position="absolute" 
+          bottom="15px" right="20px" size="lg" display={isHovered ? 'block' : 'none'}
+          onClick={(e) => { e.stopPropagation();
+          navigate(`/mypage/review-write`, { state: { flight } }); }}>{/* state 로 항공사 이름, 탑승일 전송 */}
+          리뷰 작성
+        </MotionButton>
       ))}
     </MotionBox>
   );
