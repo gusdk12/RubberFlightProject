@@ -1,21 +1,36 @@
 /* card 목록 */
+.allCon {
+    /* border: 1px solid purple; */
+    height: 170px;
+}
+
+.profileCon {
+    /* border: 1px solid red; */
+    float: left;
+}
 .userImg {
-    outline: 2px solid red;
+    /* border: 1px solid aqua; */
     width: 100px;
     height: 100px;
-    margin-left: 270px;
-    margin-top: 5px;
+}
+
+.reviewCon{
+    /* border: 1px solid cornflowerblue; */
+    width: 750px;
+    float: left;
 }
 
 .username {
+    /* border: 1px solid orange; */
     font-family: 'KIMM_Light';
-    text-align: right;
+    text-align: center;
     margin-right: 25px;
 }
 
 .cardtitle {
+    /* border: 1px solid green; */
     font-family: 'KIMM_Bold';
-    font-size: 35px;
+    font-size: 15px;
     white-space: nowrap;    /* 텍스트를 한 줄로 유지 */
     overflow: hidden;       /* 넘치는 텍스트 숨김 */
     text-overflow: ellipsis; /* 넘치는 텍스트에 생략 기호 추가 */
@@ -23,14 +38,14 @@
     width: 350px;
 }
 
-.line {
-    border: 1px solid #93c5f7;
+.line { 
+    /* border: 1px solid #93c5f7; */
     margin: 10px 0;
  }
 
 .airlinename {
     font-family: 'KIMM_Bold';
-    font-size: 25px;
+    font-size: 15px;
     margin: -40px 0 10px 20px;
 }
 
