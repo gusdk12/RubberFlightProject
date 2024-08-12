@@ -50,6 +50,7 @@ INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인2", f
 INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인1", true);
 INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인1", false);
 INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인1,소아2", false);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인1,소아2", false);
 
 # 예약 비행정보
 INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
@@ -79,6 +80,23 @@ VALUES (8, "인천", "ICN", "나리타", "NRT", 182930, "bx166", "2024-07-21T15:
 INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
 VALUES (10, "인천", "ICN", "SYD", "SYD", 182930, "KE401", "2024-08-11T18:55:00", "2024-08-12T06:20:00", "Korean Air", "1", "12", "2", "10");
 
+INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (20, "인천", "ICN", "CAN", "CAN", 182930, "CZ340", "2024-08-12T10:45:00.000", "2024-08-12T13:40:00.000", "China Southern Airlines", "1", "123", "2", "11");
+
+INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (18, "인천", "ICN", "KUL", "KUL", 182230, "ID821", "2024-08-12T06:50:00.000", "2024-08-12T12:30:00.000", "Batik Air", "1", "46", "1", "11");
+
+INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (19, "인천", "ICN", "KUL", "KUL", 182230, "ID821", "2024-08-12T06:50:00.000", "2024-08-12T12:30:00.000", "Batik Air", "1", "46", "1", "11");
+
+INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (19, "KIX", "KIX", "인천", "ICN", 212930, "oz111", "2024-08-12T10:50:00.000","2024-08-12T12:40:00.000", "ANA", "1", "123", "2", "11");
+
+INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (24, "ICN", "ICN", "KIX", "KIX", 212930, "H15881",  "2024-08-12T12:05:00.000","2024-08-12T14:00:00.000", "t'way air", "1", "26", "1", "14");
+
+INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (24, "KIX", "KIX", "ICN","ICN", 212930, "BX171",  "2024-08-12T12:50:00.000","2024-08-12T14:50:00.000", "Air Busan", "1", "3", "1", "128");
 
 # 항공사
 INSERT INTO ft_airline (id, name) VALUES (1, 'eastar jet');
