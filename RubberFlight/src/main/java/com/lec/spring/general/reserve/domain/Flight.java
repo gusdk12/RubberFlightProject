@@ -29,11 +29,18 @@ public class Flight {
     String depDayFormat;
     String arrDayFormat;
 
+    String depTerminal;
+    String depGate;
+    String arrTerminal;
+    String arrGate;
+
     LocalDateTime depSch;
     LocalDateTime arrSch;
 
     LocalDateTime depTimeUTC;
     LocalDateTime arrTimeUTC;
+
+    String flightIata;
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -52,6 +59,12 @@ public class Flight {
 
         this.airlineIata = jsonNode.path("airline").path("iataCode").asText(null);
         this.airlineName = jsonNode.path("airline").path("name").asText(null);
+
+        this.depTerminal = jsonNode.path("departure").path("terminal").asText(null);
+        this.depGate = jsonNode.path("departure").path("gate").asText(null);
+        this.arrTerminal = jsonNode.path("arrival").path("terminal").asText(null);
+        this.arrGate = jsonNode.path("arrival").path("gate").asText(null);
+        this.flightIata = jsonNode.path("flight").path("iataNumber").asText(null);
 
         // JSON에서 시간 정보 가져오기
         String depTimeStr = jsonNode.path("departure").path("scheduledTime").asText(null); // "HH:mm"
