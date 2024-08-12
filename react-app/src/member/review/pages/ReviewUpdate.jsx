@@ -126,6 +126,7 @@ const prev = () => {
             value={review.title} onChange={(e) => changeValue(e.target.name, e.target.value)}/>
           {error && <div className={styles.errorMessage}>{error.title}</div>}
           </div>
+          <hr className={styles.line}/>
           <div className={styles.formInput}>
             <div className={styles.question}>Q. 라운지 시설과 이용은 어떠셨나요?</div>
             <RateFormUpdate name='lounge_rate' rate={review.lounge_rate} changeValue={changeValue}/>

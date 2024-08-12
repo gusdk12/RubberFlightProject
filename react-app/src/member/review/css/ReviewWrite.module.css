@@ -37,6 +37,11 @@
     border: 2px solid rgb(153, 210, 245) !important;
 }
 
+.line{
+    margin: 20px;
+    border: 1px solid rgb(153, 210, 245);
+}
+
 .rating {
     display: flex; /* 플렉스 박스를 사용하여 정렬 */
     flex-direction: row-reverse; /* 오른쪽부터 시작하도록 설정 */

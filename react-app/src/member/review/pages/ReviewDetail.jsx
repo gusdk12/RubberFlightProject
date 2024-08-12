@@ -11,7 +11,6 @@ import Review from "../../../assets/images/review/review.webp";
 
 const ReviewDetail = () => {
   const { id } = useParams();
-  const { userInfo } = useUser();
   const navigate = useNavigate();
   const [review, setReview] = useState({
     title: "",

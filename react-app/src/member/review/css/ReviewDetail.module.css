@@ -40,4 +40,40 @@
 }
 
 .content {
-    border-radius: 
+    border-radius: 10px
+}
+
+.reviewBtn {
+    text-align: right;
+}
+
+.btn {
+    font-size: 20px;
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.listbtn {
+    margin-right: 580px;
+    background-color: rgb(211, 235, 250);
+}
+.listbtn:hover {
+    background-color: rgb(200, 233, 253);
+}
+
+.updatebtn {
+    background-color: rgb(200, 233, 253);
+    margin-right: 20px;
+}
+.updatebtn:hover {
+    background-color: rgb(180, 224, 251);
+}
+
+.deletebtn {
+    background-color: rgb(250, 190, 202);
+}
+
+.deletebtn:hover {
+    background-color: rgb(252, 161, 179);
+}
