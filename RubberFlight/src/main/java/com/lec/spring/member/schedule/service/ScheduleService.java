@@ -48,8 +48,10 @@ public class ScheduleService {
     }
 
     public List<User> findAllBySchedule(Long schedule){
-        return participationRepository.findAllByScheduleId(schedule)
+        List<User> users = participationRepository.findAllByScheduleId(schedule)
                 .stream().map(part -> part.getUser()).collect(Collectors.toList());
+
+        return users;
     }
 
     public boolean isExist(Long id){

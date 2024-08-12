@@ -50,7 +50,7 @@ public class UserController {
             @RequestParam("tel") String tel,
             @RequestParam("file") MultipartFile file) {
 
-        String filePath = "/uploads/user.png";
+        String filePath = "http://localhost:8282/uploads/user.png";
 
         // 파일 처리 로직
         if (!file.isEmpty()) {

@@ -158,9 +158,22 @@ public class ReserveController {
                                                 ) {
         String token = request.getHeader("Authorization").split(" ")[1];
         Long userId = jwtUtil.getId(token);
-        System.out.println("유저 아이디" + userId);
-        Reserve reserve = reserveService.saveReservation(userId, reserveRequest.getPersonnel(), reserveRequest.isRoundTrip(), reserveRequest.getOutboundFlight(), reserveRequest.getInboundFlight());
-        System.out.println("예약정보" + reserve);
+//        System.out.println("유저 아이디" + userId);
+        boolean isRoundTrip;
+
+        Flight outboundFlight = reserveRequest.getOutboundFlight();
+//        System.out.println("outboundFlight" + outboundFlight);
+
+        Flight inboundFlight =  reserveRequest.getInboundFlight().orElse(null);
+//        System.out.println("inboundFlight" + inboundFlight);
+
+        if(inboundFlight == null || inboundFlight.equals("")) isRoundTrip = false;
+        else isRoundTrip = true;
+//        System.out.println("왕복일까요111" + isRoundTrip);
+
+
+        Reserve reserve = reserveService.saveReservation(userId, reserveRequest.getPersonnel(), isRoundTrip, outboundFlight, inboundFlight);
+//        System.out.println("예약정보" + reserve);
         return ResponseEntity.ok(reserve);
     }
 

@@ -64,6 +64,7 @@ public class ChecklistService {
 
     public List<ChecklistItemDTO> getChecklistItemsByChecklistId(Long checklistId) {
         List<Checklist_item> items = checklist_itemRepository.findByChecklistId(checklistId);
+        System.out.println("Found items: " + items); // 로그 추가
         return items.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -130,7 +131,7 @@ public class ChecklistService {
     private ChecklistItemDTO convertToDTO(Checklist_item item) {
         ChecklistItemDTO dto = new ChecklistItemDTO();
         dto.setId(item.getId());
-        dto.setItemName(item.getItem());
+        dto.setItemName(item.getItemName());
         dto.setChecklistId(item.getChecklist().getId());
         return dto;
     }
@@ -147,7 +148,8 @@ public class ChecklistService {
     private Checklist_item convertToEntity(ChecklistItemDTO dto) {
         Checklist_item item = new Checklist_item();
         item.setId(dto.getId());
-        item.setItem(dto.getItemName());
+        item.setItemName(dto.getItemName());
+        item.setChecked(dto.isChecked());
         return item;
     }
 }
