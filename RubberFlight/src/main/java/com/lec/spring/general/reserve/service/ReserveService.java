@@ -120,6 +120,7 @@ public class ReserveService {
     // DB 저장
     @Transactional
     public Reserve saveReservation(Long userId, String personnel, boolean isRoundTrip, Flight outboundFlight, Flight inboundFlight) {
+        System.out.println("왕복인가요" + isRoundTrip);
         Reserve reserve = new Reserve();
         User user = userRepository.findById(userId).orElse(null);
         reserve.setUser(user);
@@ -129,10 +130,14 @@ public class ReserveService {
         List<FlightInfo> flights = new ArrayList<>();
 
         if(isRoundTrip) {
-            FlightInfo outbound = createFlgihtInfo(reserve, outboundFlight);
-            FlightInfo inbound = createFlgihtInfo(reserve, inboundFlight);
-            flights.add(outbound);
-            flights.add(inbound);
+            if (outboundFlight != null) {
+                FlightInfo outbound = createFlgihtInfo(reserve, outboundFlight);
+                flights.add(outbound);
+            }
+            if (inboundFlight != null) {
+                FlightInfo inbound = createFlgihtInfo(reserve, inboundFlight);
+                flights.add(inbound);
+            }
         } else {
             FlightInfo outbound = createFlgihtInfo(reserve, outboundFlight);
             flights.add(outbound);
@@ -144,8 +149,9 @@ public class ReserveService {
 
     private FlightInfo createFlgihtInfo(Reserve reserve, Flight flight) {
         FlightInfo flightInfo = new FlightInfo();
-        String depAirportName = airportRepository.findByAirportIso(flight.getDepAirport()).getAirportName();
-        String arrAirportName = airportRepository.findByAirportIso(flight.getArrAirport()).getAirportName();
+        String depAirportName = flight != null ? airportRepository.findByAirportIso(flight.getDepAirport()).getAirportName() : null;
+        String arrAirportName = flight != null ? airportRepository.findByAirportIso(flight.getArrAirport()).getAirportName() : null;
+
         System.out.println(depAirportName);
         System.out.println(arrAirportName);
         flightInfo.setReserve(reserve);
@@ -154,10 +160,14 @@ public class ReserveService {
         flightInfo.setArrAirport(arrAirportName);
         flightInfo.setArrIata(flight.getArrAirport());
         flightInfo.setPrice(flight.getPrice());
-        flightInfo.setFlightIat(flight.getAirlineIata());
+        flightInfo.setFlightIat(flight.getFlightIata());
         flightInfo.setDepSch(flight.getDepSch());
         flightInfo.setArrSch(flight.getArrSch());
         flightInfo.setAirlineName(flight.getAirlineName());
+        flightInfo.setDepTerminal(flight.getDepTerminal());
+        flightInfo.setDepGate(flight.getDepGate());
+        flightInfo.setArrTerminal(flight.getArrTerminal());
+        flightInfo.setArrGate(flight.getArrGate());
 
         return flightInfo;
     }
