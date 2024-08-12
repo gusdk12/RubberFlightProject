@@ -20,9 +20,9 @@ SELECT * FROM ft_date;
 DESCRIBE ft_review;
 DESCRIBE ft_airline;
 
-delete from ft_flightinfo
-where id=26;
-
-update ft_flightinfo
-set arr_sch = "2024-08-12T14:05:00.000"
-where id=28;
+# delete from ft_flightinfo
+# where id=26;
+#
+# update ft_flightinfo
+# set arr_sch = "2024-08-12T14:05:00.000"
+# where id=28;

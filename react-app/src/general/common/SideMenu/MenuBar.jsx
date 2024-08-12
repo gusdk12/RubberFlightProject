@@ -1,11 +1,20 @@
+import React, { useContext } from "react";
 import { Box, Text, Link as ChakraLink, ScaleFade, Button, Flex } from "@chakra-ui/react";
-import React from "react";
 import { IoAirplaneOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { FiBookOpen } from "react-icons/fi";
 import { MdOutlineAirplaneTicket } from "react-icons/md";
+import { MdOutlineModeComment } from "react-icons/md";
+import { LoginContext } from '../../user/contexts/LoginContextProvider';
 
 const MenuBar = () => {
+  const navigate = useNavigate();
+  const { logout } = useContext(LoginContext);
+
+  const handleButtonClick = () => {
+    navigate('/search'); 
+  };
+
   return (
     <>
       {/* 메뉴바 */}
@@ -31,10 +40,11 @@ const MenuBar = () => {
               pr={7}
               pt={6}
               pb={6}
-              mt={2}
+              boxShadow="0 11px 15px rgba(0, 81, 254, 0.2)" 
               _hover={{
                 background: "linear-gradient(90deg, #0051FE, #1F6EFD, #3187FD, #4796FD)",
               }}
+              onClick={handleButtonClick}
             >
               <IoAirplaneOutline fontSize="20px" />
               <Text ml={3} fontFamily="Arial, sans-serif" fontWeight="bold">Flight Search</Text>
@@ -42,16 +52,15 @@ const MenuBar = () => {
           </Flex>
 
           {[
-            // { name: "내 정보", path: "/mypage" },
             { name: "내 정보", path: "/mypage", icon: <FiBookOpen /> },
-            // { name: "예약 정보", path: "/mypage/flight-info" },
             { name: "예약 정보", path: "/mypage/flight-info", icon: <MdOutlineAirplaneTicket /> },
-            { name: "리뷰 내역", path: "/mypage/review", icon: null },
+            { name: "리뷰 내역", path: "/mypage/review", icon: <MdOutlineModeComment /> },
           ].map((item, index) => (
             <ScaleFade key={index} in={true} initialScale={0.9} delay={index * 0.1}>
               <div
                 style={{
-                  marginBottom: "20px",
+                  marginTop: "20px",
+                  marginBottom: "30px",
                   textAlign: "left",
                   paddingLeft: "50px",
                   transition: "color 0.3s ease, background-color 0.3s ease",
@@ -69,7 +78,7 @@ const MenuBar = () => {
                     borderRadius: "5px",
                     display: "flex",
                     alignItems: "center",
-                    fontSize: "18px",
+                    fontSize: "17px",
                     fontFamily: "Roboto",
                     fontWeight: "bold",
                   }}
@@ -78,7 +87,7 @@ const MenuBar = () => {
                     transform: "translateX(5px)",
                   }}
                 >
-                  {item.icon && <span style={{ marginRight: '8px' }}>{item.icon}</span>}
+                  {item.icon && <span style={{ marginRight: '22px' }}>{item.icon}</span>}
                   {item.name}
                 </ChakraLink>
               </div>
@@ -100,6 +109,7 @@ const MenuBar = () => {
               backgroundColor: "#93ADD5",
               color: "white",
             }}
+            onClick={logout} 
           >
             <Text fontFamily="Arial, sans-serif" fontWeight="bold">logout</Text>
           </Button>
