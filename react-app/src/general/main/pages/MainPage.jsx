@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { color } from 'framer-motion';
 import style from '../CSS/Main.module.css'
-import '../../reserve/css/flatpickr.css'
+// import '../../reserve/css/flatpickr.css'
  
 const MainPage = () => {
     const [isAirplaneLoaded, setIsAirplaneLoaded] = useState(false);

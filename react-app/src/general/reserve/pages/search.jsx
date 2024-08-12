@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import '../css/flatpickr.css';
+// import '../css/flatpickr.css';
 import { searchFlight } from '../../../apis/flightApis';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';

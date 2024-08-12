@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import style from '../CSS/ScheduleEdit.module.css';
 import webSocketService from '../pages/WebSocketService';
 import DateItem from './DateItem';
-import { Textarea } from '@chakra-ui/react'
+import TextareaAutosize from 'react-textarea-autosize';
 
 
 const ScheduleEditPart = (props) => {
@@ -31,19 +31,31 @@ const ScheduleEditPart = (props) => {
 
     return (
         <div id={style.editPart}>
+            <div id={style.editcontainer}>
+                <div id={style.adddatecontainer}>
+                    <div id={style.addDate}/>
+                    <div id={style.addButton}/>
+                </div>
+            </div>
             <div id={style.datelistcontainer}>
                 {dates.map((date, index) => 
                     <div className={style.dateItem} key={index}>
                         <div className={style.dateHeader}>{date.date}</div>
                         <div className={style.dateContent}>
-                            <Textarea
-                                variant='unstyled'
+                            <TextareaAutosize
+                                minRows={3}
                                 value={date.content}
                                 onChange={(e) => {changeValue(e, index)}}
                                 placeholder='일정을 작성해보세요.'
                                 resize="none"
-                                height="100%"
                                 spellCheck={false}
+                                style={{
+                                  width: '100%',
+                                  backgroundColor: '#ffffff00',
+                                  resize: "none",
+                                  border: "0px",
+                                  outline: 'none', // 클릭 시 outline 제거
+                                }}
                             />
                         </div>
                     </div>
