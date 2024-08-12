@@ -42,10 +42,10 @@ const MenuBar = () => {
           </Flex>
 
           {[
-            { name: "내 정보", path: "/mypage" },
-            // { name: "내 정보", path: "/mypage", icon: <FiBookOpen /> },
-            { name: "예약 정보", path: "/mypage/flight-info" },
-            // { name: "예약 정보", path: "/mypage/flight-info", icon: <MdOutlineAirplaneTicket /> },
+            // { name: "내 정보", path: "/mypage" },
+            { name: "내 정보", path: "/mypage", icon: <FiBookOpen /> },
+            // { name: "예약 정보", path: "/mypage/flight-info" },
+            { name: "예약 정보", path: "/mypage/flight-info", icon: <MdOutlineAirplaneTicket /> },
             { name: "리뷰 내역", path: "/mypage/review", icon: null },
           ].map((item, index) => (
             <ScaleFade key={index} in={true} initialScale={0.9} delay={index * 0.1}>

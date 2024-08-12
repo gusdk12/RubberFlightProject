@@ -10,7 +10,7 @@ import { IoIosArrowDroprightCircle } from "react-icons/io";
 
 const FlightInfoDetail = () => {
   const { flightId } = useParams(); 
-  const { flightInfo, setFlightId } = useContext(FlightInfoContext); 
+  const { flightInfo, flightHistory, setFlightId } = useContext(FlightInfoContext); 
   const navigate = useNavigate(); 
 
   useEffect(() => {
@@ -39,11 +39,19 @@ const FlightInfoDetail = () => {
         }}
       >
         {/* 상단 FlightDetails.jsx */}
-        <FlightDetails info={flightInfo} />
+        {flightHistory && flightHistory.length > 0 ? (
+          <FlightDetails info={flightHistory} /> 
+        ) : (
+          <FlightDetails info={flightInfo} /> 
+        )}
         <Box borderBottom="1px" borderColor="gray.300" my={4} />
 
         {/* 하단 FlightInfoItem.jsx */}
-        <FlightInfoItem info={flightInfo} />
+        {flightHistory && flightHistory.length > 0 ? (
+          <FlightInfoItem info={flightHistory} /> 
+        ) : (
+          <FlightInfoItem info={flightInfo} /> 
+        )}
 
         <Flex justifyContent="flex-end" mt={10} mr={30}>
           <Link href={``} color="blue.500" isExternal display="flex" alignItems="center">
