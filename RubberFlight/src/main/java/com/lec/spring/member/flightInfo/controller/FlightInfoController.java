@@ -35,7 +35,7 @@ public class FlightInfoController {
     @Value("${app.api-key.aviation}")
     private String aviation_key;
 
-    // 모든 예약 정보
+    // 유저별 모든 예약 정보
     @CrossOrigin
     @GetMapping("/list")
     public ResponseEntity<List<FlightInfo>> getAllFlightInfo(HttpServletRequest request) {
@@ -43,6 +43,14 @@ public class FlightInfoController {
         Long userId = jwtUtil.getId(token);
 
         List<FlightInfo> flightInfoList = flightInfoService.findByUserId(userId);
+        return new ResponseEntity<>(flightInfoList, HttpStatus.OK);
+    }
+
+    // 모든 예약 정보
+    @CrossOrigin
+    @GetMapping("/infolist")
+    public ResponseEntity<?> getAllFlightInfo() {
+        List<FlightInfo> flightInfoList = flightInfoService.findAll();
         return new ResponseEntity<>(flightInfoList, HttpStatus.OK);
     }
 

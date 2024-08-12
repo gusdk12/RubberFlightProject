@@ -10,7 +10,17 @@ const FlightInfoTabs = ({ pastFlights, upcomingFlights, reviewList }) => {
   };
 
   return (
-    <Tabs variant="line" className="flight-tab-container" onChange={handleTabChange}>
+    <Tabs
+      variant="line"
+      onChange={handleTabChange}
+      style={{
+        maxWidth: '700px',
+        minWidth: '700px',
+        margin: 'auto',
+        width: '90%',
+        marginTop: '30px',
+      }}
+    >
       <TabList>
         <Tab _selected={{ color: "#6d9eeb", borderBottom: "2px solid #6d9eeb", fontWeight: "bold" }}>
           예정된 예약

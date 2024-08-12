@@ -15,7 +15,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query(value = """
         SELECT * FROM ft_review r
         ORDER BY (r.seat_rate + r.service_rate + r.procedure_rate
-        + r.flightmeal_rate + r.lounge_rate + r.clean_rate) / 6 DESC
+        + r.flightmeal_rate + r.lounge_rate + r.clean_rate) / 6 DESC, r.date DESC
         """, nativeQuery = true)
     Page<Review> findByRateList(PageRequest pageRequest);
 
@@ -33,7 +33,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
                  JOIN ft_reservation re ON f.reservation_id = re.id
                  JOIN ft_user u ON re.user_id = u.id
         where u.id = :id
-        ORDER BY (r.seat_rate + r.service_rate + r.procedure_rate + r.flightmeal_rate + r.lounge_rate + r.clean_rate) / 6 DESC
+        ORDER BY (r.seat_rate + r.service_rate + r.procedure_rate + r.flightmeal_rate
+         + r.lounge_rate + r.clean_rate) / 6 DESC, r.date DESC
         """, nativeQuery = true)
     Page<Review> findByUserRate(@Param("id") Long user, PageRequest pageRequest);
 
@@ -47,12 +48,14 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             FROM ft_review r
             JOIN ft_airline a ON r.airline_id = a.id
             where r.airline_id = :id
-            ORDER BY (r.seat_rate + r.service_rate + r.procedure_rate + r.flightmeal_rate + r.lounge_rate + r.clean_rate) / 6 DESC
+            ORDER BY (r.seat_rate + r.service_rate + r.procedure_rate + r.flightmeal_rate
+             + r.lounge_rate + r.clean_rate) / 6 DESC, r.date DESC
                 """, nativeQuery = true)
     Page<Review> findByAirlineRate(@Param("id") Long airline, PageRequest pageRequest);
 
     // 해당 유저 모든 리뷰 조회
     List<Review> findByFlightInfo_ReserveUserId(Long userId);
+
 }
 
 

@@ -1,11 +1,58 @@
-.errorMessage {
-    color: red;
-    padding: 10px;
+*{
+    font-family: 'KIMM_Bold';
+}
+
+.airlineName {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.boarding {
+    font-size: 18px;
+    margin: 20px 0 0 100px;
+}
+
+.reviewtitle {
+    font-size: 30px;
+    margin: 20px 0 10px 20px;
+}
+
+.inputTitle{
+    border: 1px solid #00235A !important;
+    border-radius: 10px;
+    width: 850px;
+    margin: 0 20px 0 40px;
+    padding: 5px 5px 5px 20px;
+    text-align: left;
+}
+
+.inputTitle:focus {
+    border: 2px solid #001b45 !important;
+}
+
+.question {
+    text-align: center;
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+.formInput {
+    margin: 20px 0;
+}
+
+.reviewcontent {
+    width: 850px;
+    height: 100px;
+    resize: none;
+    border: 1px solid #00235A;
+    border-radius: 10px;
+    margin: 0 20px 0px 40px;
+    padding: 10px 10px 10px 20px;
 }
 
 .reviewBtn {
     text-align: right;
-    margin: 0 40px 60px 0;
+    margin: -10px 40px 60px 0;
 }
 
 .btn {
@@ -15,10 +62,24 @@
     border-radius: 5px;
 }
 
-.updatebtn, .prevbtn {
+.listbtn {
     margin-right: 20px;
-    background-color: rgb(140, 243, 243);
+    background-color: rgb(200, 233, 253);
 }
-.updatebtn:hover, .prevbtn:hover {
-    background-color: rgb(126, 236, 236);
+.listbtn:hover {
+    background-color: rgb(180, 224, 251);
+}
+
+.writebtn {
+    margin-right: 20px;
+    background-color: rgb(200, 233, 253);
+}
+.writebtn:hover {
+    background-color: rgb(180, 224, 251);
+}
+
+.errorMessage {
+    color: red;
+    margin-top: 20px 0 30px 0;
+    text-align: center;
 }

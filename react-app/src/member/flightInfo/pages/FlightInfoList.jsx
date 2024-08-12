@@ -4,7 +4,6 @@ import axios from 'axios';
 import { Box, Flex, Heading, Spinner, Image } from '@chakra-ui/react';
 import FlightInfoTabs from '../components/FlightInfoTabs';
 import img2 from '../../../assets/images/flightInfo/img2.webp';
-import '../common/CSS/FlightInfoListStyle.css';
 
 const FlightInfoList = () => {
   const [flightInfoList, setFlightInfoList] = useState([]);
@@ -13,13 +12,13 @@ const FlightInfoList = () => {
 
   // 유저 리뷰 데이터 불러오기
   const fetchReviews = async () => {
-    const token = Cookies.get('accessToken'); 
+    const token = Cookies.get('accessToken');
     if (!token) {
       console.error("토큰을 찾을 수 없습니다.");
       setLoading(false);
       return;
     }
-    
+
     try {
       const response = await axios.get(
         `http://localhost:8282/review/reviewlist`, {
@@ -62,10 +61,10 @@ const FlightInfoList = () => {
         setLoading(false);
       }
     };
-    
+
     fetchFlightInfo();
     fetchReviews();
-  }, []);  
+  }, []);
 
   if (loading) {
     return (
@@ -74,7 +73,7 @@ const FlightInfoList = () => {
       </Flex>
     );
   }
- 
+
   // 현재 시각을 기준으로 과거와 미래 항공편을 분류
   const now = new Date();
   const pastFlights = flightInfoList.filter(flight => new Date(flight.arrSch) < now);
@@ -82,7 +81,7 @@ const FlightInfoList = () => {
 
   return (
     <Box p={4} backgroundColor="linear-gradient(to left, #ffffff 0%, #ffffff00 3%, #ffffff00 97%,#ffffff 100%)">
-      <Flex align="center" className="flight-label-container" mb={4}>
+      <Flex align="center"  mb={4}>
         <Image src={img2} width="30px" />
         <Heading as="h1" size="lg" ml={3}>나의 항공편</Heading>
       </Flex>
