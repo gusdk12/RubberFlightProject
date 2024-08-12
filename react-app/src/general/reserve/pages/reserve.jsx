@@ -31,7 +31,7 @@ const Reserve = () => {
 
     
     const isRoundTrip = () => {
-      return !!flight.outbound && !!flight.inbound;
+      return flight.outbound && flight.inbound;
     }
 
     const isRoundTripValue = isRoundTrip();
@@ -47,7 +47,7 @@ const Reserve = () => {
           pg: "html5_inicis",
           pay_method: "card",
           merchant_uid: `mid_${new Date().getTime()}`,
-          amount: flight.outbound.price + flight.inbound.price,
+          amount:  isRoundTripValue ? flight.outbound.price + flight.inbound.price : flight.price,
           name: "RubberFlight",
           buyer_name: buyerName,
           buyer_tel: buyerTel,
@@ -67,14 +67,16 @@ const Reserve = () => {
         if (success) {
           window.alert("결제 성공");
           const reservationData = {
-            personnel: passengers, // 인원 수를 가져오는 함수
-            isRoundTrip: isRoundTripValue, // 왕복 여부를 가져오는 함수
-            outboundFlight: isRoundTrip ? flight.outbound : flight, // 출발 비행 정보
-            inboundFlight: flight.inbound || null
-          }
+            personnel: passengers,
+            isRoundTrip: isRoundTripValue,
+            outboundFlight: isRoundTripValue ? flight.outbound : flight,
+            inboundFlight: isRoundTripValue ? flight.inbound : null
+          };
+          
           console.log(passengers);
           console.log(isRoundTripValue);
           console.log(flight.outbound);
+          console.log(flight);
           console.log(flight.inbound);
 
      
@@ -113,7 +115,7 @@ const Reserve = () => {
           <div className={style.boxFont}>선택한 항공권</div>
         </div>
 
-        {flight.outbound ? (
+        {flight.outbound && flight.inbound ? (
         <>
           <div className={style.airportInfo}>
             <div className={style.depAirportInfo}>
@@ -137,18 +139,6 @@ const Reserve = () => {
               <div>{flight.outbound.price}</div>
             </div>
           </div>
-          
-          {flight.inbound && (
-            <div>
-              <h2>귀국 항공편</h2>
-              <div>항공사: {flight.inbound.airlineName}</div>
-              <div>출발 공항: {flight.inbound.depAirport}</div>
-              <div>도착 공항: {flight.inbound.arrAirport}</div>
-              <div>출발 날짜: {flight.inbound.depTime}</div>
-              <div>도착 날짜: {flight.inbound.arrTime}</div>
-              <div>가격: {flight.inbound.price}</div>
-            </div>
-          )}
         </>
       ) : (
         <>
@@ -165,7 +155,9 @@ const Reserve = () => {
       <div className={style.userInfo}>
         <h2>상품 결제 정보</h2> 
         <div>인원 수: {passengers}</div>
-        <div>총 가격:  {(flight.outbound.price + flight.inbound.price).toLocaleString('ko-KR')}</div>
+        <div>총 가격:  { flight.outbound && flight.inbound 
+    ? (flight.outbound.price + flight.inbound.price).toLocaleString('ko-KR') 
+    : flight.price.toLocaleString('ko-KR')}</div>
         <Button onClick={onClickPayment}>결제하기</Button>
       </div>
 

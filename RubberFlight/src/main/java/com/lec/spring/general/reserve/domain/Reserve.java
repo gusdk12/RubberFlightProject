@@ -50,6 +50,7 @@ public class Reserve {
     @JsonIgnore
     private List<FlightInfo> flightInfoList = new ArrayList<>();
 
+
     public void addFlightInfo(FlightInfo... flightInfos){
         Collections.addAll(flightInfoList, flightInfos);
     }

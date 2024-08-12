@@ -14,7 +14,7 @@
   font-family: "KIMM_Bold" !important;
   text-align: center !important;
   outline: none !important;
-  border: none !important;  /* 원하는 경우, border도 제거 */
+  border: none !important;
   box-shadow: none !important;
   color: #6c6f74 !important;
 }
