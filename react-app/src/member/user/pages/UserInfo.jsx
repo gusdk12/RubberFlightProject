@@ -3,8 +3,10 @@ import MenuBar from '../../../general/common/SideMenu/MenuBar';
 import { Box, Flex, Divider, Avatar, Text } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import Header from '../../../general/common/Header/Header';
+import { useUser } from '../../../general/user/contexts/LoginContextProvider';
 
 const UserInfo = () => {
+  const {userInfo} = useUser();
 
   useEffect(() => {
     document.body.style.overflowY = 'scroll';
@@ -40,7 +42,7 @@ const UserInfo = () => {
             {/* 유저 프로필과 이름 */}
             <Flex alignItems="center" mb={4} mr={5} justifyContent="flex-end">
               <Avatar size="sm" backgroundColor="#dde6f5d7"/>
-              <Text fontSize="lg" fontWeight="bold" ml={3}>User Name</Text>
+              <Text fontSize="lg" fontWeight="bold" ml={3}>{userInfo.name}</Text>
             </Flex>
             <Divider mb={4} />
             
