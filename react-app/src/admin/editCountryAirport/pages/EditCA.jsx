@@ -23,7 +23,7 @@ const EditCA = () => {
     const [selectedAirport, setSelectedAirport] = useState(null);
 
     useEffect(() => {
-        document.body.style.backgroundColor = '#E5ECFD';
+        document.body.style.backgroundColor = '#eaeffa';
         // document.body.style.backgroundColor = '#eceefa';
         document.body.style.overflowY = 'scroll';
     }, []);
