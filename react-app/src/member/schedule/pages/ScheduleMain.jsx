@@ -262,6 +262,7 @@ const ScheduleMain = () => {
                                                 <IconButton
                                                     aria-label={isAddingItem && selectedChecklistId === checklist.id ? "Close" : "Add"}
                                                     icon={isAddingItem && selectedChecklistId === checklist.id ? <CloseIcon /> : <AddIcon />}
+                                                    size="xs"
                                                     onClick={() => handleAddIconClick(checklist.id)}
                                                     className={style.addIcon}
                                                 />

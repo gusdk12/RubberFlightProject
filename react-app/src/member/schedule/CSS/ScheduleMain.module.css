@@ -133,7 +133,7 @@ body{
 }
 
 .checkListTitle{
-    font-size: 30px;
+    font-size: 28px;
     /* background-color: rgb(205, 212, 248); */
     margin-bottom: 10px;
 }
@@ -275,8 +275,6 @@ body{
 
 /* ScheduleMain.module.css */
 .checkListTitleContainer {
-    display: flex;
-    justify-content: space-between; 
     margin-bottom: 10px;
 }
 
@@ -284,6 +282,8 @@ body{
 .addIcon {
     cursor: pointer;
     transition: color 0.3s ease;
+    margin-left: 10px;
+    margin-bottom: 5px;
 }
 
 .addIcon:hover {
