@@ -47,14 +47,18 @@ public class CouponController {
     @GetMapping("/user/coupons")
     public ResponseEntity<?> getCoupons(HttpServletRequest request) {
         String token = request.getHeader("Authorization").split(" ")[1];
+
+        System.out.println("토큰" + token);
         Long userId = jwtUtil.getId(token);
+        System.out.println("아이디" + userId);
 
-        User user = userService.findById(userId);
-        if (user == null) {
-            return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
-        }
+//        User user = userService.findById(userId);
+//        if (user == null) {
+//            return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+//        }
 
-        List<Coupon> coupons = user.getCoupons();
+        List<Coupon> coupons = couponService.getCouponsByUserId(userId);
+        System.out.println("쿠폰들" + coupons);
         return new ResponseEntity<>(coupons, HttpStatus.OK);
     }
 
