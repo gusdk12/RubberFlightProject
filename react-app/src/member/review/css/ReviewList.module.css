@@ -12,8 +12,7 @@
 
 .reviewPagebtn {
     text-align: center;
-    margin-top: 10px;
-    margin-bottom: 20px;
+    margin-top: 30px;
 }
 
 .reviewPageBtn {
@@ -21,7 +20,7 @@
     height: 40px;
     width: 40px;
     margin-right: 10px;
-    background-color: rgb(234, 240, 255);
+    background-color: #dde6f5;
     border-radius: 5px;
 }
 

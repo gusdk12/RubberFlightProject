@@ -15,9 +15,17 @@ SELECT * FROM ft_checklist_item;
 
 SELECT * FROM ft_schedule;
 SELECT * FROM ft_participation;
+SELECT * FROM ft_date;
+
+SELECT * FROM ft_coupon;
+SELECT * FROM ft_coupon_users;
+
+SELECT * FROM ft_coupon_users WHERE users_id = 1;
+
 
 DESCRIBE ft_review;
 DESCRIBE ft_airline;
+
 
 # delete from ft_flightinfo
 # where id=26;

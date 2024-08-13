@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styles from "../css/ReviewUpdate.module.css";
+import React from "react";
+import styles from "../css/ReviewWrite.module.css";
 
 export const RateForm = ({name, changeValue}) => {
     const changeRate = (e, name) => {

@@ -1,45 +1,41 @@
-*{
+/* *{
     font-family: 'KIMM_Bold';
+} */
+
+.boarding {
+    text-align: center;
 }
 
-.writedate {
-    font-family: 'KIMM_Light';
-    font-size: 18px;
+.subtitle {
     color: #9e9e9e;
-    text-align: right;
-    margin: -20px 30px 0 0 ;
+    font-size: 15px;
 }
 
 .airlineName {
     font-size: 20px;
-    margin-right: 50px;
+    font-family: 'GyeonggiTitleM';
 }
 
-.boarding {
-    font-size: 20px;
+.boardingdate {
+    margin-top: 6px;
+    font-size: 14px;
 }
 
-.reviewtitle {
-    font-size: 30px;
-    margin: 20px 0 10px 20px;
-}
-
-.inputTitle{
-    border: 1px solid rgb(153, 210, 245) !important;
+#inputTitle {
+    border: 1px solid #dde6f5 !important;
     border-radius: 10px;
-    width: 780px;
-    margin: 0 20px 10px 40px;
+    width: 600px;
+    height: 50px;
+    margin: 0px 0px 20px 40px;
     padding: 5px 5px 5px 20px;
     text-align: left;
+    font-family: 'GyeonggiTitleM'!important;
+    font-size: 25px !important;
 }
 
-.inputTitle:focus {
-    border: 2px solid rgb(153, 210, 245) !important;
-}
-
-.line{
-    margin: 20px;
-    border: 1px solid rgb(153, 210, 245);
+#inputTitle:focus {
+    border: 2px solid #dde6f5 !important;
+    font-size: 15px;
 }
 
 .rating {
@@ -47,6 +43,7 @@
     flex-direction: row-reverse; /* 오른쪽부터 시작하도록 설정 */
     align-items: center;
     justify-content: center;
+    z-index: 2;
 }
 
 /* 기존 raido 없앰 */
@@ -56,11 +53,12 @@
 
 /* 선택했을 때 */
 .rating > input:checked ~ label {
+    display: inline-block;
     background-image: url(../../../assets/images/review/yellow_star.webp);
     background-repeat: no-repeat;
     background-size: contain;
-    width: 30px;
-    height: 29px;
+    width: 20px;
+    height: 20px !important;
     margin: 0 0;
     margin-bottom: 2px;
 }
@@ -71,36 +69,44 @@
     background-image: url(../../../assets/images/review/grey_star.webp);
     background-repeat: no-repeat;
     background-size: contain;
-    width: 30px;
-    height: 29px;
+    width: 20px;
+    height: 20px;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     margin: 0 0;
     margin-bottom: 2px;
 }
 
-.question {
-    text-align: center;
-    font-size: 20px;
-    margin: 10px 0;
+.formInput {
+    margin: 20px 20px;
+    z-index: 2;
 }
 
-.formInput {
-    margin-bottom: 30px;
+.question {
+    font-family: 'PTBandocheB';
+    font-size: 17px;
+    margin: 10px 80px;
+}
+
+.contentQ {
+    margin: 10px 80px;
+    font-family: 'PTBandocheB';
+    font-size: 17px;
 }
 
 .reviewcontent {
-    width: 780px;
-    height: 100px;
+    width: 600px;
+    height: 80px;
     resize: none;
-    border: 1px solid rgb(153, 210, 245);
+    border: 1px solid #dde6f5;
     border-radius: 10px;
-    margin: 0 20px 0px 40px;
+    margin: -3px 10px 10px 60px;
     padding: 10px 10px 10px 20px;
+    font-family: 'GyeonggiTitleM';
     font-size: 18px;
 }
 
 .reviewcontent:focus {
-    border: 2px solid rgb(153, 210, 245);
+    border: 2px solid #dde6f5;
     font-size: 18px;
     outline: none;
 }
@@ -114,42 +120,64 @@
     border-radius: 10px; /* 트랙 모서리 둥글게 */
 }
 .reviewcontent::-webkit-scrollbar-thumb {
-    background: #737297; /* 핸들 색상 */
-    border-radius: 10px; /* 핸들 모서리 둥글게 */
+    background: #dde6f5; /* 핸들 색상 */
 }
 .reviewcontent::-webkit-scrollbar-thumb:hover {
-    background: #504f6f; /* 호버 시 핸들 색상 */
+    background: #dde6f5; /* 호버 시 핸들 색상 */
 }
 
 .reviewBtn {
     text-align: right;
-    margin-right: 10px;
-}
-
-.btn {
-    font-size: 20px;
-    width: 100px;
-    height: 40px;
-    border-radius: 5px;
+    margin: 25px 65px 0px 0;
 }
 
 .prevbtn {
-    margin-right: 20px;
-    background-color: rgb(211, 235, 250);
-}
-.prevbtn:hover {
-    background-color: rgb(200, 233, 253);
+    background-size: cover; /* 이미지를 버튼 크기에 맞춤 */
+    background-image: url(../../../assets/images/review/back.webp);
+    width: 30px;
+    height: 30px;
+    margin-right: 15px;
+    cursor: pointer;
+    filter: invert(90%) sepia(0%) saturate(288%) hue-rotate(223deg) brightness(97%) contrast(82%);
 }
 
-.updatebtn {
-    background-color: rgb(200, 233, 253);
+.writebtn {
+    background-size: cover; /* 이미지를 버튼 크기에 맞춤 */
+    background-image: url(../../../assets/images/review/save.webp);
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    filter: invert(90%) sepia(0%) saturate(288%) hue-rotate(223deg) brightness(97%) contrast(82%);
 }
-.updatebtn:hover {
-    background-color: rgb(180, 224, 251);
+
+.prevbtn:hover, .writebtn:hover {
+    filter: invert(93%) sepia(1%) saturate(1069%) hue-rotate(317deg) brightness(82%) contrast(87%);
 }
 
 .errorMessage {
     color: red;
-    margin: 5px 0 30px 0;
+    margin-top: -10px;
+    margin-bottom: 5px;
+    font-family: 'GyeonggiTitleM';
     padding-left: 50px;
+}
+
+.errorMessagerRate {
+    color: red;
+    font-family: 'GyeonggiTitleM';
+    margin: 0px 0 -10px 80px;
+}
+
+.top {
+    width: 70px;
+    opacity: 0.4;
+    margin: 10px -40px 0 30px;
+}
+
+.stamp {
+    width: 200px;
+    opacity: 0.1;
+    margin: -220px 0px 0px 550px;
+    z-index: 1;
+    transform: rotate(25deg); /* 이미지 회전 */
 }

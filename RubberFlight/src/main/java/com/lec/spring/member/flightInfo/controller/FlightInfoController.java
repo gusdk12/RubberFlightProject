@@ -65,14 +65,6 @@ public class FlightInfoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 모든 예약 정보
-    @CrossOrigin
-    @GetMapping("/infolist")
-    public ResponseEntity<?> getAllFlightInfo() {
-        List<FlightInfo> flightInfoList = flightInfoService.findAll();
-        return new ResponseEntity<>(flightInfoList, HttpStatus.OK);
-    }
-
     // 사용자 예약 정보에 따른 항공편 정보
     @CrossOrigin
     @GetMapping("/flights/{id}")

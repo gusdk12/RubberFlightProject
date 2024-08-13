@@ -7,12 +7,20 @@ import { RiArrowRightDoubleFill } from "react-icons/ri";
 import { PiDotOutline } from "react-icons/pi";
 import { TfiLayoutLineSolid } from "react-icons/tfi";
 import Cookies from 'js-cookie';
+import axios from 'axios';
+import { SERVER_HOST } from '../../../apis/api';
+
 
 const Reserve = () => {
   // 유저 정보 받기
   const [buyerName, setBuyerName] = useState('');
   const [buyerTel, setBuyerTel] = useState('');
   const [buyerEmail, setBuyerEmail] = useState('');
+  const token = Cookies.get('accessToken');
+
+  // 쿠폰
+  const [coupons, setCoupons] = useState([]); // 쿠폰 목록 상태 추가
+  const [selectedCoupon, setSelectedCoupon] = useState(null); // 선택한 쿠폰 상태
 
     const location = useLocation();
     const { flight, passengers } = location.state || {};
@@ -29,6 +37,23 @@ const Reserve = () => {
       };
     }, []);
 
+    useEffect(() => {
+      fetch('http://localhost:8282/coupon/user/coupons', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Fetched coupons:', data);
+        console.log('Type of coupons:', Array.isArray(data)); // 배열인지 확인
+        setCoupons(data);
+      })
+      .catch(error => {
+        console.error('Error fetching coupons:', error);
+      });
+    }, []);
     
     const isRoundTrip = () => {
       return flight.outbound && flight.inbound;
@@ -70,7 +95,8 @@ const Reserve = () => {
             personnel: passengers,
             isRoundTrip: isRoundTripValue,
             outboundFlight: isRoundTripValue ? flight.outbound : flight,
-            inboundFlight: isRoundTripValue ? flight.inbound : null
+            inboundFlight: isRoundTripValue ? flight.inbound : null,
+            couponId: selectedCoupon ? selectedCoupon.id : null
           };
           
           console.log(passengers);
@@ -79,9 +105,7 @@ const Reserve = () => {
           console.log(flight);
           console.log(flight.inbound);
 
-     
-
-          const token = Cookies.get('accessToken');
+          // const token = Cookies.get('accessToken');
 
           fetch('http://localhost:8282/reservation', {
             method: 'POST',
@@ -91,21 +115,40 @@ const Reserve = () => {
             },
             body: JSON.stringify(reservationData),
           })
-          .then(response => response.json())
-          .then(data => {
-            console.log("예약성공: ", data);
-            console.log('Sending reservation data:', JSON.stringify(reservationData, null, 2));
-            navigate('/mypage/flight-info');
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('예약 요청 실패');
+            }
+            return response.json();
+          })
+          .then(() => {
+            if (selectedCoupon) {
+              fetch(`http://localhost:8282/coupons/user/coupons/${selectedCoupon.id}`, {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+              })
+              .then(() => {
+                window.alert('결제가 완료되었고, 쿠폰이 삭제되었습니다.');
+                navigate('/mypage/flight-info');
+              })
+              .catch(error => {
+                console.error('쿠폰 삭제 중 오류가 발생했습니다:', error);
+                window.alert('쿠폰 삭제 중 오류가 발생했습니다.');
+              });
+            } else {
+              navigate('/mypage/flight-info');
+            }
           })
           .catch(error => {
-            console.error('예약실패: ', error);
+            console.error('예약 실패:', error);
             window.alert('예약 처리 중 오류 발생');
-          })
+          });
         } else {
           window.alert(`결제 실패: ${error_msg}`);
         }
-      } 
-    
+      };
 
 
     return (
@@ -155,6 +198,19 @@ const Reserve = () => {
       <div className={style.userInfo}>
         <h2>상품 결제 정보</h2> 
         <div>인원 수: {passengers}</div>
+        <div>
+        {coupons.length === 0 ? (
+        <p>사용 가능한 쿠폰이 없습니다.</p>
+      ) : (
+        <ul>
+          {coupons.map(coupon => (
+            <li key={coupon.id}>
+              {coupon.code} - {coupon.description}
+            </li>
+          ))}
+        </ul>
+      )}
+        </div>
         <div>총 가격:  { flight.outbound && flight.inbound 
     ? (flight.outbound.price + flight.inbound.price).toLocaleString('ko-KR') 
     : flight.price.toLocaleString('ko-KR')}</div>
