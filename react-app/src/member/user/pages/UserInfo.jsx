@@ -4,10 +4,14 @@ import { LoginContext } from '../../../general/user/contexts/LoginContextProvide
 import { FiPlus } from 'react-icons/fi';
 import { IoMdSettings } from 'react-icons/io'; 
 import { AiOutlineLogout } from 'react-icons/ai';
+import { BsCalendar, BsCheckCircle } from 'react-icons/bs'; 
 import CouponModal from './CouponModal'; 
+import { useNavigate } from 'react-router-dom'; 
+
 const UserInfo = () => {
   const { userInfo } = useContext(LoginContext); 
   const [isModalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleOpenModal = () => {
     setModalOpen(true); 
@@ -15,6 +19,14 @@ const UserInfo = () => {
 
   const handleCloseModal = () => {
     setModalOpen(false); 
+  };
+
+  const navigateToSchedule = () => {
+    navigate('/schedule'); 
+  };
+
+  const navigateToChecklist = () => {
+
   };
 
   return (
@@ -30,7 +42,7 @@ const UserInfo = () => {
         }}
       >
         <Flex p={4} bg="white" boxShadow="md" align="center" justify="space-between">
-          <Flex align="center">
+          <Flex align="center" ml={3}>
             <Avatar 
               size="sm" 
               name={userInfo.name} 
@@ -39,32 +51,55 @@ const UserInfo = () => {
             />
             <Box ml={3}>
               <Text fontSize="lg" fontWeight="bold">{userInfo.name}</Text>
-              <Text fontSize="sm" color="gray.600">{userInfo.email}</Text> 
             </Box>
             <Icon as={IoMdSettings} boxSize={6} ml={4} cursor="pointer" />
           </Flex>
-          <Button leftIcon={<AiOutlineLogout />} colorScheme="red">
-            로그아웃
+
+          <Button 
+            variant="ghost" 
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            borderRadius="full" 
+          >
+            <Icon as={AiOutlineLogout} boxSize={6} />
           </Button>
         </Flex>
         
-        <Box p={4}>
-          <Divider orientation="horizontal" />
-          <Flex mt={4}>
-            <Box flex="1" p={4}>
-              <Text fontSize="lg" fontWeight="bold">이용내역 52회</Text>
-              <Text fontSize="lg" fontWeight="bold">나의 리뷰 15개</Text>
-              <Flex align="center" mt={2}>
-                <Text fontSize="lg" fontWeight="bold">사용 가능 쿠폰 2장</Text>
+        <Box p={4} mt={3}>
+          <Flex borderRadius="lg" bg="white" p={4}>
+
+          <Box flex="1" p={4}>
+            <Flex justify="space-between" align="center">
+              <Text fontSize="lg" fontWeight="bold">이용내역</Text>
+              <Text fontSize="lg" fontWeight="bold">52회</Text>
+            </Flex>
+            <Flex justify="space-between" align="center" mt={4}> 
+              <Text fontSize="lg" fontWeight="bold">나의 리뷰</Text>
+              <Text fontSize="lg" fontWeight="bold">15개</Text>
+            </Flex>
+            <Flex justify="space-between" align="center" mt={4}> 
+              <Text fontSize="lg" fontWeight="bold">사용 가능 쿠폰</Text>
+              <Flex align="center">
+                <Text fontSize="lg" fontWeight="bold">2장</Text>
                 <Icon as={FiPlus} boxSize={5} ml={2} cursor="pointer" onClick={handleOpenModal} />
               </Flex>
-            </Box>
-            <Divider orientation="vertical" height="100%" />
+            </Flex>
+          </Box>
+
+            <Divider orientation="vertical" height="140px" ml={3} mr={3} color="gray.100"/>
+
             <Box flex="1" p={4}>
-              <Text fontSize="lg" fontWeight="bold">나의 서비스</Text>
-              <Flex mt={2} justify="space-between">
-                <Text color="blue.500" cursor="pointer">일정</Text>
-                <Text color="blue.500" cursor="pointer">체크리스트</Text>
+              <Text fontSize="lg" fontWeight="bold" mb={5}>나의 서비스</Text>
+              <Flex mt={2}  direction="row" align="center" justify="center" gap={7}>
+                <Flex direction="column" align="center" cursor="pointer" onClick={navigateToSchedule}>
+                  <Icon as={BsCalendar} boxSize="50px" mb={3} />
+                  <Text fontSize="sm">일정 {">>"} </Text>
+                </Flex>
+                <Flex direction="column" align="center" cursor="pointer" onClick={navigateToChecklist} ml={6}>
+                  <Icon as={BsCheckCircle} boxSize="50px" mb={3} /> 
+                  <Text fontSize="sm">체크리스트 {">>"} </Text>
+                </Flex>
               </Flex>
             </Box>
           </Flex>
