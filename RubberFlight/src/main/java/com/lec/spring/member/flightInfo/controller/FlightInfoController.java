@@ -21,10 +21,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -42,12 +39,30 @@ public class FlightInfoController {
     // 유저별 모든 예약 정보
     @CrossOrigin
     @GetMapping("/list")
-    public ResponseEntity<List<FlightInfo>> getAllFlightInfo(HttpServletRequest request) {
+    public ResponseEntity<Map<String, List<FlightInfo>>> getAllFlightInfo(HttpServletRequest request) {
         String token = request.getHeader("Authorization").split(" ")[1];
         Long userId = jwtUtil.getId(token);
 
         List<FlightInfo> flightInfoList = flightInfoService.findByUserId(userId);
-        return new ResponseEntity<>(flightInfoList, HttpStatus.OK);
+
+        // 예정된 항공편과 지난 항공편으로 분리
+        List<FlightInfo> upcomingFlights = new ArrayList<>();
+        List<FlightInfo> pastFlights = new ArrayList<>();
+
+        for (FlightInfo flightInfo : flightInfoList) {
+            Reserve reserve = reserveService.detail(flightInfo.getReserve().getId());
+            if (reserve != null && reserve.isIsended()) {
+                pastFlights.add(flightInfo);
+            } else {
+                upcomingFlights.add(flightInfo);
+            }
+        }
+
+        Map<String, List<FlightInfo>> response = new HashMap<>();
+        response.put("upcomingFlights", upcomingFlights);
+        response.put("pastFlights", pastFlights);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // 모든 예약 정보
@@ -58,8 +73,7 @@ public class FlightInfoController {
         return new ResponseEntity<>(flightInfoList, HttpStatus.OK);
     }
 
-    // 사용자 예약 정보에 따른 예정된 항공편 정보
-    /*
+    // 사용자 예약 정보에 따른 항공편 정보
     @CrossOrigin
     @GetMapping("/flights/{id}")
     public ResponseEntity<?> getFlightInfo(@PathVariable Long id, HttpServletRequest request) throws IOException {
@@ -71,37 +85,24 @@ public class FlightInfoController {
             return new ResponseEntity<>("항공편 정보를 찾을 수 없거나 권한이 없습니다.", HttpStatus.NOT_FOUND);
         }
 
-        // 예약의 상태 확인
         Reserve reserve = reserveService.detail(flightInfo.getReserve().getId());
+        Map<String, Object> combinedResponse = new HashMap<>();
+        combinedResponse.put("flightInfo", flightInfo);
+
+        // 예약 상태에 따라 다른 API 호출
         if (reserve != null && reserve.isIsended()) {
-            // 과거 예약인 경우
-            return getFlightHistory(id, request);
+            return getFlightHistory(flightInfo, combinedResponse);
         } else {
-            // 예정된 항공편 정보인 경우
-            return getFlightTimetable(id, request);
+            return getFlightTimetable(flightInfo, combinedResponse);
         }
     }
 
-     */
-
-    // 사용자 예약 정보에 따른 예정된 항공편 정보
-    @CrossOrigin
-    @GetMapping("/flights/{id}")
-    public ResponseEntity<?> getFlightTimetable(@PathVariable Long id, HttpServletRequest request) throws IOException {
-        String token = request.getHeader("Authorization").split(" ")[1];
-        Long userId = jwtUtil.getId(token);
-
-        // 항공편 정보 가져오기 (해당 예약이 로그인한 사용자의 것인지 확인)
-        FlightInfo flightInfo = flightInfoService.findByIdAndUserId(id, userId);
-        if (flightInfo == null) {
-            return new ResponseEntity<>("항공편 정보를 찾을 수 없거나 권한이 없습니다.", HttpStatus.NOT_FOUND);
-        }
-
+    private ResponseEntity<?> getFlightTimetable(FlightInfo flightInfo, Map<String, Object> combinedResponse) throws IOException {
         String depIata = flightInfo.getDepIata();
         String flightIat = flightInfo.getFlightIat();
 
         RestTemplate restTemplate = new RestTemplate();
-        URI uri2 = UriComponentsBuilder
+        URI uri = UriComponentsBuilder
                 .fromUriString("https://aviation-edge.com/v2/public/timetable")
                 .queryParam("key", aviation_key)
                 .queryParam("iataCode", depIata)
@@ -111,29 +112,14 @@ public class FlightInfoController {
                 .encode()
                 .toUri();
 
-        String response = restTemplate.getForObject(uri2, String.class);
+        String response = restTemplate.getForObject(uri, String.class);
         List<Map<String, Object>> timetableList = parseTimetableResponse(response); // JSON 리스트로 변환
-
-        Map<String, Object> combinedResponse = new HashMap<>();
-        combinedResponse.put("flightInfo", flightInfo);
         combinedResponse.put("timetable", timetableList);
 
-        // getForEntity 대신 getForObject 를 사용하고 Entity 를 직접 만들어서 보내기
         return new ResponseEntity<>(combinedResponse, HttpStatus.OK);
     }
 
-    @CrossOrigin
-    @GetMapping("/flights/history/{id}")
-    public ResponseEntity<?> getFlightHistory(@PathVariable Long id, HttpServletRequest request) throws IOException {
-
-        String token = request.getHeader("Authorization").split(" ")[1];
-        Long userId = jwtUtil.getId(token);
-
-        FlightInfo flightInfo = flightInfoService.findByIdAndUserId(id, userId);
-        if (flightInfo == null) {
-            return new ResponseEntity<>("항공편 정보를 찾을 수 없거나 권한이 없습니다.", HttpStatus.NOT_FOUND);
-        }
-
+    private ResponseEntity<?> getFlightHistory(FlightInfo flightInfo, Map<String, Object> combinedResponse) throws IOException {
         String depIata = flightInfo.getDepIata();
         String flightIat = flightInfo.getFlightIat().replaceAll("[^0-9]", "");
         LocalDateTime depSch = flightInfo.getDepSch();
@@ -152,19 +138,13 @@ public class FlightInfoController {
                 .encode()
                 .toUri();
 
-        System.out.println("flightIat" + flightIat);
-        System.out.println("date" + date);
-        System.out.println("code" + depIata);
-
         String response = restTemplate.getForObject(uri, String.class);
         List<Map<String, Object>> historyList = parseTimetableResponse(response);
-
-        Map<String, Object> combinedResponse = new HashMap<>();
-        combinedResponse.put("flightInfo", flightInfo);
         combinedResponse.put("history", historyList);
 
         return new ResponseEntity<>(combinedResponse, HttpStatus.OK);
     }
+
 
     // 항공편 일정 응답 JSON 파싱
     private List<Map<String, Object>> parseTimetableResponse(String jsonResponse) throws IOException {

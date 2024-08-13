@@ -1,52 +1,44 @@
 import React, { createContext, useState, useEffect } from "react";
-import { getFlightTimetable, getFlightHistory } from "../../../apis/flightApis";
+import { getFlightInfo } from "../../../apis/flightApis"; 
 
 export const FlightInfoContext = createContext();
 
 export const FlightInfoProvider = ({ children }) => {
   const [flightInfo, setFlightInfo] = useState(null);
-  const [flightHistory, setFlightHistory] = useState(null); 
+  const [history, setHistory] = useState([]);
+  const [timetable, setTimetable] = useState([]);
   const [flightId, setFlightId] = useState(null);
 
-  const fetchFlightInfo = async () => {
+  const fetchFlightData = async () => {
     if (flightId) {
       const startTime = performance.now();
 
-      const response = await getFlightTimetable(flightId);
-      const fetchedData = response.data; 
-      console.log("Timetable:", fetchedData);
+      try {
+        const response = await getFlightInfo(flightId);
+        const fetchedData = response.data; 
 
-      const endTime = performance.now();
-      const duration = endTime - startTime; 
-      console.log(`API 호출 소요 시간: ${duration.toFixed(2)}ms`); 
+        setFlightInfo(fetchedData.flightInfo || null);
+        setHistory(fetchedData.history || []);
+        setTimetable(fetchedData.timetable || []);
 
-      setFlightInfo(fetchedData); 
-    }
-  };
+        console.log("History:", fetchedData.history);
+        console.log("Timetable:", fetchedData.timetable);
 
-  const fetchFlightHistory = async () => {
-    if (flightId) {
-      const startTime = performance.now();
-
-      const response = await getFlightHistory(flightId); 
-      const fetchedHistory = response.data; 
-      console.log("History:", fetchedHistory);
-
-      const endTime = performance.now();
-      const duration = endTime - startTime; 
-      console.log(`API 호출 소요 시간: ${duration.toFixed(2)}ms`); 
-
-      setFlightHistory(fetchedHistory);
+        const endTime = performance.now();
+        const duration = endTime - startTime; 
+        console.log(`API 호출 소요 시간: ${duration.toFixed(2)}ms`); 
+      } catch (error) {
+        console.error("Error fetching flight data:", error);
+      }
     }
   };
 
   useEffect(() => {
-    fetchFlightInfo();
-    fetchFlightHistory(); 
+    fetchFlightData();
   }, [flightId]);
 
   return (
-    <FlightInfoContext.Provider value={{ flightInfo, flightHistory, setFlightId }}>
+    <FlightInfoContext.Provider value={{ flightInfo, history, timetable, setFlightId }}>
       {children}
     </FlightInfoContext.Provider>
   );
