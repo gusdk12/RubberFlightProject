@@ -34,6 +34,7 @@ public class FlightInfoController {
 
     private final FlightInfoService flightInfoService;
     private final JWTUtil jwtUtil;
+    private final ReserveService reserveService;
 
     @Value("${app.api-key.aviation}")
     private String aviation_key;
@@ -50,6 +51,32 @@ public class FlightInfoController {
     }
 
     // 사용자 예약 정보에 따른 예정된 항공편 정보
+    /*
+    @CrossOrigin
+    @GetMapping("/flights/{id}")
+    public ResponseEntity<?> getFlightInfo(@PathVariable Long id, HttpServletRequest request) throws IOException {
+        String token = request.getHeader("Authorization").split(" ")[1];
+        Long userId = jwtUtil.getId(token);
+
+        FlightInfo flightInfo = flightInfoService.findByIdAndUserId(id, userId);
+        if (flightInfo == null) {
+            return new ResponseEntity<>("항공편 정보를 찾을 수 없거나 권한이 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
+        // 예약의 상태 확인
+        Reserve reserve = reserveService.detail(flightInfo.getReserve().getId());
+        if (reserve != null && reserve.isIsended()) {
+            // 과거 예약인 경우
+            return getFlightHistory(id, request);
+        } else {
+            // 예정된 항공편 정보인 경우
+            return getFlightTimetable(id, request);
+        }
+    }
+
+     */
+
+    // 사용자 예약 정보에 따른 예정된 항공편 정보
     @CrossOrigin
     @GetMapping("/flights/{id}")
     public ResponseEntity<?> getFlightTimetable(@PathVariable Long id, HttpServletRequest request) throws IOException {
@@ -62,11 +89,9 @@ public class FlightInfoController {
             return new ResponseEntity<>("항공편 정보를 찾을 수 없거나 권한이 없습니다.", HttpStatus.NOT_FOUND);
         }
 
-        // 출발 및 도착 IATA 코드 가져오기
         String depIata = flightInfo.getDepIata();
         String flightIat = flightInfo.getFlightIat();
 
-        // 항공편 일정 API
         RestTemplate restTemplate = new RestTemplate();
         URI uri2 = UriComponentsBuilder
                 .fromUriString("https://aviation-edge.com/v2/public/timetable")
@@ -107,7 +132,6 @@ public class FlightInfoController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = depSch.format(formatter);
 
-        // 항공편 과거 기록 API 호출
         RestTemplate restTemplate = new RestTemplate();
         URI uri = UriComponentsBuilder
                 .fromUriString("https://aviation-edge.com/v2/public/flightsHistory")

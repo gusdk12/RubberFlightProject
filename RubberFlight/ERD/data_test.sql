@@ -15,6 +15,7 @@ SELECT * FROM ft_checklist_item;
 
 SELECT * FROM ft_schedule;
 SELECT * FROM ft_participation;
+SELECT * FROM ft_date;
 
 DESCRIBE ft_review;
 DESCRIBE ft_airline;

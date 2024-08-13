@@ -52,7 +52,7 @@ const MenuBar = () => {
           </Flex>
 
           {[
-            { name: "내 정보", path: "/mypage", icon: <FiBookOpen /> },
+            { name: "내 정보", path: "/mypage/user-info", icon: <FiBookOpen /> },
             { name: "예약 정보", path: "/mypage/flight-info", icon: <MdOutlineAirplaneTicket /> },
             { name: "리뷰 내역", path: "/mypage/review", icon: <MdOutlineModeComment /> },
           ].map((item, index) => (

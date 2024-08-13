@@ -10,6 +10,7 @@ import Reserve from '../general/reserve/pages/reserve';
 import customTheme from '../general/user/components/Join/customTheme'
 import EditCA from '../admin/editCountryAirport/pages/EditCA';
 import SelectJoin from '../general/user/pages/SelectJoin';
+import MyPage from '../member/user/pages/MyPage';
 import UserInfo from '../member/user/pages/UserInfo';
 import ReviewList from '../member/review/pages/ReviewList';
 import ReviewUpdate from '../member/review/pages/ReviewUpdate';
@@ -44,7 +45,8 @@ function RubberFlightApp() {
               <Route path="/schedule" element={<ScheduleMain />} />
               <Route path="/schedule/edit/:id" element={<ScheduleEdit />} />
               <Route path="/coupon" element={<CouponProvider><CouponPage/></CouponProvider>} />
-              <Route path="/mypage" element={<UserInfo />}>
+              <Route path="/mypage" element={<MyPage />}>
+                <Route path="user-info" element={<UserInfo />} />
                 <Route path="flight-info" element={<FlightInfoList />} />
                 <Route path="flight-info/:flightId" element={<FlightInfoProvider><FlightInfoDetail/></FlightInfoProvider>} />
                 <Route path="review" element={<ReviewList />} />
