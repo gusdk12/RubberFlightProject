@@ -16,27 +16,27 @@ const ReviewList = () => {
   const [loading, setLoading] = useState(true);
   const [flightInfos, setFlightInfos] = useState([]);
 
-  // 해당 유저 비행정보 불러오기
-  const fetchFlightInfo = async () => {
-    const token = Cookies.get('accessToken');
-      if (!token) {
-        console.error("토큰을 찾을 수 없습니다.");
-        setLoading(false);
-        return;
-      }
+  // // 해당 유저 비행정보 불러오기
+  // const fetchFlightInfo = async () => {
+  //   const token = Cookies.get('accessToken');
+  //     if (!token) {
+  //       console.error("토큰을 찾을 수 없습니다.");
+  //       setLoading(false);
+  //       return;
+  //     }
 
-      try {
-        const response = await axios.get('http://localhost:8282/flightInfo/list', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setFlightInfos(response.data);
-        return response.data;
-      } catch (error) {
-        console.error("Error fetching flight info:", error);
-      } 
-  };
+  //     try {
+  //       const response = await axios.get('http://localhost:8282/flightInfo/list', {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       setFlightInfos(response.data);
+  //       return response.data;
+  //     } catch (error) {
+  //       console.error("Error fetching flight info:", error);
+  //     } 
+  // };
  
   // 해당 유저 리뷰 목록 불러오기(최신순, 별점순)
   const fetchReviewList = async (type, page) => {
@@ -55,6 +55,7 @@ const ReviewList = () => {
           },
         }
       );
+      console.log(response.data)
       setReviews(response.data.content); // 리뷰 목록 리스트
       setTotalPages(response.data.totalPages); // 총 페이지
     } catch (error) {
@@ -66,17 +67,11 @@ const ReviewList = () => {
 
   // 첫화면 로딩
   useEffect(() => {
-    const fetchData = async () => {
-      const flightInfo = await fetchFlightInfo(); // 비행정보 먼저 가져오기
-      if (flightInfo) { // 유효성 체크한 후에 리뷰정보 호출
-        if (sortOrder === "latest") {
-          await fetchReviewList("list", currentPage);
-        } else {
-          await fetchReviewList("ratelist", currentPage);
-        }
-      }
-    }
-    fetchData();
+    if (sortOrder === "latest") {
+      fetchReviewList("list", currentPage);
+    } else {
+      fetchReviewList("ratelist", currentPage);
+    } 
     document.body.style.backgroundColor = "#dde6f5";
     document.body.style.overflowY = "scroll";
   }, [currentPage, sortOrder]);
@@ -157,20 +152,12 @@ const ReviewList = () => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              {reviews.length > 0 ? (
-                reviews.map((review) => {
-                  const flightInfo = flightInfos.find((info) => info.review && info.review.id === review.id);
-                  return (<ReviewItem key={review.id} review={review} flightInfo={flightInfo} />);})
-              ) : (<div>작성된 리뷰가 없습니다.</div>)}
+              {reviews.map((review) => {
+                  return (<ReviewItem key={review.id} review={review} />);})}
             </TabPanel>
             <TabPanel>
-              {reviews.length > 0 ? (
-                reviews.map((review) => {
-                  const flightInfo = flightInfos.find((info) => info.review && info.review.id === review.id);
-                  return (<ReviewItem key={review.id} review={review} flightInfo={flightInfo}/>);})
-              ) : (
-                <div>작성된 리뷰가 없습니다.</div>
-              )}
+              {reviews.map((review) => {
+                  return (<ReviewItem key={review.id} review={review} />);})}
             </TabPanel>
           </TabPanels>
         </Tabs>
