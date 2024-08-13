@@ -16,19 +16,6 @@ class WebSocketService {
                 this.stompClient = Stomp.over(socket);
                 this.stompClient.connect({}, () => {
                     this.connected = true;
-                    // this.stompClient.subscribe(`/topic/title/${id}`, (message) => {
-                    //     if (message.body) {
-                    //         callback(JSON.parse(message.body)); // Parse the received message
-                    //     }
-                    // });
-                    // this.stompClient.subscribe(`/topic/users/${id}`, (message) => {
-                    //     if (message.body) {
-                    //         callback(JSON.parse(message.body));
-                    //     }
-                    // });
-
-                    this._subscribe(`/topic/title/${id}`, callback);
-                    // this._subscribe(`/topic/users/${id}`, callback);
                     resolve();
                 }, (error) => {
                     console.error('Error connecting to WebSocket:', error);
@@ -37,16 +24,6 @@ class WebSocketService {
             });
         }
         return this.connectPromise;
-    }
-
-    _subscribe(destination, callback) {
-        if (this.stompClient) {
-            this.stompClient.subscribe(destination, (message) => {
-                if (message.body) {
-                    callback(JSON.parse(message.body));
-                }
-            });
-        }
     }
 
     ensureConnected(id) {
@@ -92,11 +69,28 @@ class WebSocketService {
         });
     }
 
-    subscribeToUsers(id, callback) {
+    sendDates(id, dates, deleteIndex) {
+        const payload = {
+            scheduleId: id,
+            dates: dates,
+            deleteIndex: deleteIndex,
+        };
         return this.ensureConnected(id).then(() => {
-            this.stompClient.subscribe(`/topic/users/${id}`, (message) => {
+            if (this.stompClient && this.stompClient.connected) {
+                this.stompClient.send(`/app/dates/${id}`, {}, JSON.stringify(payload));
+            }
+        }).catch((error) => {
+            console.error('Failed to send content:', error);
+        });
+    }
+
+    subscribeTo(id, callback, link) {
+        return this.ensureConnected(id).then(() => {
+            this.stompClient.subscribe(`/topic/${link}/${id}`, (message) => {
                 if (message.body) {
-                    callback(JSON.parse(message.body));
+                    // console.log(callback(JSON.parse(message.body).title));
+                    link==="title" && callback(JSON.parse(message.body).title);
+                    link==="title" || callback(JSON.parse(message.body));
                 }
             });
         });

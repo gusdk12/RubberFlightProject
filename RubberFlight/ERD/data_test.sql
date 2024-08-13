@@ -15,6 +15,7 @@ SELECT * FROM ft_checklist_item;
 
 SELECT * FROM ft_schedule;
 SELECT * FROM ft_participation;
+SELECT * FROM ft_date;
 
 SELECT * FROM ft_coupon;
 SELECT * FROM ft_coupon_users;
