@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Heading, Image, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import axios from "axios";
 import Review from "../../../assets/images/review/review.webp";
 import styles from "../css/ReviewList.module.css";
@@ -49,7 +49,6 @@ const ReviewList = () => {
     } else {
       fetchReviewList("ratelist", currentPage);
     } 
-    document.body.style.backgroundColor = "#dde6f5";
     document.body.style.overflowY = "scroll";
   }, [currentPage, sortOrder]);
 
