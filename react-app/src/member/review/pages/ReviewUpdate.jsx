@@ -98,7 +98,7 @@ const prev = () => {
     <Box p={4}>
         <Flex align="center" mb={4} >
           <Image src={Write} width="30px" />
-          <Heading as="h1" size="lg" ml={3}>나의 리뷰</Heading>
+          <Heading as="h1" size="lg" ml={3}>리뷰 수정</Heading>
         </Flex>
         {review.flightInfo &&
         <Flex paddingLeft={10} gap={10} mb='10px' mt='-20px' mr='50px' justify='right'>
