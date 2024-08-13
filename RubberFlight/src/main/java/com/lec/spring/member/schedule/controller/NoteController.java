@@ -3,8 +3,11 @@ package com.lec.spring.member.schedule.controller;
 import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.jwt.JWTUtil;
 import com.lec.spring.general.user.service.UserService;
+import com.lec.spring.member.schedule.domain.Date;
+import com.lec.spring.member.schedule.domain.DateListDTO;
 import com.lec.spring.member.schedule.domain.JoinRequestDTO;
 import com.lec.spring.member.schedule.domain.Schedule;
+import com.lec.spring.member.schedule.service.DateService;
 import com.lec.spring.member.schedule.service.ScheduleService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Data;
@@ -24,6 +27,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class NoteController {
 
     private final ScheduleService scheduleService;
+    private final DateService dateService;
     private final UserService userService;
     private List<String> notes = Collections.synchronizedList(new ArrayList<>());
     private final JWTUtil jwtUtil;
@@ -43,6 +47,31 @@ public class NoteController {
         return schedule;
     }
 
+    @CrossOrigin
+    @MessageMapping("/dates/{id}")
+    @SendTo("/topic/dates/{id}")
+    public List<Date> fixDates(@RequestBody DateListDTO dates) {
+        if(dates.getDeleteIndex() != -1)
+            dateService.delete(dates.getDates().get(dates.getDeleteIndex()).getId());
+        else{
+            for(Date date: dates.getDates()){
+                if(date.getId() == null)
+                    dateService.save(dates.getScheduleId(), date);
+                else
+                    dateService.update(date);
+            }
+        }
+        scheduleService.updateEditDate(dates.getScheduleId());
+        List<Date> allList = dateService.findAllBySchedule(dates.getScheduleId());
+        return allList;
+    }
+
+    @CrossOrigin
+    @GetMapping("/dates/{id}")
+    public List<Date> getDates(@PathVariable Long id) {
+        List<Date> allList = dateService.findAllBySchedule(id);
+        return allList;
+    }
 
     private final Map<Long, Set<String>> activeUsersMap = new ConcurrentHashMap<>();
 
