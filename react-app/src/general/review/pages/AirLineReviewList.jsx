@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from '../css/AirLineReviewList.module.css';
-import { Box, Flex, Grid, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Box, Flex, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import AirlineReviewItem from '../components/AirlineReviewItem';
 import Header from '../../common/Header/Header';
 import "../../../Global/font.css";
@@ -146,7 +146,6 @@ const AirLineReviewList = () => {
               {airlineNames && airlineNames.map((airline) =>
                 <div key={airline.id} onClick={() => handleAirlineClick(airline.id)} className={styles.name}>
                   <p className={styles.airlineName}>{airline.name}</p>
-                  {/* <hr className={styles.nameline} /> */}
                 </div>
               )}
             </div>
@@ -165,24 +164,20 @@ const AirLineReviewList = () => {
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  {/* <Grid templateColumns='repeat(2, 1fr)' gap={6}> */}
-                    {reviews.length > 0 ? (
-                      reviews.map((review) => {
-                        return (<AirlineReviewItem key={review.id} review={review} />);
-                      })
-                    ) : (<div>작성된 리뷰가 없습니다.</div>)}
-                  {/* </Grid> */}
+                  {reviews.length > 0 ? (
+                    reviews.map((review) => {
+                      return (<AirlineReviewItem key={review.id} review={review} />);
+                    })
+                  ) : (<div>작성된 리뷰가 없습니다.</div>)}
                 </TabPanel>
                 <TabPanel>
-                  {/* <Grid templateColumns='repeat(2, 1fr)' gap={6}> */}
-                    {reviews.length > 0 ? (
-                      reviews.map((review) => {
-                        return (<AirlineReviewItem key={review.id} review={review} />);
-                      })
-                    ) : (
-                      <div>작성된 리뷰가 없습니다.</div>
-                    )}
-                  {/* </Grid> */}
+                  {reviews.length > 0 ? (
+                    reviews.map((review) => {
+                      return (<AirlineReviewItem key={review.id} review={review} />);
+                    })
+                  ) : (
+                    <div>작성된 리뷰가 없습니다.</div>
+                  )}
                 </TabPanel>
               </TabPanels>
             </Tabs>
