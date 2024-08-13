@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Heading, Image, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { Box, Flex, Heading, Image, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from "@chakra-ui/react";
 import axios from "axios";
 import Review from "../../../assets/images/review/review.webp";
 import styles from "../css/ReviewList.module.css";
@@ -14,30 +14,7 @@ const ReviewList = () => {
   const [pageSize] = useState(3); // 한 페이지에 보여줄 리뷰 개수
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [flightInfos, setFlightInfos] = useState([]);
 
-  // // 해당 유저 비행정보 불러오기
-  // const fetchFlightInfo = async () => {
-  //   const token = Cookies.get('accessToken');
-  //     if (!token) {
-  //       console.error("토큰을 찾을 수 없습니다.");
-  //       setLoading(false);
-  //       return;
-  //     }
-
-  //     try {
-  //       const response = await axios.get('http://localhost:8282/flightInfo/list', {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       setFlightInfos(response.data);
-  //       return response.data;
-  //     } catch (error) {
-  //       console.error("Error fetching flight info:", error);
-  //     } 
-  // };
- 
   // 해당 유저 리뷰 목록 불러오기(최신순, 별점순)
   const fetchReviewList = async (type, page) => {
     const token = Cookies.get('accessToken');
@@ -128,18 +105,11 @@ const ReviewList = () => {
   return (
     <>
       <Box p={4}>
-        <Flex align="center" mb={4}>
+        <Flex align="center" mb={4} >
           <Image src={Review} width="30px" />
-          <Heading as="h1" size="lg" ml={3}>나의 리뷰</Heading>
+          <Text as="h1" size="lg" ml={3} color="#0e0e0f" fontFamily= "Roboto" fontSize="27px" fontWeight="bold">나의 리뷰</Text>
         </Flex>
-        <Tabs variant="line" 
-          style={{
-          maxWidth: '700px',
-          minWidth: '700px',
-          margin: 'auto',
-          width: '90%',
-          marginTop: '30px',
-        }}>
+        <Tabs variant="line" mt={7} ml={7} mr={7}>
           <TabList>
             <Tab _selected={{color: "#6d9eeb", borderBottom: "2px solid #6d9eeb", fontWeight: "bold" }}
             onClick={handleLatestClick}>
@@ -150,10 +120,19 @@ const ReviewList = () => {
               별점순
             </Tab>
           </TabList>
-          <TabPanels>
+          <TabPanels
+          style={{
+            maxWidth: '800px',
+            minWidth: '800px',
+            margin: 'auto',
+            marginTop: '20px',
+            width: '90%',
+            height: '88vh', 
+          }}
+          >
             <TabPanel>
               {reviews.map((review) => {
-                  return (<ReviewItem key={review.id} review={review} />);})}
+                  return (<ReviewItem key={review.id} review={review} />);})} 
             </TabPanel>
             <TabPanel>
               {reviews.map((review) => {
@@ -162,18 +141,18 @@ const ReviewList = () => {
           </TabPanels>
         </Tabs>
         {totalPages > 0 && (
-          <Box className={styles.reviewPagebtn}>
-            <button className={`${styles.reviewPagebtn} ${styles.reviewPageBtn} ${styles.reviewPrevbtn}`}
-              onClick={() => handlePageChange(0)}>◀◀</button>
-            <button className={`${styles.reviewPageBtn} ${styles.reviewPrevbtn} ${styles.reviewArrowLeft}`}
-              onClick={() => handlePageChange(currentPage - 1)}>◀</button>
-            {pageButtons(totalPages)}
-            <button className={`${styles.reviewPageBtn} ${styles.reviewNextbtn} ${styles.reviewArrowRight}`}
-              onClick={() => handlePageChange(currentPage + 1)}>▶</button>
-            <button className={`${styles.reviewPageBtn} ${styles.reviewNextbtn}`}
-              onClick={() => handlePageChange(totalPages - 1)}>▶▶</button>
-          </Box>
-        )}
+                <Box className={styles.reviewPagebtn}>
+                  <button className={`${styles.reviewPagebtn} ${styles.reviewPageBtn} ${styles.reviewPrevbtn}`}
+                    onClick={() => handlePageChange(0)}>◀◀</button>
+                  <button className={`${styles.reviewPageBtn} ${styles.reviewPrevbtn} ${styles.reviewArrowLeft}`}
+                    onClick={() => handlePageChange(currentPage - 1)}>◀</button>
+                  {pageButtons(totalPages)}
+                  <button className={`${styles.reviewPageBtn} ${styles.reviewNextbtn} ${styles.reviewArrowRight}`}
+                    onClick={() => handlePageChange(currentPage + 1)}>▶</button>
+                  <button className={`${styles.reviewPageBtn} ${styles.reviewNextbtn}`}
+                    onClick={() => handlePageChange(totalPages - 1)}>▶▶</button>
+                </Box>
+              )}
       </Box>
     </>
   );

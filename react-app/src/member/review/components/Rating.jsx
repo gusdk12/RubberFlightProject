@@ -24,7 +24,7 @@ export const StarRating = ({ rate }) => {
       <div
         key={`partialStar`}
         style={{
-          width: '30px', // 전체 너비를 사용
+          width: '20px', // 전체 너비를 사용
           display: 'inline-block', // 인라인 블록으로 설정
           position: 'relative', // 자식 요소의 위치를 기준으로 설정
           overflow: 'hidden' // 넘치는 부분을 숨김
@@ -36,7 +36,7 @@ export const StarRating = ({ rate }) => {
           className="star-ratings"
           alt="partial Star"
           style={{
-            width: '30px', // 항상 고정된 크기로 설정
+            width: '20px', // 항상 고정된 크기로 설정
             position: 'absolute',
             left: 0,
             clipPath: `inset(0 ${100 - (partialStar * 100)}% 0 0)`, // 소수점 만큼만 보이게
@@ -49,7 +49,7 @@ export const StarRating = ({ rate }) => {
           className="star-ratings"
           alt="empty Star"
           style={{
-            width: '30px', // 항상 고정된 크기로 설정
+            width: '20px', // 항상 고정된 크기로 설정
             position: 'absolute',
             left: 0,
             zIndex:1
@@ -85,7 +85,7 @@ export const TotalStarRating = ({ rate }) => {
       <div
         key={`partialStar`}
         style={{
-          width: '50px', // 전체 너비를 사용
+          width: '20px', // 전체 너비를 사용
           display: 'inline-block', // 인라인 블록으로 설정
           position: 'relative', // 자식 요소의 위치를 기준으로 설정
           overflow: 'hidden' // 넘치는 부분을 숨김
@@ -97,7 +97,7 @@ export const TotalStarRating = ({ rate }) => {
           className="star-ratings"
           alt="partial Star"
           style={{
-            width: '50px', // 항상 고정된 크기로 설정
+            width: '20px', // 항상 고정된 크기로 설정
             position: 'absolute',
             left: 0,
             clipPath: `inset(0 ${100 - (partialStar * 100)}% 0 0)`, // 소수점 만큼만 보이게
@@ -110,7 +110,7 @@ export const TotalStarRating = ({ rate }) => {
           className="star-ratings"
           alt="empty Star"
           style={{
-            width: '50px', // 항상 고정된 크기로 설정
+            width: '20px', // 항상 고정된 크기로 설정
             position: 'absolute',
             left: 0,
             zIndex:1
