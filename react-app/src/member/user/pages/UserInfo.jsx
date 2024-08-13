@@ -5,9 +5,12 @@ import { FiPlus } from 'react-icons/fi';
 import { IoMdSettings } from 'react-icons/io'; 
 import { AiOutlineLogout } from 'react-icons/ai';
 import CouponModal from './CouponModal'; 
+import UserInfoModal from './UserInfoModal';
+
 const UserInfo = () => {
   const { userInfo } = useContext(LoginContext); 
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isInfoModalOpen, setInfoModalOpen] = useState(false);
 
   const handleOpenModal = () => {
     setModalOpen(true); 
@@ -16,6 +19,15 @@ const UserInfo = () => {
   const handleCloseModal = () => {
     setModalOpen(false); 
   };
+
+  const userInfoModalOpen = () => {
+    setInfoModalOpen(true);
+  }
+
+  
+  const userInfoModalClose = () => {
+    setInfoModalOpen(false);
+  }
 
   return (
     <>
@@ -41,7 +53,7 @@ const UserInfo = () => {
               <Text fontSize="lg" fontWeight="bold">{userInfo.name}</Text>
               <Text fontSize="sm" color="gray.600">{userInfo.email}</Text> 
             </Box>
-            <Icon as={IoMdSettings} boxSize={6} ml={4} cursor="pointer" />
+            <Icon as={IoMdSettings} boxSize={6} ml={4} cursor="pointer" onClick={userInfoModalOpen}/>
           </Flex>
           <Button leftIcon={<AiOutlineLogout />} colorScheme="red">
             로그아웃
@@ -76,6 +88,7 @@ const UserInfo = () => {
         </Box>
 
         <CouponModal isOpen={isModalOpen} onClose={handleCloseModal} />
+        <UserInfoModal isOpen={isInfoModalOpen} onClose={userInfoModalClose}/>
       </Box>
     </>
   );
