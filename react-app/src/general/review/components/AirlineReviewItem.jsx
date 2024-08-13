@@ -1,10 +1,15 @@
-import { Box, Card, CardBody, CardFooter, Flex, Grid, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Spacer, Stack, useDisclosure } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { Box, Card, CardBody, CardFooter, Flex, Grid, Img, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Spacer, Stack, useDisclosure } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
 import { StarRating, TotalStarRating } from '../../../member/review/components/Rating';
 import styles from '../css/AirLineReviewItem.module.css';
 import { motion } from 'framer-motion';
+import { Image, GridItem } from '@chakra-ui/react'
 
-const AirlineReviewItem = ({review, flightInfo}) => {
+const AirlineReviewItem = ({review}) => {
+  useEffect(() => {
+    document.body.style.boxSizing = "border-box";
+  });
+
   const totalRate = ((review.seat_rate + review.service_rate + review.procedure_rate
      + review.flightmeal_rate + review.lounge_rate + review.clean_rate) / 6).toFixed(1);
   
@@ -20,29 +25,48 @@ const AirlineReviewItem = ({review, flightInfo}) => {
           transition={{ default: { duration: 0.5 }, scale: { duration: 0.3 }, paddingBottom: { duration: 0.1 } }}
           position="relative"
           style={{ 
-            maxWidth: '420px', minWidth: '420px', 
-            margin: 'auto', width: '90%', height: '330px',
+            maxWidth: '800px', minWidth: '800px', 
+            margin: 'auto', width: '90%', height: '200px',
             borderWidth: '1px', borderRadius: '20px',
-            padding: '16px', marginTop: '20px',
+            padding: '16px',
             marginBottom: '40px',
+            marginTop: '40px',
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
             backgroundColor: 'white', cursor: 'pointer',
             transition: 'background-color 0.3s ease, transform 0.3s ease'
           }}
         >
+          <Grid
+            templateAreas={`"header header"
+                            "nav main"
+                            "nav footer"`}
+            gridTemplateRows={'50px 40px 1fr'}
+            gridTemplateColumns={'120px 1fr'}
+            h='100%'
+            gap='1'
+            color='blackAlpha.700'
+            fontWeight='bold'
+          >
+            <GridItem pl='2' area={'header'}>
+              <div className={styles.airlinename}>[ {review.airline.name} ]</div>
+            </GridItem>
+            <GridItem pl='2' area={'nav'}>
+              <div className={styles.profileCon}>
+                <div className={styles.userImg}><Image src={review.flightInfo.reserve.user.image} className={styles.proFile}/></div>
+                <div className={styles.username}>{review.flightInfo.reserve.user.name}</div>
+              </div>
+            </GridItem>
+            <GridItem pl='2' area={'main'}>
+              <Flex>
+                <div className={styles.airlinerate}><TotalStarRating rate={totalRate} className={styles.stars}/></div>
+                <div className={styles.totalscore}>({totalRate})</div>
+              </Flex>
+            </GridItem>
+            <GridItem pl='2' area={'footer'}>
               <div className={styles.cardtitle}>"{review.title}"</div>
-              <hr className={styles.line}/>
-              <div className={styles.username}>-유저 이름-</div>
-              <div className={styles.userImg}>유저 프로필</div>
-              {flightInfo &&
-                <div>
-                  <div className={styles.airlinename}>[{flightInfo.airlineName}]</div>
-                  <Flex>
-                    <div className={styles.airlinerate}><TotalStarRating rate={totalRate}/></div>
-                    <div className={styles.totalscore}>({totalRate})</div>
-                  </Flex>
-                </div>
-              }
+            </GridItem>
+          </Grid>          
+          
         </MotionBox>
 
         <Modal isOpen={isOpen} onClose={onClose} size='5xl' isCentered>
@@ -55,12 +79,12 @@ const AirlineReviewItem = ({review, flightInfo}) => {
               <div className={styles.title}>"{review.title}"</div>
               <hr className={styles.line}/>
               <Flex mt='20px' mb='20px'>
-                <div className={styles.reviewAirlineName}>[{flightInfo.airlineName}]</div>
+                <div className={styles.reviewAirlineName}>[{review.airline.name}]</div>
                 <Spacer/>
                 <div className={styles.dateGroup}>
                   <div className={styles.reviewdate}>탑승일 | Date</div>
                   <div className={styles.boarding}>
-                  {new Date(flightInfo.depSch).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}
+                  {new Date(review.flightInfo.depSch).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}
                   </div>
                 </div>
               </Flex>

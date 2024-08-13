@@ -1,26 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
+// import {DatePicker, DateRangePicker} from "@nextui-org/react";
 import { Box, Input } from '@chakra-ui/react';
 import Header from '../../common/Header/Header.jsx';
 import ThreeScene from '../component/ThreeScene.jsx';
 import '../../../Global/font.css'
+// import '../CSS/Main.css';
+import 'flatpickr/dist/flatpickr.min.css';
+import Flatpickr from 'react-flatpickr';
 import axios from 'axios';
-import { Button, DatePicker } from 'antd';
+import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { color } from 'framer-motion';
 import style from '../CSS/Main.module.css'
+import '../../reserve/css/flatpickr.css'
  
 const MainPage = () => {
     const [isAirplaneLoaded, setIsAirplaneLoaded] = useState(false);
     const [isSearhMode, setIsSearhMode] = useState(false);
     const [isRoundWay, setIsRoundWay] = useState(true);
 
+    const [dates, setDates] = useState([]);
     const [departureDate, setDepartureDate] = useState('');
     const [returnDate, setReturnDate] = useState('');
-    const [dateRange, setDateRange] = useState([null, null]);
-    const [selectedDate, setSelectedDate] = useState(null);
-  
-    const [dates, setDates] = useState([]);
     
     const [departure, setDeparture] = useState('ICN');
     const [arrival, setArrival] = useState('');
@@ -147,54 +149,28 @@ useEffect(() => {
   const handleWayChange = (isRound) => {
     setIsRoundWay(isRound);
     if (!isRound) {
-        setDates([dates[0]]);
-        setDepartureDate(dates[0] ? format(new Date(dates[0]), 'yyyy-MM-dd') : '');
-        setReturnDate('');
+      // 편도로 변경 시 첫 번째 날짜만 유지
+      setDates([dates[0]]);
+      setDepartureDate(dates[0] ? format(dates[0], 'yyyy-MM-dd') : '');
+      setReturnDate('');
     } else {
-        setDates(dates.length === 1 ? [dates[0], dates[0]] : dates);
-        setDepartureDate(dates[0] ? format(new Date(dates[0]), 'yyyy-MM-dd') : '');
-        setReturnDate(dates[1] ? format(new Date(dates[1]), 'yyyy-MM-dd') : '');
+      // 왕복으로 변경 시 날짜를 다시 설정
+      setDates(dates.length === 1 ? [dates[0], dates[0]] : dates);
+      setDepartureDate(dates[0] ? format(dates[0], 'yyyy-MM-dd') : '');
+      setReturnDate(dates[1] ? format(dates[1], 'yyyy-MM-dd') : '');
     }
-};
+  };
 
     // 날짜 선택 핸들러
-    const handleDateChange = (dates) => {
-        let startDate, endDate;
-        if (isRoundWay) {
-            if (Array.isArray(dates)) {
-                if (dates.length === 2) {
-                    [startDate, endDate] = dates;
-                    setDateRange(dates);
-                    setDepartureDate(startDate ? format(new Date(startDate), 'yyyy-MM-dd') : '');
-                    setReturnDate(endDate ? format(new Date(endDate), 'yyyy-MM-dd') : '');
-                } else {
-                    setDateRange([null, null]);
-                    setDepartureDate('');
-                    setReturnDate('');
-                }
-            } else {
-                startDate = endDate = null;
-                setDateRange([null, null]);
-                setDepartureDate('');
-                setReturnDate('');
-            }
+      const handleDateChange = (selectedDates) => {
+
+        setDates(selectedDates);
+        if (selectedDates.length === 2) {
+            console.log(selectedDates);
+        } else {
+            console.log(selectedDates);
         }
     };
-    
-  
-    const handleOneWayDateChange = (date) => {
-        if (!isRoundWay) {
-            if (date) {
-                const formattedDate = format(new Date(date), 'yyyy-MM-dd');
-                setDepartureDate(formattedDate);
-                setSelectedDate(formattedDate);
-            } else {
-                setDepartureDate('');
-                setSelectedDate(null);
-            }
-        }
-    };
-  
 
     // 인원 메뉴
     useEffect(() => {
@@ -243,14 +219,12 @@ useEffect(() => {
     };
 
     const handleSubmit = () =>{
-        console.log(departureDate);
-        console.log(returnDate);
         navigate('/search', { state: { 
             isRoundWay: isRoundWay ? true : false,
             departure,
             arrival,
-            departureDate: departureDate,
-            returnDate: isRoundWay ? returnDate : '',
+            departureDate: dates[0],
+            returnDate: isRoundWay ? dates[1] : '',
             adults,
             children,
             infants
@@ -359,22 +333,27 @@ useEffect(() => {
                         {isRoundWay ?
                             (
                                 <div className={style.datePickerContainer}>
-                                    <DatePicker.RangePicker 
-                                        format="YYYY-MM-DD" 
-                                        onChange={handleDateChange} 
-                                        value={dateRange}
-                                        placeholder='날짜를 선택하세요'
+                                    <Flatpickr
+                                    placeholder='날짜를 선택하세요'
+                                    options={{ 
+                                        mode: "range",
+                                    }}
+                                    value={dates}
+                                    onChange={handleDateChange}
+                                    className={style.flatInput}
                                     />
                                 </div>
                             )
                             :
                             (
                                 <div className={style.datePickerContainer}>
-                                <DatePicker
-                                    format="YYYY-MM-DD"
-                                    onChange={handleOneWayDateChange}
-                                    placeholder='날짜를 선택하세요'
-                                />
+                                <Flatpickr
+                                 placeholder='날짜를 선택하세요'
+                                        options={{ mode: "single" }}
+                                        value={dates}
+                                        onChange={handleDateChange}
+                                        className={style.flatInput}
+                                    />
                                 </div>
                             )
                         }

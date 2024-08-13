@@ -66,7 +66,7 @@ const ReviewWrite = () => {
   const submitReview = (e) => {
     e.preventDefault();
     const validationError = validateForm();
-    if (!validationError) {   
+    if (!validationError) {
       axios({
         method: "post",
         url: `http://localhost:8282/review/write/` + flight.id,
@@ -85,7 +85,7 @@ const ReviewWrite = () => {
       });
     }
   };
-
+  
   const prev = () => {
     navigate(-1);
   };
