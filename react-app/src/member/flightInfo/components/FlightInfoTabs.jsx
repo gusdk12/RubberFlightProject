@@ -3,11 +3,11 @@ import { Tabs, Tab, TabList, TabPanels, TabPanel, Text, Box } from '@chakra-ui/r
 import FlightInfoCard from './FlightInfoCard';
 import { Flex } from 'antd';
 
-const FlightInfoTabs = ({ pastFlights, upcomingFlights, reviewList }) => {
-  const [tabIndex, setTabIndex] = useState(0); 
+const FlightInfoTabs = ({ pastFlights = [], upcomingFlights = [], reviewList = [] }) => {
+  const [tabIndex, setTabIndex] = useState(0);
 
   const handleTabChange = (index) => {
-    setTabIndex(index); 
+    setTabIndex(index);
   };
 
   return (
@@ -31,21 +31,21 @@ const FlightInfoTabs = ({ pastFlights, upcomingFlights, reviewList }) => {
           maxWidth: '800px',
           minWidth: '800px',
           width: '90%',
-          height: '88vh', 
+          height: '88vh',
           margin: 'auto',
           marginTop: '20px',
-          overflowY: 'auto', 
-          scrollbarWidth: 'thin', 
-          scrollbarColor: '#6d92cc #fbfdff', 
-          scrollBehavior: 'smooth', 
+          overflowY: 'auto',
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#6d92cc #fbfdff',
+          scrollBehavior: 'smooth',
         }}
       >
         <TabPanel>
           {upcomingFlights.length > 0 ? (
             <Flex direction="row" align="flex-start">
               <Box flex="1">
-                {upcomingFlights.map((flight, index) => (
-                  <FlightInfoCard key={flight.id} flight={flight} index={index} tabKey={tabIndex} isPast={false} />
+                {upcomingFlights.map((flight) => (
+                  <FlightInfoCard key={flight.id} flight={flight} isPast={false} />
                 ))}
               </Box>
             </Flex>
@@ -58,14 +58,12 @@ const FlightInfoTabs = ({ pastFlights, upcomingFlights, reviewList }) => {
           {pastFlights.length > 0 ? (
             <Flex direction="row" align="flex-start">
               <Box flex="1">
-                {pastFlights.map((flight, index) => {
-              const review = reviewList.find((review) => flight.id === review.flightInfo.id);
+                {pastFlights.map((flight) => {
+                  const review = reviewList.find((review) => flight.id === review.flightInfo.id);
                   return (
                     <FlightInfoCard 
                       key={flight.id} 
                       flight={flight} 
-                      index={index} 
-                      tabKey={tabIndex} 
                       isPast={true} 
                       review={review} 
                     />
