@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from '../css/AirLineReviewList.module.css';
-import { Box, Flex, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Box, Flex, Image, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import AirlineReviewItem from '../components/AirlineReviewItem';
 import Header from '../../common/Header/Header';
-import "../../../Global/font.css";
 import { Link } from 'react-router-dom';
+import "../../../Global/font.css";
+import Logo from "../../../assets/images/main_review/reviewlogo.webp";
 
 const AirLineReviewList = () => {
   const [reviews, setReviews] = useState([]);
@@ -59,7 +60,7 @@ const AirLineReviewList = () => {
       await fetchAirline();
     };
     fetchData();
-    document.body.style.backgroundColor = "#dde6f5";
+    document.body.style.backgroundColor = "#ffffff";
     document.body.style.overflowY = "scroll";
     document.body.style.boxSizing = "border-box";
   }, [currentPage, sortOrder, selectedAirlineId]);
@@ -123,13 +124,17 @@ const AirLineReviewList = () => {
     <>
       <Header isMain={false} />
       <div className={styles.container}>
-        <div className={styles.title1}>
-          항공사들의 이용 후기를 한 번에 -
-        </div>
-        <div className={styles.title2}>
-          예약한 항공사에 대해 궁금하신가요? <br />
-          여러 사람들이 이용한 다양한 항공사들의 생생한 후기를 확인해보세요~
-        </div>
+        <Flex justifyContent='end' p='100px'>
+          <div className={styles.title}>
+            <div className={styles.title1}>
+              수많은 항공사에 대해 궁금하신가요?
+            </div>
+            <div className={styles.title2}>
+              여러 사람들이 이용한 다양한 항공사들의<br/> 생생한 후기를 확인해보세요
+            </div>
+          </div>
+              <div><img className={styles.logo} src={Logo}/></div>
+        </Flex>
 
         <div className={styles.reviewcontainer}>
 
