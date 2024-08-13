@@ -26,7 +26,7 @@ SELECT * FROM ft_coupon_users WHERE users_id = 1;
 DESCRIBE ft_review;
 DESCRIBE ft_airline;
 
-# delete from ft_user where id = 9;
+delete from ft_user where id = 1;
 
 
 # delete from ft_flightinfo

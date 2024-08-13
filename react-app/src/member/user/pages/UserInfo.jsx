@@ -4,14 +4,17 @@ import { LoginContext } from '../../../general/user/contexts/LoginContextProvide
 import { FiPlus } from 'react-icons/fi';
 import { IoMdSettings } from 'react-icons/io'; 
 import { AiOutlineLogout } from 'react-icons/ai';
-import { BsCalendar, BsCheckCircle } from 'react-icons/bs'; 
-import CouponModal from './CouponModal'; 
-import { useNavigate } from 'react-router-dom'; 
+import { BsCalendar, BsCheckCircle } from 'react-icons/bs';
+import CouponModal from './CouponModal';
+import { useNavigate } from 'react-router-dom';
+
+import UserInfoModal from './UserInfoModal';
 
 const UserInfo = () => {
   const { userInfo } = useContext(LoginContext); 
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
+  const [isInfoModalOpen, setInfoModalOpen] = useState(false);
 
   const handleOpenModal = () => {
     setModalOpen(true); 
@@ -21,8 +24,17 @@ const UserInfo = () => {
     setModalOpen(false); 
   };
 
+  const userInfoModalOpen = () => {
+    setInfoModalOpen(true);
+  }
+
+
+  const userInfoModalClose = () => {
+    setInfoModalOpen(false);
+  }
+
   const navigateToSchedule = () => {
-    navigate('/schedule'); 
+    navigate('/schedule');
   };
 
   const navigateToChecklist = () => {
@@ -52,15 +64,15 @@ const UserInfo = () => {
             <Box ml={3}>
               <Text fontSize="lg" fontWeight="bold">{userInfo.name}</Text>
             </Box>
-            <Icon as={IoMdSettings} boxSize={6} ml={4} cursor="pointer" />
+            <Icon as={IoMdSettings} boxSize={6} ml={4} cursor="pointer" onClick={userInfoModalOpen}/>
           </Flex>
 
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             display="flex"
             justifyContent="center"
             alignItems="center"
-            borderRadius="full" 
+            borderRadius="full"
           >
             <Icon as={AiOutlineLogout} boxSize={6} />
           </Button>
@@ -74,11 +86,11 @@ const UserInfo = () => {
               <Text fontSize="lg" fontWeight="bold">이용내역</Text>
               <Text fontSize="lg" fontWeight="bold">52회</Text>
             </Flex>
-            <Flex justify="space-between" align="center" mt={4}> 
+            <Flex justify="space-between" align="center" mt={4}>
               <Text fontSize="lg" fontWeight="bold">나의 리뷰</Text>
               <Text fontSize="lg" fontWeight="bold">15개</Text>
             </Flex>
-            <Flex justify="space-between" align="center" mt={4}> 
+            <Flex justify="space-between" align="center" mt={4}>
               <Text fontSize="lg" fontWeight="bold">사용 가능 쿠폰</Text>
               <Flex align="center">
                 <Text fontSize="lg" fontWeight="bold">2장</Text>
@@ -97,7 +109,7 @@ const UserInfo = () => {
                   <Text fontSize="sm">일정 {">>"} </Text>
                 </Flex>
                 <Flex direction="column" align="center" cursor="pointer" onClick={navigateToChecklist} ml={6}>
-                  <Icon as={BsCheckCircle} boxSize="50px" mb={3} /> 
+                  <Icon as={BsCheckCircle} boxSize="50px" mb={3} />
                   <Text fontSize="sm">체크리스트 {">>"} </Text>
                 </Flex>
               </Flex>
@@ -111,6 +123,7 @@ const UserInfo = () => {
         </Box>
 
         <CouponModal isOpen={isModalOpen} onClose={handleCloseModal} />
+        <UserInfoModal isOpen={isInfoModalOpen} onClose={userInfoModalClose}/>
       </Box>
     </>
   );
