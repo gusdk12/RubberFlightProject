@@ -2,6 +2,7 @@ package com.lec.spring.general.reserve.service;
 
 import com.lec.spring.admin.airport.domain.Airport;
 import com.lec.spring.admin.airport.repository.AirportRepository;
+import com.lec.spring.admin.coupon.domain.Coupon;
 import com.lec.spring.general.reserve.domain.Flight;
 import com.lec.spring.general.reserve.domain.Reserve;
 import com.lec.spring.general.reserve.repository.ReserveRepository;
@@ -121,7 +122,8 @@ public class ReserveService {
 
     // DB 저장
     @Transactional
-    public Reserve saveReservation(Long userId, String personnel, boolean isRoundTrip, Flight outboundFlight, Flight inboundFlight) {
+    public Reserve saveReservation(Long userId, String personnel, boolean isRoundTrip, Flight outboundFlight, Flight inboundFlight, Coupon coupon) {
+        System.out.println("saveReservation Coupon" + coupon);
         System.out.println("왕복인가요" + isRoundTrip);
         Reserve reserve = new Reserve();
         User user = userRepository.findById(userId).orElse(null);
@@ -133,15 +135,21 @@ public class ReserveService {
 
         if(isRoundTrip) {
             if (outboundFlight != null) {
-                FlightInfo outbound = createFlgihtInfo(reserve, outboundFlight);
+                int discountedPrice = calculateDiscountedPrice(outboundFlight.getPrice(), coupon);
+                System.out.println("outboundFlight discountedPrice" + discountedPrice);
+                FlightInfo outbound = createFlightInfo(reserve, outboundFlight, discountedPrice);
                 flights.add(outbound);
             }
             if (inboundFlight != null) {
-                FlightInfo inbound = createFlgihtInfo(reserve, inboundFlight);
+                int discountedPrice = calculateDiscountedPrice(inboundFlight.getPrice(), coupon);
+                System.out.println("inboundFlight discountedPrice" + discountedPrice);
+                FlightInfo inbound = createFlightInfo(reserve, inboundFlight, discountedPrice);
                 flights.add(inbound);
             }
+
         } else {
-            FlightInfo outbound = createFlgihtInfo(reserve, outboundFlight);
+            int discountedPrice = calculateDiscountedPrice(outboundFlight.getPrice(), coupon);
+            FlightInfo outbound = createFlightInfo(reserve, outboundFlight, discountedPrice);
             flights.add(outbound);
         }
 
@@ -149,10 +157,20 @@ public class ReserveService {
         return reserve;
     }
 
-    private FlightInfo createFlgihtInfo(Reserve reserve, Flight flight) {
+    private int calculateDiscountedPrice(int price, Coupon coupon) {
+//        System.out.println("calculateDiscoutendRrice price" + price);
+//        System.out.println("calculateDiscoutendRrice coupon percent" + coupon.getPercent());
+        if(coupon == null) {return price;}
+        return (int) (price * (1 - coupon.getPercent() /  100.0));
+    }
+
+    private FlightInfo createFlightInfo(Reserve reserve, Flight flight, int discountedPrice) {
         FlightInfo flightInfo = new FlightInfo();
         String depAirportName = flight != null ? airportRepository.findByAirportIso(flight.getDepAirport()).getAirportName() : null;
         String arrAirportName = flight != null ? airportRepository.findByAirportIso(flight.getArrAirport()).getAirportName() : null;
+
+        System.out.println("가격은요?" + discountedPrice);
+        flight.setPrice(discountedPrice);
 
         System.out.println(depAirportName);
         System.out.println(arrAirportName);
@@ -161,7 +179,7 @@ public class ReserveService {
         flightInfo.setDepIata(flight.getDepAirport());
         flightInfo.setArrAirport(arrAirportName);
         flightInfo.setArrIata(flight.getArrAirport());
-        flightInfo.setPrice(flight.getPrice());
+        flightInfo.setPrice(discountedPrice);
         flightInfo.setFlightIat(flight.getFlightIata());
         flightInfo.setDepSch(flight.getDepSch());
         flightInfo.setArrSch(flight.getArrSch());

@@ -1,5 +1,6 @@
 package com.lec.spring.general.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lec.spring.admin.coupon.domain.Coupon;
 import com.lec.spring.member.checklist.domain.Checklist;
@@ -47,16 +48,17 @@ public class User {
 //    @JsonIgnore
 //    private List<Coupon> coupons = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(
             name = "ft_coupon_users",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "FT_COUPON_id")
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "coupon_id")
     )
     private List<Coupon> coupons = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonBackReference
     private List<Checklist> checklists = new ArrayList<>();
 
     private String provider;

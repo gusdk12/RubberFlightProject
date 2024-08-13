@@ -35,6 +35,9 @@ public class CouponService {
     }
 
     @Transactional
+    public Coupon findById(Long id) {return couponRepository.findById(id).orElse(null); }
+
+    @Transactional
     public int delete(Long id) {
         couponRepository.deleteById(id);
         return 1;

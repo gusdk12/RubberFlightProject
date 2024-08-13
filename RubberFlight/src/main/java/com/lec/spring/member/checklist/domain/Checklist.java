@@ -1,5 +1,6 @@
 package com.lec.spring.member.checklist.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lec.spring.general.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,13 +19,14 @@ public class Checklist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     private String category;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonManagedReference
     private User user;
 
     @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Checklist_item> items = new ArrayList<>();
-
 }

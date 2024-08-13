@@ -42,7 +42,7 @@ public class Coupon {
 //    @JsonIgnore
 //    private List<User> users; // 쿠폰을 사용하는 사용자
 
-    @ManyToMany(mappedBy = "coupons")
+    @ManyToMany(mappedBy = "coupons", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonManagedReference
     private List<User> users = new ArrayList<>();
 

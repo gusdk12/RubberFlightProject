@@ -3,6 +3,7 @@ package com.lec.spring.general.user.service;
 import com.lec.spring.general.user.config.CustomOAuth2User;
 import com.lec.spring.general.user.domain.*;
 import com.lec.spring.general.user.repository.UserRepository;
+import com.lec.spring.member.checklist.service.ChecklistService;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Service;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final ChecklistService checklistService;  // ChecklistService 주입
 
-    public CustomOAuth2UserService(UserRepository userRepository) {
+    public CustomOAuth2UserService(UserRepository userRepository, ChecklistService checklistService) {
         this.userRepository = userRepository;
+        this.checklistService = checklistService;  // ChecklistService 초기화
     }
 
     @Override
@@ -39,7 +42,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             oAuth2Response = new FacebookResponse(oAuth2User.getAttributes());
         } else if(registrationId.equals("kakao")) {
             oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());
-        }else {
+        } else {
             return null;
         }
 
@@ -48,8 +51,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User existData = userRepository.findByUsername(username);
 
         String email = oAuth2Response.getEmail();
-
         System.out.println("Fetched email: " + email);
+
         if (email == null) {
             email = oAuth2Response.getProviderId() + "@kakao.com";
         }
@@ -64,11 +67,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             image = "http://localhost:8282/uploads/user.png";
         }
 
-
-
         if (existData == null) {
+            // 새로운 사용자 생성
             User user = new User();
-            user.setId(user.getId());
             user.setUsername(username);
             user.setEmail(email);
             user.setName(name);
@@ -77,20 +78,24 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user.setTel("");
             user.setImage(image);
 
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);  // 사용자를 저장
+
+            // 기본 체크리스트 생성
+            checklistService.createDefaultChecklists(savedUser.getId());
 
             UserDTO userDTO = new UserDTO();
-            userDTO.setId(userDTO.getId());
+            userDTO.setId(savedUser.getId());
             userDTO.setUsername(username);
-            userDTO.setName(oAuth2Response.getName());
+            userDTO.setName(name);
             userDTO.setRole("ROLE_MEMBER");
             userDTO.setImage(image);
 
-            System.out.println("Saving new user with email: " + user.getEmail());
+            System.out.println("Saving new user with email: " + savedUser.getEmail());
 
             return new CustomOAuth2User(userDTO);
         } else {
-            existData.setEmail(email); // email 값을 null이 아닌 값으로 설정
+            // 기존 사용자 정보 업데이트
+            existData.setEmail(email);
             existData.setName(name);
             existData.setImage(image);
 

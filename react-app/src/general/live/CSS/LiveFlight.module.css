@@ -1,22 +1,40 @@
 .allCon {
     width: 1300px;
-    left: 50%;
+    /* left: 50%; */
     top: 190px;
-    transform: translateX(-50%);
+    /* transform: translateX(-50%); */
     position: relative;
+    margin: auto;
 }
 
+#headerairplane{
+  background-image: url('../../../assets/images/live/earthPlane3D.webp');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 500px;
+  height: 500px;
+  top: -170px;
+  left: 150px;
 
+  position: absolute;
+  z-index: 0;
+  transform: rotate(-20deg);
+}
 .livestart1{
-    max-width: 1200px;
-    height: 150px;
-    margin: auto;
-    display: flex;
-    align-items: end;
-    font-size: 35px;
-    padding-left: 50px;
-    padding-bottom: 20px;
-    color: #00235A;
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  height: 200px;
+  margin: auto;
+  display: flex;
+  align-items: end;
+  font-size: 35px;
+  padding-left: 50px;
+  padding-right: 10px;
+  padding-bottom: 20px;
+  color: #00235A;
+  justify-content: end;
 }
 
 .livestart2{
@@ -28,14 +46,17 @@
     align-items:start;
     font-size: 25px;
     padding-left: 50px;
+    padding-right: 10px;
+    text-align: right;
     color: #00235A;
+    justify-content: end;
 }
 
 .searchCon {
     display: flex;
     align-items: center;
     max-width: 1300px;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
     /* margin-right: 15px; */
 
     display: flex;
@@ -58,11 +79,11 @@
 
 .earthCon {
     position: relative;
-    width: 1400px;
-    /* width: 1300px; */
+    /* width: 1400px; */
+    width: 1300px;
     height: 1000px;
     margin-bottom: 500px;
-    transform: translateX(-50px);
+    /* transform: translateX(-50px); */
     overflow: hidden;
 }
 

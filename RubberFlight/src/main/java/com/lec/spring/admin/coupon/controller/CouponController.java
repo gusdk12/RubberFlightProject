@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,17 +49,12 @@ public class CouponController {
     public ResponseEntity<?> getCoupons(HttpServletRequest request) {
         String token = request.getHeader("Authorization").split(" ")[1];
 
-        System.out.println("토큰" + token);
+//        System.out.println("토큰" + token);
         Long userId = jwtUtil.getId(token);
-        System.out.println("아이디" + userId);
-
-//        User user = userService.findById(userId);
-//        if (user == null) {
-//            return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
-//        }
+//        System.out.println("아이디" + userId);
 
         List<Coupon> coupons = couponService.getCouponsByUserId(userId);
-        System.out.println("쿠폰들" + coupons);
+//        System.out.println("쿠폰들" + coupons);
         return new ResponseEntity<>(coupons, HttpStatus.OK);
     }
 
@@ -85,14 +81,19 @@ public class CouponController {
 
     // 사용자 쿠폰 사용
     @CrossOrigin
-    @PostMapping("/user/use/{couponCode}")
-    public ResponseEntity<?> useCoupon(@PathVariable String couponCode, HttpServletRequest request) {
+    @Transactional
+    @PostMapping("/user/use/{couponId}")
+    public ResponseEntity<?> useCoupon(@PathVariable Long couponId, HttpServletRequest request) {
+
+//        System.out.println("쿠폰아이디" + couponId);
         String token = request.getHeader("Authorization").split(" ")[1];
         Long userId = jwtUtil.getId(token);
-
-        Coupon coupon = couponService.findByCode(couponCode);
+//        System.out.println("유저 아이디" + userId);
+        Coupon coupon = couponService.findById(couponId);
+//        System.out.println("사용한 쿠폰 정보" + coupon);
         if (coupon != null) {
             User user = userService.findById(userId);
+//            System.out.println("유저 정보" + user);
             if (user.getCoupons().contains(coupon)) {
                 user.getCoupons().remove(coupon);
                 userService.save(user);

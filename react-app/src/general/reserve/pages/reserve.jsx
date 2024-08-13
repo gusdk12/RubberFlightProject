@@ -9,6 +9,7 @@ import { TfiLayoutLineSolid } from "react-icons/tfi";
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { SERVER_HOST } from '../../../apis/api';
+import { Dropdown, Menu } from 'antd';
 
 
 const Reserve = () => {
@@ -54,12 +55,40 @@ const Reserve = () => {
         console.error('Error fetching coupons:', error);
       });
     }, []);
-    
+
+    const CouponDropdown = ({ coupons, onSelectCoupon }) => {
+      const menuItems = coupons.length > 0 
+      ? coupons.map(coupon => ({
+          key: coupon.id,
+          label: (
+            <a onClick={() => onSelectCoupon(coupon)}>
+              {coupon.description} - {coupon.percent}% 할인
+            </a>
+          )
+        }))
+      : [{ key: 'no-coupons', label: '사용할 수 있는 쿠폰이 없습니다.' }];
+  
+    return (
+      <Dropdown overlay={<Menu items={menuItems} />} trigger={['click']}>
+        <Button>쿠폰 적용하기</Button>
+      </Dropdown>
+      );
+    };
+   
     const isRoundTrip = () => {
       return flight.outbound && flight.inbound;
     }
 
     const isRoundTripValue = isRoundTrip();
+
+    const totalPrice = isRoundTripValue 
+    ? flight.outbound.price + flight.inbound.price 
+    : flight.price;
+
+  const discountedPrice = selectedCoupon 
+    ? totalPrice * (1 - selectedCoupon.percent / 100) / 10 * 10
+    : totalPrice;
+    
 
     const onClickPayment = () => {
         if (!window.IMP) return;
@@ -72,7 +101,7 @@ const Reserve = () => {
           pg: "html5_inicis",
           pay_method: "card",
           merchant_uid: `mid_${new Date().getTime()}`,
-          amount:  isRoundTripValue ? flight.outbound.price + flight.inbound.price : flight.price,
+          amount: discountedPrice,
           name: "RubberFlight",
           buyer_name: buyerName,
           buyer_tel: buyerTel,
@@ -96,7 +125,7 @@ const Reserve = () => {
             isRoundTrip: isRoundTripValue,
             outboundFlight: isRoundTripValue ? flight.outbound : flight,
             inboundFlight: isRoundTripValue ? flight.inbound : null,
-            couponId: selectedCoupon ? selectedCoupon.id : null
+            couponId: selectedCoupon ? selectedCoupon.id : null,
           };
           
           console.log(passengers);
@@ -104,6 +133,7 @@ const Reserve = () => {
           console.log(flight.outbound);
           console.log(flight);
           console.log(flight.inbound);
+          console.log(selectedCoupon.id);
 
           // const token = Cookies.get('accessToken');
 
@@ -123,13 +153,14 @@ const Reserve = () => {
           })
           .then(() => {
             if (selectedCoupon) {
-              fetch(`http://localhost:8282/coupons/user/coupons/${selectedCoupon.id}`, {
+              fetch(`http://localhost:8282/coupon/user/use/${selectedCoupon.id}`, {
                 method: 'POST',
                 headers: {
                   'Authorization': `Bearer ${token}`
                 }
               })
               .then(() => {
+                console.log(selectedCoupon.id);
                 window.alert('결제가 완료되었고, 쿠폰이 삭제되었습니다.');
                 navigate('/mypage/flight-info');
               })
@@ -199,21 +230,12 @@ const Reserve = () => {
         <h2>상품 결제 정보</h2> 
         <div>인원 수: {passengers}</div>
         <div>
-        {coupons.length === 0 ? (
-        <p>사용 가능한 쿠폰이 없습니다.</p>
-      ) : (
-        <ul>
-          {coupons.map(coupon => (
-            <li key={coupon.id}>
-              {coupon.code} - {coupon.description}
-            </li>
-          ))}
-        </ul>
-      )}
-        </div>
-        <div>총 가격:  { flight.outbound && flight.inbound 
-    ? (flight.outbound.price + flight.inbound.price).toLocaleString('ko-KR') 
-    : flight.price.toLocaleString('ko-KR')}</div>
+        <CouponDropdown 
+              coupons={coupons} 
+              onSelectCoupon={setSelectedCoupon} 
+            />
+          </div>
+          <div>총 가격: {discountedPrice.toLocaleString('ko-KR')} 원</div>
         <Button onClick={onClickPayment}>결제하기</Button>
       </div>
 
@@ -249,8 +271,6 @@ const Reserve = () => {
         />
       </label>
       </div>
-
-    
     </div>
     </>
     );
