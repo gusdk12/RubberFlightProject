@@ -74,10 +74,14 @@ public class ChecklistService {
 
     public List<ChecklistItemDTO> getChecklistItemsByChecklistId(Long checklistId) {
         List<Checklist_item> items = checklist_itemRepository.findByChecklistId(checklistId);
-        System.out.println("Found items: " + items); // 로그 추가
-        return items.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        return items.stream().map(item -> {
+            ChecklistItemDTO dto = new ChecklistItemDTO();
+            dto.setId(item.getId());
+            dto.setItemName(item.getItemName());
+            dto.setChecked(item.isChecked());
+            dto.setChecklistId(item.getChecklist().getId());
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     public ChecklistDTO getChecklistById(Long id) {

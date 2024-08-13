@@ -20,7 +20,6 @@ public class ChecklistController {
 
     @Autowired
     private ChecklistService checklistService;
-
     @Autowired
     Checklist_itemRepository checklist_itemRepository;
 
@@ -106,9 +105,7 @@ public class ChecklistController {
             @PathVariable Long id,
             @RequestBody ChecklistItemDTO updatedItemDTO) {
 
-        System.out.println("Request ID: " + id);
-        System.out.println("Request Checklist ID: " + updatedItemDTO.getChecklistId());
-
+        // 요청 파라미터 검증
         if (id == null || updatedItemDTO.getChecklistId() == null) {
             return ResponseEntity.badRequest().body(null); // ID가 null인 경우 잘못된 요청 반환
         }

@@ -102,7 +102,7 @@ const FlightInfoCard = ({ flight, index, tabKey, isPast, review }) => {
         </Box>
       </Flex>
 
-      {isPast && ( flight.review && flight.review.id === review.id ? (
+      {isPast && ( review && flight.id === review.flightInfo.id ? (
             <MotionButton className="review-button" position="absolute"
             bottom="15px" right="20px" size="lg" display={isHovered ? 'block' : 'none'}
             onClick={(e) => { e.stopPropagation(); navigate(`/mypage/review/${review.id}`); }}>

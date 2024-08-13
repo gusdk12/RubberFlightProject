@@ -15,6 +15,6 @@ public class AirlineService {
     private final AirlineRepository airlineRepository;
 
     public List<Airline> namelist() {
-        return airlineRepository.findAll(Sort.by(Sort.Order.desc("id")));
+        return airlineRepository.findAll(Sort.by(Sort.Order.asc("name")));
     }
 }

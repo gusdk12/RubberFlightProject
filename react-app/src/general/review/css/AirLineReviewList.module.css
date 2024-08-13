@@ -5,10 +5,6 @@
     position: relative;
 }
 
-.reviewcontainer {
-    width: 1300px;
-}
-
 .title1{
     max-width: 1200px;
     height: 150px;
@@ -33,15 +29,30 @@
     color: #00235A;
 }
 
+.reviewcontainer {
+    width: 1200px;
+    height: 1200px;
+    margin: 0 auto;
+}
+
 .airlineMenu {
-    width: 200px;
-    /* height: 1950px; */
-    background-color: #F1F5FC;
-    border-radius: 30px;
+    box-sizing: border-box;
+    width: 20%;
+    height: 100%;
+    background-color: #fbfdff;
     font-size: 20px;
-    padding-top: 80px;
+    padding-top: 50px;
     text-align: center;
-    /* overflow-y: scroll; */
+    float: left;
+}
+
+.airlineList {
+    height: 850px;
+    overflow-y: scroll;
+}
+
+.airlineList::-webkit-scrollbar {
+    display: none; 
 }
 
 .name {
@@ -49,16 +60,23 @@
     /* padding-top: 20px; */
 }
 
-.nameline {
-    margin: 20px 0;
+.airlineName {
+    cursor: pointer;
+    height: 55px;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
 }
 
 .reviewBody {
-    width: 1000px;
-    /* height: 1950px; */
-    padding: 30px;
+    box-sizing: border-box;
+    width: 80%;
+    height: 100%;
+    padding: 35px;
+    padding-top: 40px;
     background-color: #F1F5FC;
-    border-radius: 30px;
+    float: left;
 }
 
 .reviewPagebtn {
