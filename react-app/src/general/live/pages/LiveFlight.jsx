@@ -15,7 +15,7 @@ const LiveFlight = () => {
   const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
   useEffect(() => {
-    document.body.style.backgroundColor = '#dde6f5';
+    document.body.style.backgroundColor = '#FFFFFF';
     document.body.style.overflowY = 'scroll';
     document.body.style.overflowX = 'hidden';
   }, []);
@@ -126,7 +126,9 @@ const LiveFlight = () => {
       <Header isMain={true} />
 
       <div className={styles.allCon}>
-        <div className={styles.livestart1}>비행기 위치를 실시간으로 - </div>
+        <div id={styles.headerairplane}/>
+        {/* <div className={styles.livestart1}>비행기 위치를 실시간으로 - </div> */}
+        <div className={styles.livestart1}></div>
         <div className={styles.livestart2}>
           비행기 코드를 통해 위치를 검색해보세요. <br />
           친구나 가족들이 타고있는 항공편의 실시간 위치를 알 수 있어요.

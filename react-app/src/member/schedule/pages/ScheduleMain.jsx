@@ -229,9 +229,10 @@ const ScheduleMain = () => {
     return (
         <>
             <Header isMain={false} />
+            <div id={style.headerImage}/>
             <div id={style.scheduleHeader}>일정과 체크리스트를 한번에 - </div>
             <div id={style.scheduleInfo}>
-                나만의 체크리스트를 만들어 놓치는 물건이 없나 확인해보세요.<br />
+                &nbsp;&nbsp;나만의 체크리스트를 만들어 놓치는 물건이 없나 확인해보세요.<br />
                 함께 여행하는 가족, 친구와 함께 일정을 짤 수도 있어요.
             </div>
     

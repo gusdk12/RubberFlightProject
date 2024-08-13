@@ -44,8 +44,17 @@ public class User {
     @Column(nullable = true)
     private String image;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JsonIgnore
+//    private List<Coupon> coupons = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
+    @JoinTable(
+            name = "ft_coupon_users",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "coupon_id")
+    )
     private List<Coupon> coupons = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
