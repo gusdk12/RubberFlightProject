@@ -1,7 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { Box, Flex, Divider, Avatar, Text, Button, Icon } from '@chakra-ui/react';
-import { Outlet } from 'react-router-dom';
-import Header from '../../../general/common/Header/Header';
 import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
 import { FiPlus } from 'react-icons/fi';
 import { IoMdSettings } from 'react-icons/io'; 
@@ -77,7 +75,7 @@ const UserInfo = () => {
           <Text mt={2}>여기에는 가이드라인에 대한 내용을 추가하세요.</Text>
         </Box>
 
-        <CouponModal isOpen={isModalOpen} onClose={handleCloseModal} /> {/* 모달 렌더링 */}
+        <CouponModal isOpen={isModalOpen} onClose={handleCloseModal} />
       </Box>
     </>
   );
