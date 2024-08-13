@@ -47,12 +47,12 @@ public class User {
 //    @JsonIgnore
 //    private List<Coupon> coupons = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(
             name = "ft_coupon_users",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "FT_COUPON_id")
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "coupon_id")
     )
     private List<Coupon> coupons = new ArrayList<>();
 

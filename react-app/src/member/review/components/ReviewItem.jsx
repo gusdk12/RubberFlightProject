@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { StarRating } from "./Rating";
 import { motion } from 'framer-motion';
 import styles from "../css/ReviewItem.module.css";
-import "../../../Global/font.css";
 import Flight from "../../../assets/images/review/top1.webp";
+import "../../../Global/font.css";
 
 const ReviewItem = ({review}) => {
   const navigate = useNavigate();

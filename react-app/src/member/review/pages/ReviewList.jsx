@@ -141,18 +141,18 @@ const ReviewList = () => {
           </TabPanels>
         </Tabs>
         {totalPages > 0 && (
-                <Box className={styles.reviewPagebtn}>
-                  <button className={`${styles.reviewPagebtn} ${styles.reviewPageBtn} ${styles.reviewPrevbtn}`}
-                    onClick={() => handlePageChange(0)}>◀◀</button>
-                  <button className={`${styles.reviewPageBtn} ${styles.reviewPrevbtn} ${styles.reviewArrowLeft}`}
-                    onClick={() => handlePageChange(currentPage - 1)}>◀</button>
-                  {pageButtons(totalPages)}
-                  <button className={`${styles.reviewPageBtn} ${styles.reviewNextbtn} ${styles.reviewArrowRight}`}
-                    onClick={() => handlePageChange(currentPage + 1)}>▶</button>
-                  <button className={`${styles.reviewPageBtn} ${styles.reviewNextbtn}`}
-                    onClick={() => handlePageChange(totalPages - 1)}>▶▶</button>
-                </Box>
-              )}
+          <Box className={styles.reviewPagebtn}>
+            <button className={`${styles.reviewPagebtn} ${styles.reviewPageBtn} ${styles.reviewPrevbtn}`}
+              onClick={() => handlePageChange(0)}>◀◀</button>
+            <button className={`${styles.reviewPageBtn} ${styles.reviewPrevbtn} ${styles.reviewArrowLeft}`}
+              onClick={() => handlePageChange(currentPage - 1)}>◀</button>
+            {pageButtons(totalPages)}
+            <button className={`${styles.reviewPageBtn} ${styles.reviewNextbtn} ${styles.reviewArrowRight}`}
+              onClick={() => handlePageChange(currentPage + 1)}>▶</button>
+            <button className={`${styles.reviewPageBtn} ${styles.reviewNextbtn}`}
+              onClick={() => handlePageChange(totalPages - 1)}>▶▶</button>
+          </Box>
+        )}
       </Box>
     </>
   );

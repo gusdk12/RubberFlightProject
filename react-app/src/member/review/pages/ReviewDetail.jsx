@@ -130,36 +130,36 @@ const ReviewDetail = () => {
         <div className={styles.reviewBody}>
         {review.content && <div className={styles.content}>{review.content}</div>}
           <div className={styles.rateBody}>
-            <Grid templateColumns="repeat(2, 1fr)" fontSize={17} gap='10px'>
-              <Flex pl='80px' mb={5} gap='50px'>
+            <Flex>
+              <Flex pl='105px' mb={5} gap='50px'>
                 <Text mr={3} fontFamily="PTBandocheB">라운지 :</Text>
                 <div className={styles.starRate}><StarRating rate={review.lounge_rate} /></div>
               </Flex>
-              <Flex pl={10} mb={5} gap='40px'>
+              <Flex pl={10} ml='50px' mb={5} gap='40px'>
               <Text mr={3} fontFamily="PTBandocheB">체크인 및 탑승 :</Text>
                 <div className={styles.starRate}><StarRating rate={review.procedure_rate} /></div>
               </Flex>
-            </Grid>
-            <Grid templateColumns="repeat(2, 1fr)" fontSize={17} gap='10px'>
-              <Flex pl='80px' mb={5} gap='50px'>
+            </Flex>
+            <Flex>
+              <Flex pl='105px' mb={5} gap='50px'>
               <Text mr={3} fontFamily="PTBandocheB">청결도 :</Text>
-                <div className={styles.starRate}><StarRating rate={review.clean_rate} /></div>
+              <div className={styles.starRate}><StarRating rate={review.clean_rate} /></div>
               </Flex>
-              <Flex pl={10} mb={5} gap='5px'>
+              <Flex pl={10} mb={5} ml='50px' gap='5px'>
               <Text mr={3} fontFamily="PTBandocheB">좌석 공간 및 편안함 :</Text>
               <div className={styles.starRate}><StarRating rate={review.seat_rate} /></div>
               </Flex>
-            </Grid>
-            <Grid templateColumns="repeat(2, 1fr)" fontSize={17} mb={30} gap='10px'>
-              <Flex pl='80px' mb={5} gap='15px'>
+              </Flex>
+            <Flex>
+              <Flex pl='105px' mb={5} gap='15px'>
               <Text mr={3} fontFamily="PTBandocheB">기내 서비스 :</Text>
                 <div className={styles.starRate}><StarRating rate={review.service_rate} /></div>
               </Flex>
-              <Flex pl={10} mb={5} gap='40px'>
+              <Flex pl={10} mb={5} ml='50px' gap='40px'>
               <Text mr={3} fontFamily="PTBandocheB">기내식 및 음료 :</Text>
                 <div className={styles.starRate}><StarRating rate={review.flightmeal_rate} /></div>
               </Flex>
-            </Grid>
+            </Flex>
           </div>
         </div>
         </Box>

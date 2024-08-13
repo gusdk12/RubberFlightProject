@@ -134,8 +134,8 @@
 .prevbtn {
     background-size: cover; /* 이미지를 버튼 크기에 맞춤 */
     background-image: url(../../../assets/images/review/back.webp);
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     margin-right: 15px;
     cursor: pointer;
     filter: invert(90%) sepia(0%) saturate(288%) hue-rotate(223deg) brightness(97%) contrast(82%);
@@ -144,8 +144,8 @@
 .writebtn {
     background-size: cover; /* 이미지를 버튼 크기에 맞춤 */
     background-image: url(../../../assets/images/review/save.webp);
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
     filter: invert(90%) sepia(0%) saturate(288%) hue-rotate(223deg) brightness(97%) contrast(82%);
 }
