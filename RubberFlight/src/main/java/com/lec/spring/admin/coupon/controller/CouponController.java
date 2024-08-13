@@ -60,8 +60,8 @@ public class CouponController {
 
     // 사용자 쿠폰 추가
     @CrossOrigin
-    @PostMapping("/user/add/{couponCode}")
-    public ResponseEntity<?> addCoupon(@PathVariable String couponCode, HttpServletRequest request) {
+    @PostMapping("/user/add/{couponId}")
+    public ResponseEntity<?> addCoupon(@PathVariable Long couponId, HttpServletRequest request) {
         String token = request.getHeader("Authorization").split(" ")[1];
         Long userId = jwtUtil.getId(token);
 
@@ -70,13 +70,14 @@ public class CouponController {
             return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
 
-        Coupon coupon = couponService.findByCode(couponCode);
+        Coupon coupon = couponService.findById(couponId);
         if (coupon != null) {
             user.getCoupons().add(coupon);
+            coupon.getUsers().add(user);
             userService.save(user);
             return new ResponseEntity<>(coupon, HttpStatus.OK);
         }
-        return new ResponseEntity<>("쿠폰 코드가 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("쿠폰 ID가 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
 
     // 사용자 쿠폰 사용

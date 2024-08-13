@@ -38,11 +38,7 @@ public class Coupon {
     @ColumnDefault("'All'")
     private String airline_name; // 쿠폰이 적용될 수 있는 항공사 이름
 
-//    @ManyToMany
-//    @JsonIgnore
-//    private List<User> users; // 쿠폰을 사용하는 사용자
-
-    @ManyToMany(mappedBy = "coupons", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "coupons", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<User> users = new ArrayList<>();
 
