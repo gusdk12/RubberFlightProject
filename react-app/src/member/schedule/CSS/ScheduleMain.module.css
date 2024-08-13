@@ -3,6 +3,23 @@ body{
     overflow: scroll;
 }
 
+
+#headerImage {
+    background-image: url('../../../assets/images/schedule/carrior.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 350px;
+    height: 400px;
+    top: 100px;
+    left: 310px;
+  
+    position: absolute;
+    z-index: 0;
+    transform: rotate(5deg);
+    /* opacity: 0.8; */
+    /* transform: rotate(-10deg); */
+}
 #scheduleHeader{
     max-width: 1200px;
     height: 150px;
@@ -10,7 +27,7 @@ body{
     display: flex;
     align-items: end;
     font-size: 35px;
-    padding-left: 50px;
+    padding-left: 250px;
     padding-bottom: 20px;
     color: #00235A;
 }
@@ -22,7 +39,7 @@ body{
     display: flex;
     align-items:start;
     font-size: 25px;
-    padding-left: 50px;
+    padding-left: 220px;
     padding-bottom: 130px;
     color: #00235A;
 }

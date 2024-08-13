@@ -23,7 +23,8 @@ const EditCA = () => {
     const [selectedAirport, setSelectedAirport] = useState(null);
 
     useEffect(() => {
-        document.body.style.backgroundColor = '#dde6f5';
+        document.body.style.backgroundColor = '#E5ECFD';
+        // document.body.style.backgroundColor = '#eceefa';
         document.body.style.overflowY = 'scroll';
     }, []);
 
@@ -351,11 +352,12 @@ const EditCA = () => {
                         </div>
                     )}
 
-                    <img 
+                    {/* <img 
                         src={Airplain}
                         id={styles.airplainIMG}
-                    />
+                    /> */}
                 </div>
+                <div id={styles.airplainIMG}/>
             </div>
         </>
     );
