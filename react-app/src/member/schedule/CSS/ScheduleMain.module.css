@@ -1,6 +1,6 @@
 body{
     margin: 0;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 #scheduleHeader{
@@ -46,6 +46,7 @@ body{
     border-radius: 40px;
     display: flex;
     flex-direction: column;
+
     box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.082);
 }
 #schedulePart{
@@ -70,34 +71,54 @@ body{
     /* background-color: #00235A; */
     color: #a0acc4;
 }
+
 #checklistPartContainer{
-    width: 100%;
-    height: auto;
+    /* width: 100%;
+    height: 90%; */
     /* background-color: #22396a; */
-    display: flex;
+    /* display: flex;
     justify-content: center;
     align-items: center;
-    gap: 18px;
-    margin-bottom: 50px;
+    gap: 18px; */
+    display: flex;
+    flex-wrap: wrap; /* 항목을 여러 줄로 나누기 */
+    gap: 18px; /* 열 간의 간격 조정 */
+    width: 87%;
+    height: 90%;
+    margin-left: 95px !important;
     overflow: scroll;
+    /* justify-content: center; */
 }
 
-.ListsColumn{
-    /* background-color: aqua; */
-    width: 85%;
-    height: 100%;
+
+.ListsColumn {
+    width: 42%;
+    /* height: 90%; */
     display: flex;
-    /* flex-direction: column; */
-    gap: 35px;
+    flex-direction: column;
+    gap: 20px;
 }
-.checkList{
-    width: 100%;
+
+.checkList {
+    /* width: 100%;
+    height: fit-content;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 5px 10px 5px rgba(0, 0, 0, 0.082); */
+    /* width: calc(50% - 18px); */
     height: fit-content;
     background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 5px 10px 5px rgba(0, 0, 0, 0.082);
-    margin-top: 30px;
+    box-sizing: border-box; 
+}
+
+.checkListTitle{
+    font-size: 30px;
+    /* background-color: rgb(205, 212, 248); */
+    margin-bottom: 10px;
 }
 
 .checkListContent{
@@ -169,7 +190,7 @@ body{
     /* grid-template-columns: 1fr 1fr; */
     align-items: start;
     justify-items: center;
-    /* overflow-y: scroll; */
+    overflow-y: scroll;
 
     display: grid;
     /* grid-template-columns: repeat(2, 1fr); */
@@ -242,13 +263,6 @@ body{
     margin-bottom: 10px;
 }
 
-.checkListTitle {
-    font-weight: bold;
-    width: 80%;
-    font-size: 28px !important;
-    background-color: rgb(205, 212, 248);
-    padding-left: 8px !important; 
-}
 
 .addIcon {
     cursor: pointer;
@@ -256,28 +270,25 @@ body{
 }
 
 .addIcon:hover {
-    color: #3182ce; /* Change color on hover if needed */
+    color: #3182ce;
 }
 
-#checklistPart {
-    /* 기존 스타일 유지 */
-    /* ... */
-    max-height: 900px; /* 필요한 최대 높이로 설정 */
-    overflow-y: auto;  /* 수직 스크롤 활성화 */
-}
+/* #checklistPart {
+    max-height: 900px;
+    overflow-y: auto; 
+} */
 
-.checklistPartContainer {
+/* #checklistPartContainer {
     display: flex;
-    flex-direction: column;
-    /* 필요에 따라 높이 및 기타 스타일 조정 */
+    flex-wrap: wrap; 
+    gap: 20px;
+    width: 100%;
     margin-bottom: 50px;
-    padding-bottom: 20px;
-}
+} */
 
-.checkList {
-    /* 기존 스타일 유지 */
-    /* ... */
-    margin-bottom: 80px; /* 체크리스트 항목 간의 간격 조정 */
+.addItemForm{
+    display: flex;
+    justify-content: space-between; 
 }
 
 .addItemInput{
@@ -300,65 +311,62 @@ body{
 
 .addItemInput::placeholder {
     color: rgb(0, 0, 0);
-    /* font-family: 'KIMM_Light'; */
 }
 
 ::-webkit-scrollbar {
-    width: 10px; /* 스크롤바의 너비 */
-    height: 2px; /* 가로 스크롤바의 높이 */
-    background: transparent; /* 트랙의 기본 배경을 투명하게 */
+    width: 10px; 
+    height: 2px;
+    background: transparent;
 }
 
 ::-webkit-scrollbar-track {
     background: transparent;
-    border-radius: 10px; /* 둥근 모서리 */
+    border-radius: 10px; 
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #adc6e6; /* 스크롤바 색상 (하늘색) */
-    border-radius: 10px; /* 둥근 모서리 */
+    background-color: #adc6e6; 
+    border-radius: 10px; 
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #a2bcdf; /* 스크롤바에 마우스를 올렸을 때 색상 */
+    background-color: #a2bcdf; 
 }
 
-/* 위아래 삼각형 버튼 제거 */
 ::-webkit-scrollbar-button {
-    display: none; /* 스크롤바 위아래 삼각형 버튼 제거 */
+    display: none; 
 }
 
 .itemRow {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* 필요한 경우 아이콘을 오른쪽에 배치하려면 사용 */
+    justify-content: space-between; 
     margin-bottom: 0.5px;
+    flex: 0 1 calc(50% - 10px);
 }
 
-/* 체크박스와 텍스트를 수평으로 정렬 */
 .checkbox {
     margin-right: 2px;
 }
 
 .itemName {
-    flex-grow: 1; /* 이름이 가능한 한 많은 공간을 차지하도록 */
-    cursor: pointer; /* 클릭 가능성을 나타내기 위해 커서 변경 */
-    margin-left: 7px; /* 체크박스와의 간격 */
+    flex-grow: 1; 
+    cursor: pointer;
+    margin-left: 7px; 
 }
 
-/* 아이콘 버튼 컨테이너 */
+
 .editDeleteButtons {
     display: flex;
 }
 
-/* 아이콘 버튼 크기 및 위치 조정 */
 .editButton, .deleteButton {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 18px; /* 너비 설정 */
-    height: 18px; /* 높이 설정 */
-    color: black; /* 아이콘 색상 검은색으로 설정 */
+    width: 18px; 
+    height: 18px; 
+    color: black; 
 }
 
 .editButton svg, .deleteButton svg {
@@ -370,11 +378,11 @@ body{
 
 .editItemForm {
     display: flex;
-    gap: 8px; /* Space between input and button */
+    gap: 8px;
 }
 
 .editItemInput {
-    flex: 1; /* Take up available space */
+    flex: 1; 
     border: none;
     border-radius: 4px;
     padding: 8px !important;
@@ -384,4 +392,14 @@ body{
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
     text-align: left;
+    margin-left: 5px;
+}
+
+.emoji {
+    font-size: 2em;
+}
+
+.checkedItem {
+    text-decoration: line-through  2.5px solid rgb(169, 169, 169);
+    color: lightgrey; /* Optional: to change the color of the text when checked */
 }

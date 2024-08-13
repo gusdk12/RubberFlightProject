@@ -1,15 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
 import { Box, Flex, Divider, Avatar, Text, Button, Icon } from '@chakra-ui/react';
-import { Outlet } from 'react-router-dom';
-import Header from '../../../general/common/Header/Header';
-import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
 import { FiPlus } from 'react-icons/fi';
 import { IoMdSettings } from 'react-icons/io'; 
 import { AiOutlineLogout } from 'react-icons/ai';
 import CouponModal from './CouponModal'; 
+import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
+
 const UserInfo = () => {
   const { userInfo } = useContext(LoginContext); 
   const [isModalOpen, setModalOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
   const handleOpenModal = () => {
     setModalOpen(true); 
@@ -18,6 +19,23 @@ const UserInfo = () => {
   const handleCloseModal = () => {
     setModalOpen(false); 
   };
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8282/users/${userInfo.id}/info`);
+        setUser(response.data);
+      } catch (error) {
+        console.error('An error occurred while fetching user info:', error);
+      }
+    };
+
+    fetchUserInfo();
+  }, [userInfo.id]);
+
+  if (!user) {
+    return <Text>Loading...</Text>; // 로딩 중 표시
+  }
 
   return (
     <>
@@ -35,13 +53,13 @@ const UserInfo = () => {
           <Flex align="center">
             <Avatar 
               size="sm" 
-              name={userInfo.name} 
-              src={process.env.PUBLIC_URL + `/images/${userInfo.image}`} 
+              name={user.name} 
+              src={user.image} 
               backgroundColor="#dde6f5d7" 
             />
             <Box ml={3}>
-              <Text fontSize="lg" fontWeight="bold">{userInfo.name}</Text>
-              <Text fontSize="sm" color="gray.600">{userInfo.email}</Text> 
+              <Text fontSize="lg" fontWeight="bold">{user.name} 님</Text>
+              <Text fontSize="sm" color="gray.600">{user.email}</Text> 
             </Box>
             <Icon as={IoMdSettings} boxSize={6} ml={4} cursor="pointer" />
           </Flex>
@@ -74,7 +92,7 @@ const UserInfo = () => {
 
         <Box p={4} mt={4} bg="gray.100" borderRadius="md">
           <Text fontSize="lg" fontWeight="bold">가이드라인</Text>
-          <Text mt={2}>여기에는 가이드라인에 대한 내용을 추가하세요.</Text>
+          <Text mt={2} >러버 플라이트 적극적으로 활용하기</Text>
         </Box>
 
         <CouponModal isOpen={isModalOpen} onClose={handleCloseModal} /> {/* 모달 렌더링 */}
