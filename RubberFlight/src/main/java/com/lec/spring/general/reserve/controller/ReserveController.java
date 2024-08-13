@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.lec.spring.admin.airport.service.AirportService;
+import com.lec.spring.admin.coupon.domain.Coupon;
+import com.lec.spring.admin.coupon.service.CouponService;
 import com.lec.spring.general.reserve.domain.Flight;
 import com.lec.spring.general.reserve.domain.ReservationRequest;
 import com.lec.spring.general.reserve.domain.Reserve;
@@ -43,6 +45,8 @@ public class ReserveController {
     private AirportService airportService;
 
     private final JWTUtil jwtUtil;
+
+    private final CouponService couponService;
 
     // 검색 페이지(api)
     @GetMapping("/search")
@@ -171,8 +175,10 @@ public class ReserveController {
         else isRoundTrip = true;
 //        System.out.println("왕복일까요111" + isRoundTrip);
 
+        Coupon coupon = couponService.findById(reserveRequest.getCouponId());
+        System.out.println("가져온 쿠폰 정보" + coupon);
 
-        Reserve reserve = reserveService.saveReservation(userId, reserveRequest.getPersonnel(), isRoundTrip, outboundFlight, inboundFlight);
+        Reserve reserve = reserveService.saveReservation(userId, reserveRequest.getPersonnel(), isRoundTrip, outboundFlight, inboundFlight, coupon);
 //        System.out.println("예약정보" + reserve);
         return ResponseEntity.ok(reserve);
     }
