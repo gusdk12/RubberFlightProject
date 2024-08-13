@@ -106,7 +106,7 @@ const ScheduleMain = () => {
                     "Content-Type": 'application/json'
                 }
             });
-            console.log("Server response:", response.data);
+            // console.log("Server response:", response.data);
         } catch (error) {
             console.error("Error updating checklist item:", error.response ? error.response.data : error.message);
         }

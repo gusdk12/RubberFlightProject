@@ -51,9 +51,16 @@ public class NoteController {
     @MessageMapping("/dates/{id}")
     @SendTo("/topic/dates/{id}")
     public List<Date> fixDates(@RequestBody DateListDTO dates) {
-        System.out.println(dates);
-        for(Date date: dates.getDates())
-            dateService.update(date);
+        if(dates.getDeleteIndex() != -1)
+            dateService.delete(dates.getDates().get(dates.getDeleteIndex()).getId());
+        else{
+            for(Date date: dates.getDates()){
+                if(date.getId() == null)
+                    dateService.save(dates.getScheduleId(), date);
+                else
+                    dateService.update(date);
+            }
+        }
         scheduleService.updateEditDate(dates.getScheduleId());
         List<Date> allList = dateService.findAllBySchedule(dates.getScheduleId());
         return allList;

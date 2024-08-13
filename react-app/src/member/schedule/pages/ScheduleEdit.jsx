@@ -86,7 +86,9 @@ const ScheduleEdit = () => {
 
         webSocketService.joinPage(id, token);
 
-        webSocketService.subscribeToUsers(id, setActiveUsersPic);
+
+        webSocketService.subscribeTo(id, setTitle, "title");
+        webSocketService.subscribeTo(id, setActiveUsersPic, "users");
 
     }, [id]);
 

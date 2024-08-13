@@ -59,16 +59,16 @@ body{
 }
 #titleInput{
     font-family: 'KIMM_Bold';
-    padding: 10px ;
-    padding-left: 20px ;
-    padding-right: 20px ;
-    background-color: #ffffff ;
-    border: #E8ECF2 solid 2px ;
+    padding: 10px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    background-color: #ffffff !important;
+    border: #E8ECF2 solid 2px !important;
     color: #5f6b82;
     position: absolute;
-    left: 58px ;
-    border-radius: 10px ;
-    font-size: 18px ;
+    left: 58px !important;
+    border-radius: 10px !important;
+    font-size: 18px !important;
     width: 300px;
     text-align: left;
 }
@@ -136,11 +136,12 @@ body{
     opacity: 1;
     z-index: 1000;
     transition: opacity 0.2s ease;
-    /* pointer-events: none; */
+    pointer-events: all;
 }
 .opacityZero{
     opacity: 0 !important;
-    /* pointer-events: all; */
+    pointer-events: none !important;
+    z-index: 0;
 }
 #usernameInput{
     padding: 10px !important;
@@ -208,6 +209,7 @@ body{
     height: 60px;
     padding-left: 15px;
     padding-right: 15px;
+    margin-right: 10px;
     margin-top: 10px;
     position: relative;
     border-radius: 40px;
@@ -216,16 +218,26 @@ body{
     justify-content: center;
     align-items: center;
 }
-#adddatecontainer:hover{
+/* #adddatecontainer:hover{
     #addDate{
         width: 200px;
     }
-}
+} */
 #addDate{
-    width: 0px;
+    width: 220px;
     height: 50px;
     /* background-color: #6291ff; */
     transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.adddateinput{
+    width: 100% !important;
+    background-color: #001d3500 !important;
+    border: 0;
+    font-size: 20px !important;
+    color: #696997 !important;
 }
 #addButton{
     width: 35px;
@@ -235,31 +247,56 @@ body{
     background-repeat: no-repeat;
     background-position: center;
 }
+#addButton:hover{
+    background-color: #e6b42b;
+    border-radius: 30px;
+    cursor: pointer;
+}
 #editcontainer{
     /* background-color: yellow; */
     /* border-right: #3854953a 1px solid; */
-    width: 22%;
+    width: 350px;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 #datelistcontainer{
     /* background-color: #74acf5; */
-    width: 78%;
+    width: 100%;
     height: 100%;
     display: flex;
     align-items:first baseline;
-    justify-content: center;
+    justify-content: flex-start;
     position: relative;
     padding: 20px;
     gap: 10px;
     /* background-color: white; */
+    overflow-x: auto;
     border-left: #3854953a 1px solid;
     /* box-shadow: inset 1px 1px 10px rgba(69, 74, 102, 0.107); */
+}
 
+#datelistcontainer::-webkit-scrollbar {
+    width: 5px; /* 스크롤바 너비 */
+    height: 8px; /*가로 스크롤바 높이*/
+}
+#datelistcontainer::-webkit-scrollbar-track {
+    background: none; /* 트랙 배경 색상 */
+    border-radius: 10px; /* 트랙 모서리 둥글게 */
+}
+#datelistcontainer::-webkit-scrollbar-thumb {
+    background: #788cb3; /* 핸들 색상 */
+    border-radius: 10px; /* 핸들 모서리 둥글게 */
+}
+#datelistcontainer::-webkit-scrollbar-thumb:hover {
+    background: #6c7ea2; /* 호버 시 핸들 색상 */
 }
 .dateItem{
-    width: 250px;
-    height:auto;
-    /* background-color: #F1F5FC; */
+    flex-shrink: 0;
+    width: 240px;
+    height: auto;
+    background-color: #F1F5FC;
     border-radius: 35px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -275,6 +312,11 @@ body{
     /* filter: drop-shadow(3px 0px 3px rgba(136, 152, 178, 0.3))
             drop-shadow(-3px 5px 3px rgba(136, 152, 178, 0.3)) Left and bottom shadow !important; */
 }
+.dateItem:hover{
+    .deleteButton{
+        opacity: 1;
+    }
+}
 .dateHeader{
     width: 100%;
     height: 60px;
@@ -284,14 +326,33 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.dateinput{
+    width: 100% !important;
+    background-color: #001d3500 !important;
+    border: 0;
+    font-size: 20px !important;
+    color: #ffffff !important;
+}
+.deleteButton{
+    /* background-color: yellow; */
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    transform: translateX(320%);
+    align-content: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    cursor: pointer;
     color: white;
-    font-size: 20px;
+}
+.deleteButton:hover{
+    color: #e6efff;
 }
 .dateContent{
     width: 100%;
     /* height: 82%; */
-    height:auto;
-    /* overflow-y: scroll; */
+    height: fit-content;
     display: flex;
     align-items: first baseline;
     justify-content: center;

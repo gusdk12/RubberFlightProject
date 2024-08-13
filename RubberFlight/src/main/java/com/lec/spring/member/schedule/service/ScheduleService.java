@@ -2,8 +2,10 @@ package com.lec.spring.member.schedule.service;
 
 import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.repository.UserRepository;
+import com.lec.spring.member.schedule.domain.Date;
 import com.lec.spring.member.schedule.domain.Participation;
 import com.lec.spring.member.schedule.domain.Schedule;
+import com.lec.spring.member.schedule.repository.DateRepository;
 import com.lec.spring.member.schedule.repository.ParticipationRepository;
 import com.lec.spring.member.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final ParticipationRepository participationRepository;
     private final UserRepository userRepository;
+    private final DateRepository dateRepository;
 
     @Transactional
     public Schedule save(Long userId, Schedule schedule){
@@ -101,6 +104,9 @@ public class ScheduleService {
     @Transactional
     public String delete(Long id){
         if(!isExist(id)) return "failed";
+
+        List<Date> dates = dateRepository.findAllByScheduleId(id);
+        dates.forEach(date -> dateRepository.deleteById(date.getId()));
 
         participationRepository.deleteAllByScheduleId(id);
         scheduleRepository.deleteById(id);

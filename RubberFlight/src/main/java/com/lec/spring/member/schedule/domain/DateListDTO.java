@@ -5,6 +5,15 @@ import java.util.List;
 public class DateListDTO {
     private Long scheduleId;
     private List<Date> dates;
+    private Integer deleteIndex;
+
+    public Integer getDeleteIndex() {
+        return deleteIndex;
+    }
+
+    public void setDeleteIndex(Integer deleteIndex) {
+        this.deleteIndex = deleteIndex;
+    }
 
     public Long getScheduleId() {
         return scheduleId;
