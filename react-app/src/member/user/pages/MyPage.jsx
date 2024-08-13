@@ -1,7 +1,7 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import MenuBar from '../../../general/common/SideMenu/MenuBar';
 import { Box, Flex, Divider, Avatar, Text, IconButton, Tooltip, useToast } from '@chakra-ui/react';
-import { Outlet, useNavigate } from 'react-router-dom'; // useNavigate 추가
+import { Outlet, useNavigate } from 'react-router-dom';
 import { CopyIcon } from '@chakra-ui/icons'; 
 import Header from '../../../general/common/Header/Header';
 import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
@@ -10,13 +10,17 @@ const MyPage = () => {
   const { userInfo } = useContext(LoginContext);
   const toast = useToast(); 
   const navigate = useNavigate(); 
+  const [isFirstVisit, setIsFirstVisit] = useState(true); 
 
   useEffect(() => {
     document.body.style.overflowY = 'scroll';
     document.body.style.backgroundColor = '#dde6f5d7';
 
-    navigate('/mypage/user-info'); 
-  }, [navigate]);
+    if (isFirstVisit) {
+      navigate('/mypage/user-info'); 
+      setIsFirstVisit(false); 
+    }
+  }, [navigate, isFirstVisit]);
 
   const handleCopyUsername = () => {
     navigator.clipboard.writeText(userInfo.username)
