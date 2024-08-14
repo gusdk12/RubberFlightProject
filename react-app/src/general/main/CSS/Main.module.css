@@ -62,7 +62,7 @@ body{
         left: -10vh;
     } */
     100% { 
-        top: 0vh;
+        top: 13vh;
         /* left: 0vh; */
     }
 }
@@ -76,8 +76,8 @@ body{
     /* background-color: #e991a78c; */
     z-index: 1;
     /* transition: left 2s ease-out, top 2s ease-out; */
-    /* animation: moveAirplain 2s ease-out;
-    animation-fill-mode : forwards; */
+    animation: moveAirplain 2s ease-out;
+    animation-fill-mode : forwards;
 }
 .airplainNewPos{
     width: 100vw;
@@ -89,6 +89,11 @@ body{
     width: 100vw;
     height: 100vh;
     position: absolute;
+    bottom: -95vh;
+    transition: bottom 2s ease;
+}
+.clouddown{
+    bottom: -115vh !important;
 }
 .backcloud{
     position: absolute;
@@ -98,7 +103,7 @@ body{
     background-position: center;
     width: 3500px;
     height: 700px;
-    bottom: -170px;
+    bottom: -230px;
     z-index: 0;
     opacity: 0.7;
 }
@@ -123,9 +128,10 @@ body{
     background-position: center;
     width: 3500px;
     height: 700px;
-    bottom: -400px;
+    bottom: -450px;
     z-index: 2;
     opacity: 0.7;
+    transition: bottom 2s ease;
 }
 #frontcloud1{
     animation: moveClouds1 20s linear;
