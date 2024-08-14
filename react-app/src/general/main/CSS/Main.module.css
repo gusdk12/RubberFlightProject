@@ -13,6 +13,7 @@ body{
     flex-direction: column;
     /* justify-content : space-between; */
     align-items: center;
+    position: relative; 
 }
 
 .introduceMain{
@@ -364,31 +365,38 @@ body{
     margin-left: -20px;
     color: #636676;
 }
+#editableDiv {
+    position: relative;
+    /* background-color: red; */
+}
 
-.airportDefault {
+#airportName {
+    position: relative;
     /* outline: 2px solid green; */
-    margin-bottom: 30px;
-    width: 46%;
-    text-align: center;
-    font-size: 26px;
-    margin-left: 8px;
+    z-index: 1;
 }
 
 .searchAirportContainer {
     /* outline: 2px solid red; */
-    margin-top: 185px;
+    /* margin-top: 185px; */
     width: 180%;
     margin-left: 90px;
-    position: relative;
+    position: absolute; 
     min-height: 300%;
+    top: 100%; 
 }
 
 .searchContainer {
+    /* outline: 2px solid blue; */
     background-color: #e9eef8;
     opacity: 1;
     padding: 10px;
     border-radius: 15px;
     position: relative;
+    display: block; /* 또는 flex 등 */
+    visibility: visible; /* 숨겨져 있지 않은지 확인 */
+    opacity: 1; /* 투명도가 0이 아닌지 확인 */
+    z-index: 1; 
 }
 
 .searchAirport {
@@ -422,7 +430,6 @@ body{
     outline: none !important;
     width: 100%;
     font-size: 26px;
-    /* outline: 2px solid salmon; */
 }
 
 .selectArrow{
@@ -435,6 +442,7 @@ body{
     /* background-color: red; */
     margin-left: auto;
     margin-right: auto;
+    cursor: pointer;
 }
 
 /* 자동완성 */
@@ -617,4 +625,26 @@ body{
     color: #ffffff;
     margin-left: 13px;
     /* outline: 2px solid red; */
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0; /* 시작할 때 완전히 투명 */
+    }
+    50% {
+        opacity: 1; /* 중간에 완전히 불투명 */
+    }
+    100% {
+        opacity: 0; /* 끝날 때 다시 완전히 투명 */
+    }
+}
+
+
+.errorMessage {
+    /* outline: 2px solid red; */
+    color: #ff4c4c;
+    padding-top: 2%;
+    position: absolute;
+    right: 0;
+    animation: fadeInOut 4s ease-in-out;
 }
