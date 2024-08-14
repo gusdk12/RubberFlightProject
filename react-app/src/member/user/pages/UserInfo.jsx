@@ -91,8 +91,7 @@ const UserInfo = () => {
             <Avatar 
               size="sm" 
               name={formData.name || '이름 없음'} 
-              src={formData.existingImage ? `${process.env.PUBLIC_URL}/images/${formData.existingImage}` : undefined} 
-              backgroundColor="#dde6f5d7" 
+              src={formData.existingImage} 
             />
             <Box ml={3} display="flex" flexDirection="column" alignItems="flex-start"> {/* 이름과 이메일을 세로로 정렬 */}
               <Flex alignItems="center">

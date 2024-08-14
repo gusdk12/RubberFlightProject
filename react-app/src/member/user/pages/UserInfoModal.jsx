@@ -1,13 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton,
   ModalBody, ModalFooter, Button, Input, Text, Flex, FormControl,
   FormLabel, Image,
   Select,
-  Box
+  Box,
+  InputGroup,
+  InputRightElement
 } from '@chakra-ui/react';
 import { useUser } from '../../../general/user/contexts/LoginContextProvider';
 import Swal from 'sweetalert2';
+import styles from "../CSS/UserInfoModal.module.css";
+
+const PasswordInput = ({ placeholder, name, value, onChange, onBlur }) => {
+    const [show, setShow] = React.useState(false);
+    const handleClick = () => setShow(!show);
+
+    return (
+        <InputGroup size='md'>
+        <Input
+            className={styles.input}
+            pr='4.5rem'
+            type={show ? 'text' : 'password'}
+            placeholder={placeholder}
+            name={name}
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+            backgroundColor={'white'}
+            // Set font-family to a sans-serif font
+            fontFamily='system-ui, sans-serif !important'
+            textAlign={'left'}
+            fontSize={'18px !important'}
+            borderBottom='1px solid #ced4da'
+            borderRadius='4px'
+        />
+        <InputRightElement width='4.5rem'>
+            <Button h='1.75rem' size='sm' onClick={handleClick} bg={'#586D92'} color={'white'}>
+                {show ? 'Hide' : 'Show'}
+            </Button>
+        </InputRightElement>
+    </InputGroup>
+    );
+};
 
 const UserInfoModal = ({ isOpen, onClose }) => {
   const { userInfo, loginCheck } = useUser();
@@ -23,6 +58,15 @@ const UserInfoModal = ({ isOpen, onClose }) => {
     image: null,
     existingImage: '' // 기존 이미지 URL
   });
+
+  // 파일 input을 참조할 ref 생성
+  const fileInputRef = useRef(null);
+
+   // 파일 선택 대화상자 열기
+   const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
 
   useEffect(() => {
     if (isOpen && userInfo.id) {
@@ -76,10 +120,66 @@ const UserInfoModal = ({ isOpen, onClose }) => {
 
   const handleSave = async () => {
     if (formData.password !== formData.passwordCheck) {
-      console.error('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
-      return;
-    }
+        Swal.fire({
+            icon: 'error',
+            title: '비밀번호 오류',
+            text: '비밀번호와 비밀번호 확인이 일치하지 않습니다.',
+            willOpen: () => {
+                const swalContainer = document.querySelector('.swal2-container');
+                if (swalContainer) {
+                  swalContainer.style.zIndex = '9999'; // Set the z-index dynamically
+                }
+            }
+          });
+          return;
+        }
 
+        if (!validateEmail(`${formData.email}@${formData.emailDomain}`)) {
+            Swal.fire({
+              icon: 'error',
+              title: '이메일 오류',
+              text: '유효하지 않은 이메일 주소입니다.',
+              willOpen: () => {
+                const swalContainer = document.querySelector('.swal2-container');
+                if (swalContainer) {
+                  swalContainer.style.zIndex = '9999'; // Set the z-index dynamically
+                }
+              }
+            });
+            return;
+          }
+
+          if (!validatePhoneNumber(formData.tel1, formData.tel2, formData.tel3)) {
+            Swal.fire({
+              icon: 'error',
+              title: '전화번호 오류',
+              text: '전화번호 형식이 유효하지 않습니다.',
+              willOpen: () => {
+                const swalContainer = document.querySelector('.swal2-container');
+                if (swalContainer) {
+                  swalContainer.style.zIndex = '9999'; // Set the z-index dynamically
+                }
+              }
+            });
+            return;
+          }
+
+          if (!validateName(formData.name)) {
+            Swal.fire({
+                icon: 'error',
+                title: '이름 오류',
+                text: '이름 형식이 올바르지 않습니다.',
+                willOpen: () => {
+                    const swalContainer = document.querySelector('.swal2-container');
+                if(swalContainer){
+                    swalContainer.style.zIndex = '9999';
+                }
+                }
+            });
+            return;
+          }
+
+    
     try {
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
@@ -116,17 +216,17 @@ const UserInfoModal = ({ isOpen, onClose }) => {
       }
       
       Swal.fire({
-  title: "수정 완료",
-  text: "회원정보를 성공적으로 수정하였습니다.",
-  icon: "success",
-  confirmButtonText: "확인",
-  backdrop: true, // 배경 흐리기
-  customClass: {
-    container: 'swal-container' // 커스터마이즈할 CSS 클래스 (선택 사항)
-  }
-}).then(() => {
-  window.location.reload(); // 페이지 새로 고침
-});
+        title: "수정 완료",
+        text: "회원정보를 성공적으로 수정하였습니다.",
+        icon: "success",
+        confirmButtonText: "확인",
+        backdrop: true, // 배경 흐리기
+        customClass: {
+            container: 'swal-container' // 커스터마이즈할 CSS 클래스 (선택 사항)
+        }
+        }).then(() => {
+        window.location.reload(); // 페이지 새로 고침
+        });
 
 
       console.log(data);
@@ -137,23 +237,57 @@ const UserInfoModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const validatePhoneNumber = (tel1, tel2, tel3) => 
+  /^\d{3}$/.test(tel1) && /^\d{4}$/.test(tel2) && /^\d{4}$/.test(tel3);
+
+  const validateName = (name) => /^[a-zA-Z가-힣\s]+$/.test(name);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
       <ModalOverlay />
       <ModalContent bg="#ffffff" borderRadius="md" boxShadow="lg">
-        <ModalHeader fontSize="30px" fontWeight="bold">회원 정보 수정</ModalHeader>
+        <ModalHeader fontSize="30px" fontWeight="bold" className={styles.modalTitle}>회원 정보 수정</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Flex direction="column" p={4} maxWidth="500px" mx="auto">
 
           <FormControl id="profileImage" mb={4}>
-              <FormLabel fontWeight="medium">프로필 사진:</FormLabel>
-              {formData.existingImage && !formData.image && (
-                <Image src={formData.existingImage} alt="Existing Profile" boxSize="100px" objectFit="cover" mb={2} />
-              )}
-              <Input type="file" onChange={handleFileChange} bg="white" />
-              {formData.image && <Text mt={2}>현재 이미지: {formData.image.name}</Text>}
-            </FormControl>
+                <FormLabel fontWeight="medium">프로필 사진:</FormLabel>
+                <Box 
+                    onClick={handleImageClick} 
+                    mb={2} 
+                    textAlign="center"  // Box 내의 요소를 가운데 정렬
+                >
+                    {formData.existingImage && !formData.image && (
+                    <Image 
+                        src={formData.existingImage} 
+                        alt="Existing Profile" 
+                        boxSize="150px" 
+                        objectFit="cover" 
+                        cursor="pointer" 
+                        display="inline-block" // 이미지가 인라인 블록으로 표시되도록
+                    />
+                    )}
+                    {formData.image && (
+                    <Image 
+                        src={URL.createObjectURL(formData.image)} 
+                        alt="Selected Profile" 
+                        boxSize="100px" 
+                        objectFit="cover" 
+                        display="inline-block" // 이미지가 인라인 블록으로 표시되도록
+                    />
+                    )}
+                </Box>
+                {/* 숨겨진 파일 input */}
+                <Input 
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                />
+</FormControl>
 
             <FormControl id="name" mb={4}>
               <FormLabel fontWeight="medium">이름:</FormLabel>
@@ -162,11 +296,12 @@ const UserInfoModal = ({ isOpen, onClose }) => {
                 value={formData.name}
                 onChange={handleChange}
                 bg="white"
+                className={styles.input}
               />
             </FormControl>
     
             <FormControl id="email" mb={4}>
-              <FormLabel fontWeight="medium">Email:</FormLabel>
+              <FormLabel fontWeight="medium">이메일:</FormLabel>
               <Box display="flex" alignItems="center">
                 <Input
                   name="email"
@@ -174,6 +309,7 @@ const UserInfoModal = ({ isOpen, onClose }) => {
                   onChange={handleChange}
                   bg="white"
                   borderColor="#d1d1d1"
+                  className={styles.input}
                 />
                 @
                 <Select
@@ -183,14 +319,15 @@ const UserInfoModal = ({ isOpen, onClose }) => {
                   bg="white"
                   borderColor="#d1d1d1"
                   ml={2}
+                  className={styles.input}
                 >
-                  <option value="naver.com">naver.com</option>
-                  <option value="gmail.com">gmail.com</option>
-                  <option value="hanmail.net">hanmail.net</option>
-                  <option value="nate.com">nate.com</option>
-                  <option value="yahoo.com">yahoo.com</option>
-                  <option value="hotmail.com">hotmail.com</option>
-                  <option value="daum.net">daum.net</option>
+                  <option value="naver.com" className={styles.input}>naver.com</option>
+                  <option value="gmail.com" className={styles.input}>gmail.com</option>
+                  <option value="hanmail.net" className={styles.input}>hanmail.net</option>
+                  <option value="nate.com" className={styles.input}>nate.com</option>
+                  <option value="yahoo.com" className={styles.input}>yahoo.com</option>
+                  <option value="hotmail.com" className={styles.input}>hotmail.com</option>
+                  <option value="daum.net" className={styles.input}>daum.net</option>
                 </Select>
               </Box>
             </FormControl>
@@ -205,6 +342,7 @@ const UserInfoModal = ({ isOpen, onClose }) => {
                   maxLength="3"
                   bg="white"
                   borderColor="#d1d1d1"
+                  className={styles.input}
                 />
                 -
                 <Input
@@ -215,6 +353,7 @@ const UserInfoModal = ({ isOpen, onClose }) => {
                   bg="white"
                   borderColor="#d1d1d1"
                   ml={2}
+                  className={styles.input}
                 />
                 -
                 <Input
@@ -225,13 +364,14 @@ const UserInfoModal = ({ isOpen, onClose }) => {
                   bg="white"
                   borderColor="#d1d1d1"
                   ml={2}
+                  className={styles.input}
                 />
               </Flex>
             </FormControl>
     
             <FormControl id="password" mb={4}>
               <FormLabel fontWeight="medium">비밀번호:</FormLabel>
-              <Input
+              <PasswordInput
                 name="password"
                 type="password"
                 value={formData.password}
@@ -242,7 +382,7 @@ const UserInfoModal = ({ isOpen, onClose }) => {
     
             <FormControl id="passwordCheck" mb={4}>
               <FormLabel fontWeight="medium">비밀번호 확인:</FormLabel>
-              <Input
+              <PasswordInput
                 name="passwordCheck"
                 type="password"
                 value={formData.passwordCheck}
@@ -254,7 +394,7 @@ const UserInfoModal = ({ isOpen, onClose }) => {
           </Flex>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleSave}>
+          <Button colorScheme="blue" mr={3} onClick={handleSave} className={styles.saveButton}>
             저장
           </Button>
           <Button variant="outline" onClick={onClose}>취소</Button>
