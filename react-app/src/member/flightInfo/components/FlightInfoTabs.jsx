@@ -31,13 +31,27 @@ const FlightInfoTabs = ({ pastFlights = [], upcomingFlights = [], reviewList = [
           maxWidth: '800px',
           minWidth: '800px',
           width: '90%',
-          height: '88vh',
+          height: '680px',
           margin: 'auto',
           marginTop: '20px',
           overflowY: 'auto',
-          scrollbarWidth: 'thin',
-          scrollbarColor: '#6d92cc #fbfdff',
-          scrollBehavior: 'smooth',
+          position: 'relative',
+        }}
+        css={{
+          '&::-webkit-scrollbar': {
+            width: '8px',
+            borderRadius: '10px',
+          },
+          '&::-webkit-scrollbar-track': {
+            background: 'transparent',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: '#6d9eeb', 
+            borderRadius: '10px',
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            background: '#4b8dc3', 
+          },
         }}
       >
         <TabPanel>
@@ -50,7 +64,7 @@ const FlightInfoTabs = ({ pastFlights = [], upcomingFlights = [], reviewList = [
               </Box>
             </Flex>
           ) : (
-            <Text>예약된 항공편이 없습니다.</Text>
+            <Text fontFamily="Noto Sans KR" fontWeight="700">예약된 항공편이 없습니다.</Text>
           )}
         </TabPanel>
 

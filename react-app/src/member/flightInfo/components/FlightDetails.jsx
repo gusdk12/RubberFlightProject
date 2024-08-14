@@ -22,7 +22,7 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
     <Flex direction="column" mb={4}>
       <Flex justify="space-between">
         <Flex direction="column" ml={4} mt={5}>
-          <Text fontSize="23px" fontFamily="Roboto" fontWeight="bold">항공 정보</Text>
+          <Text fontSize="23px" fontFamily="Noto Sans KR" fontWeight="900">항공 정보</Text>
           <Text fontSize="16px" mt={1} ml={1} color="#815151">{flightInfo.airlineName || "-"}</Text>
         </Flex>
         <Button 
