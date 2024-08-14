@@ -35,7 +35,9 @@ public class CouponService {
     }
 
     @Transactional
-    public Coupon findById(Long id) {return couponRepository.findById(id).orElse(null); }
+    public Coupon findById(Long id) {
+        return couponRepository.findById(id).orElse(null);
+    }
 
     @Transactional
     public int delete(Long id) {
@@ -43,12 +45,18 @@ public class CouponService {
         return 1;
     }
 
-    public List<String> getAirlineName(List<Flight> flights) {
-        return flights.stream()
-                .map(Flight::getAirlineName)
-                .distinct()
-                .collect(Collectors.toList());
+    @Transactional
+    public void deleteUserCouponsByCouponId(Long couponId) {
+        List<User> users = userRepository.findAll();
+
+        for (User user : users) {
+            List<Coupon> userCoupons = user.getCoupons();
+            userCoupons.removeIf(coupon -> coupon.getId().equals(couponId));
+            user.setCoupons(userCoupons);
+            userRepository.save(user);
+        }
     }
+
 
     public List<Coupon> getCouponsByUserId(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));

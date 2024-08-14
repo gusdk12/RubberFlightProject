@@ -43,7 +43,7 @@ public class User {
     @Column(nullable = true)
     private String image;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(
             name = "ft_coupon_users",

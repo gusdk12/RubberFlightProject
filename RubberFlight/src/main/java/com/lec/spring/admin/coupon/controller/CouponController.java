@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -39,6 +40,7 @@ public class CouponController {
     @CrossOrigin
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
+        couponService.deleteUserCouponsByCouponId(id);
         return new ResponseEntity<>(couponService.delete(id), HttpStatus.OK);
     }
 
@@ -49,36 +51,39 @@ public class CouponController {
     public ResponseEntity<?> getCoupons(HttpServletRequest request) {
         String token = request.getHeader("Authorization").split(" ")[1];
 
-//        System.out.println("토큰" + token);
         Long userId = jwtUtil.getId(token);
-//        System.out.println("아이디" + userId);
 
         List<Coupon> coupons = couponService.getCouponsByUserId(userId);
-//        System.out.println("쿠폰들" + coupons);
         return new ResponseEntity<>(coupons, HttpStatus.OK);
     }
 
     // 사용자 쿠폰 추가
     @CrossOrigin
-    @PostMapping("/user/add/{couponId}")
-    public ResponseEntity<?> addCoupon(@PathVariable Long couponId, HttpServletRequest request) {
+    @PostMapping("/user/add")
+    @Transactional
+    public ResponseEntity<?> addCoupon(@RequestBody Map<String, String> requestBody, HttpServletRequest request) {
         String token = request.getHeader("Authorization").split(" ")[1];
         Long userId = jwtUtil.getId(token);
 
         User user = userService.findById(userId);
-        if (user == null) {
-            return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+
+        String couponCode = requestBody.get("couponCode");
+        Coupon coupon = couponService.findByCode(couponCode);
+
+        if (coupon == null) {
+            return new ResponseEntity<>("유효하지 않은 쿠폰 코드입니다.", HttpStatus.BAD_REQUEST);
         }
 
-        Coupon coupon = couponService.findById(couponId);
-        if (coupon != null) {
-            user.getCoupons().add(coupon);
-            coupon.getUsers().add(user);
-            userService.save(user);
-            return new ResponseEntity<>(coupon, HttpStatus.OK);
+        if (user.getCoupons().contains(coupon)) {
+            return new ResponseEntity<>("이미 보유한 쿠폰입니다.", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("쿠폰 ID가 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
+
+        user.getCoupons().add(coupon);
+        userService.save(user);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
     // 사용자 쿠폰 사용
     @CrossOrigin
@@ -86,15 +91,13 @@ public class CouponController {
     @PostMapping("/user/use/{couponId}")
     public ResponseEntity<?> useCoupon(@PathVariable Long couponId, HttpServletRequest request) {
 
-//        System.out.println("쿠폰아이디" + couponId);
         String token = request.getHeader("Authorization").split(" ")[1];
         Long userId = jwtUtil.getId(token);
-//        System.out.println("유저 아이디" + userId);
         Coupon coupon = couponService.findById(couponId);
-//        System.out.println("사용한 쿠폰 정보" + coupon);
+
         if (coupon != null) {
             User user = userService.findById(userId);
-//            System.out.println("유저 정보" + user);
+
             if (user.getCoupons().contains(coupon)) {
                 user.getCoupons().remove(coupon);
                 userService.save(user);
@@ -104,6 +107,6 @@ public class CouponController {
                 return new ResponseEntity<>("사용자가 소유하지 않은 쿠폰입니다.", HttpStatus.BAD_REQUEST);
             }
         }
-        return new ResponseEntity<>("쿠폰 코드가 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("유효하지 않은 쿠폰 코드입니다.", HttpStatus.BAD_REQUEST);
     }
 }
