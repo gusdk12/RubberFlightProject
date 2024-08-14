@@ -25,9 +25,6 @@ public class CountryController {
     @Value("${app.api-key.aviation}")
     private String aviation_key;
 
-    @Value("${app.api-key.safety}")
-    private String safety_key;
-
     @GetMapping("/{iso2Country}")
     public ResponseEntity<?> find(@PathVariable String iso2Country){
         URI uri = UriComponentsBuilder
@@ -75,7 +72,6 @@ public class CountryController {
             String baseUrl = "https://apis.data.go.kr/1262000/CountrySafetyService5/getCountrySafetyList5";
             String uri = String.format("%s?serviceKey=%s&cond[country_iso_alp2::EQ]=%s&numOfRows=1",
                     baseUrl,
-                    URLEncoder.encode(safety_key, StandardCharsets.UTF_8.toString()),
                     URLEncoder.encode(iso2Country, StandardCharsets.UTF_8.toString()));
 
             // 생성된 URI를 로그로 출력 (디버깅 용도)
