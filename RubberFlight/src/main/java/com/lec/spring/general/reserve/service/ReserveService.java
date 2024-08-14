@@ -111,7 +111,30 @@ public class ReserveService {
         return price;
     }
 
-    // 리스트
+    // 리스트(왕복)
+    public List<Map<String, Object>> getSortedFlightCombinations(List<Flight> outboundFlights, List<Flight> inboundFlights) {
+        List<Map<String, Object>> combinations = new ArrayList<>();
+
+        for (Flight outbound : outboundFlights) {
+            for (Flight inbound : inboundFlights) {
+                Map<String, Object> combination = new HashMap<>();
+                int totalPrice = outbound.getPrice() + inbound.getPrice();
+                combination.put("id", outbound.getId() + "_" + inbound.getId());
+                combination.put("outbound", outbound);
+                combination.put("inbound", inbound);
+                combination.put("totalPrice", totalPrice);
+
+                combinations.add(combination);
+            }
+        }
+
+        // 가격에 따라 정렬
+        return combinations.stream()
+                .sorted(Comparator.comparingInt(combination -> (int) combination.get("totalPrice")))
+                .collect(Collectors.toList());
+    }
+
+    // 리스트(편도)
     public List<Flight> getFlights(List<Flight> flights) {
         return flights.stream()
                 .sorted(Comparator.comparingInt(Flight::getPrice)
