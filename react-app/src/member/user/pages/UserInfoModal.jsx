@@ -2,16 +2,22 @@ import React, { useEffect, useState } from 'react';
 import {
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton,
   ModalBody, ModalFooter, Button, Input, Text, Flex, FormControl,
-  FormLabel, Image
+  FormLabel, Image,
+  Select,
+  Box
 } from '@chakra-ui/react';
 import { useUser } from '../../../general/user/contexts/LoginContextProvider';
+import Swal from 'sweetalert2';
 
 const UserInfoModal = ({ isOpen, onClose }) => {
   const { userInfo, loginCheck } = useUser();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    tel: '',
+    emailDomain: 'naver.com', // 기본 도메인 설정
+    tel1: '',
+    tel2: '',
+    tel3: '',
     password: '',
     passwordCheck: '',
     image: null,
@@ -33,8 +39,11 @@ const UserInfoModal = ({ isOpen, onClose }) => {
 
           setFormData({
             name: data.name || '',
-            email: data.email || '',
-            tel: data.tel || '',
+            email: data.email ? data.email.split('@')[0] : '',
+            emailDomain: data.email ? data.email.split('@')[1] : 'naver.com',
+            tel1: data.tel ? data.tel.split('-')[0] : '',
+            tel2: data.tel ? data.tel.split('-')[1] : '',
+            tel3: data.tel ? data.tel.split('-')[2] : '',
             password: '',
             passwordCheck: '',
             image: null,
@@ -74,8 +83,9 @@ const UserInfoModal = ({ isOpen, onClose }) => {
     try {
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('tel', formData.tel);
+      formDataToSend.append('email', `${formData.email}@${formData.emailDomain}`);
+      formDataToSend.append('tel', `${formData.tel1}-${formData.tel2}-${formData.tel3}`);
+      
       
       formDataToSend.append('password', formData.password || formData.existingPassword);
     
@@ -105,7 +115,18 @@ const UserInfoModal = ({ isOpen, onClose }) => {
         throw new Error('응답이 JSON 형식이 아닙니다.');
       }
       
-
+      Swal.fire({
+  title: "수정 완료",
+  text: "회원정보를 성공적으로 수정하였습니다.",
+  icon: "success",
+  confirmButtonText: "확인",
+  backdrop: true, // 배경 흐리기
+  customClass: {
+    container: 'swal-container' // 커스터마이즈할 CSS 클래스 (선택 사항)
+  }
+}).then(() => {
+  window.location.reload(); // 페이지 새로 고침
+});
 
 
       console.log(data);
@@ -124,6 +145,16 @@ const UserInfoModal = ({ isOpen, onClose }) => {
         <ModalCloseButton />
         <ModalBody>
           <Flex direction="column" p={4} maxWidth="500px" mx="auto">
+
+          <FormControl id="profileImage" mb={4}>
+              <FormLabel fontWeight="medium">프로필 사진:</FormLabel>
+              {formData.existingImage && !formData.image && (
+                <Image src={formData.existingImage} alt="Existing Profile" boxSize="100px" objectFit="cover" mb={2} />
+              )}
+              <Input type="file" onChange={handleFileChange} bg="white" />
+              {formData.image && <Text mt={2}>현재 이미지: {formData.image.name}</Text>}
+            </FormControl>
+
             <FormControl id="name" mb={4}>
               <FormLabel fontWeight="medium">이름:</FormLabel>
               <Input
@@ -136,22 +167,66 @@ const UserInfoModal = ({ isOpen, onClose }) => {
     
             <FormControl id="email" mb={4}>
               <FormLabel fontWeight="medium">Email:</FormLabel>
-              <Input
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                bg="white"
-              />
+              <Box display="flex" alignItems="center">
+                <Input
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  bg="white"
+                  borderColor="#d1d1d1"
+                />
+                @
+                <Select
+                  name="emailDomain"
+                  value={formData.emailDomain}
+                  onChange={handleChange}
+                  bg="white"
+                  borderColor="#d1d1d1"
+                  ml={2}
+                >
+                  <option value="naver.com">naver.com</option>
+                  <option value="gmail.com">gmail.com</option>
+                  <option value="hanmail.net">hanmail.net</option>
+                  <option value="nate.com">nate.com</option>
+                  <option value="yahoo.com">yahoo.com</option>
+                  <option value="hotmail.com">hotmail.com</option>
+                  <option value="daum.net">daum.net</option>
+                </Select>
+              </Box>
             </FormControl>
     
             <FormControl id="tel" mb={4}>
               <FormLabel fontWeight="medium">전화번호:</FormLabel>
-              <Input
-                name="tel"
-                value={formData.tel}
-                onChange={handleChange}
-                bg="white"
-              />
+              <Flex>
+                <Input
+                  name="tel1"
+                  value={formData.tel1}
+                  onChange={handleChange}
+                  maxLength="3"
+                  bg="white"
+                  borderColor="#d1d1d1"
+                />
+                -
+                <Input
+                  name="tel2"
+                  value={formData.tel2}
+                  onChange={handleChange}
+                  maxLength="4"
+                  bg="white"
+                  borderColor="#d1d1d1"
+                  ml={2}
+                />
+                -
+                <Input
+                  name="tel3"
+                  value={formData.tel3}
+                  onChange={handleChange}
+                  maxLength="4"
+                  bg="white"
+                  borderColor="#d1d1d1"
+                  ml={2}
+                />
+              </Flex>
             </FormControl>
     
             <FormControl id="password" mb={4}>
@@ -176,14 +251,6 @@ const UserInfoModal = ({ isOpen, onClose }) => {
               />
             </FormControl>
     
-            <FormControl id="profileImage" mb={4}>
-              <FormLabel fontWeight="medium">프로필 사진:</FormLabel>
-              {formData.existingImage && !formData.image && (
-                <Image src={formData.existingImage} alt="Existing Profile" boxSize="100px" objectFit="cover" mb={2} />
-              )}
-              <Input type="file" onChange={handleFileChange} bg="white" />
-              {formData.image && <Text mt={2}>현재 이미지: {formData.image.name}</Text>}
-            </FormControl>
           </Flex>
         </ModalBody>
         <ModalFooter>

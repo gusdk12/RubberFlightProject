@@ -10,10 +10,19 @@ import { useNavigate } from 'react-router-dom';
 import UserInfoModal from './UserInfoModal';
 
 const UserInfo = () => {
-  const { userInfo } = useContext(LoginContext); 
+  const { userInfo, loginCheck } = useContext(LoginContext); 
   const [isModalOpen, setModalOpen] = useState(false);
   const [isInfoModalOpen, setInfoModalOpen] = useState(false);
   const [email, setEmail] = useState('');  // 이메일 상태 추가
+  const [formData, setFormData ] = useState({
+    name:'',
+    email: '',
+    tel: '',
+    password: '',
+    passwordCheck: '',
+    image: null,
+    existingImage: ''
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +35,14 @@ const UserInfo = () => {
           }
 
           const data = await response.json();  // 데이터를 JSON으로 파싱
-          setEmail(data.email || '');  // 이메일 상태 업데이트
+          setFormData(prevData => ({
+          ...prevData,
+          name: data.name || '',
+          email: data.email || '',
+          tel:data.tel || '',
+          existingImage: data.image || ''
+          }))
+          // setEmail(data.email || '');  
         } catch (error) {
           console.error('유저 이메일 정보를 가져오는 데 실패했습니다:', error);
         }
@@ -34,7 +50,7 @@ const UserInfo = () => {
 
       fetchUserEmail();  // 이메일 데이터 가져오기
     }
-  }, [userInfo.id]);
+  }, [userInfo.id]); // userInfo.id가 변경될 때마다 이메일 정보를 다시 가져옴
 
   const handleOpenModal = () => {
     setModalOpen(true); 
@@ -74,16 +90,16 @@ const UserInfo = () => {
           <Flex align="center" ml={3}>
             <Avatar 
               size="sm" 
-              name={userInfo.name} 
-              src={process.env.PUBLIC_URL + `/images/${userInfo.image}`} 
+              name={formData.name || '이름 없음'} 
+              src={formData.existingImage ? `${process.env.PUBLIC_URL}/images/${formData.existingImage}` : undefined} 
               backgroundColor="#dde6f5d7" 
             />
             <Box ml={3} display="flex" flexDirection="column" alignItems="flex-start"> {/* 이름과 이메일을 세로로 정렬 */}
               <Flex alignItems="center">
-                <Text fontSize="lg" fontWeight="bold">{userInfo.name}</Text>
+                <Text fontSize="lg" fontWeight="bold">{formData.name || '이름 없음'}</Text>
                 <Icon as={IoMdSettings} boxSize={6} ml={2} cursor="pointer" onClick={userInfoModalOpen}/> {/* 톱니바퀴 아이콘 */}
               </Flex>
-              <Text fontSize="xx-small" mt={1}>{email}</Text> {/* 이름 아래에 이메일 정보 */}
+              <Text fontSize="xx-small" mt={1}>{formData.email || '이메일 없음'}</Text> {/* 이름 아래에 이메일 정보 */}
             </Box>
           </Flex>
 
@@ -145,7 +161,11 @@ const UserInfo = () => {
         <UserInfoModal 
           isOpen={isInfoModalOpen} 
           onClose={userInfoModalClose}
-          userInfo={userInfo} // 이메일 정보를 포함한 userInfo 전달
+          onSave={() => {
+            // 회원 정보 수정 후, 사용자 정보 다시 가져오기
+            loginCheck();
+            userInfoModalClose();
+          }}
         />
       </Box>
     </>
