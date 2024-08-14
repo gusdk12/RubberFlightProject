@@ -13,6 +13,7 @@ body{
     flex-direction: column;
     /* justify-content : space-between; */
     align-items: center;
+    position: relative; 
 }
 
 .introduceMain{
@@ -307,7 +308,7 @@ body{
     background-color: #c0cdf5;
 }
 .actives {
-    background-color: #6b8aef;
+    background-color: #255cb4;
     pointer-events: none;
     color: #ffffff !important;
 }
@@ -364,31 +365,38 @@ body{
     margin-left: -20px;
     color: #636676;
 }
+#editableDiv {
+    position: relative;
+    /* background-color: red; */
+}
 
-.airportDefault {
+#airportName {
+    position: relative;
     /* outline: 2px solid green; */
-    margin-bottom: 30px;
-    width: 46%;
-    text-align: center;
-    font-size: 26px;
-    margin-left: 8px;
+    z-index: 1;
 }
 
 .searchAirportContainer {
     /* outline: 2px solid red; */
-    margin-top: 185px;
+    /* margin-top: 185px; */
     width: 180%;
     margin-left: 90px;
-    position: relative;
+    position: absolute; 
     min-height: 300%;
+    top: 100%; 
 }
 
 .searchContainer {
+    /* outline: 2px solid blue; */
     background-color: #e9eef8;
     opacity: 1;
     padding: 10px;
     border-radius: 15px;
     position: relative;
+    display: block; /* 또는 flex 등 */
+    visibility: visible; /* 숨겨져 있지 않은지 확인 */
+    opacity: 1; /* 투명도가 0이 아닌지 확인 */
+    z-index: 1; 
 }
 
 .searchAirport {
@@ -422,7 +430,6 @@ body{
     outline: none !important;
     width: 100%;
     font-size: 26px;
-    /* outline: 2px solid salmon; */
 }
 
 .selectArrow{
@@ -435,6 +442,7 @@ body{
     /* background-color: red; */
     margin-left: auto;
     margin-right: auto;
+    cursor: pointer;
 }
 
 /* 자동완성 */
@@ -554,7 +562,7 @@ body{
     width: 100%;
     height: 100%;
     font-family: "KIMM_Bold";
-    color: #ad697a;
+    color: #21A7E1;
     background: transparent;
     border: none;
     outline: none;
@@ -567,7 +575,7 @@ body{
 .dropdownButton:hover {
     outline: none;
     background: transparent;
-    color: #ad697a;
+    color: #21A7E1;
 }
 
 .cntContainer {
@@ -607,7 +615,7 @@ body{
 
   /* 제출 */
 #submitButton{
-    background-color: #6b8aef;
+    background-color: #255cb4;
     width: 10%;
     height: 55%;
     border-radius: 10px;
@@ -617,4 +625,26 @@ body{
     color: #ffffff;
     margin-left: 13px;
     /* outline: 2px solid red; */
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 1; /* 시작할 때 완전히 투명 */
+    }
+    80% {
+        opacity: 1; /* 시작할 때 완전히 투명 */
+    }
+    100% {
+        opacity: 0; /* 끝날 때 다시 완전히 투명 */
+    }
+}
+
+
+.errorMessage {
+    /* outline: 2px solid red; */
+    color: #ff4c4c;
+    padding-top: 2%;
+    position: absolute;
+    animation: fadeInOut 2s ease-in-out;
+    animation-fill-mode: forwards;
 }

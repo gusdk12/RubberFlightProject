@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -28,9 +30,12 @@ public class MyPageController {
 
     // 사용자 정보 업데이트 (비밀번호 포함)
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateUser(
+    public ResponseEntity<?> updateUser(
             @PathVariable Long id,
-            @ModelAttribute UserDTO userDto,
+            @RequestParam("password") String password,
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("tel") String tel,
             @RequestParam(value = "file", required = false) MultipartFile file) {
 
         User user = userService.findById(id);
@@ -38,55 +43,53 @@ public class MyPageController {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
 
-        // 유니크 필드 중복 체크
-        User existingUser = userService.findByUsername(userDto.getUsername());
-        if (existingUser != null && !existingUser.getId().equals(id)) {
-            return new ResponseEntity<>("Username already exists", HttpStatus.BAD_REQUEST);
-        }
-
-        String filePath = userDto.getImage(); // 기존 파일 경로를 유지
+        String filePath = user.getImage(); // 기존 파일 경로를 유지
 
         // 새로운 파일이 업로드된 경우 파일 경로를 업데이트
         if (file != null && !file.isEmpty()) {
             String fileName = file.getOriginalFilename();
             try {
-                // 로컬 파일 시스템 경로
                 Path path = Paths.get("uploads/" + fileName);
-                Files.createDirectories(path.getParent()); // 경로가 존재하지 않으면 생성
                 Files.write(path, file.getBytes());
-
-                // 클라이언트가 접근할 수 있는 URL 생성
-                filePath = "http://localhost:8282/uploads/" + fileName;
+                filePath = "http://localhost:8282/" + path;
             } catch (IOException e) {
                 e.printStackTrace();
-                return new ResponseEntity<>("File upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "File upload failed");
+                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
         // 사용자 정보 업데이트
-        user.setName(userDto.getName());
-        user.setPassword(userDto.getPassword());
-        user.setEmail(userDto.getEmail());
-        user.setTel(userDto.getTel());
-        user.setImage(filePath); // 업데이트된 파일 URL 저장
+        user.setPassword(password); // 비밀번호 업데이트
+        user.setName(name);
+        user.setEmail(email);
+        user.setTel(tel);
+        user.setImage(filePath); // 업데이트된 파일 경로 저장
 
         User updatedUser = userService.save(user);
         if (updatedUser == null) {
-            return new ResponseEntity<>("Update failed", HttpStatus.BAD_REQUEST);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Update failed");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>("User updated successfully", HttpStatus.OK);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User updated successfully");
+        response.put("user", updatedUser.toString());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserInfo(@PathVariable Long id) {
+    public ResponseEntity<User> getUserProfile(@PathVariable Long id) {
         User user = userService.findById(id);
         if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
 
 }

@@ -27,6 +27,7 @@ public class Checklist {
     @JsonManagedReference
     private User user;
 
+    @Builder.Default
     @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Checklist_item> items = new ArrayList<>();
 }

@@ -185,12 +185,14 @@ const ScheduleMain = () => {
     };
 
     const handleEditClick = (itemId, itemName) => {
+        console.log("Editing Item Clicked", itemId, itemName); // 상태를 로그로 확인
+        console.log("Current Editing Item ID", editingItemId);
         if (editingItemId === itemId) {
-            setEditingItemId(null); // Close if the same item is clicked
+            setEditingItemId(null);
         } else {
-            setEditingItemId(itemId); // Open edit input for the new item
+            setEditingItemId(itemId);
             setEditItemName(itemName);
-            setIsAddingItem(false); // Ensure adding input is closed
+            setIsAddingItem(false);
         }
     };
 
@@ -281,12 +283,13 @@ const ScheduleMain = () => {
                                                         aria-label="Save item"
                                                         icon={<CheckIcon />}
                                                         type="submit"
+                                                        size="xs"
                                                         className={style.saveButton}
                                                     />
                                                 </form>
                                             )}
                                             <div className={style.checkListContent}>
-                                            <Stack spacing={3} direction='column'>
+                                            <Stack spacing={2} direction='column'>
                                                 {checklistItems
                                                     .filter(item => item.checklistId === checklist.id)
                                                     .map(item => (
@@ -302,33 +305,54 @@ const ScheduleMain = () => {
                                                                 colorScheme='blue'
                                                                 className={style.checkbox}
                                                             />
-                                                            <span
-                                                                className={`${style.itemName} ${item.checked ? style.checkedItem : ''}`}
-                                                                onClick={(e) => { e.stopPropagation(); handleItemClick(item.id); }}
-                                                            >
-                                                                {item.itemName}
-                                                            </span>
-                                                            {selectedItemId === item.id && !editingItemId && (
-                                                                <div className={style.editDeleteButtons}>
-                                                                    <IconButton
-                                                                        aria-label="Edit item"
-                                                                        icon={<EditIcon />}
-                                                                        size="sm"
-                                                                        variant="ghost"
-                                                                        colorScheme="blue"
-                                                                        className={style.editButton}
-                                                                        onClick={(e) => {e.stopPropagation(); handleEditClick(item.id, item.itemName); }}
+                                                            {editingItemId === item.id ? (
+                                                                <form onSubmit={handleEditSubmit} className={style.editItemForm}>
+                                                                    <Input
+                                                                        type="text"
+                                                                        value={editItemName}
+                                                                        onChange={(e) => setEditItemName(e.target.value)}
+                                                                        placeholder="수정해주세요"
+                                                                        className={style.editItemInput}
                                                                     />
                                                                     <IconButton
-                                                                        aria-label="Delete item"
-                                                                        icon={<DeleteIcon />}
-                                                                        size="sm"
-                                                                        variant="ghost"
-                                                                        colorScheme="red"
-                                                                        className={style.deleteButton}
-                                                                        onClick={(e) => { e.stopPropagation(); deleteChecklistItem(item.id); }}
+                                                                        aria-label="Save item"
+                                                                        icon={<CheckIcon />}
+                                                                        type="submit"
+                                                                        size="xs"
+                                                                        className={style.edditButton}
                                                                     />
-                                                                </div>
+                                                                </form>
+                                                            ) : (
+                                                                <>
+                                                                    <span
+                                                                        className={`${style.itemName} ${item.checked ? style.checkedItem : ''}`}
+                                                                        onClick={(e) => { e.stopPropagation(); handleItemClick(item.id); }}
+                                                                    >
+                                                                        {item.itemName}
+                                                                    </span>
+                                                                    {selectedItemId === item.id && (
+                                                                        <div className={style.editDeleteButtons}>
+                                                                            <IconButton
+                                                                                aria-label="Edit item"
+                                                                                icon={<EditIcon />}
+                                                                                size="xs"
+                                                                                variant="ghost"
+                                                                                colorScheme="blue"
+                                                                                className={style.editButton}
+                                                                                onClick={(e) => {e.stopPropagation(); handleEditClick(item.id, item.itemName); }}
+                                                                            />
+                                                                            <IconButton
+                                                                                aria-label="Delete item"
+                                                                                icon={<DeleteIcon />}
+                                                                                size="xs"
+                                                                                variant="ghost"
+                                                                                colorScheme="red"
+                                                                                className={style.deleteButton}
+                                                                                onClick={(e) => { e.stopPropagation(); deleteChecklistItem(item.id); }}
+                                                                            />
+                                                                        </div>
+                                                                    )}
+                                                                </>
                                                             )}
                                                         </div>
                                                     ))
@@ -377,6 +401,7 @@ const ScheduleMain = () => {
             <div id={style.footerPart}></div>
         </>
     );
+    
 };
 
 export default ScheduleMain;
