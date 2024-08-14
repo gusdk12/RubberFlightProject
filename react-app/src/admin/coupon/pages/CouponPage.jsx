@@ -24,11 +24,32 @@ const CouponPage = () => {
       
       <Flex direction="column" align="center" justify="center" mt={200}>
 
-        <Flex align="center" mb={10} width="1100px" justify="flex-start"> 
-          <GiPriceTag size="37px"/>  
-          <Text as="h1" fontSize="32px" fontFamily="LeferiPoint-BlackA" color="gray.700" pl={6}> 
-            쿠폰 관리
-          </Text>
+        <Flex direction="column" mb={10} width="1100px" justify="flex-start"> 
+          <Box display="flex">
+            <GiPriceTag size="37px"/>  
+            <Text as="h1" fontSize="32px" fontFamily="LeferiPoint-BlackA" color="gray.700" pl={6}> 
+              쿠폰 관리
+            </Text>
+          </Box>
+          <Box
+            mt={10}
+            mr={3}
+            mb={20}
+            display="flex"
+          >
+            <Text 
+              pl={6}
+              fontSize="21px" 
+              color= "#00235A"
+              fontFamily="KIMM_Light"
+              letterSpacing="0.5px" 
+            >
+              사용자가 혜택을 누릴 수 있도록,
+              다양한 쿠폰을 추가해 주세요. <br />
+              추가된 쿠폰은 모든 사용자에게 제공되어,<br />
+              더 많은 혜택을 누릴 수 있는 기회를 드립니다. 
+            </Text>
+          </Box>
         </Flex>
 
         <Flex direction="column" align="center" width="1000px">

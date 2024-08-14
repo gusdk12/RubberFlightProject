@@ -43,7 +43,7 @@ const CouponList = () => {
       <Divider borderColor="gray.300" mt={2} mb={10} />
 
       <Box 
-        bg="gray.100" 
+        bg="gray.50" 
         paddingTop="50px"
         paddingLeft="50px"
         paddingRight="50px"
@@ -62,7 +62,7 @@ const CouponList = () => {
             borderRadius: '10px',
           },
           '&::-webkit-scrollbar-thumb': {
-            background: '#98b0c5',
+            background: '#B6C5DD',
             borderRadius: '10px',
           },
           '&::-webkit-scrollbar-thumb:hover': {
@@ -70,62 +70,70 @@ const CouponList = () => {
           },
         }}
       >
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={7}>
-          {coupons.map((coupon) => (
-            <Box 
-              key={coupon.id} 
-              _hover={{ transform: "scale(1.02)", transition: "transform 0.2s ease" }} 
-            >
-              <Flex align="center">
-                <Box
-                  p={6}
-                  width="340px"
-                  backgroundColor="white"
-                  position="relative"
-                  border="1px solid #e2e8f0"
-                  borderRight="2px dashed gray" 
-                  borderRadius="md"
-                  boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
-                >
-                  <Text fontSize="18px" color="#2a6cb9" mb={2}>
-                    {coupon.description}
-                  </Text>
-                  <Flex align="center" mb={1}>
-                    <Text fontSize="30px" fontWeight="bold">
-                      {coupon.percent} 
+        {coupons.length === 0 ? (
+          <Flex align="center" justify="center" height="100%">
+            <Text fontSize="20px" color="gray.500" fontFamily="Noto Sans KR">
+              현재 쿠폰 목록이 없습니다.
+            </Text>
+          </Flex>
+        ) : (
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={7}>
+            {coupons.map((coupon) => (
+              <Box 
+                key={coupon.id} 
+                _hover={{ transform: "scale(1.02)", transition: "transform 0.2s ease" }} 
+              >
+                <Flex align="center">
+                  <Box
+                    p={6}
+                    width="340px"
+                    backgroundColor="white"
+                    position="relative"
+                    border="1px solid #C0D7DE"
+                    borderRight="2px dashed #C9D4E8" 
+                    borderRadius="md"
+                    boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                  >
+                    <Text fontSize="18px" color="#2a6cb9" mb={2}>
+                      {coupon.description}
                     </Text>
-                    <Text ml={1} fontSize="20px" fontWeight="normal">
-                      % 할인
+                    <Flex align="center" mb={1}>
+                      <Text fontSize="30px" fontWeight="bold">
+                        {coupon.percent} 
+                      </Text>
+                      <Text ml={1} fontSize="20px" fontWeight="normal">
+                        % 할인
+                      </Text>
+                    </Flex>
+                    <Text fontSize="sm" color="gray.600" p={0}>
+                      {coupon.code}
+                      <IconButton
+                        aria-label="삭제"
+                        icon={<DeleteIcon />}
+                        variant="ghost"
+                        color="gray.500"
+                        size="lg"
+                        onClick={() => handleDelete(coupon.id)}
+                        transition="color 0.3s ease"
+                        _hover={{ color: "gray.600", transform: "translateY(-2px)" }}
+                      />
                     </Text>
-                  </Flex>
-                  <Text fontSize="sm" color="gray.600" p={0}>
-                    {coupon.code}
-                    <IconButton
-                      aria-label="삭제"
-                      icon={<DeleteIcon />}
-                      variant="ghost"
-                      color="gray.500"
-                      size="lg"
-                      onClick={() => handleDelete(coupon.id)}
-                      transition="color 0.3s ease"
-                      _hover={{ color: "gray.600", transform: "translateY(-2px)" }}
-                    />
-                  </Text>
-                </Box>
-                <Box 
-                  width="100px" 
-                  backgroundColor="#88a7ca" 
-                  borderRadius="8px"  
-                  borderTop="1px solid #e2e8f0"
-                  borderBottom="1px solid #e2e8f0"
-                  borderRight="1px solid #e2e8f0"
-                  height="183px" 
-                  boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)" 
-                />
-              </Flex>
-            </Box>
-          ))}
-        </SimpleGrid>
+                  </Box>
+                  <Box 
+                    width="100px" 
+                    backgroundColor="#DDE6F5" 
+                    borderRadius="8px"  
+                    borderTop="1px solid #e2e8f0"
+                    borderBottom="1px solid #e2e8f0"
+                    borderRight="1px solid #e2e8f0"
+                    height="183px" 
+                    boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)" 
+                  />
+                </Flex>
+              </Box>
+            ))}
+          </SimpleGrid>
+        )}
       </Box>
     </Box>
   );
