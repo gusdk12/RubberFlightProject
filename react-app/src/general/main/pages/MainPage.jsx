@@ -20,7 +20,7 @@ const MainPage = () => {
     const [isSearhMode, setIsSearhMode] = useState(false);
     const [isRoundWay, setIsRoundWay] = useState(true);
 
-    const [dates, setDates] = useState([]);
+    const [dates, setDates] = useState([null, null]);
     const [departureDate, setDepartureDate] = useState('');
     const [returnDate, setReturnDate] = useState('');
     
@@ -50,6 +50,7 @@ const MainPage = () => {
     // 유효성
     const [errorMessage, setErrorMessage] = useState('');
     const errorRef = useRef(null);
+    const [showError, setShowError] = useState(false);
 
     // useEffect(() => {
     //     document.body.style.overflow = 'hidden';
@@ -182,7 +183,7 @@ useEffect(() => {
     setIsRoundWay(isRound);
     if (!isRound) {
       // 편도로 변경 시 첫 번째 날짜만 유지
-      setDates([dates[0]]);
+      setDates([dates[0]], null);
       setDepartureDate(dates[0] ? format(dates[0], 'yyyy-MM-dd') : '');
       setReturnDate('');
     } else {
@@ -288,27 +289,18 @@ useEffect(() => {
     }
 
 
-    //애니메이션 후 사라지게
     useEffect(() => {
-        const errorElement = errorRef.current; // ref를 사용하여 DOM 요소에 접근
+        if (errorMessage) {
+            setShowError(true);
 
-        const handleAnimationEnd = () => {
-            if (errorElement) {
-                errorElement.style.display = 'none'; // 애니메이션 끝난 후 숨김
-            }
-        };
+            // 애니메이션을 트리거하기 위해 상태를 잠시 변경한 후 복원
+            const timer = setTimeout(() => {
+                setShowError(false);
+                // 이후에 errorMessage를 비워서 다시 설정할 수 있습니다
+                setErrorMessage('');
+            }, 2000); // 애니메이션 시간과 동일하게 설정
 
-        if (errorElement) {
-            if (errorMessage) {
-                errorElement.style.display = 'block'; // 에러 메시지 표시
-                errorElement.addEventListener('animationend', handleAnimationEnd);
-            } else {
-                errorElement.style.display = 'none';
-            }
-
-            return () => {
-                errorElement.removeEventListener('animationend', handleAnimationEnd);
-            };
+            return () => clearTimeout(timer);
         }
     }, [errorMessage]);
 
