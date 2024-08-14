@@ -132,12 +132,12 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    width: 600px;
-    height: 600px;
+    width: 450px;
+    height: 450px;
 
-    position: absolute;
-    bottom: -150px;
-    right: -200px;
+    position: relative;
+    bottom: -350px;
+    right: -1000px;
     /* opacity: 0.8; */
     transform: rotate(-10deg);
 }
