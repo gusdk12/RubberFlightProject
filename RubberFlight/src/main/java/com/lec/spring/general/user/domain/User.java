@@ -44,6 +44,7 @@ public class User {
     @Column(nullable = true)
     private String image;
 
+    @Builder.Default
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(
@@ -53,6 +54,7 @@ public class User {
     )
     private List<Coupon> coupons = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonBackReference
     private List<Checklist> checklists = new ArrayList<>();

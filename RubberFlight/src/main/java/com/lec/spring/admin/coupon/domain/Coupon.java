@@ -38,6 +38,7 @@ public class Coupon {
     @ColumnDefault("'All'")
     private String airline_name; // 쿠폰이 적용될 수 있는 항공사 이름
 
+    @Builder.Default
     @ManyToMany(mappedBy = "coupons", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JsonManagedReference
     @JsonIgnore
