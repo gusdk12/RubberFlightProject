@@ -15,6 +15,9 @@ public class UserDTO {
     private String name;
     private String username;
     private String image;
+    private String password;
+    private String email;
+    private String tel;
 
     private List<ChecklistDTO> checklists;
 }

@@ -52,14 +52,16 @@ public class UserController {
             @RequestParam("file") MultipartFile file) {
 
         String filePath = "http://localhost:8282/uploads/user.png";
+        String uploadDir = "uploads/";  // 파일을 저장할 디렉토리 경로
 
         // 파일 처리 로직
         if (!file.isEmpty()) {
             String fileName = file.getOriginalFilename();
             try {
-                Path path = Paths.get("/uploads/" + fileName);
+                Path path = Paths.get(uploadDir + fileName);
                 Files.write(path, file.getBytes());
-                filePath = path.toString().replace("\\", "/");
+                filePath = "http://localhost:8282/uploads/" + fileName;
+
             } catch (IOException e) {
                 e.printStackTrace();
                 return new ResponseEntity<>("File upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
