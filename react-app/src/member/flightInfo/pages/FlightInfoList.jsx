@@ -82,7 +82,7 @@ const FlightInfoList = () => {
     <Box p={4} backgroundColor="linear-gradient(to left, #ffffff 0%, #ffffff00 3%, #ffffff00 97%,#ffffff 100%)">
       <Flex align="center" mb={4}>
         <Image src={img2} width="30px"/>
-        <Text ml={3} color="#0e0e0f" fontFamily="Roboto" fontSize="27px" fontWeight="bold">나의 항공편</Text>
+        <Text ml={3} color="#0e0e0f" fontFamily="Noto Sans KR" fontSize="27px" fontWeight="900">나의 항공편</Text>
       </Flex>
       <FlightInfoTabs pastFlights={pastFlights} upcomingFlights={upcomingFlights} reviewList={reviewList} />
     </Box>

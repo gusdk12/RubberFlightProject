@@ -79,8 +79,8 @@ const MenuBar = () => {
                     display: "flex",
                     alignItems: "center",
                     fontSize: "17px",
-                    fontFamily: "Roboto",
-                    fontWeight: "bold",
+                    fontFamily: "Noto Sans KR",
+                    fontWeight: "900",
                   }}
                   _hover={{
                     color: "#007bff",

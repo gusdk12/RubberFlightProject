@@ -80,13 +80,27 @@ const FlightInfoDetail = () => {
     <Box p={4} backgroundColor="linear-gradient(to left, #ffffff 0%, #ffffff00 3%, #ffffff00 97%,#ffffff 100%)" 
       style={{  
         marginTop: '20px',
-        marginBottom: '20px',
         overflowY: 'auto', 
-        height: '105vh', 
-        scrollbarWidth: 'thin', 
-        scrollbarColor: '#6d92cc #fbfdff', 
-        scrollBehavior: 'smooth',  
-      }}>
+        height: '800px',  
+        position: 'relative',
+      }}
+      css={{
+        '&::-webkit-scrollbar': {
+          width: '8px',
+          borderRadius: '10px',
+        },
+        '&::-webkit-scrollbar-track': {
+          background: 'transparent',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          background: '#6d9eeb', 
+          borderRadius: '10px',
+        },
+        '&::-webkit-scrollbar-thumb:hover': {
+          background: '#4b8dc3', 
+        },
+      }}
+    >
       <Flex direction="column" align="flex-start">
         {flightInfo ? renderFlightDetails() : (
           <Flex justify="center" align="center" height="100vh" width="100%">
