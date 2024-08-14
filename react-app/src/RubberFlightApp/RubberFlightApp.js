@@ -21,6 +21,7 @@ import FlightInfoDetail from '../member/flightInfo/pages/FlightInfoDetail';
 import { FlightInfoProvider } from '../member/flightInfo/contexts/FlightInfoContext';
 import CouponPage from '../admin/coupon/pages/CouponPage';
 import { CouponProvider } from '../admin/coupon/contexts/CouponContext';
+import { UserCouponProvider } from '../admin/coupon/contexts/UserCouponContext';
 import LiveFlight from '../general/live/pages/LiveFlight';
 import ScheduleEdit from '../member/schedule/pages/ScheduleEdit';
 import ReviewDetail from '../member/review/pages/ReviewDetail';
@@ -46,7 +47,7 @@ function RubberFlightApp() {
               <Route path="/schedule/edit/:id" element={<ScheduleEdit />} />
               <Route path="/coupon" element={<CouponProvider><CouponPage/></CouponProvider>} />
               <Route path="/mypage" element={<MyPage />}>
-                <Route path="user-info" element={<UserInfo />} />
+                <Route path="user-info" element={<UserCouponProvider><UserInfo /></UserCouponProvider>} />
                 <Route path="flight-info" element={<FlightInfoList />} />
                 <Route path="flight-info/:flightId" element={<FlightInfoProvider><FlightInfoDetail/></FlightInfoProvider>} />
                 <Route path="review" element={<ReviewList />} />

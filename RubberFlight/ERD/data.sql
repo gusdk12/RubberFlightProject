@@ -143,6 +143,21 @@ VALUES ('WINTER2024', 25, '겨울 할인 쿠폰', 'All');
 INSERT INTO FT_COUPON (code, percent, description, airline_name)
 VALUES ('SPRING2024', 10, '봄 맞이 할인 쿠폰', 'All');
 
+INSERT INTO FT_COUPON (code, percent, description, airline_name)
+VALUES ('EASTAR20', 20, '이스타항공 20% 할인 쿠폰', 'Eastar Jet');
+
+INSERT INTO FT_COUPON (code, percent, description, airline_name)
+VALUES ('JINAIR15', 15, '진에어 15% 할인 쿠폰', 'Jin Air');
+
+INSERT INTO FT_COUPON (code, percent, description, airline_name)
+VALUES ('KOREANAIR30', 30, '대한항공 30% 할인 쿠폰', 'Korean Air');
+
+INSERT INTO FT_COUPON (code, percent, description, airline_name)
+VALUES ('JEJU30', 30, '제주항공 30% 할인 쿠폰', 'Jeju Air');
+
+INSERT INTO FT_COUPON (code, percent, description, airline_name)
+VALUES ('AIRBUSAN25', 25, '에어부산 25% 할인 쿠폰', 'Air Busan');
+
 INSERT INTO ft_coupon_users (coupon_id, user_id) VALUES (1, 1);
 INSERT INTO ft_coupon_users (coupon_id, user_id) VALUES (2, 1);
 INSERT INTO ft_coupon_users (coupon_id, user_id) VALUES (3, 1);
