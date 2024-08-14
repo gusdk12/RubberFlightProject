@@ -66,12 +66,12 @@ function CameraAnimation({ isLoaded, isSearhMode }) {
   useFrame((state, delta) => {
     if(!isSearhMode){
       const targetPosition = isLoaded ? [-150, -20, -250] : [-1500, -20, -2500];
-      // camera.position.lerp(new THREE.Vector3(...targetPosition), delta * 4);
-      camera.lookAt(10, 10, 0);
+      camera.position.lerp(new THREE.Vector3(...targetPosition), delta * 4);
+      // camera.lookAt(10, 10, 0);
     }else{
       const targetPosition = [200, 120, -230];
       camera.position.lerp(new THREE.Vector3(...targetPosition), delta * 2);
-      camera.lookAt(80, 60, 30);
+      camera.lookAt(80, 10, 30);
     }
   });
   return null;
@@ -80,6 +80,7 @@ function CameraAnimation({ isLoaded, isSearhMode }) {
 function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
   const [isLoaded, setIsLoaded] = useState(false);
   const loadingRef = useRef(null);
+  const cloudContainerRef = useRef(null);
   const airplainContainerRef = useRef(null);
 
   const handleModelLoaded = () => {
@@ -90,11 +91,16 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
     // airplainContainerRef.current.style.animation = 'moveAirplain 3s ease-out';
   };
 
+  useEffect(() => {
+    console.log(isSearhMode);
+    isSearhMode && cloudContainerRef.current.classList.add(style.clouddown);
+  }, [isSearhMode]);
+
   return (
     <>
       <div style={{ position: 'absolute', width: '100vw', height: '100vh', background: 'linear-gradient(to bottom, #B0C9E6, #D5E1EB, #EFF3F6)' }}/>
       
-      <div id={style.cloudContainer}>
+      <div id={style.cloudContainer} ref={cloudContainerRef}>
         <div className={style.backcloud} id={style.backcloud1} />
         <div className={style.backcloud} id={style.backcloud2} />
         <div className={style.backcloud} id={style.backcloud3} />
@@ -110,7 +116,7 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
         <Canvas 
           dpr={[1, 2]} 
           gl={{ antialias: true }}
-          camera={{ position: [-150, -20, -250], fov: 45, near: 0.1, far: 1000 }} 
+          camera={{ position: [-1500, -20, -2500], fov: 45, near: 0.1, far: 1000 }} 
           style={{ 
             position: 'absoute',
             width: '100%', 
@@ -119,8 +125,8 @@ function ThreeScene({setIsAirplaneLoaded, isSearhMode}) {
             zIndex: '1',
           }}
         >
-          <ambientLight intensity={1.2} color="#c2e6ff"/>
-          <pointLight position={[0, 0, 0]} intensity={0.5}/>
+          <ambientLight intensity={1.1} color="#c2e6ff"/>
+          {/* <pointLight position={[0, 0, 0]} intensity={0.5}/> */}
 
           <EffectComposer/>
 
