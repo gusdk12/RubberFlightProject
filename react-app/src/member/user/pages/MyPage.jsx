@@ -71,8 +71,7 @@ const MyPage = () => {
             backgroundColor: '#fbfdff',
             padding: '20px',
             marginLeft: '0px',
-            minHeight: '120vh',
-            height: '120vh',
+            height: '950px',
           }}>
             {/* 유저 프로필과 이름 */}
             <Flex alignItems="center" mb={4} mr={5} justifyContent="flex-end">

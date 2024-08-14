@@ -21,9 +21,6 @@ export const FlightInfoProvider = ({ children }) => {
         setHistory(fetchedData.history || []);
         setTimetable(fetchedData.timetable || []);
 
-        console.log("History:", fetchedData.history);
-        console.log("Timetable:", fetchedData.timetable);
-
         const endTime = performance.now();
         const duration = endTime - startTime; 
         console.log(`API 호출 소요 시간: ${duration.toFixed(2)}ms`); 
