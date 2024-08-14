@@ -123,15 +123,15 @@ const LiveFlight = () => {
 
   return (
     <>
-      <Header isMain={true} />
+      <Header isMain={false} />
 
       <div className={styles.allCon}>
         <div id={styles.headerairplane}/>
         {/* <div className={styles.livestart1}>비행기 위치를 실시간으로 - </div> */}
         <div className={styles.livestart1}></div>
         <div className={styles.livestart2}>
-          비행기 코드를 통해 위치를 검색해보세요. <br />
-          친구나 가족들이 타고있는 항공편의 실시간 위치를 알 수 있어요.
+          비행기 코드를 통해 위치를 검색해보세요<br />
+          친구나 가족들이 타고있는 항공편의 실시간 위치를 알 수 있어요
         </div>
 
         <div className={styles.searchCon}>
