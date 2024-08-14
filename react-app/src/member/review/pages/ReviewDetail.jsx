@@ -38,7 +38,9 @@ const ReviewDetail = () => {
 
   // 리뷰 조회하기
   useEffect (() => {
-   fetchReviewInfo();
+    fetchReviewInfo();
+    document.body.style.backgroundColor = "#ffffff";
+    document.body.style.overflowY = "scroll";
   }, []);
 
   const UpdateBtn = () => {

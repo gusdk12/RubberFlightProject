@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {Box, Flex, Heading, Image} from "@chakra-ui/react";
 import Write from "../../../assets/images/review/reviewwrite.webp";
 import { RateFormUpdate } from "../components/Form";
@@ -23,6 +23,10 @@ const ReviewWrite = () => {
     clean_rate: "",
     content: "",
   });
+
+  useEffect(()=> {
+    document.body.style.overflowY = "scroll";
+  }, []);
 
   // 리뷰 입력하기
   const changeValue = (name, value) => {
