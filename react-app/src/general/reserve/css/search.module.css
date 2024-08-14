@@ -108,33 +108,33 @@
   margin-left: -46px;
 }
 
-.airportDefault {
-  /* outline: 2px solid green; */
-  margin-top: 40px;
-  /* width: 46%; */
-  text-align: center;
-  font-size: 26px;
-  /* margin-left: 18px; */
+#editableDiv {
+  position: relative;
+  /* background-color: red; */
 }
 
+#airportName {
+  position: relative;
+  /* outline: 2px solid green; */
+  z-index: 1;
+}
 
 .searchAirportContainer {
-  outline: 2px solid red;
-  margin-top: 28px;
+  /* outline: 2px solid black; */
   width: 180%;
-  /* margin-left: 90px; */
-  position: relative;
+  margin-left: 90px;
+  position: absolute;
   min-height: 900%;
+  margin-top: 450px;
 }
 
 .searchContainer {
   background-color: #FFFFFF;
-  outline: 2px solid red;
+  /* outline: 2px solid red; */
   opacity: 1;
   padding: 10px;
   border-radius: 5px;
   position: relative;
-  margin-top: 10px;
 }
 
 
@@ -525,4 +525,24 @@ input {
   font-weight: bold;
   white-space: nowrap;
   justify-content: flex-end;
+}
+
+@keyframes fadeInOut {
+  0% {
+      opacity: 0; /* 시작할 때 완전히 투명 */
+  }
+  50% {
+      opacity: 1; /* 중간에 완전히 불투명 */
+  }
+  100% {
+      opacity: 0; /* 끝날 때 다시 완전히 투명 */
+  }
+}
+
+
+.errorMessage {
+  width: 80%;
+  margin: 0 auto;
+  color: #ff4c4c;
+  animation: fadeInOut 4s ease-in-out;
 }

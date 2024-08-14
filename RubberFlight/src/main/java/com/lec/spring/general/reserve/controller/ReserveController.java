@@ -63,7 +63,7 @@ public class ReserveController {
 
         System.out.println(depTimezone);
         System.out.println(arrTimezone) ;
-        System.out.println("arrDate: " + arrDate); // 로깅 추가
+        System.out.println("arrDate: " + arrDate);
 
         String depAirportName = airportService.findByIso(iataCode).getAirportName();
         String arrAirportName = airportService.findByIso(arrIataCode).getAirportName();
