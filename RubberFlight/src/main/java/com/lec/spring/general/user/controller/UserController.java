@@ -4,6 +4,7 @@ import com.lec.spring.admin.coupon.domain.Coupon;
 import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.domain.UserJoinDTO;
 import com.lec.spring.general.user.jwt.JWTUtil;
+import com.lec.spring.general.user.jwt.U;
 import com.lec.spring.general.user.service.FileService;
 import com.lec.spring.general.user.service.UserService;
 import com.lec.spring.member.checklist.domain.ChecklistDTO;
@@ -51,14 +52,16 @@ public class UserController {
             @RequestParam("file") MultipartFile file) {
 
         String filePath = "http://localhost:8282/uploads/user.png";
+        String uploadDir = "uploads/";  // 파일을 저장할 디렉토리 경로
 
         // 파일 처리 로직
         if (!file.isEmpty()) {
             String fileName = file.getOriginalFilename();
             try {
-                Path path = Paths.get("/uploads/" + fileName);
+                Path path = Paths.get(uploadDir + fileName);
                 Files.write(path, file.getBytes());
-                filePath = path.toString().replace("\\", "/");
+                filePath = "http://localhost:8282/uploads/" + fileName;
+
             } catch (IOException e) {
                 e.printStackTrace();
                 return new ResponseEntity<>("File upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -78,47 +81,7 @@ public class UserController {
         user = userService.join(user);
         if (user == null) return new ResponseEntity<>("JOIN FAILED", HttpStatus.BAD_REQUEST);
 
-        // 기본 체크리스트 생성
-        ChecklistDTO checklistDTO = new ChecklistDTO();
-        checklistDTO.setCategory("의류");
-        checklistDTO.setUserId(user.getId());
-
-        ChecklistItemDTO item1 = new ChecklistItemDTO();
-        item1.setItemName("속옷");
-
-        ChecklistItemDTO item2 = new ChecklistItemDTO();
-        item2.setItemName("양말");
-
-        ChecklistItemDTO item3 = new ChecklistItemDTO();
-        item3.setItemName("긴팔");
-
-        ChecklistItemDTO item4 = new ChecklistItemDTO();
-        item4.setItemName("모자");
-
-        checklistDTO.setItems(Arrays.asList(item1, item2, item3, item4));
-
-        checklistService.createChecklist(checklistDTO);
-
-        ChecklistDTO newCategoryChecklistDTO = new ChecklistDTO();
-        newCategoryChecklistDTO.setCategory("상비약");  // 새로운 카테고리명
-        newCategoryChecklistDTO.setUserId(user.getId());
-
-        ChecklistItemDTO newCategoryItem1 = new ChecklistItemDTO();
-        newCategoryItem1.setItemName("감기약");
-
-        ChecklistItemDTO newCategoryItem2 = new ChecklistItemDTO();
-        newCategoryItem2.setItemName("소화제");
-
-        ChecklistItemDTO newCategoryItem3 = new ChecklistItemDTO();
-        newCategoryItem3.setItemName("소염제");
-
-        ChecklistItemDTO newCategoryItem4 = new ChecklistItemDTO();
-        newCategoryItem4.setItemName("멀미약");
-
-        // 새로운 카테고리 아이템 추가
-        newCategoryChecklistDTO.setItems(Arrays.asList(newCategoryItem1, newCategoryItem2, newCategoryItem3, newCategoryItem4));
-        // 상비약 카테고리 저장
-        checklistService.createChecklist(newCategoryChecklistDTO);
+        // 기본 체크리스트 주입
 
         return new ResponseEntity<>("JOIN OK : " + user, HttpStatus.OK);
     }
@@ -181,5 +144,15 @@ public class UserController {
             return new ResponseEntity<>(user.getCoupons(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/{id}/info")
+    public ResponseEntity<User> getUserInfo(@PathVariable Long id) {
+        User user = userService.findById(id);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

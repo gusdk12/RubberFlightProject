@@ -12,9 +12,9 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  width: 500px;
-  height: 500px;
-  top: -170px;
+  width: 450px;
+  height: 450px;
+  top: -280px;
   left: 150px;
 
   position: absolute;
@@ -25,7 +25,7 @@
   position: relative;
   z-index: 10;
   max-width: 1200px;
-  height: 200px;
+  height: 10px;
   margin: auto;
   display: flex;
   align-items: end;

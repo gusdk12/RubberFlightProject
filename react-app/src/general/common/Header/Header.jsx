@@ -32,6 +32,10 @@ const Header = ({isMain}) => {
   }, []);
 
   const navigate = useNavigate();
+  const home= () => {
+    navigate('/')
+  }
+
   const myPage= () => {
     navigate('/mypage/user-info')
   }
@@ -67,14 +71,7 @@ const Header = ({isMain}) => {
     <>
       <div className={`${style.HeaderContainer} ${isMain ? style.HeaderAbsolute : '' }`}>
       <Flex minWidth='max-content' alignItems='space-between'>
-        <div
-          style={{
-            backgroundImage: `url(${backgroundImageUrl})`,
-            backgroundSize: 'cover', // 배경 이미지 크기 조정
-            backgroundPosition: 'center', // 배경 이미지 위치 조정
-            width: '75px',
-            height: '75px'
-        }}/>
+        <div id={style.logo} onClick={home}/>
 
         <Spacer />
         <ButtonGroup>
@@ -84,7 +81,7 @@ const Header = ({isMain}) => {
                   variant='solid'
                   aria-label='Options'
                   bg='#FBFFFF'
-                  boxShadow='md'
+                  boxShadow='lg'
                   width="53px"
                   height="53px"
                   borderRadius="50%"

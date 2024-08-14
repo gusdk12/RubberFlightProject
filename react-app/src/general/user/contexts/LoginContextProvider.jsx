@@ -149,7 +149,7 @@ const LoginContextProvider = ({ children }) => {
             document.querySelector('.swal2-container').style.zIndex = 9999; // zIndex 조정
           }
         }).then(() => {
-          window.location.reload();
+          navigate("/") && window.location.reload();
         });
       }
     });

@@ -1,5 +1,6 @@
 package com.lec.spring.member.checklist.controller;
 
+import com.lec.spring.general.user.jwt.JWTUtil;
 import com.lec.spring.member.checklist.domain.ChecklistDTO;
 import com.lec.spring.member.checklist.domain.Checklist;
 import com.lec.spring.member.checklist.domain.ChecklistItemDTO;
@@ -7,6 +8,7 @@ import com.lec.spring.member.checklist.domain.Checklist_item;
 import com.lec.spring.member.checklist.repository.ChecklistRepository;
 import com.lec.spring.member.checklist.repository.Checklist_itemRepository;
 import com.lec.spring.member.checklist.service.ChecklistService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +28,16 @@ public class ChecklistController {
     @Autowired
     ChecklistRepository checklistRepository;
 
+    @Autowired
+    JWTUtil jwtUtil;
+
     // 유저 아이디로 체크리스트 목록 불러오기
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ChecklistDTO>> getChecklistsByUserId(@PathVariable Long userId) {
-        List<ChecklistDTO> checklists = checklistService.getChecklistsByUserId(userId);
-        if (checklists.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(checklists);
+    @GetMapping("/user")
+    public ResponseEntity<List<ChecklistDTO>> getChecklistsByUserId(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").split(" ")[1];
+        Long userId = jwtUtil.getId(token);
+
+        return new ResponseEntity<>(checklistService.getChecklistsByUserId(userId), HttpStatus.OK);
     }
 
     // 체크리스트 생성하기

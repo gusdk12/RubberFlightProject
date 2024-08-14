@@ -37,6 +37,7 @@ const ReviewUpdate = () => {
           alert('Error', '조회 실패', 'error');
         }
       });
+    document.body.style.overflowY = "scroll";
   },[]);
 
   // 수정할 데이터 입력하기

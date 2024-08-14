@@ -1,5 +1,6 @@
 package com.lec.spring.general.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lec.spring.admin.coupon.domain.Coupon;
 import com.lec.spring.member.checklist.domain.Checklist;
@@ -53,6 +54,7 @@ public class User {
     private List<Coupon> coupons = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonBackReference
     private List<Checklist> checklists = new ArrayList<>();
 
     private String provider;
