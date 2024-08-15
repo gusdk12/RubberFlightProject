@@ -1,0 +1,186 @@
+body {
+    user-select: text;
+}
+
+#chatBox {
+    /* outline: 2px solid red; */
+    width: 280px;
+    height: 420px;
+    margin-top: 50px;
+    border: 2px solid #bcd8f7;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column; /* 자식 요소들을 세로로 배치 */
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+#titleBox {
+    /* outline: 2px solid yellow; */
+    padding: 5px 10px;
+    height: 50px;
+    background-color: #c4eaff;
+}
+
+#title {
+    margin: 3px 0 0 10px;
+    font-family: 'MaplestoryOTFBold';
+    font-size: 25px;
+    color: #00235a;
+}
+
+.botIcon {
+    width: 30px;
+    height: 28px;
+    filter: invert(4%) sepia(99%) saturate(7236%) hue-rotate(209deg) brightness(94%) contrast(102%);
+}
+
+#close {
+    width: 30px;
+    height: 30px;
+    background-image: url(../../../assets/images/schedule/close.webp);
+    background-size: cover; /* 이미지를 버튼 크기에 맞춤 */
+    margin-left: 140px;
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(125deg) brightness(106%) contrast(101%);
+    width: 25px;
+    cursor: pointer;
+}
+
+#chatIn{
+    height: 500px;
+    padding: 15px 8px 0 8px;
+    overflow-y: scroll;
+}
+
+#chatIn::-webkit-scrollbar {
+    width: 4px; /* 스크롤바 너비 */
+    height: 4px; /*가로 스크롤바 높이*/
+    
+}
+#chatIn::-webkit-scrollbar-track {
+    background: none; /* 트랙 배경 색상 */
+    border-radius: 10px; /* 트랙 모서리 둥글게 */
+}
+#chatIn::-webkit-scrollbar-thumb {
+    background: #dde6f5; /* 핸들 색상 */
+}
+#chatIn::-webkit-scrollbar-thumb:hover {
+    background: #dde6f5; /* 호버 시 핸들 색상 */
+}
+
+.contentBot {
+    display: inline-block;
+    max-width: 250px; /* 필요한 경우 최대 너비를 제한 */
+    word-wrap: break-word; /* 긴 단어를 줄 바꿈 */
+    font-family: 'GeekbleMalang2WOFF2';
+    font-size: 17px;
+    padding: 5px 15px;
+    position:relative;
+    margin: 15px 0 15px 5px;
+    width:auto;
+    background:#e7f1fd;
+    border-radius: 10px;  
+}
+
+.contentBot:after {
+    border-top:0px solid transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #e7f1fd;
+    content:"";
+    position:absolute;
+    top: -9px;
+    left: 10px;
+}
+
+.contentBot a {
+    font-family: 'GeekbleMalang2WOFF2';
+    font-size: 16px;
+    color: #0e52bf;
+}
+
+#User {
+    display: flex;
+    justify-content: end; /* 오른쪽 정렬 */
+}
+
+.contentUser {
+    display: inline-block;
+    max-width: 250px; /* 필요한 경우 최대 너비를 제한 */
+    word-wrap: break-word; /* 긴 단어를 줄 바꿈 */
+    font-family: 'GeekbleMalang2WOFF2';
+    font-size: 17px;
+    margin-top: 3px;
+    padding: 5px 15px;
+    position:relative;
+    margin: 15px 5px;
+    background:#fde7f7;
+    border-radius: 10px;  
+}
+
+.contentUser:after {
+    justify-content: start;
+    border-top:0px solid transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #fde7f7;
+    content:"";
+    position:absolute;
+    top: -9px;
+    right: 10px;
+}
+
+#input {
+    width: 230px;
+    height: 50px;
+    border: 1px solid #bcd8f7;
+    resize: none;
+    font-family: 'GeekbleMalang2WOFF2';
+    font-size: 17px;
+    padding: 5px 10px;
+}
+
+#input:focus {
+    outline: none;
+}
+
+#input::-webkit-scrollbar {
+    width: 4px; /* 스크롤바 너비 */
+    height: 4px; /*가로 스크롤바 높이*/
+    
+}
+#input::-webkit-scrollbar-track {
+    background: none; /* 트랙 배경 색상 */
+    border-radius: 10px; /* 트랙 모서리 둥글게 */
+}
+#input::-webkit-scrollbar-thumb {
+    background: #dde6f5; /* 핸들 색상 */
+}
+#input::-webkit-scrollbar-thumb:hover {
+    background: #dde6f5; /* 호버 시 핸들 색상 */
+}
+
+#chatbtn{
+    background-color: #aacef7;
+    width: 47px;
+    height: 50px;
+}
+
+.send {
+    width: 30px;
+    margin: 3px 0 0 8px;
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(125deg) brightness(106%) contrast(101%);
+}
+
+.spin {
+    animation: spin 1s linear infinite; /* 1초 동안 회전 애니메이션을 무한 반복 */
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg); /* 시작 각도 */
+    }
+    to {
+        transform: rotate(360deg); /* 끝 각도 */
+    }
+}
