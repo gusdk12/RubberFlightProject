@@ -8,18 +8,17 @@ import { BsCalendar, BsCheckCircle } from 'react-icons/bs';
 import CouponModal from './CouponModal';
 import { useNavigate } from 'react-router-dom';
 import UserInfoModal from './UserInfoModal';
+import Swal from 'sweetalert2';
 
 const UserInfo = () => {
-  const { userInfo, loginCheck } = useContext(LoginContext); 
-  const [isModalOpen, setModalOpen] = useState(false);
+  const { isLogin, logout } = useContext(LoginContext);
+  const { userInfo } = useContext(LoginContext); 
+  const [isCouponModalOpen, setCouponModalOpen] = useState(false);
   const [isInfoModalOpen, setInfoModalOpen] = useState(false);
-  const [email, setEmail] = useState('');  // 이메일 상태 추가
-  const [formData, setFormData ] = useState({
-    name:'',
+  const [formData, setFormData] = useState({
+    name: '',
     email: '',
     tel: '',
-    password: '',
-    passwordCheck: '',
     image: null,
     existingImage: ''
   });
@@ -34,37 +33,36 @@ const UserInfo = () => {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
 
-          const data = await response.json();  // 데이터를 JSON으로 파싱
+          const data = await response.json();  
           setFormData(prevData => ({
-          ...prevData,
-          name: data.name || '',
-          email: data.email || '',
-          tel:data.tel || '',
-          existingImage: data.image || ''
-          }))
-          // setEmail(data.email || '');  
+            ...prevData,
+            name: data.name || '',
+            email: data.email || '',
+            tel: data.tel || '',
+            existingImage: data.image || ''
+          }));
         } catch (error) {
           console.error('유저 이메일 정보를 가져오는 데 실패했습니다:', error);
         }
       };
 
-      fetchUserEmail();  // 이메일 데이터 가져오기
+      fetchUserEmail();  
     }
-  }, [userInfo.id]); // userInfo.id가 변경될 때마다 이메일 정보를 다시 가져옴
+  }, [userInfo.id]);
 
-  const handleOpenModal = () => {
-    setModalOpen(true); 
+  const handleOpenCouponModal = () => {
+    setCouponModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setModalOpen(false); 
+  const handleCloseCouponModal = () => {
+    setCouponModalOpen(false);
   };
 
-  const userInfoModalOpen = () => {
+  const handleOpenInfoModal = () => {
     setInfoModalOpen(true);
   };
 
-  const userInfoModalClose = () => {
+  const handleCloseInfoModal = () => {
     setInfoModalOpen(false);
   };
 
@@ -73,6 +71,32 @@ const UserInfo = () => {
   };
 
   const navigateToChecklist = () => {};
+
+  const handleLogout = async () => {
+    try {
+      await logout(true);
+
+      Swal.fire({
+        title: '로그아웃되었습니다.',
+        text: '메인화면으로 이동합니다.',
+        icon: 'success',
+        confirmButtonText: '확인',
+        backdrop: true,
+        position: 'center',
+        customClass: {
+          container: 'swal-container'
+        },
+        didOpen: () => {
+          document.querySelector('.swal2-container').style.zIndex = 9999;
+        }
+      }).then(() => {
+        navigate("/"); 
+      });
+
+    } catch (error) {
+      console.error('로그아웃 처리 중 오류 발생:', error);
+    }
+  };
 
   return (
     <>
@@ -93,12 +117,12 @@ const UserInfo = () => {
               name={formData.name || '이름 없음'} 
               src={formData.existingImage} 
             />
-            <Box ml={3} display="flex" flexDirection="column" alignItems="flex-start"> {/* 이름과 이메일을 세로로 정렬 */}
+            <Box ml={3} display="flex" flexDirection="column" alignItems="flex-start"> 
               <Flex alignItems="center">
                 <Text fontSize="lg" fontWeight="bold">{formData.name || '이름 없음'}</Text>
-                <Icon as={IoMdSettings} boxSize={6} ml={2} cursor="pointer" onClick={userInfoModalOpen}/> {/* 톱니바퀴 아이콘 */}
+                <Icon as={IoMdSettings} boxSize={6} ml={2} cursor="pointer" onClick={handleOpenInfoModal}/> 
               </Flex>
-              <Text fontSize="xx-small" mt={1}>{formData.email || '이메일 없음'}</Text> {/* 이름 아래에 이메일 정보 */}
+              <Text fontSize="xx-small" mt={1}>{formData.email || '이메일 없음'}</Text> 
             </Box>
           </Flex>
 
@@ -109,7 +133,7 @@ const UserInfo = () => {
             alignItems="center"
             borderRadius="full"
           >
-            <Icon as={AiOutlineLogout} boxSize={6} />
+            <Icon as={AiOutlineLogout} boxSize={6} onClick={handleLogout} />
           </Button>
         </Flex>
         
@@ -128,7 +152,7 @@ const UserInfo = () => {
                 <Text fontSize="lg" fontWeight="bold">사용 가능 쿠폰</Text>
                 <Flex align="center">
                   <Text fontSize="lg" fontWeight="bold">2장</Text>
-                  <Icon as={FiPlus} boxSize={5} ml={2} cursor="pointer" onClick={handleOpenModal} />
+                  <Icon as={FiPlus} boxSize={5} ml={2} cursor="pointer" onClick={handleOpenCouponModal} />
                 </Flex>
               </Flex>
             </Box>
@@ -137,7 +161,7 @@ const UserInfo = () => {
 
             <Box flex="1" p={4}>
               <Text fontSize="lg" fontWeight="bold" mb={5}>나의 서비스</Text>
-              <Flex mt={2}  direction="row" align="center" justify="center" gap={7}>
+              <Flex mt={2} direction="row" align="center" justify="center" gap={7}>
                 <Flex direction="column" align="center" cursor="pointer" onClick={navigateToSchedule}>
                   <Icon as={BsCalendar} boxSize="50px" mb={3} />
                   <Text fontSize="sm">일정 {">>"} </Text>
@@ -156,15 +180,10 @@ const UserInfo = () => {
           <Text mt={2}>여기에는 가이드라인에 대한 내용을 추가하세요.</Text>
         </Box>
 
-        <CouponModal isOpen={isModalOpen} onClose={handleCloseModal} />
+        <CouponModal isOpen={isCouponModalOpen} onClose={handleCloseCouponModal} />
         <UserInfoModal 
           isOpen={isInfoModalOpen} 
-          onClose={userInfoModalClose}
-          onSave={() => {
-            // 회원 정보 수정 후, 사용자 정보 다시 가져오기
-            loginCheck();
-            userInfoModalClose();
-          }}
+          onClose={handleCloseInfoModal}
         />
       </Box>
     </>

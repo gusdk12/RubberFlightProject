@@ -23,16 +23,18 @@ public class MyPageController {
 
     private final UserService userService;
 
+    private final PasswordEncoder passwordEncoder;
 
-    public MyPageController(UserService userService, PasswordEncoder passwordEncoder) {
+
+    public MyPageController(UserService userService, PasswordEncoder passwordEncoder, PasswordEncoder passwordEncoder1) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder1;
     }
 
     // 사용자 정보 업데이트 (비밀번호 포함)
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateUser(
             @PathVariable Long id,
-            @RequestParam("password") String password,
             @RequestParam("name") String name,
             @RequestParam("email") String email,
             @RequestParam("tel") String tel,
@@ -61,7 +63,6 @@ public class MyPageController {
         }
 
         // 사용자 정보 업데이트
-        user.setPassword(password); // 비밀번호 업데이트
         user.setName(name);
         user.setEmail(email);
         user.setTel(tel);
@@ -79,6 +80,26 @@ public class MyPageController {
         response.put("user", updatedUser.toString());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PutMapping("/change-password/{id}")
+    public ResponseEntity<?> changePassword(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> requestBody) {
+
+        String newPassword = requestBody.get("newPassword");
+
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            return new ResponseEntity<>("New password is required", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            userService.changePassword(id, newPassword);
+            return new ResponseEntity<>("Password updated successfully", HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 
 
