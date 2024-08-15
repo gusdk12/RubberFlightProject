@@ -87,3 +87,11 @@ jwt:
 
 file:
   upload-dir: uploads
+
+google:
+  api:
+    key: ${rds.googleapi}
+
+search:
+  engine:
+    id: ${rds.engineid}
