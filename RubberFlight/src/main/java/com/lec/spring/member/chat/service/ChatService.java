@@ -10,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,7 +36,7 @@ public class ChatService {
         // 대화 종료 또는 초기화 명령어 처리
         if (prompt.equalsIgnoreCase("종료") || prompt.equalsIgnoreCase("새 대화 시작")) {
             userConversations.remove(userId);
-            return "대화가 초기화되었습니다.";
+            return "채팅이 종료되었습니다.";
         }
         // 대화 기록이 없으면 새로 생성
         userConversations.putIfAbsent(userId, new ArrayList<>());
@@ -59,16 +56,22 @@ public class ChatService {
         // AI 응답을 포맷하여 번호를 매기고 줄바꿈 추가
         String formattedAiResponse = formatAiResponse(aiResponse);
 
-        String searchQuery = extractKeyword(formattedAiResponse);
+        List<String> searchQuery = extractKeyword(formattedAiResponse);
 
         // Google Custom Search API 를 사용하여 검색 결과 가져오기
-        String searchResults = performGoogleSearch(searchQuery);
+        String searchResults = performGoogleSearch(searchQuery, prompt);
 
         // 두 결과를 조합하여 반환
-        return "<br>" + formattedAiResponse + "<br><br>관련 링크↓<br>" + searchResults;
+        return formattedAiResponse + "<br><관련 링크↓><br>" + searchResults;
     }
 
     public String aiResponse(String prompt) {
+        String formattedPrompt = "다음 질문에 대해 친근한 톤으로 정확하게 답변해 주세요." +
+                                 " 예를 들어, '다낭은 멋진 여행지예요. 1.미키해변: 멋진 해변이죠 2. 성요셉 성당: 멋진 성당입니다'와 같은 형식으로 답변해 주세요." +
+                                 " 만약, 사용자가 '미키해변은 어떤 곳이야? 설명해줘'라는 설명을 해달라는 질문이면 " +
+                                 "1. 멋있어요 2. 사람들이 즐겁게 헤엄칠 수 있어요 이렇게 번호로 설명하지 말고 문장으로 답변해 주세요"  +
+                                 " 질문: " + prompt;
+
         String url = "https://api.cohere.ai/v1/generate";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + cohereApiKey);
@@ -77,7 +80,7 @@ public class ChatService {
 
         // JSON 형식으로 요청 본문 생성
         Map<String, Object> requestBodyMap = new HashMap<>();
-        requestBodyMap.put("prompt", prompt);
+        requestBodyMap.put("prompt", formattedPrompt);
         requestBodyMap.put("model", "command-r-plus");
         requestBodyMap.put("max_tokens", 190);
         requestBodyMap.put("temperature", 1.0);
@@ -119,79 +122,17 @@ public class ChatService {
         String[] items = response.split("\n"); // 항목이 줄바꿈으로 구분된다고 가정
         StringBuilder formattedResponse = new StringBuilder();
 
-        int index = 1; // 번호 매기기 시작
         for (String item : items) {
-            if (!item.trim().isEmpty()) { // 빈 항목이 아닐 경우에만 추가
-                formattedResponse.append(String.format("%s<br>", item.trim()));
+            String trimmedItem = item.trim();
 
+            // 숫자와 점만 포함된 항목인지 확인
+            if (!trimmedItem.matches("^\\d+\\.\\s*$")) {
+                // 포맷팅: 항목 앞뒤 공백 제거 및 <br><br>로 구분
+                formattedResponse.append(String.format("%s<br>", trimmedItem));
             }
         }
 
         return formattedResponse.toString();
-    }
-
-    // 검색 키워드 추출
-    private String extractKeyword(String response) {
-        // 정규 표현식을 사용하여 숫자와 ':' 사이의 텍스트를 추출
-        String regex = "(?:-\\s*|\\d+\\.\\s*)([^:\\n]+?)\\s*:\\s*";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(response);
-
-        StringBuilder result = new StringBuilder(); // 여러 항목을 저장할 StringBuilder
-        boolean found = false; // 매칭 여부를 확인할 플래그
-
-        // 정규 표현식에 매칭되는 부분을 찾기
-        while (matcher.find()) {
-            found = true;
-            result.append(matcher.group(1).trim()).append("\n"); // 항목을 추가하고 줄바꿈
-        }
-
-        // 정규식에 매칭되지 않으면 기본적으로 첫 번째 문장을 반환
-        if (!found) {
-            // 문장 분리
-            String[] sentences = response.split("\\.");
-            return sentences.length > 0 ? sentences[0].trim() + "." : response.trim();
-        }
-
-        // 결과 반환
-        return result.toString().trim();
-    }
-
-    private String performGoogleSearch(String query) {
-
-        String url = String.format(
-                "https://www.googleapis.com/customsearch/v1?q=%s&key=%s&cx=%s&safe=active&num=5",
-                query, googleApikey, googleSearchEngineId
-        );
-
-        try {
-            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
-            JsonNode root = objectMapper.readTree(response.getBody());
-            StringBuilder searchResults = new StringBuilder();
-
-            // 결과 배열 확인
-            if (root.path("items").isArray()) {
-                for (JsonNode item : root.path("items")) {
-                    String title = item.path("title").asText();
-                    String link = item.path("link").asText();
-                    String snippet = item.path("snippet").asText();
-
-                    // 번호와 결과를 형식화하여 추가
-                    searchResults.append(String.format("- <a href=\"%s\" target=\"_blank\">%s</a><br>%s<br><br>",
-                            link, title, snippet));
-
-                    // 로그: 검색 결과 출력
-                    System.out.println("Title: " + title);
-                    System.out.println("Snippet: " + snippet);
-                }
-            } else {
-                searchResults.append("No search results found.").append("<br>");
-            }
-            return searchResults.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error processing search results";
-        }
     }
 
     private String ensureCompleteResponse(String response) {
@@ -202,5 +143,95 @@ public class ChatService {
         return response;
     }
 
+    // 검색 키워드 추출
+    private List<String> extractKeyword(String response) {
+        // 정규 표현식을 사용하여 숫자와 ':' 사이의 텍스트를 추출
+        String regex = "(?:-\\s*|\\d+\\.\\s*)([^:\\n]+?)\\s*:\\s*";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(response);
+
+//        StringBuilder result = new StringBuilder(); // 여러 항목을 저장할 StringBuilder
+        List<String> result = new ArrayList<>();
+
+        boolean found = false; // 매칭 여부를 확인할 플래그
+
+        // 정규 표현식에 매칭되는 부분을 찾기
+        while (matcher.find()) {
+            found = true;
+            result.add(matcher.group(1).trim()); // 항목을 추가하고 줄바꿈
+        }
+
+        // 정규식에 매칭되지 않으면 기본적으로 첫 번째 문장을 반환
+        if (!found) {
+            // 문장 분리
+            String[] sentences = response.split("[.?!]");
+            if (sentences.length > 0) {
+                result.add(response.trim());
+            }
+        }
+
+        // 결과 반환
+        return result;
+    }
+
+    private String performGoogleSearch(List<String> keywords, String prompt) {
+        StringBuilder searchResults = new StringBuilder();
+        boolean isKeywordSearch = true;
+
+        // 질문 형식의 쿼리인지 확인하기 위한 정규식 패턴
+        String questionPattern = ".*(\\b질문\\b|\\b해도 될까요\\b|\\b물어볼게요\\b|\\b할까요\\b).*";
+
+        // 긴 문장인지 확인하는 기준 (예: 3단어 이상이면 긴 문장으로 간주)
+        for (String query : keywords) {
+            if (query.split("\\.").length > 2) {
+                isKeywordSearch = false;
+                break;
+            }
+        }
+
+        // 긴 문장이 포함되어 있으면 사용자가 입력한 원본 문장으로 검색
+        if (!isKeywordSearch) {
+            keywords = Arrays.asList(prompt); // 원본 문장을 검색 쿼리로 설정
+        }
+
+        for (String query : keywords) {
+            if (query.isEmpty()) continue;
+
+            // 질문 형식의 쿼리가 들어오면 검색을 수행하지 않음
+            if (query.matches(questionPattern)) {
+                return "질문 형식의 쿼리는 검색할 수 없습니다. 구체적인 정보를 제공해 주세요.";
+            }
+
+            String url = String.format(
+                    "https://www.googleapis.com/customsearch/v1?q=%s&key=%s&cx=%s&safe=active&num=2",
+                    query, googleApikey, googleSearchEngineId
+            );
+
+            try {
+                ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
+                JsonNode root = objectMapper.readTree(response.getBody());
+
+                // 결과 배열 확인
+                if (root.path("items").isArray()) {
+                    for (JsonNode item : root.path("items")) {
+                        String title = item.path("title").asText();
+                        String link = item.path("link").asText();
+                        String snippet = item.path("snippet").asText();
+
+                        // 번호와 결과를 형식화하여 추가
+                        searchResults.append(String.format("<a href=\"%s\" target=\"_blank\" id='search'}>- %s</a><br><br>",
+                                link, title));
+                    }
+                } else {
+                    searchResults.append("관련 링크가 없습니다.").append("<br>");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Error processing search results";
+            }
+        }
+        return searchResults.toString();
+    }
 }
+
 
