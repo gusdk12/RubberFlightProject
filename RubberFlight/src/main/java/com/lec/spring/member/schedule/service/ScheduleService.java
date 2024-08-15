@@ -2,8 +2,10 @@ package com.lec.spring.member.schedule.service;
 
 import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.repository.UserRepository;
+import com.lec.spring.member.schedule.domain.Date;
 import com.lec.spring.member.schedule.domain.Participation;
 import com.lec.spring.member.schedule.domain.Schedule;
+import com.lec.spring.member.schedule.repository.DateRepository;
 import com.lec.spring.member.schedule.repository.ParticipationRepository;
 import com.lec.spring.member.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final ParticipationRepository participationRepository;
     private final UserRepository userRepository;
+    private final DateRepository dateRepository;
 
     @Transactional
     public Schedule save(Long userId, Schedule schedule){
@@ -88,9 +91,22 @@ public class ScheduleService {
         return scheduleEntity;
     }
 
+    @Transactional // 내부적으로 종료될 때마다 체크하고 바뀐 부분이 있으면 UPDATE를 수행
+    public Schedule updateEditDate (Long schedule_id){
+        Schedule scheduleEntity = scheduleRepository.findById(schedule_id)
+                .orElseThrow(()-> new IllegalArgumentException("id를 확인해주세요"));
+
+        scheduleEntity.setEdit_date(LocalDateTime.now());
+
+        return scheduleEntity;
+    }
+
     @Transactional
     public String delete(Long id){
         if(!isExist(id)) return "failed";
+
+        List<Date> dates = dateRepository.findAllByScheduleId(id);
+        dates.forEach(date -> dateRepository.deleteById(date.getId()));
 
         participationRepository.deleteAllByScheduleId(id);
         scheduleRepository.deleteById(id);

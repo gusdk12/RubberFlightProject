@@ -1,13 +1,21 @@
-/* card 목록 */
-/* .allCon {
-    display: flex;
-    width: 100%;
-    height: 100%;
+/* 리뷰 목록 페이지 */
+.top {
+    width: 35px;
+    margin: 5px;
+    opacity: 0.5;
 }
-*/
+
 .airlinename {
-    font-family: 'KIMM_Bold';
-    font-size: 20px;
+    font-family: 'GyeonggiTitleM';
+    font-weight: 100;
+    font-size: 23px;
+    margin: -5px 0 0 5px;
+}
+
+.writeDate {
+    text-align: right;
+    margin-right: 10px;
+    color: #9e9e9e;
 }
 
 .profileCon {
@@ -45,130 +53,86 @@
     height: 80%;
     width: 85%;
 }
-/*
-.reviewCon {
-    width: 80%; 
-    border: 1px solid blue; 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
 
-.cardtitle {
-    border: 1px solid green;
-    font-family: 'KIMM_Bold';
-    font-size: 15px;
-    white-space: nowrap;    
-    overflow: hidden;      
-    text-overflow: ellipsis; 
-    margin:20px 0 0 10px;
-    width: 350px;
-}
-
-.line { 
-    margin: 10px 0;
- }
-
-.airlinename {
-    font-family: 'KIMM_Bold';
-    font-size: 15px;
-    margin: -40px 0 10px 20px;
-}
-
-.airlinerate {
-    margin-left: 20px;
-}
-
-.totalscore {
-    margin: 10px;
-    font-family: 'KIMM_Light';
-    font-size: 25px;
-}
-
-.boardingDate {
-    font-family: 'KIMM_Light';
+/* 모달창(detail) */
+.writedate {
+    font-family: 'GyeonggiTitleM';
+    font-size: 18px;
     text-align: right;
-    margin-top: 28px;
-}
-
-.viewbtn {
-    display: block;
-    background-image: url(../../../assets/images/main_review/view1.webp);
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 40px;
-    height: 40px;
-    margin-top: 20px;
-    opacity: 0.8;
-    filter: invert(78%) sepia(7%) saturate(3296%) hue-rotate(182deg) brightness(100%) contrast(94%);
-}
-
-.viewbtn:hover{
-    opacity: 1;
-}
-
-.reviewwritedate {
-    font-family: 'KIMM_Light';
     color: #9e9e9e;
-    font-size: 17px;
-    text-align: right;
-    margin: 0 -35px 20px 0;
+    margin-top: 10px;
 }
 
-.title {
-    font-size: 60px;
-    margin-left: 10px;
-}
-
-.reviewAirlineName {
-    font-family: 'KIMM_Bold';
+.reviewtitle{
     font-size: 40px;
-    margin: 20px 0 0 40px;
+    margin: 30px 0 -15px 60px;
+    font-family: 'GyeonggiTitleM';
+    white-space: nowrap;    /* 텍스트를 한 줄로 유지 */
 }
 
-.dateGroup{
-    margin-right: 50px;
-    font-family: 'KIMM_Bold';
-    font-size: 20px;
+.reviewRate {
+    margin: 13px 0 -10px 45px;
 }
 
-.reviewdate {
+.totalRate {
+    font-size: 15px;
+    margin: -18px 0 0px 115px;
+}
+
+.line {
+    margin: 20px 0;
+}
+
+.line2 {
+    margin-top: 30px;
+}
+
+.boarding {
     text-align: center;
+    font-size: 25px;
+    margin-top: 20px;
+}
+
+.subtitle {
     color: #9e9e9e;
-    margin-top: 15px;
+    font-size: 18px;
 }
 
-.reviewrate {
-    margin-left: 30px;
-    border: 1px solid black;
+.airlineName {
+    margin-top: 5px;
+    font-size: 25px;
+    font-family: 'GyeonggiTitleM';
 }
 
-.reviewScore {
-    font-family: 'KIMM_Light';
-    font-size: 30px;
-    margin: 10px 0 0 10px;
+.boardingdate {
+    margin-top: 10px;
+    font-size: 18px;
 }
 
 .reviewBody {
-    margin-top: 40px;
+    margin-top : 30px;
+    font-family: 'GyeonggiTitleM';
+}
+
+.starRate {
+    align-items: right;
+    justify-content: right;
 }
 
 .content {
     border-radius: 10px;
-    border: dotted rgb(147, 197, 247);
+    border: dotted #dde6f5;
     padding: 15px;
+    margin: 0 0 30px 15px;
+    width: 660px;
+    font-family: 'GyeonggiTitleM';
+    font-size: 18px;
 }
 
-.rateBody {
-    margin-top: 30px;
+.stamp {
+    width: 120px;
+    opacity: 0.1;
+    margin: -30px 0 -80px 0px;
+    z-index: 1;
+    transform: rotate(-45deg); /* 이미지를 45도 회전 */
 }
-
-.ratename {
-    font-family: 'KIMM_Light';
-    font-size: 23px;
-    margin-left: 15px;
-}
-
-.reviewRate {
-    margin-left: 10px;
-} */

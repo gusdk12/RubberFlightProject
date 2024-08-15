@@ -4,14 +4,17 @@
   width: 80%;
   padding: 0 0 5px 0;
   /* outline: 2px solid red; */
-  margin: 0 auto;
+  left: 50%; /* 화면의 중앙 위치 */
+  transform: translateX(-50%);
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   box-sizing: border-box;
+  position: fixed;
 }
 
 .contentpart {
+  background-color: #fff;
   padding: 0;
   width: 100%;
   /* outline: 2px solid saddlebrown; */
@@ -58,7 +61,7 @@
 }
 
 .searchActives {
-  background-color: #6b8aef;
+  background-color:  #255cb4;
   pointer-events: none;
   color: #ffffff !important;
 }
@@ -108,33 +111,33 @@
   margin-left: -46px;
 }
 
-.airportDefault {
-  /* outline: 2px solid green; */
-  margin-top: 40px;
-  /* width: 46%; */
-  text-align: center;
-  font-size: 26px;
-  /* margin-left: 18px; */
+#editableDiv {
+  position: relative;
+  /* background-color: red; */
 }
 
+#airportName {
+  position: relative;
+  /* outline: 2px solid green; */
+  z-index: 1;
+}
 
 .searchAirportContainer {
-  outline: 2px solid red;
-  margin-top: 28px;
+  /* outline: 2px solid black; */
   width: 180%;
-  /* margin-left: 90px; */
-  position: relative;
+  margin-left: 90px;
+  position: absolute;
   min-height: 900%;
+  margin-top: 450px;
 }
 
 .searchContainer {
   background-color: #FFFFFF;
-  outline: 2px solid red;
+  /* outline: 2px solid red; */
   opacity: 1;
   padding: 10px;
   border-radius: 5px;
   position: relative;
-  margin-top: 10px;
 }
 
 
@@ -307,7 +310,7 @@ input {
   height: 100%;
   font-family: "KIMM_Bold";
   font-size: 23px;
-  color: #ad697a;
+  color: #21A7E1;
   background: transparent;
   border: none;
   outline: none;
@@ -320,7 +323,7 @@ input {
 .dropdownButton:hover {
   outline: none;
   background: transparent;
-  color: #ad697a;
+  color: #21A7E1;
 }
 
 .cntContainer {
@@ -370,7 +373,7 @@ input {
 }
 
 .subButton {
-  background-color: #6b8aef;
+  background-color: #255cb4;
   width: 70%;
   height: 100%;
   padding: 8px 0;
@@ -384,14 +387,15 @@ input {
 }
 .results {
   /* outline: 2px solid slateblue; */
-  margin-top: 20px;
   display: flex;
   justify-content: center;
   width: 100%;
+
 }
 
 .resultsContents {
   /* outline: 2px solid red; */
+  margin-top: 200px;
   width: 100%;
   max-width: 1215px;
   display: flex;
@@ -498,7 +502,7 @@ input {
 .depAirport,
 .arrAirport {
   font-size: 0.8rem;
-  color: #8351f8;
+  color: #255cb4;
   margin-left: 0.2rem;
   margin-top: 0.2rem;
 }
@@ -525,4 +529,25 @@ input {
   font-weight: bold;
   white-space: nowrap;
   justify-content: flex-end;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 1; /* 시작할 때 완전히 투명 */
+  }
+  80% {
+      opacity: 1; /* 시작할 때 완전히 투명 */
+  }
+  100% {
+      opacity: 0; /* 끝날 때 다시 완전히 투명 */
+  }
+}
+
+
+.errorMessage {
+  width: 80%;
+  margin: 0 auto;
+  color: #ff4c4c;
+  animation: fadeInOut 2s ease-in-out;
+  animation-fill-mode: forwards;
 }

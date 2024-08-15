@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.lec.spring.admin.airport.service.AirportService;
+import com.lec.spring.admin.coupon.domain.Coupon;
+import com.lec.spring.admin.coupon.service.CouponService;
 import com.lec.spring.general.reserve.domain.Flight;
 import com.lec.spring.general.reserve.domain.ReservationRequest;
 import com.lec.spring.general.reserve.domain.Reserve;
@@ -44,6 +46,8 @@ public class ReserveController {
 
     private final JWTUtil jwtUtil;
 
+    private final CouponService couponService;
+
     // 검색 페이지(api)
     @GetMapping("/search")
     public ResponseEntity<?> searchFlights(@RequestParam String iataCode,
@@ -59,7 +63,7 @@ public class ReserveController {
 
         System.out.println(depTimezone);
         System.out.println(arrTimezone) ;
-        System.out.println("arrDate: " + arrDate); // 로깅 추가
+        System.out.println("arrDate: " + arrDate);
 
         String depAirportName = airportService.findByIso(iataCode).getAirportName();
         String arrAirportName = airportService.findByIso(arrIataCode).getAirportName();
@@ -71,8 +75,8 @@ public class ReserveController {
                 : Collections.emptyList();
 
         if (!outboundFlights.isEmpty() && !inboundFlights.isEmpty()) {
-            List<Map<String, Object>> combinations = createFlightCombinations(outboundFlights, inboundFlights);
-            return new ResponseEntity<>(Collections.singletonMap("combinations", combinations), HttpStatus.OK);
+            List<Map<String, Object>> sortedCombinations = reserveService.getSortedFlightCombinations(outboundFlights, inboundFlights);
+            return new ResponseEntity<>(Collections.singletonMap("combinations", sortedCombinations), HttpStatus.OK);
         }
 
         List<Flight> sortedOutboundFlights = reserveService.getFlights(outboundFlights);
@@ -171,8 +175,10 @@ public class ReserveController {
         else isRoundTrip = true;
 //        System.out.println("왕복일까요111" + isRoundTrip);
 
+        Coupon coupon = couponService.findById(reserveRequest.getCouponId());
+        System.out.println("가져온 쿠폰 정보" + coupon);
 
-        Reserve reserve = reserveService.saveReservation(userId, reserveRequest.getPersonnel(), isRoundTrip, outboundFlight, inboundFlight);
+        Reserve reserve = reserveService.saveReservation(userId, reserveRequest.getPersonnel(), isRoundTrip, outboundFlight, inboundFlight, coupon);
 //        System.out.println("예약정보" + reserve);
         return ResponseEntity.ok(reserve);
     }

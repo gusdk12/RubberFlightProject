@@ -1,6 +1,7 @@
 package com.lec.spring.admin.coupon.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lec.spring.general.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,8 +38,10 @@ public class Coupon {
     @ColumnDefault("'All'")
     private String airline_name; // 쿠폰이 적용될 수 있는 항공사 이름
 
-    @ManyToMany
+    @Builder.Default
+    @ManyToMany(mappedBy = "coupons", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JsonManagedReference
     @JsonIgnore
-    private List<User> users; // 쿠폰을 사용하는 사용자
+    private List<User> users = new ArrayList<>();
 
 }

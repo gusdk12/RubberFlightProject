@@ -114,8 +114,8 @@ public class Flight {
 
         this.takeTimeFormat = convertMinutesToHoursAndMinutes(this.takeTime);
 
-//        this.price = price;
-        this.price = 10;
+        this.price = price;
+//        this.price = 100;
         this.priceFormat = getFormattedPrice(this.price);
     }
 

@@ -73,8 +73,8 @@ useEffect(() => {
     }
   }
   fetchData();
-  document.body.style.backgroundColor = "#dde6f5";
-  document.body.style.overflowY = "scroll";
+  document.body.style.backgroundColor = "#ffffff";
+    document.body.style.overflowY = "scroll";
 }, [id, currentPage, sortOrder]); // id 값이 변경될 때마다 다시 실행하기
 
 // 버튼 클릭 핸들러

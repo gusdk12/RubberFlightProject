@@ -2,6 +2,7 @@ package com.lec.spring.general.user.service;
 
 import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.repository.UserRepository;
+import com.lec.spring.member.checklist.service.ChecklistService;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,12 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+
+    private final ChecklistService checklistService;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, ChecklistService checklistService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.checklistService = checklistService;
     }
     public User join(User user){
         String username = user.getUsername();
@@ -29,7 +33,13 @@ public class UserService {
         user.setUsername(user.getUsername().toUpperCase());
         user.setPassword(passwordEncoder.encode(password));
         user.setRole("ROLE_MEMBER");  // 기본적으로 MEMBER
-        return userRepository.save(user);
+
+        User savedUser = userRepository.save(user);
+
+        // 사용자 가입이 성공했으면 기본 체크리스트 생성
+        checklistService.createDefaultChecklists(savedUser.getId());
+
+        return savedUser;
     }
 
     public User admin(User user){
@@ -53,6 +63,12 @@ public class UserService {
 
     @Transactional
     public User save(User user) {
+
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodedPassword);
+        }
+
         return userRepository.save(user);
     }
 

@@ -6,7 +6,7 @@ import FlightInfoTabs from '../components/FlightInfoTabs';
 import img2 from '../../../assets/images/flightInfo/img2.webp';
 
 const FlightInfoList = () => {
-  const [flightInfoList, setFlightInfoList] = useState([]);
+  const [flightInfoList, setFlightInfoList] = useState({ upcomingFlights: [], pastFlights: [] });
   const [loading, setLoading] = useState(true);
   const [reviewList, setReviewList] = useState([]);
 
@@ -25,9 +25,8 @@ const FlightInfoList = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-    });
-      setReviewList(response.data); // 리뷰 목록 리스트
-      
+      });
+      setReviewList(response.data);
     } catch (error) {
       console.error("리뷰를 가져오는 데 오류가 발생했습니다:", error);
     } finally {
@@ -45,6 +44,7 @@ const FlightInfoList = () => {
       if (!token) {
         console.error("토큰을 찾을 수 없습니다.");
         setLoading(false);
+        return;
       }
 
       try {
@@ -53,10 +53,12 @@ const FlightInfoList = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setFlightInfoList(response.data);
-        return response.data;
+
+        const { upcomingFlights, pastFlights } = response.data; 
+
+        setFlightInfoList({ upcomingFlights, pastFlights });
       } catch (error) {
-        console.error("Error fetching flight info:", error);
+        console.error("항공편 정보를 가져오는 데 오류가 발생했습니다:", error);
       } finally {
         setLoading(false);
       }
@@ -74,18 +76,15 @@ const FlightInfoList = () => {
     );
   }
 
-  // 현재 시각을 기준으로 과거와 미래 항공편을 분류
-  const now = new Date();
-  const pastFlights = flightInfoList.filter(flight => new Date(flight.arrSch) < now);
-  const upcomingFlights = flightInfoList.filter(flight => new Date(flight.arrSch) >= now);
-console.log(reviewList)
+  const { upcomingFlights, pastFlights } = flightInfoList;
+
   return (
     <Box p={4} backgroundColor="linear-gradient(to left, #ffffff 0%, #ffffff00 3%, #ffffff00 97%,#ffffff 100%)">
-      <Flex align="center"  mb={4}>
+      <Flex align="center" mb={4}>
         <Image src={img2} width="30px"/>
-        <Text  ml={3} color="#0e0e0f" fontFamily= "Roboto" fontSize="27px" fontWeight="bold">나의 항공편</Text>
+        <Text ml={3} color="#0e0e0f" fontFamily="Noto Sans KR" fontSize="27px" fontWeight="900">나의 항공편</Text>
       </Flex>
-      <FlightInfoTabs pastFlights={pastFlights} upcomingFlights={upcomingFlights} reviewList={reviewList}/>
+      <FlightInfoTabs pastFlights={pastFlights} upcomingFlights={upcomingFlights} reviewList={reviewList} />
     </Box>
   );
 };

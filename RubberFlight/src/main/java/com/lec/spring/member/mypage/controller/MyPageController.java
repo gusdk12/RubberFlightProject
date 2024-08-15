@@ -1,16 +1,20 @@
 package com.lec.spring.member.mypage.controller;
 
 import com.lec.spring.general.user.domain.User;
+import com.lec.spring.general.user.domain.UserDTO;
 import com.lec.spring.general.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+        import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -19,15 +23,15 @@ public class MyPageController {
 
     private final UserService userService;
 
-    public MyPageController(UserService userService) {
+
+    public MyPageController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
     }
 
     // 사용자 정보 업데이트 (비밀번호 포함)
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateUser(
+    public ResponseEntity<?> updateUser(
             @PathVariable Long id,
-            @RequestParam("username") String username,
             @RequestParam("password") String password,
             @RequestParam("name") String name,
             @RequestParam("email") String email,
@@ -47,15 +51,16 @@ public class MyPageController {
             try {
                 Path path = Paths.get("uploads/" + fileName);
                 Files.write(path, file.getBytes());
-                filePath = path.toString().replace("\\", "/");
+                filePath = "http://localhost:8282/" + path;
             } catch (IOException e) {
                 e.printStackTrace();
-                return new ResponseEntity<>("File upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "File upload failed");
+                return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
         // 사용자 정보 업데이트
-        user.setUsername(username);
         user.setPassword(password); // 비밀번호 업데이트
         user.setName(name);
         user.setEmail(email);
@@ -64,13 +69,19 @@ public class MyPageController {
 
         User updatedUser = userService.save(user);
         if (updatedUser == null) {
-            return new ResponseEntity<>("Update failed", HttpStatus.BAD_REQUEST);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Update failed");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>("User updated successfully: " + updatedUser, HttpStatus.OK);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User updated successfully");
+        response.put("user", updatedUser.toString());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 프로필 조회
+
+
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserProfile(@PathVariable Long id) {
         User user = userService.findById(id);
@@ -79,4 +90,6 @@ public class MyPageController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+
 }

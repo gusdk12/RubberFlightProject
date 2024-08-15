@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -165,5 +166,137 @@ public class ChecklistService {
         item.setItemName(dto.getItemName());
         item.setChecked(dto.isChecked());
         return item;
+    }
+
+    public void createDefaultChecklists(Long userId) {
+        // 의류 체크리스트 생성
+        ChecklistDTO clothingChecklist = new ChecklistDTO();
+        clothingChecklist.setCategory("의류");
+        clothingChecklist.setUserId(userId);
+
+        ChecklistItemDTO clothingItem1 = new ChecklistItemDTO();
+        clothingItem1.setItemName("상의");
+
+        ChecklistItemDTO clothingItem2 = new ChecklistItemDTO();
+        clothingItem2.setItemName("하의");
+
+        ChecklistItemDTO clothingItem3 = new ChecklistItemDTO();
+        clothingItem3.setItemName("양말");
+
+        ChecklistItemDTO clothingItem4 = new ChecklistItemDTO();
+        clothingItem4.setItemName("속옷");
+
+        ChecklistItemDTO clothingItem5 = new ChecklistItemDTO();
+        clothingItem5.setItemName("잠옷");
+
+        // 날씨에 따라 외투나 모자 추가
+        ChecklistItemDTO clothingItem6 = new ChecklistItemDTO();
+        clothingItem6.setItemName("외투");
+
+        ChecklistItemDTO clothingItem7 = new ChecklistItemDTO();
+        clothingItem7.setItemName("모자");
+
+        clothingChecklist.setItems(Arrays.asList(clothingItem1, clothingItem2, clothingItem3, clothingItem4, clothingItem5, clothingItem6, clothingItem7));
+        createChecklist(clothingChecklist); // checklistService의 실제 메서드 호출
+
+        // 세면용품 체크리스트 생성
+        ChecklistDTO washupChecklist = new ChecklistDTO();
+        washupChecklist.setCategory("세면용품");
+        washupChecklist.setUserId(userId);
+
+        ChecklistItemDTO washupItem1 = new ChecklistItemDTO();
+        washupItem1.setItemName("칫솔");
+
+        ChecklistItemDTO washupItem2 = new ChecklistItemDTO();
+        washupItem2.setItemName("치약");
+
+        ChecklistItemDTO washupItem3 = new ChecklistItemDTO();
+        washupItem3.setItemName("샴푸");
+
+        ChecklistItemDTO washupItem4 = new ChecklistItemDTO();
+        washupItem4.setItemName("수건");
+
+        ChecklistItemDTO washupItem5 = new ChecklistItemDTO();
+        washupItem5.setItemName("로션");
+
+        washupChecklist.setItems(Arrays.asList(washupItem1, washupItem2, washupItem3, washupItem4, washupItem5));
+        createChecklist(washupChecklist); // checklistService의 실제 메서드 호출
+
+        // 전자기기 체크리스트 생성
+        ChecklistDTO electronicsChecklist = new ChecklistDTO();
+        electronicsChecklist.setCategory("전자기기");
+        electronicsChecklist.setUserId(userId);
+
+        ChecklistItemDTO electronicsItem1 = new ChecklistItemDTO();
+        electronicsItem1.setItemName("휴대폰");
+
+        ChecklistItemDTO electronicsItem2 = new ChecklistItemDTO();
+        electronicsItem2.setItemName("충전기");
+
+        ChecklistItemDTO electronicsItem3 = new ChecklistItemDTO();
+        electronicsItem3.setItemName("보조배터리");
+
+        electronicsChecklist.setItems(Arrays.asList(electronicsItem1, electronicsItem2, electronicsItem3));
+        createChecklist(electronicsChecklist); // checklistService의 실제 메서드 호출
+
+        // 필수품 체크리스트 생성
+        ChecklistDTO necessaryChecklist = new ChecklistDTO();
+        necessaryChecklist.setCategory("필수품");
+        necessaryChecklist.setUserId(userId);
+
+        ChecklistItemDTO necessaryItem1 = new ChecklistItemDTO();
+        necessaryItem1.setItemName("지갑");
+
+        ChecklistItemDTO necessaryItem2 = new ChecklistItemDTO();
+        necessaryItem2.setItemName("휴대폰");
+
+        ChecklistItemDTO necessaryItem3 = new ChecklistItemDTO();
+        necessaryItem3.setItemName("신분증");
+
+        ChecklistItemDTO necessaryItem4 = new ChecklistItemDTO();
+        necessaryItem4.setItemName("여행 가이드북");
+
+        ChecklistItemDTO necessaryItem5 = new ChecklistItemDTO();
+        necessaryItem5.setItemName("삼각대");
+
+        necessaryChecklist.setItems(Arrays.asList(necessaryItem1, necessaryItem2, necessaryItem3, necessaryItem4, necessaryItem5));
+        createChecklist(necessaryChecklist); // checklistService의 실제 메서드 호출
+
+        // 간식 및 음료 체크리스트 생성
+        ChecklistDTO snacksChecklist = new ChecklistDTO();
+        snacksChecklist.setCategory("간식 및 음료");
+        snacksChecklist.setUserId(userId);
+
+        ChecklistItemDTO snacksItem1 = new ChecklistItemDTO();
+        snacksItem1.setItemName("물");
+
+        ChecklistItemDTO snacksItem2 = new ChecklistItemDTO();
+        snacksItem2.setItemName("간식");
+
+        ChecklistItemDTO snacksItem3 = new ChecklistItemDTO();
+        snacksItem3.setItemName("커피");
+
+        snacksChecklist.setItems(Arrays.asList(snacksItem1, snacksItem2, snacksItem3));
+        createChecklist(snacksChecklist); // checklistService의 실제 메서드 호출
+
+        // 약품 체크리스트 생성
+        ChecklistDTO medicineChecklist = new ChecklistDTO();
+        medicineChecklist.setCategory("약품");
+        medicineChecklist.setUserId(userId);
+
+        ChecklistItemDTO medicineItem1 = new ChecklistItemDTO();
+        medicineItem1.setItemName("두통약");
+
+        ChecklistItemDTO medicineItem2 = new ChecklistItemDTO();
+        medicineItem2.setItemName("소화제");
+
+        ChecklistItemDTO medicineItem3 = new ChecklistItemDTO();
+        medicineItem3.setItemName("후시딘");
+
+        ChecklistItemDTO medicineItem4 = new ChecklistItemDTO();
+        medicineItem4.setItemName("반창고");
+
+        medicineChecklist.setItems(Arrays.asList(medicineItem1, medicineItem2, medicineItem3, medicineItem4));
+        createChecklist(medicineChecklist); // checklistService의 실제 메서드 호출
     }
 }
