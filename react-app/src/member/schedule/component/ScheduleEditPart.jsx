@@ -4,11 +4,14 @@ import webSocketService from '../pages/WebSocketService';
 import DateItem from './DateItem';
 import 'flatpickr/dist/flatpickr.min.css';
 import Flatpickr from 'react-flatpickr';
+import Chat from '../../chat/pages/Chat';
 
 
 const ScheduleEditPart = (props) => {
     const [dates, setDates] = useState([]);
     const [addDate, setAddDate] = useState(new Date());
+    const [showChat, setShowChat] = useState(false);
+    const [message, setMessage] = useState('');
     
     useEffect(() => {
         fetch(`http://localhost:8282/dates/${props.ScheduleId}`)
@@ -54,6 +57,14 @@ const ScheduleEditPart = (props) => {
         webSocketService.sendDates(props.ScheduleId, content, deleteIndex);
     }
 
+    const openChat = () => {
+        setShowChat(!showChat);
+      };
+
+    const closeChat = () => {
+    setShowChat(false);
+    }; 
+
     return (
         <div id={style.editPart}>
             <div id={style.editcontainer}>
@@ -68,6 +79,14 @@ const ScheduleEditPart = (props) => {
                             />
                     </div>
                     <div id={style.addButton} onClick={handleAddDate}/>
+                </div>
+
+                <div id={style.chatcontainer}>
+                    {showChat &&<Chat activeUsersPic={props.activeUsersPic} showChat={showChat} closeChat={closeChat} />}
+                </div>
+                <div id={style.btn}>
+                    <button className={style.chatbtn} onClick={openChat}></button>
+                    <div id={style.helptext}>Lover Air의 귀염둥이 Lumi에게 궁금한 것을 물어보세요~</div>
                 </div>
             </div>
             <div id={style.datelistcontainer}>
