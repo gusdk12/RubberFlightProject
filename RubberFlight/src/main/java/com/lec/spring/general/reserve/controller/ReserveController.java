@@ -75,8 +75,8 @@ public class ReserveController {
                 : Collections.emptyList();
 
         if (!outboundFlights.isEmpty() && !inboundFlights.isEmpty()) {
-            List<Map<String, Object>> combinations = createFlightCombinations(outboundFlights, inboundFlights);
-            return new ResponseEntity<>(Collections.singletonMap("combinations", combinations), HttpStatus.OK);
+            List<Map<String, Object>> sortedCombinations = reserveService.getSortedFlightCombinations(outboundFlights, inboundFlights);
+            return new ResponseEntity<>(Collections.singletonMap("combinations", sortedCombinations), HttpStatus.OK);
         }
 
         List<Flight> sortedOutboundFlights = reserveService.getFlights(outboundFlights);
