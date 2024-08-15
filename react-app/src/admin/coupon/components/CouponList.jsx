@@ -1,6 +1,6 @@
 import React from "react";
 import { useCoupon } from "../contexts/CouponContext";
-import { Box, Text, IconButton, Divider, SimpleGrid } from "@chakra-ui/react";
+import { Box, Text, IconButton, Divider, SimpleGrid, Flex } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import Swal from "sweetalert2";
 
@@ -28,76 +28,113 @@ const CouponList = () => {
   return (
     <Box 
       p={10} 
+      mt={9}
+      mb={20}
       bg={"white"} 
-      borderRadius="lg" 
+      borderRadius="50px"
       boxShadow="lg" 
-      minWidth="750px" 
-      height="530px" 
-      overflowY="auto"
-      css={{
-        '&::-webkit-scrollbar': {
-          width: '8px',
-        },
-        '&::-webkit-scrollbar-track': {
-          background: '#f1f1f1',
-          borderRadius: '10px',
-        },
-        '&::-webkit-scrollbar-thumb': {
-          background: '#98b0c5',
-          borderRadius: '10px',
-        },
-        '&::-webkit-scrollbar-thumb:hover': {
-          background: '#7190ac',
-        },
-      }}
+      width="1150px" 
+      height="800px" 
     >
-      <Text fontSize="lg" mb={5}>
-        목록
+      <Text fontSize="22px" fontWeight="800" fontFamily="Noto Sans KR" ml={2}>
+        총 {coupons.length}개
       </Text>
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
-        {coupons.map((coupon) => (
-          <Box
-            key={coupon.id}
-            p={4}
-            border="1px solid #e2e8f0"
-            borderRadius="md"
-            position="relative"
-            backgroundColor="white"
-            boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
-            transition="transform 0.2s ease"
-            _hover={{ transform: "scale(1.02)" }}
-          >
-            <Text fontWeight="bold" fontSize="lg" mb={1}>
-              [{coupon.airline_name}] {coupon.description}
+
+      <Divider borderColor="gray.300" mt={2} mb={10} />
+
+      <Box 
+        bg="gray.50" 
+        paddingTop="50px"
+        paddingLeft="50px"
+        paddingRight="50px"
+        paddingBottom="50px"
+        ml={8}
+        borderRadius="20px" 
+        overflowY="auto" 
+        width="1000px"
+        height="600px" 
+        css={{
+          '&::-webkit-scrollbar': {
+            width: '8px',
+          },
+          '&::-webkit-scrollbar-track': {
+            background: '#f1f1f1',
+            borderRadius: '10px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: '#B6C5DD',
+            borderRadius: '10px',
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            background: '#7190ac',
+          },
+        }}
+      >
+        {coupons.length === 0 ? (
+          <Flex align="center" justify="center" height="100%">
+            <Text fontSize="20px" color="gray.500" fontFamily="Noto Sans KR">
+              현재 쿠폰 목록이 없습니다.
             </Text>
-            <Divider borderColor="gray.300" my={2} />
-            <Text fontSize="sm" color="gray.600" mb={3}>
-              {coupon.code}
-            </Text>
-            <Text
-              fontSize="xl"
-              fontWeight="bold"
-              color="red.500"
-              textAlign="right"
-            >
-              {coupon.percent}%
-            </Text>
-            <IconButton
-              aria-label="삭제"
-              icon={<DeleteIcon />}
-              variant="ghost"
-              color="gray.500"
-              size="sm"
-              onClick={() => handleDelete(coupon.id)}
-              transition="color 0.3s ease"
-              _hover={{ color: "gray.600", transform: "translateY(-2px)" }}
-              position="absolute"
-              top="15px"
-              right="15px"
-            />
-          </Box>
-        ))}
-      </SimpleGrid>
+          </Flex>
+        ) : (
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={7}>
+            {coupons.map((coupon) => (
+              <Box 
+                key={coupon.id} 
+                _hover={{ transform: "scale(1.02)", transition: "transform 0.2s ease" }} 
+              >
+                <Flex align="center">
+                  <Box
+                    p={6}
+                    width="340px"
+                    backgroundColor="white"
+                    position="relative"
+                    border="1px solid #C0D7DE"
+                    borderRight="2px dashed #C9D4E8" 
+                    borderRadius="md"
+                    boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                  >
+                    <Text fontSize="18px" color="#2a6cb9" mb={2}>
+                      {coupon.description}
+                    </Text>
+                    <Flex align="center" mb={1}>
+                      <Text fontSize="30px" fontWeight="bold">
+                        {coupon.percent} 
+                      </Text>
+                      <Text ml={1} fontSize="20px" fontWeight="normal">
+                        % 할인
+                      </Text>
+                    </Flex>
+                    <Text fontSize="sm" color="gray.600" p={0}>
+                      {coupon.code}
+                      <IconButton
+                        aria-label="삭제"
+                        icon={<DeleteIcon />}
+                        variant="ghost"
+                        color="gray.500"
+                        size="lg"
+                        onClick={() => handleDelete(coupon.id)}
+                        transition="color 0.3s ease"
+                        _hover={{ color: "gray.600", transform: "translateY(-2px)" }}
+                      />
+                    </Text>
+                  </Box>
+                  <Box 
+                    width="100px" 
+                    backgroundColor="#DDE6F5" 
+                    borderRadius="8px"  
+                    borderTop="1px solid #e2e8f0"
+                    borderBottom="1px solid #e2e8f0"
+                    borderRight="1px solid #e2e8f0"
+                    height="183px" 
+                    boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)" 
+                  />
+                </Flex>
+              </Box>
+            ))}
+          </SimpleGrid>
+        )}
+      </Box>
     </Box>
   );
 };

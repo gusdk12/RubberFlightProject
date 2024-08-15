@@ -21,16 +21,19 @@ const Search = () => {
   const [dates, setDates] = useState([]);
   const [departureDate, setDepartureDate] = useState('');
   const [returnDate, setReturnDate] = useState('');
-  
+
   const [departure, setDeparture] = useState('ICN');
   const [arrival, setArrival] = useState('');
-  const [airports, setAirports] = useState([]); // 공항 데이터
+  const [airports, setAirports] = useState([]);
   const [filteredAirports, setFilteredAirports] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [focusedInput, setFocusedInput] = useState(null);
-  const [isEditing, setIsEditing] = useState({ departure: false, arrival: false }); // For editing state
-  const autocompleteRef = useRef(null);
-  const [isInputMoved, setIsInputMoved] = useState({ departure: false, arrival: false });
+  const [departureSearchTerm, setDepartureSearchTerm] = useState('');
+  const [arrivalSearchTerm, setArrivalSearchTerm] = useState('');
+  const [activeField, setActiveField] = useState(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const searchRef = useRef(null);
+
+  const departureInputRef = useRef(null);
+  const arrivalInputRef = useRef(null);
 
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
@@ -41,6 +44,11 @@ const Search = () => {
   const location = useLocation();
   const [isSearchReady, setIsSearchReady] = useState(false);
   const navigate = useNavigate();
+
+  // 유효성
+  const [errorMessage, setErrorMessage] = useState('');
+  const errorRef = useRef(null);
+  const [showError, setShowError] = useState(false);
 
   // 로그인 여부
   const {isLogin, loginCheck} = useUser();
@@ -79,44 +87,56 @@ const Search = () => {
   // 검색 시 자동 완성
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (autocompleteRef.current && !autocompleteRef.current.contains(event.target)) {
-        setSearchTerm('');
-        setFilteredAirports(airports);
-        setFocusedInput(null);
-        setIsEditing({ departure: false, arrival: false }); // Close editing mode
-      }
+        if (
+            (activeField === 'departure' && departureInputRef.current && departureInputRef.current.contains(event.target)) ||
+            (activeField === 'arrival' && arrivalInputRef.current && arrivalInputRef.current.contains(event.target)) ||
+            (menuRef.current && menuRef.current.contains(event.target)) ||
+            (searchRef.current && searchRef.current.contains(event.target))
+        ) {
+            return; // 클릭이 `input` 내부에서 발생한 경우, 아무 작업도 하지 않음
+        }
+        setActiveField(null);
+        setIsMenuOpen(false);
+        setIsSearchOpen(false);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [airports]);
 
-  const handleSearchTermChange = (e) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    if (term) {
-        setFilteredAirports(
-            airports.filter(airport =>
-                airport.airportName.toLowerCase().includes(term.toLowerCase()) ||
-                airport.airportIso.toLowerCase().includes(term.toLowerCase())
-            )
-        );
-    } else {
-        setFilteredAirports(airports);
+    if (activeField) {
+        document.addEventListener('click', handleClickOutside);
     }
-};
+
+    return () => {
+        document.removeEventListener('click', handleClickOutside);
+    };
+}, [activeField, departureInputRef, arrivalInputRef, menuRef, searchRef]);
+
+  const handleSearchTermChange = (e, type) => {
+    e.stopPropagation(); // 클릭 이벤트 전파 방지
+    const term = e.target.value || '';
+    if (type === 'departure') {
+        setDepartureSearchTerm(term);
+    } else if (type === 'arrival') {
+        setArrivalSearchTerm(term);
+    }
+    setFilteredAirports(
+        airports.filter(airport =>
+            (airport.airportName?.toLowerCase() || '').includes(term.toLowerCase()) ||
+            (airport.airportIso?.toLowerCase() || '').includes(term.toLowerCase())
+        )
+    );
+  };
 
   // // timezone 추가
   const handleSelectAirport = (airportCode) => {
-    if (focusedInput === 'departure') {
-      setDeparture(airportCode);
-    } else if (focusedInput === 'arrival') {
-      setArrival(airportCode);
+    if (activeField === 'departure') {
+        setDeparture(airportCode);
+        setDepartureSearchTerm('');
+    } else if (activeField === 'arrival') {
+        setArrival(airportCode);
+        setArrivalSearchTerm('');
     }
-    setSearchTerm('');
     setFilteredAirports(airports);
-    setFocusedInput(null);
-    setIsEditing({ departure: false, arrival: false }); // Close editing mode
-  };
+    setActiveField(null);
+};
 
   // useEffect(() => {
   //   handleSearch();
@@ -127,17 +147,16 @@ const Search = () => {
   //   console.log("Departure Timezone:", depTimezone); // depTimezone 상태 값 확인
   // }, [depTimezone]);
 
-  const handleFocus = (inputType) => {
-    setFocusedInput(inputType);
-    setSearchTerm('');
-    setFilteredAirports(airports);
-  };
+  // const handleFocus = (inputType) => {
+  //   setFocusedInput(inputType);
+  //   setSearchTerm('');
+  //   setFilteredAirports(airports);
+  // };
 
   const handleClickEdit = (inputType) => {
-    setIsEditing(prev => ({ ...prev, [inputType]: true }));
-    setIsInputMoved(prev => ({ ...prev, [inputType]: !prev[inputType] }));
-    handleFocus(inputType);
-  };
+    // console.log("Clicked Edit:", inputType);
+    setActiveField(inputType);
+};
 
   // 날짜
   // 날짜를 형식화하여 상태를 업데이트
@@ -201,6 +220,8 @@ const handleDecrement = (type) => {
   }
 };
 
+
+
   // 메인에서 받은 정보
   useEffect(() => {
     // 전달받은 정보로 상태 설정
@@ -239,16 +260,46 @@ const handleDecrement = (type) => {
     }
   }, [isSearchReady, departure, arrival, departureDate]);
 
+  // 유효성 검사 날짜
+  const isDateAfterOneWeek = (date) => {
+    const today = new Date();
+    const oneWeekFromToday = new Date(today);
+    oneWeekFromToday.setDate(today.getDate() + 7);
+
+    return date > oneWeekFromToday;
+};
+
   // 항공권 검색
-  // timezone
   const handleSearch = async () => {
     // const formattedDepartureDate = format(new Date(dates[0]), 'yyyy-MM-dd');
     // const formattedReturnDate = dates[1] ? format(new Date(dates[1]), 'yyyy-MM-dd') : '';
+
+    if (!arrival) {
+      setErrorMessage('도착지를 입력해 주세요.');
+      return;
+    }
+
+    if (tripType === 'round-trip' && !returnDate) {
+      setErrorMessage('출발일과 귀국일을 선택해 주세요.');
+        return;
+    }
+
+    if (tripType === 'one-way' && !departureDate) {
+      setErrorMessage('출발일을 선택해 주세요.');
+        return;
+    }
+
+    const departureDateObject = new Date(departureDate);
+    if (!isDateAfterOneWeek(departureDateObject)) {
+        setErrorMessage('출발일은 오늘부터 일주일 뒤 이후여야 합니다.');
+        return;
+    }
 
     console.log("출발일", departureDate);
     console.log("도착일", returnDate);
     console.log("출발지", departure);
     console.log("도착지", arrival);
+    setErrorMessage('');
     setResults({ outboundFlights: [], inboundFlights: [], combinations: [] });
 
     try {
@@ -265,6 +316,22 @@ const handleDecrement = (type) => {
       console.error('Fetch error:', error);
     }
   };
+
+   //애니메이션
+   useEffect(() => {
+    if (errorMessage) {
+        setShowError(true);
+
+        // 애니메이션을 트리거하기 위해 상태를 잠시 변경한 후 복원
+        const timer = setTimeout(() => {
+            setShowError(false);
+            // 이후에 errorMessage를 비워서 다시 설정할 수 있습니다
+            setErrorMessage('');
+        }, 2000); // 애니메이션 시간과 동일하게 설정
+
+        return () => clearTimeout(timer);
+    }
+}, [errorMessage]);
 
   const handleTripTypeChange = (type) => {
     setTripType(type);
@@ -286,6 +353,7 @@ const handleDecrement = (type) => {
   };
 
   return (
+    <>
     <div className={style.searchBar}>
     <div className={style.contentpart}>
       <div className={style.wayBox}> 
@@ -293,91 +361,85 @@ const handleDecrement = (type) => {
       <button onClick={() => handleTripTypeChange('one-way')} className={`${style.wButton} ${tripType === 'one-way' ? style.searchActives : ''}`}>편도</button>
       </div>
     <div className={style.selectBox}>
-      <div id={style.searchAirport}>
+      <div id={style.searchAirport} ref={searchRef}>
       <div id={style.searchDepPart}>
-      {isEditing.departure ? (
-      <div className={style.searchAirportContainer}>
-              <div className={style.airportDefault}>{departure || '출발'}</div>
-              <div className={style.searchContainer}>
-          <input
-              className={style.searchAirport}
-              type="text"
-              value={searchTerm}
-              onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  handleSearchTermChange(e);
-              }}
-              onFocus={() => handleFocus('departure')}
-              placeholder="국가, 공항명 검색"
-          />
-          {focusedInput === 'departure' && searchTerm && (
-          <div className={style.autocompleteResults} ref={autocompleteRef}>
-              {filteredAirports.length > 0 ? (
-                  filteredAirports.map((airport) => (
-                      <div
-                          key={airport.airportIso}
-                          onClick={() => handleSelectAirport(airport.airportIso)}
-                      >
-                          {airport.airportName} ({airport.airportIso})
-                      </div>
-                  ))
-              ) : (
-                  <div>No results found</div>
-              )}
-          </div>
-      )}
-      </div>
-      </div>
-      ) : (
-          <div className="editable-div" onClick={() => handleClickEdit('departure')}>
-              <div className={style.airportName}>{departure || '출발'}</div>
-              <div className={style.selectArrow} />
-          </div>
-      )}
-      </div>
-
-        <div id={style.searchArrPart}>
-              {isEditing.arrival ? (
-            <div className={style.searchAirportContainer}>
-                <div className={style.airportDefault}>{arrival || '도착'}</div>
-                <div className={style.searchContainer}>
-            <input
-                className={style.searchAirport}
-                type="text"
-                value={searchTerm}
-                onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                    handleSearchTermChange(e);
-                }}
-                onFocus={() => handleFocus('arrival')}
-                placeholder="국가, 공항명 검색"
-            />
-            {focusedInput === 'arrival' && searchTerm && (
-            <div className={style.autocompleteResults} ref={autocompleteRef}>
-                {filteredAirports.length > 0 ? (
-                    filteredAirports.map((airport) => (
-                        <div
-                            key={airport.airportIso}
-                            onClick={() => handleSelectAirport(airport.airportIso)}
-                        >
-                            {airport.airportName} ({airport.airportIso})
+                    <div
+                        className="editable-div" id={style.editableDiv}
+                        onClick={() => handleClickEdit('departure')}
+                    >
+                        <div className="airportName" id={style.airportName}>{departure || '출발'}</div>
+                        <div className={style.selectArrow} />
+                    </div>
+                    {activeField === 'departure' && (
+                        <div className={style.searchAirportContainer}> 
+                             <div className={style.searchContainer} ref={departureInputRef}>
+                                <input
+                                    className={style.searchAirport}
+                                    type="text"
+                                    value={departureSearchTerm}
+                                    onChange={(e) => handleSearchTermChange(e, 'departure')}
+                                    placeholder="국가, 공항명 검색"
+                                />
+                                {departureSearchTerm && (
+                                    <div className={style.autocompleteResults}>
+                                        {filteredAirports.length > 0 ? (
+                                            filteredAirports.map((airport) => (
+                                                <div
+                                                    key={airport.airportIso}
+                                                    onClick={() => handleSelectAirport(airport.airportIso)}
+                                                >
+                                                    {airport.airportName} ({airport.airportIso})
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div>No results found</div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    ))
-                ) : (
-                    <div>No results found</div>
+                    )}
+                </div>
+
+                <div id={style.searchArrPart}>
+                <div
+                    className="editable-div" id={style.editableDiv}
+                    onClick={() => handleClickEdit('arrival')}
+                >
+                    <div className="airportName" id={style.airportName}>{arrival || '도착'}</div>
+                    <div className={style.selectArrow} />
+                </div>
+                {activeField === 'arrival' && (
+                    <div className={style.searchAirportContainer} >
+                         <div className={style.searchContainer} ref={arrivalInputRef}>
+                            <input
+                                className={style.searchAirport}
+                                type="text"
+                                value={arrivalSearchTerm}
+                                onChange={(e) => handleSearchTermChange(e, 'arrival')}
+                                placeholder="국가, 공항명 검색"
+                            />
+                            {arrivalSearchTerm && (
+                                <div className={style.autocompleteResults}>
+                                    {filteredAirports.length > 0 ? (
+                                        filteredAirports.map((airport) => (
+                                            <div
+                                                key={airport.airportIso}
+                                                onClick={() => handleSelectAirport(airport.airportIso)}
+                                            >
+                                                {airport.airportName} ({airport.airportIso})
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div>No results found</div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 )}
-            </div>
-        )}
-            </div>
-            </div>
-        ) : (
-      <div className="editable-div"  onClick={() => handleClickEdit('arrival')} >
-          <div className='airportName'>{arrival || '도착'}</div>
-          <div className={style.selectArrow}/>
-      </div>
-  )}
-</div>
-</div>
+                </div>
+                </div>
 
       <div className={style.DatePart}>
         {tripType === 'round-trip' && (
@@ -441,7 +503,12 @@ const handleDecrement = (type) => {
         </div>              
       </div>
       </div>
-
+      </div>
+      {errorMessage && (
+        <div className={style.errorMessage} ref={errorRef}>
+            {errorMessage}
+        </div>
+    )}
       <div className={style.results}>
       {tripType == "round-trip" && results.combinations.length > 0 && (
          <div className={style.resultsContents}>
@@ -523,7 +590,7 @@ const handleDecrement = (type) => {
         </div>
       )}
     </div>
-  </div>
+    </>
   );
 };
 

@@ -86,9 +86,14 @@ const Reserve = () => {
     : flight.price;
 
   const discountedPrice = selectedCoupon 
-    ? totalPrice * (1 - selectedCoupon.percent / 100) / 10 * 10
+    ? Math.floor(totalPrice * (1 - selectedCoupon.percent / 100) / 10) * 10
     : totalPrice;
-    
+
+    const FlightPrice = ({ price }) => {
+      return (
+        <div>{price.toLocaleString('ko-KR')} 원</div>
+      );
+    };
 
     const onClickPayment = () => {
         if (!window.IMP) return;
@@ -210,7 +215,28 @@ const Reserve = () => {
               <div className={style.duringTime2}><PiDotOutline /></div>
               <div>{flight.outbound.arrDayFormat}<br/>
                 {flight.outbound.arrTime}</div>
-              <div>{flight.outbound.price}</div>
+              <div><FlightPrice price={flight.outbound.price} /></div>
+            </div>
+
+            <div className={style.arrAirportInfo}>
+              <div className={style.airportIcon}><PiAirplaneTakeoffBold /></div>
+              <h2>오는 항공편</h2>
+              <div className={style.airports}>
+                <div>{flight.inbound.depAirport}</div>
+                <div className={style.airportArrow}><RiArrowRightDoubleFill /></div>
+                <div>{flight.inbound.arrAirport}</div>
+              </div>
+            </div>
+            <div className={style.ticket}>
+              <div>{flight.inbound.airlineName}</div>
+              <div>{flight.inbound.depDayFormat}<br/>
+                {flight.inbound.depTime}</div>
+              <div className={style.duringTime}><PiDotOutline /></div>
+              <div className={style.line}>{flight.outbound.takeTimeFormat}<div className={style.type}>직항</div></div>
+              <div className={style.duringTime2}><PiDotOutline /></div>
+              <div>{flight.inbound.arrDayFormat}<br/>
+                {flight.inbound.arrTime}</div>
+              <div><FlightPrice price={flight.inbound.price} /></div>
             </div>
           </div>
         </>
@@ -222,7 +248,7 @@ const Reserve = () => {
           <div>도착 공항: {flight.arrAirport}</div>
           <div>출발 날짜: {flight.depTime}</div>
           <div>도착 날짜: {flight.arrTime}</div>
-          <div>가격: {flight.price}</div>
+          <div>가격:<div><FlightPrice price={flight.price} /></div></div>
         </>
       )}
       

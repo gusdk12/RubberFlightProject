@@ -63,7 +63,7 @@ public class ReserveController {
 
         System.out.println(depTimezone);
         System.out.println(arrTimezone) ;
-        System.out.println("arrDate: " + arrDate); // 로깅 추가
+        System.out.println("arrDate: " + arrDate);
 
         String depAirportName = airportService.findByIso(iataCode).getAirportName();
         String arrAirportName = airportService.findByIso(arrIataCode).getAirportName();
@@ -75,8 +75,8 @@ public class ReserveController {
                 : Collections.emptyList();
 
         if (!outboundFlights.isEmpty() && !inboundFlights.isEmpty()) {
-            List<Map<String, Object>> combinations = createFlightCombinations(outboundFlights, inboundFlights);
-            return new ResponseEntity<>(Collections.singletonMap("combinations", combinations), HttpStatus.OK);
+            List<Map<String, Object>> sortedCombinations = reserveService.getSortedFlightCombinations(outboundFlights, inboundFlights);
+            return new ResponseEntity<>(Collections.singletonMap("combinations", sortedCombinations), HttpStatus.OK);
         }
 
         List<Flight> sortedOutboundFlights = reserveService.getFlights(outboundFlights);
