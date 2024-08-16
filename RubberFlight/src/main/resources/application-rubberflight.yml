@@ -72,7 +72,7 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 cors:
-  allowed-origins: http://localhost:3000,http://localhost:3001
+  allowed-origins: http://43.202.34.247:3000,http://43.202.34.247:3001
 
 app:
   api-key:
