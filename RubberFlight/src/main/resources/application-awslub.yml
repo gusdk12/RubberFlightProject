@@ -88,6 +88,10 @@ jwt:
 file:
   upload-dir: uploads
 
+cohere:
+  api:
+    key: ${rds.cohereapi}
+
 google:
   api:
     key: ${rds.googleapi}
@@ -95,7 +99,3 @@ google:
   search:
     engine:
       id: ${rds.engineid}
-
-cohere:
-  api:
-    key: ${rds.cohereapi}
