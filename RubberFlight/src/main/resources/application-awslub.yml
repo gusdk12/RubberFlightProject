@@ -92,6 +92,6 @@ google:
   api:
     key: ${rds.googleapi}
 
-search:
-  engine:
-    id: ${rds.engineid}
+  search:
+    engine:
+      id: ${rds.engineid}
