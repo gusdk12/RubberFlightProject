@@ -63,11 +63,11 @@ spring:
             user-name-attribute: id
 
   jpa:
-#    show-sql: true
+    show-sql: true
     properties:
       hibernate.format_sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
@@ -87,3 +87,15 @@ jwt:
 
 file:
   upload-dir: uploads
+
+cohere:
+  api:
+    key: ${rds.cohereapi}
+
+google:
+  api:
+    key: ${rds.googleapi}
+
+  search:
+    engine:
+      id: ${rds.engineid}
