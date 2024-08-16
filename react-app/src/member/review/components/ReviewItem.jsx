@@ -38,7 +38,7 @@ const ReviewItem = ({review}) => {
       >
         <Flex mb={-5}>
           <div><img src={Flight} className={styles.top}/></div>
-          <div className={styles.topname}>Rubber Flight</div>
+          <div className={styles.topname}>LOVER AIR</div>
           <Flex>
               <div className={styles.reivewRate}><StarRating rate={totalRate} /></div>
               <div className={styles.totalScore}>({totalRate})</div>
