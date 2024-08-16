@@ -98,4 +98,4 @@ google:
 
 cohere:
   api:
-    key: NTWVuNag31zTPrDZgD7g4d3CU18fX6pZ1U5W1yNp
+    key: ${rds.cohereapi}
