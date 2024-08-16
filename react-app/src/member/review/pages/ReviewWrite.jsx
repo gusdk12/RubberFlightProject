@@ -77,7 +77,7 @@ const ReviewWrite = () => {
         method: "post",
         url: `http://localhost:8282/review/write/` + flight.id,
         headers: {
-          "Content-Type": "application/json;charset=utf-8",
+          'Content-Type': 'application/json',
         },
         data: JSON.stringify(review),
       }).then((response) => {

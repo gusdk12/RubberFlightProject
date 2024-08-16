@@ -32,7 +32,6 @@ const ReviewList = () => {
           },
         }
       );
-      console.log(response.data)
       setReviews(response.data.content); // 리뷰 목록 리스트
       setTotalPages(response.data.totalPages); // 총 페이지
     } catch (error) {
