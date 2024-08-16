@@ -2,6 +2,7 @@ package com.lec.spring.member.review.controller;
 
 import com.lec.spring.general.user.jwt.JWTUtil;
 import com.lec.spring.member.review.domain.Review;
+import com.lec.spring.member.review.domain.ReviewDTO;
 import com.lec.spring.member.review.service.ReviewService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +71,7 @@ public class ReviewController {
     // 리뷰 수정
     @CrossOrigin
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody Review review){
+    public ResponseEntity<?> update(@RequestBody ReviewDTO review){
         return new ResponseEntity<>(reviewService.update(review), HttpStatus.OK);
     }
 

@@ -6,6 +6,7 @@ import com.lec.spring.general.review.repository.AirlineRepository;
 import com.lec.spring.member.flightInfo.domain.FlightInfo;
 import com.lec.spring.member.flightInfo.repository.FlightInfoRepository;
 import com.lec.spring.member.review.domain.Review;
+import com.lec.spring.member.review.domain.ReviewDTO;
 import com.lec.spring.member.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -95,7 +96,7 @@ public class ReviewService {
 
     // 리뷰 수정
     @Transactional
-    public Review update(Review review) {
+    public Review update(ReviewDTO review) {
         Review reviewEntity = reviewRepository.findById(review.getId()).orElseThrow(() -> new IllegalArgumentException("id를 확인해주세요"));
 
         reviewEntity.setClean_rate(review.getClean_rate()); // 청결 점수

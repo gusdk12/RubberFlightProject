@@ -65,16 +65,29 @@ const validateForm = () => {
 };
 
  // 데이터 수정하기
- const submitReview = (e) => {
+const submitReview = (e) => {
   e.preventDefault();
   
   const validationError = validateForm();
+  console.log(review);
+  let provide = {
+    id: review.id,
+    title: review.title,
+    seat_rate : review.seat_rate,
+    service_rate: review.service_rate,
+    procedure_rate: review.procedure_rate,
+    flightmeal_rate: review.flightmeal_rate,
+    lounge_rate: review.lounge_rate,
+    clean_rate: review.clean_rate, 
+    content: review.content
+  };
+  console.log(provide);
   if(!validationError){
     axios({
       method: "put",
       url: "http://localhost:8282/review/update",
       headers: {
-          "Content-Type": 'application/json;charset=utf-8',
+          "Content-Type": 'application/json',
       },
       data: JSON.stringify(review),
   })
