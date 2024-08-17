@@ -14,7 +14,7 @@ const CouponForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const validationErrors = validateCoupon(couponCode, discountPercent, description); // 유효성 검사
+    const validationErrors = validateCoupon(couponCode, discountPercent, description); 
     if (validationErrors) {
       setErrorMessages(validationErrors);
       return;
