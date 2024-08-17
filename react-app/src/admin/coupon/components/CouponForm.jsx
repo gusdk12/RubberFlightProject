@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCoupon } from "../contexts/CouponContext";
-import { Box, Button, FormControl, FormLabel, Input, Grid, Flex, InputRightElement, InputGroup, Text, Image, Alert, AlertIcon } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, Grid, Flex, InputRightElement, InputGroup, Image, Alert, AlertIcon } from "@chakra-ui/react";
 import airplane3 from '../../../assets/images/admin/airplane3.webp';
 import { validateCoupon } from '../utils/validateCoupon'; 
 
 const CouponForm = () => {
-  const { addCoupon } = useCoupon();
+  const { coupons, addCoupon } = useCoupon(); 
   const [couponCode, setCouponCode] = useState("");
   const [discountPercent, setDiscountPercent] = useState("");
   const [description, setDescription] = useState("");
   const [airlineName, setAirlineName] = useState("");
-  const [errorMessages, setErrorMessages] = useState([]); 
+  const [errorMessages, setErrorMessages] = useState([]);
+
+  useEffect(() => {
+  }, [coupons]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const validationErrors = validateCoupon(couponCode, discountPercent, description); 
+    const validationErrors = validateCoupon(couponCode, discountPercent, description, coupons);
     if (validationErrors) {
       setErrorMessages(validationErrors);
       return;
@@ -28,7 +31,7 @@ const CouponForm = () => {
     };
     addCoupon(newCoupon);
     resetForm();
-    setErrorMessages([]); 
+    setErrorMessages([]);
   };
 
   const resetForm = () => {
@@ -67,14 +70,14 @@ const CouponForm = () => {
           justifyContent="center"
           height="250px"
           width="360px"
-          overflow="hidden" 
+          overflow="hidden"
         >
           <Image
-            src={airplane3} 
-            alt="Airplane" 
-            boxSize="310px" 
-            objectFit="cover" 
-            mb={3} 
+            src={airplane3}
+            alt="Airplane"
+            boxSize="310px"
+            objectFit="cover"
+            mb={3}
           />
         </Box>
 
