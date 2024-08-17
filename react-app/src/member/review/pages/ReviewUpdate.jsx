@@ -13,6 +13,7 @@ import Stamp from "../../../assets/images/review/stamp.webp";
 const ReviewUpdate = () => {
   const {id} = useParams();
   const navigate = useNavigate();
+  const backUrl = process.env.REACT_APP_BACK_URL;
   const [review, setReview] = useState({
     title: "",
     seat_rate : "",
@@ -27,7 +28,7 @@ const ReviewUpdate = () => {
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:8282/review/detail/" + id,
+      url: `${backUrl}/review/detail/` + id,
     })
       .then(response => {
         const { data, status, statusText } = response;
@@ -85,7 +86,7 @@ const submitReview = (e) => {
   if(!validationError){
     axios({
       method: "put",
-      url: "http://localhost:8282/review/update",
+      url: `${backUrl}/review/update`,
       headers: {
           "Content-Type": 'application/json',
       },

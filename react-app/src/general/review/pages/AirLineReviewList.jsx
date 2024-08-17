@@ -18,15 +18,16 @@ const AirLineReviewList = () => {
   const [loading, setLoading] = useState(true);
   const [airlineNames, setAirlineNames] = useState([]);
   const [selectedAirlineId, setSelectedAirlineId] = useState(null); // 선택된 항공사 ID
+  const backUrl = process.env.REACT_APP_BACK_URL;
 
   // 모든 리뷰 목록 불러오기(최신순, 별점순)
   const fetchReviews = async (type, page, airlineId) => {
     try {
       let url;
       if (airlineId === null) {
-        url = `http://localhost:8282/airlinereview/${type}?page=${page}&size=${pageSize}`;
+        url = `${backUrl}/airlinereview/${type}?page=${page}&size=${pageSize}`;
       } else {
-        url = `http://localhost:8282/airlinereview/${type}/${airlineId}?page=${page}&size=${pageSize}`;
+        url = `${backUrl}/airlinereview/${type}/${airlineId}?page=${page}&size=${pageSize}`;
       }
       const response = await axios.get(url);
       setReviews(response.data.content); // 리뷰 목록 리스트
@@ -41,7 +42,7 @@ const AirLineReviewList = () => {
   // 저장된 항공사 이름 불러오기
   const fetchAirline = async () => {
     try {
-      const response = await axios.get(`http://localhost:8282/airlinereview/namelist`);
+      const response = await axios.get(`${backUrl}/airlinereview/namelist`);
       setAirlineNames(response.data);
     } catch (error) {
       console.error("항공사 이름을 가져오는 데 오류가 발생했습니다:", error);

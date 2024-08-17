@@ -8,6 +8,7 @@ import { useUser } from '../../../general/user/contexts/LoginContextProvider';
 
 const UserInfoModal = ({ isOpen, onClose }) => {
   const { userInfo, loginCheck } = useUser();
+  const backUrl = process.env.REACT_APP_BACK_URL;
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,7 +23,7 @@ const UserInfoModal = ({ isOpen, onClose }) => {
     if (isOpen && userInfo.id) {
       const fetchUserInfo = async () => {
         try {
-          const response = await fetch(`http://localhost:8282/mypage/${userInfo.id}`);
+          const response = await fetch(`${backUrl}/mypage/${userInfo.id}`);
           
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -86,7 +87,7 @@ const UserInfoModal = ({ isOpen, onClose }) => {
         formDataToSend.append('existingImage', formData.existingImage);
       }
 
-      const response = await fetch(`http://localhost:8282/mypage/update/${userInfo.id}`, {
+      const response = await fetch(`${backUrl}/mypage/update/${userInfo.id}`, {
         method: 'PUT',
         body: formDataToSend,
       });

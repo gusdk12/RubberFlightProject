@@ -1,8 +1,10 @@
 function UserProfile() {
+  const backUrl = process.env.REACT_APP_BACK_URL;
+  
     return (
       <div>
         <h1>User Profile</h1>
-        <img src="http://localhost:8282/uploads/user.png" alt="User Profile" />
+        <img src={`${backUrl}/uploads/user.png`} alt="User Profile" />
       </div>
     );
   }

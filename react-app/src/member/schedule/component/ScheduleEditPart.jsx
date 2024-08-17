@@ -12,9 +12,10 @@ const ScheduleEditPart = (props) => {
     const [addDate, setAddDate] = useState(new Date());
     const [showChat, setShowChat] = useState(false);
     const [message, setMessage] = useState('');
+    const backUrl = process.env.REACT_APP_BACK_URL;
     
     useEffect(() => {
-        fetch(`http://localhost:8282/dates/${props.ScheduleId}`)
+        fetch(`${backUrl}/dates/${props.ScheduleId}`)
             .then(response => response.json())
             .then(data => {
                 setDates([...data])

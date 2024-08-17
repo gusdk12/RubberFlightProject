@@ -16,6 +16,7 @@ const Chat = (props) => {
   const initialMessages = [{ sender: 'Lumi', text: `안녕하세요!<br/> 무엇을 도와드릴까요?` }];
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState(initialMessages);
+  const backUrl = process.env.REACT_APP_BACK_URL;
 
   // 메시지 배열이 변경될 때마다 스크롤을 조정
   useEffect(() => {
@@ -41,7 +42,7 @@ const Chat = (props) => {
     setLoading(true);
       try {
         const chatData = { message };
-          const response = await axios.post('http://localhost:8282/chat', chatData, {
+          const response = await axios.post(`${backUrl}/chat`, chatData, {
               headers: {
                   'Authorization': `Bearer ${token}`,
                   'Content-Type': 'application/json'

@@ -3,6 +3,7 @@ package com.lec.spring.member.mypage.controller;
 import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.domain.UserDTO;
 import com.lec.spring.general.user.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,11 +17,13 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/mypage")
 public class MyPageController {
 
+    @Value("${awsServer.address}")
+    private String serverUrl;
     private final UserService userService;
 
 
@@ -51,7 +54,7 @@ public class MyPageController {
             try {
                 Path path = Paths.get("uploads/" + fileName);
                 Files.write(path, file.getBytes());
-                filePath = "http://localhost:8282/" + path;
+                filePath = serverUrl + "/" + path;
             } catch (IOException e) {
                 e.printStackTrace();
                 Map<String, String> response = new HashMap<>();

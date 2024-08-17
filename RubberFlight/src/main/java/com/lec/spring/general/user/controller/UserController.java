@@ -10,6 +10,7 @@ import com.lec.spring.general.user.service.UserService;
 import com.lec.spring.member.checklist.domain.ChecklistDTO;
 import com.lec.spring.member.checklist.domain.ChecklistItemDTO;
 import com.lec.spring.member.checklist.service.ChecklistService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    @Value("${awsServer.address}")
+    private String serverUrl;
     private final UserService userService;
     private final FileService fileService;
 
@@ -51,7 +54,7 @@ public class UserController {
             @RequestParam("tel") String tel,
             @RequestParam("file") MultipartFile file) {
 
-        String filePath = "http://localhost:8282/uploads/user.png";
+        String filePath = serverUrl + "/uploads/user.png";
         String uploadDir = "uploads/";  // 파일을 저장할 디렉토리 경로
 
         // 파일 처리 로직
@@ -60,7 +63,7 @@ public class UserController {
             try {
                 Path path = Paths.get(uploadDir + fileName);
                 Files.write(path, file.getBytes());
-                filePath = "http://localhost:8282/uploads/" + fileName;
+                filePath = serverUrl + "/uploads/" + fileName;
 
             } catch (IOException e) {
                 e.printStackTrace();

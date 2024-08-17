@@ -7,6 +7,6 @@ import axios from "axios";
 
 const api = axios.create();
 
-export const SERVER_HOST = `http://localhost:8282`;
+export const SERVER_HOST = process.env.REACT_APP_BACK_URL;// `http://localhost:8282`;
 
 export default api;

@@ -15,12 +15,13 @@ const UserInfo = () => {
   const [isInfoModalOpen, setInfoModalOpen] = useState(false);
   const [email, setEmail] = useState('');  // 이메일 상태 추가
   const navigate = useNavigate();
+  const backUrl = process.env.REACT_APP_BACK_URL;
 
   useEffect(() => {
     if (userInfo.id) {
       const fetchUserEmail = async () => {
         try {
-          const response = await fetch(`http://localhost:8282/mypage/${userInfo.id}`);
+          const response = await fetch(`${backUrl}/mypage/${userInfo.id}`);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }

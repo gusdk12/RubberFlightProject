@@ -7,6 +7,7 @@ import axios from 'axios';
 const ScheduleItem = (props) => {
 
     const {id, title, edit_date} = props.schedule;
+    const backUrl = process.env.REACT_APP_BACK_URL;
     
     const navigate = useNavigate();
     const editPage= () => {
@@ -20,7 +21,7 @@ const ScheduleItem = (props) => {
 
         axios({
             method: "delete",
-            url: "http://localhost:8282/schedule/" + id,
+            url: `${backUrl}/schedule/` + id,
         })
         .then(response => {
             const {data, status, statusText} = response;

@@ -74,6 +74,11 @@ spring:
 cors:
   allowed-origins: http://43.202.34.247:3000,http://43.202.34.247:3001
 
+awsServer:
+  address: http://43.202.34.247
+awsFrontServer:
+  address: http://43.202.34.247:3001
+
 app:
   api-key:
     aviation: ${rds.apikey}

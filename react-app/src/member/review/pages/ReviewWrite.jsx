@@ -72,10 +72,11 @@ const ReviewWrite = () => {
   const submitReview = (e) => {
     e.preventDefault();
     const validationError = validateForm();
+    const backUrl = process.env.REACT_APP_BACK_URL;
     if (!validationError) {
       axios({
         method: "post",
-        url: `http://localhost:8282/review/write/` + flight.id,
+        url: `${backUrl}/review/write/` + flight.id,
         headers: {
           'Content-Type': 'application/json',
         },

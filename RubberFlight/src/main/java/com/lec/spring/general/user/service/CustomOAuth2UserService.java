@@ -4,6 +4,7 @@ import com.lec.spring.general.user.config.CustomOAuth2User;
 import com.lec.spring.general.user.domain.*;
 import com.lec.spring.general.user.repository.UserRepository;
 import com.lec.spring.member.checklist.service.ChecklistService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
+    @Value("${awsServer.address}")
+    private String serverUrl;
     private final UserRepository userRepository;
     private final ChecklistService checklistService;  // ChecklistService 주입
 
@@ -64,7 +67,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         String image = oAuth2Response.getImage();
         if(image == null) {
-            image = "http://localhost:8282/uploads/user.png";
+            image = serverUrl + "/uploads/user.png";
         }
 
         if (existData == null) {
