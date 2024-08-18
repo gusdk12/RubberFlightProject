@@ -36,7 +36,7 @@ public class ChatService {
         // 대화 종료 또는 초기화 명령어 처리
         if (prompt.equalsIgnoreCase("종료") || prompt.equalsIgnoreCase("새 대화 시작")) {
             userConversations.remove(userId);
-            return "채팅이 종료되었습니다.";
+            return "채팅을 종료합니다.";
         }
         // 대화 기록이 없으면 새로 생성
         userConversations.putIfAbsent(userId, new ArrayList<>());
@@ -62,7 +62,7 @@ public class ChatService {
         String searchResults = performGoogleSearch(searchQuery, prompt);
 
         // 두 결과를 조합하여 반환
-        return formattedAiResponse + "<br><관련 링크↓><br>" + searchResults;
+        return formattedAiResponse + "<br><관련 링크><br>" + searchResults;
     }
 
     public String aiResponse(String prompt) {

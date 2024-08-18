@@ -81,13 +81,20 @@ const Chat = (props) => {
 
     return (
         <>
+          <div className={styles.btn}>
+            <button id={styles.help}></button>
+            <div id={styles.helptext}>
+              Lover Air의 귀염둥이 <br/>Lumi에게 궁금한 것을 물어보세요~
+              <br/>채팅이 끝나면 '종료'라고 입력해주세요!</div>
+          </div>
           <div id={styles.chatBox}>
             <div id={styles.titleBox}>
               <Flex justifyContent='start' alignItems='center'>
                 <Image src={ChatBot} className={styles.botIcon} />
                 <div id={styles.title}>Lumi</div>
-                <button id={styles.close} onClick={props.closeChat}></button>
+                {/* <button id={styles.close} onClick={props.closeChat}></button> */}
               </Flex>
+                {/* <div id={styles.helptext}>Lover Air의 귀염둥이 Lumi에게 궁금한 것을 물어보세요~</div> */}
             </div>
             <div id={styles.chatIn} ref={chatContainerRef}>
               {chatHistory.map((chat, index) => (

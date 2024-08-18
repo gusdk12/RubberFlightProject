@@ -367,23 +367,23 @@ body{
 }
 
 #chatcontainer{
+    /* outline: 2px solid red; */
     width: 280px;
-    height: 20px;
-    margin: 150px 11px 0px 0;
+    height: 550px;
+    margin: 50px 11px 0px 0;
     display: inline-block;
-    z-index: 2;
+    /* z-index: 2; */
 }
 
-#btn {
+/* #btn {
     display: inline-block;
     width: 80px;
     height: 60px;
     margin: 630px 200px 0 0;
-    position: fixed; /* 화면에 고정 위치 설정 */
-    z-index: 1;
-}
+    position: fixed; 
+} */
 
-.chatbtn {
+/* .chatbtn {
     background-image: url(../../../assets/images/schedule/bot.webp);
     background-size: cover;
     width: 60px;
@@ -393,33 +393,4 @@ body{
     background-color: #3791f9;
     margin-left: 10px;
     
-}
-
-#btn:hover #helptext{
-    visibility: visible; /* 도움말 텍스트 표시 */
-}
-
-#helptext {
-    position: relative;
-    width: 175px;
-    padding: 10px;
-    left: 90px;
-    bottom: 90px;
-    border-radius: 10px;
-    word-wrap: break-word; /* 긴 단어를 줄 바꿈 */
-    background-color: #def6ff;
-    font-family: 'GeekbleMalang2WOFF2';
-    font-size: 16px;
-    visibility: hidden; /* 기본적으로 도움말 텍스트는 숨김 */
-}
-
-#helptext::after {
-    border-top: 15px solid #def6ff;
-    border-left: 15px solid transparent;
-    border-right: 0px solid transparent;
-    border-bottom: 0px solid transparent;
-    content:"";
-    position:absolute;
-    top: 60px;
-    left:-13px;
-}
+} */
