@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton,
   ModalBody, ModalFooter, Button, Input, Text, Flex, FormControl,
-  FormLabel, Image
+  FormLabel, Image, Box, Select
 } from '@chakra-ui/react';
 import { useUser } from '../../../general/user/contexts/LoginContextProvider';
+import Swal from 'sweetalert2';
+import styles from "../CSS/UserInfoModal.module.css";
+import PasswordChangeModal from './PasswordChangeModal';
 
 const UserInfoModal = ({ isOpen, onClose }) => {
   const { userInfo, loginCheck } = useUser();
@@ -12,32 +15,35 @@ const UserInfoModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    tel: '',
-    password: '',
-    passwordCheck: '',
+    emailDomain: 'naver.com',
+    tel1: '',
+    tel2: '',
+    tel3: '',
     image: null,
-    existingImage: '' // 기존 이미지 URL
+    existingImage: ''
   });
+  const [isPasswordChangeModalOpen, setPasswordChangeModalOpen] = useState(false);
+
+  const fileInputRef = useRef(null);
+
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
 
   useEffect(() => {
     if (isOpen && userInfo.id) {
       const fetchUserInfo = async () => {
         try {
           const response = await fetch(`${backUrl}/mypage/${userInfo.id}`);
-          
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          
-          const text = await response.text();
-          const data = JSON.parse(text);
-
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          const data = await response.json();
           setFormData({
             name: data.name || '',
-            email: data.email || '',
-            tel: data.tel || '',
-            password: '',
-            passwordCheck: '',
+            email: data.email ? data.email.split('@')[0] : '',
+            emailDomain: data.email ? data.email.split('@')[1] : 'naver.com',
+            tel1: data.tel ? data.tel.split('-')[0] : '',
+            tel2: data.tel ? data.tel.split('-')[1] : '',
+            tel3: data.tel ? data.tel.split('-')[2] : '',
             image: null,
             existingImage: data.image || ''
           });
@@ -45,7 +51,6 @@ const UserInfoModal = ({ isOpen, onClose }) => {
           console.error('유저 정보를 가져오는 데 실패했습니다:', error);
         }
       };
-      
       fetchUserInfo();
     }
   }, [isOpen, userInfo.id]);
@@ -67,19 +72,11 @@ const UserInfoModal = ({ isOpen, onClose }) => {
   };
 
   const handleSave = async () => {
-    if (formData.password !== formData.passwordCheck) {
-      console.error('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
-      return;
-    }
-
     try {
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('tel', formData.tel);
-      
-      formDataToSend.append('password', formData.password || formData.existingPassword);
-    
+      formDataToSend.append('email', `${formData.email}@${formData.emailDomain}`);
+      formDataToSend.append('tel', `${formData.tel1}-${formData.tel2}-${formData.tel3}`);
       
       if (formData.image) {
         formDataToSend.append('file', formData.image);
@@ -93,10 +90,7 @@ const UserInfoModal = ({ isOpen, onClose }) => {
       });
 
       const responseText = await response.text();
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status} - ${responseText}`);
-      }
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status} - ${responseText}`);
 
       let data;
       try {
@@ -106,8 +100,15 @@ const UserInfoModal = ({ isOpen, onClose }) => {
         throw new Error('응답이 JSON 형식이 아닙니다.');
       }
       
-
-
+      Swal.fire({
+        title: "수정 완료",
+        text: "회원정보를 성공적으로 수정하였습니다.",
+        icon: "success",
+        confirmButtonText: "확인",
+        backdrop: true,
+      }).then(() => {
+        window.location.reload();
+      });
 
       console.log(data);
       await loginCheck();
@@ -117,84 +118,111 @@ const UserInfoModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleOpenPasswordChangeModal = () => {
+    onClose();
+    setPasswordChangeModalOpen(true);
+  };
+
+  const handleClosePasswordChangeModal = () => {
+    setPasswordChangeModalOpen(false);
+  };
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="lg">
-      <ModalOverlay />
-      <ModalContent bg="#ffffff" borderRadius="md" boxShadow="lg">
-        <ModalHeader fontSize="30px" fontWeight="bold">회원 정보 수정</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Flex direction="column" p={4} maxWidth="500px" mx="auto">
-            <FormControl id="name" mb={4}>
-              <FormLabel fontWeight="medium">이름:</FormLabel>
-              <Input
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                bg="white"
-              />
-            </FormControl>
-    
-            <FormControl id="email" mb={4}>
-              <FormLabel fontWeight="medium">Email:</FormLabel>
-              <Input
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                bg="white"
-              />
-            </FormControl>
-    
-            <FormControl id="tel" mb={4}>
-              <FormLabel fontWeight="medium">전화번호:</FormLabel>
-              <Input
-                name="tel"
-                value={formData.tel}
-                onChange={handleChange}
-                bg="white"
-              />
-            </FormControl>
-    
-            <FormControl id="password" mb={4}>
-              <FormLabel fontWeight="medium">비밀번호:</FormLabel>
-              <Input
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                bg="white"
-              />
-            </FormControl>
-    
-            <FormControl id="passwordCheck" mb={4}>
-              <FormLabel fontWeight="medium">비밀번호 확인:</FormLabel>
-              <Input
-                name="passwordCheck"
-                type="password"
-                value={formData.passwordCheck}
-                onChange={handleChange}
-                bg="white"
-              />
-            </FormControl>
-    
-            <FormControl id="profileImage" mb={4}>
-              <FormLabel fontWeight="medium">프로필 사진:</FormLabel>
-              {formData.existingImage && !formData.image && (
-                <Image src={formData.existingImage} alt="Existing Profile" boxSize="100px" objectFit="cover" mb={2} />
-              )}
-              <Input type="file" onChange={handleFileChange} bg="white" />
-              {formData.image && <Text mt={2}>현재 이미지: {formData.image.name}</Text>}
-            </FormControl>
-          </Flex>
-        </ModalBody>
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleSave}>
-            저장
-          </Button>
-          <Button variant="outline" onClick={onClose}>취소</Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+    <>
+      <Modal isOpen={isOpen} onClose={onClose} size="lg">
+        <ModalOverlay />
+        <ModalContent bg="#ffffff" borderRadius="md" boxShadow="lg">
+          <ModalHeader fontSize="30px" fontWeight="bold" className={styles.modalTitle}>회원 정보 수정</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex direction="column" p={4} maxWidth="500px" mx="auto">
+
+              <FormControl id="profileImage" mb={4}>
+                <FormLabel fontWeight="medium">프로필 사진:</FormLabel>
+                <Box onClick={handleImageClick} mb={2} textAlign="center">
+                  {formData.existingImage && !formData.image && (
+                    <Image src={formData.existingImage} alt="Existing Profile" boxSize="150px" objectFit="cover" cursor="pointer" display="inline-block" />
+                  )}
+                  {formData.image && (
+                    <Image src={URL.createObjectURL(formData.image)} alt="Selected Profile" boxSize="100px" objectFit="cover" display="inline-block" />
+                  )}
+                </Box>
+                <Input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} />
+              </FormControl>
+
+              <FormControl id="name" mb={4}>
+                <FormLabel fontWeight="medium">이름:</FormLabel>
+                <Input name="name" value={formData.name} onChange={handleChange} bg="white" className={styles.input} />
+              </FormControl>
+      
+              <FormControl id="email" mb={4}>
+                <FormLabel fontWeight="medium">이메일:</FormLabel>
+                <Box display="flex" alignItems="center">
+                  <Input name="email" value={formData.email} onChange={handleChange} bg="white" borderColor="#d1d1d1" className={styles.input} />
+                  @
+                  <Select name="emailDomain" value={formData.emailDomain} onChange={handleChange} bg="white" borderColor="#d1d1d1" ml={2} className={styles.input}>
+                    <option value="naver.com">naver.com</option>
+                    <option value="gmail.com">gmail.com</option>
+                    <option value="hanmail.net">hanmail.net</option>
+                    <option value="nate.com">nate.com</option>
+                    <option value="yahoo.com">yahoo.com</option>
+                    <option value="hotmail.com">hotmail.com</option>
+                    <option value="daum.net">daum.net</option>
+                  </Select>
+                </Box>
+              </FormControl>
+      
+              <FormControl id="tel" mb={4}>
+                <FormLabel fontWeight="medium">전화번호:</FormLabel>
+                <Flex>
+                  <Input name="tel1" value={formData.tel1} onChange={handleChange} maxLength="3" bg="white" borderColor="#d1d1d1" className={styles.input} />
+                  -
+                  <Input name="tel2" value={formData.tel2} onChange={handleChange} maxLength="4" bg="white" borderColor="#d1d1d1" ml={2} className={styles.input} />
+                  -
+                  <Input name="tel3" value={formData.tel3} onChange={handleChange} maxLength="4" bg="white" borderColor="#d1d1d1" ml={2} className={styles.input} />
+                </Flex>
+              </FormControl>
+      
+            </Flex>
+          </ModalBody>
+
+
+          <ModalFooter>
+  <Flex justify="space-between" width="100%" align="center">
+    <Button
+      variant="outline"
+      ml={3}
+      onClick={handleOpenPasswordChangeModal}
+      className={styles.passwordButton}
+    >
+      비밀번호 변경
+    </Button>
+
+    <Flex>
+      <Button
+        colorScheme="blue"
+        mr={3}
+        onClick={handleSave}
+        className={styles.saveButton}
+      >
+        저장
+      </Button>
+      <Button variant="outline" onClick={onClose}>
+        취소
+      </Button>
+    </Flex>
+  </Flex>
+</ModalFooter>
+
+
+        </ModalContent>
+      </Modal>
+
+      <PasswordChangeModal
+        isOpen={isPasswordChangeModalOpen}
+        onClose={handleClosePasswordChangeModal}
+      />
+    </>
   );
 };
 

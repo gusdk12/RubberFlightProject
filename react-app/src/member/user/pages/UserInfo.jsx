@@ -126,7 +126,7 @@ const UserInfo = () => {
                 <Text fontSize="lg" fontWeight="bold">{formData.name || '이름 없음'}</Text>
                 <Icon as={IoMdSettings} boxSize={6} ml={2} cursor="pointer" onClick={handleOpenInfoModal}/> 
               </Flex>
-              <Text fontSize="xx-small" mt={1}>{formData.email || '이메일 없음'}</Text> 
+              <Text fontSize="small" mt={1}>{formData.email || '이메일 없음'}</Text> 
             </Box>
           </Flex>
 
