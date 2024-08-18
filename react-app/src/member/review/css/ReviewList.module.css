@@ -36,3 +36,8 @@
 .reviewArrowRight {
     margin-left: 20px;
 }
+
+.noReview {
+    font-family: 'Roboto';
+    font-weight: bold;
+}
