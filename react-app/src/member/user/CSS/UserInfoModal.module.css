@@ -1,0 +1,57 @@
+.disableInput {
+    background-color: #f5f5f5 !important;
+    color: #666 !important;
+    text-align: left !important;
+    font-family: system-ui, sans-serif !important;
+    font-size: 16px !important;
+    border-bottom: 1px solid #dcdcdc !important;
+    border-radius: 4px !important;
+    padding: 8px 12px !important;
+    cursor: not-allowed !important;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1) !important;
+}
+
+.input {
+    background-color: #fff !important;
+    color: #333 !important;
+    text-align: left !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-size: 16px !important;
+    border-bottom: 1px solid #ced4da !important;
+    border-radius: 4px !important;
+    padding: 10px 14px !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.input:disabled {
+    background-color: #f5f5f5 !important;
+    color: #6c757d !important;
+    cursor: not-allowed !important;
+}
+
+.modalTitle{
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.saveButton{
+    background-color: #2b4d78 !important;
+    color: white !important;
+}
+
+.passwordButton{
+    float: left;
+    border: none !important;
+    background-color: #ededed;
+}
+
+.text{
+    margin-top: -15px;
+    margin-bottom: 50px;
+    align-self: center;
+    width: 90%;
+    font-family: 'KIMM_Light' ;
+    font-weight: 500;
+    font-size: 15px !important;
+    color:#a0aab2;
+}

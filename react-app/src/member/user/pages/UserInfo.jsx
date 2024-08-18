@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Box, Flex, Divider, Avatar, Text, Button, Icon } from '@chakra-ui/react';
+import { Box, Flex, Divider, Avatar, Text, Button, Icon, Circle } from '@chakra-ui/react';
 import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
 import { FiPlus } from 'react-icons/fi';
 import { IoMdSettings } from 'react-icons/io'; 
@@ -9,6 +9,8 @@ import CouponModal from './CouponModal';
 import { useNavigate } from 'react-router-dom';
 import UserInfoModal from './UserInfoModal';
 import Swal from 'sweetalert2';
+import { FaPlane, FaCalendarAlt, FaClipboardCheck, FaThumbsUp } from "react-icons/fa";
+
 
 const UserInfo = () => {
   const { isLogin, logout } = useContext(LoginContext);
@@ -23,13 +25,12 @@ const UserInfo = () => {
     existingImage: ''
   });
   const navigate = useNavigate();
-  const backUrl = process.env.REACT_APP_BACK_URL;
 
   useEffect(() => {
     if (userInfo.id) {
       const fetchUserEmail = async () => {
         try {
-          const response = await fetch(`${backUrl}/mypage/${userInfo.id}`);
+          const response = await fetch(`http://localhost:8282/mypage/${userInfo.id}`);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
@@ -71,7 +72,9 @@ const UserInfo = () => {
     navigate('/schedule');
   };
 
-  const navigateToChecklist = () => {};
+  const navigateToChecklist = () => {
+    navigate('/schedule')
+  };
 
   const handleLogout = async () => {
     try {
@@ -161,7 +164,7 @@ const UserInfo = () => {
             <Divider orientation="vertical" height="140px" ml={3} mr={3} color="gray.100"/>
 
             <Box flex="1" p={4}>
-              <Text fontSize="lg" fontWeight="bold" mb={5}>나의 서비스</Text>
+              <Text fontSize="lg" fontWeight="bold" mb={5}>나의 서비스 {">>"}</Text>
               <Flex mt={2} direction="row" align="center" justify="center" gap={7}>
                 <Flex direction="column" align="center" cursor="pointer" onClick={navigateToSchedule}>
                   <Icon as={BsCalendar} boxSize="50px" mb={3} />
@@ -176,9 +179,45 @@ const UserInfo = () => {
           </Flex>
         </Box>
 
-        <Box p={4} mt={4} bg="gray.100" borderRadius="md">
-          <Text fontSize="lg" fontWeight="bold">가이드라인</Text>
-          <Text mt={2}>여기에는 가이드라인에 대한 내용을 추가하세요.</Text>
+        <Box p={8} mt={4} bg="gray.100" borderRadius="md">
+          <Text fontSize="lg" fontWeight="bold">가이드라인 {">>"}</Text>
+          <Text mt={1}>러버플라이트 적극적으로 활용하기</Text>
+
+
+          <Flex mt={8} align="center" justify="center" position="relative" gap={0}>
+
+       
+        <Divider orientation="horizontal" borderColor="gray.300" position="absolute" top="38%" left="5%" right="5%" width="90%" />
+
+     
+        <Flex direction="column" align="center" position="relative" zIndex={1} mx={10} onClick={() => navigate("/search")} cursor="pointer">
+          <Circle size="80px" bg="gray.200">
+            <Icon as={FaPlane} boxSize={8} />
+          </Circle>
+          <Text mt={2}>예약하기</Text>
+        </Flex>
+
+        <Flex direction="column" align="center" position="relative" zIndex={1} mx={7} onClick={() => navigate("/schedule")} cursor="pointer">
+          <Circle size="80px" bg="gray.200">
+            <Icon as={FaCalendarAlt} boxSize={8} />
+          </Circle>
+          <Text mt={2}>일정작성</Text>
+        </Flex>
+
+        <Flex direction="column" align="center" position="relative" zIndex={1} mx={7} onClick={() => navigate("/schedule")} cursor="pointer">
+          <Circle size="80px" bg="gray.200">
+            <Icon as={FaClipboardCheck} boxSize={8} />
+          </Circle>
+          <Text mt={2}>체크리스트 작성</Text>
+        </Flex>
+
+        <Flex direction="column" align="center" position="relative" zIndex={1} mx={7} onClick={() => navigate("/review")} cursor="pointer">
+          <Circle size="80px" bg="gray.200">
+            <Icon as={FaThumbsUp} boxSize={8} />
+          </Circle>
+          <Text mt={2}>리뷰작성</Text>
+        </Flex>
+      </Flex>
         </Box>
 
         <CouponModal isOpen={isCouponModalOpen} onClose={handleCloseCouponModal} />
