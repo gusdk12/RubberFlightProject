@@ -15,6 +15,8 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { FaInfoCircle } from 'react-icons/fa';
 import PageButtons from '../components/PageButtons ';
+import { Spinner } from '@chakra-ui/react';
+
 const Search = () => {
   const [passengers, setPassengers] = useState(1);
   const [results, setResults] = useState({ outboundFlights: [], inboundFlights: [], combinations: [] });
@@ -56,9 +58,10 @@ const Search = () => {
   const errorRef = useRef(null);
   const [showError, setShowError] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-
 
   // 로그인 여부
   const { isLogin, loginCheck } = useUser();
@@ -313,6 +316,7 @@ const Search = () => {
     console.log("도착지", arrival);
     setErrorMessage('');
     setResults({ outboundFlights: [], inboundFlights: [], combinations: [] });
+    setIsLoading(true); 
 
     try {
       // API 호출
@@ -326,6 +330,8 @@ const Search = () => {
       }));
     } catch (error) {
       console.error('Fetch error:', error);
+    } finally {
+      setIsLoading(false); 
     }
   };
 
@@ -376,6 +382,12 @@ const Search = () => {
   const paginatedResults = tripType === "round-trip"
     ? results.combinations.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
     : results.outboundFlights.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const LoadingSpinner = () => (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Spinner size="xl" />
+    </div>
+  );
 
   return (
     <Box p={5} margin="0 auto" mb={8}>
@@ -550,6 +562,8 @@ const Search = () => {
           </div>
         </div>
       </div>
+
+      {isLoading && <LoadingSpinner />}
 
       {errorMessage && (
         <div className={style.errorMessage} ref={errorRef}>
