@@ -17,10 +17,14 @@ const Chat = (props) => {
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState(initialMessages);
   const backUrl = process.env.REACT_APP_BACK_URL;
+  const textAreaRef = useRef(null);
 
   // 메시지 배열이 변경될 때마다 스크롤을 조정
   useEffect(() => {
     scrollToBottom();
+    if (textAreaRef.current) {
+      textAreaRef.current.focus();
+    }
   }, [chatHistory]); 
 
   const handleSendMessage = async () => {
@@ -55,6 +59,7 @@ const Chat = (props) => {
           console.error('Error sending message', error);
           setChatHistory([...newChatHistory, { sender: "Lumi", text: "다시 한 번 더 말씀해주세요." }]);
           scrollToBottom();
+          
       }finally {
         setLoading(false); // 요청 완료 후 로딩 상태 해제
     }
@@ -109,6 +114,7 @@ const Chat = (props) => {
             </div>
             <Flex w='278px'>
               <textarea id={styles.input}
+                ref={textAreaRef}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
