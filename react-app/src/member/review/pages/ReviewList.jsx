@@ -130,12 +130,14 @@ const ReviewList = () => {
           }}
           >
             <TabPanel>
-              {reviews.map((review) => {
-                  return (<ReviewItem key={review.id} review={review} />);})} 
+              {reviews.length > 0 ? reviews.map((review) => {
+                  return (<ReviewItem key={review.id} review={review} />);})
+                : <div className={styles.noReview}>작성된 리뷰가 없습니다.</div>} 
             </TabPanel>
             <TabPanel>
-              {reviews.map((review) => {
-                  return (<ReviewItem key={review.id} review={review} />);})}
+              {reviews.length > 0 ? reviews.map((review) => {
+                  return (<ReviewItem key={review.id} review={review} />);})
+                : <div className={styles.noReview}>작성된 리뷰가 없습니다.</div>} 
             </TabPanel>
           </TabPanels>
         </Tabs>

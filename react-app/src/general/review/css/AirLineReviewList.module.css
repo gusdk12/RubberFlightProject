@@ -126,3 +126,8 @@
 #footerPart{
     height: 500px;
 }
+
+.noReview {
+    font-family: 'Roboto';
+    font-weight: bold;
+}

@@ -83,12 +83,12 @@ const ScheduleEditPart = (props) => {
                 </div>
 
                 <div id={style.chatcontainer}>
-                    {showChat &&<Chat activeUsersPic={props.activeUsersPic} showChat={showChat} closeChat={closeChat} />}
+                    <Chat activeUsersPic={props.activeUsersPic} />
                 </div>
-                <div id={style.btn}>
+                {/* <div id={style.btn}>
                     <button className={style.chatbtn} onClick={openChat}></button>
                     <div id={style.helptext}>Lover Air의 귀염둥이 Lumi에게 궁금한 것을 물어보세요~</div>
-                </div>
+                </div> */}
             </div>
             <div id={style.datelistcontainer}>
                 {dates.map((date, index) => 
