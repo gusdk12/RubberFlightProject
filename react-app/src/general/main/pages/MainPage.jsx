@@ -410,6 +410,7 @@ useEffect(() => {
                                     value={dates}
                                     onChange={handleDateChange}
                                     className={style.flatInput}
+                                    style={{ pointerEvents: 'none' }}
                                     />
                                 </div>
                             )
@@ -422,6 +423,7 @@ useEffect(() => {
                                         value={dates}
                                         onChange={handleDateChange}
                                         className={style.flatInput}
+                                        style={{ pointerEvents: 'none' }}
                                     />
                                 </div>
                             )

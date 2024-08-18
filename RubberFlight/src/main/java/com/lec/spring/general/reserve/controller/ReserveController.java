@@ -49,6 +49,7 @@ public class ReserveController {
     private final CouponService couponService;
 
     // 검색 페이지(api)
+    @CrossOrigin
     @GetMapping("/search")
     public ResponseEntity<?> searchFlights(@RequestParam String iataCode,
                                            @RequestParam String depDate,
