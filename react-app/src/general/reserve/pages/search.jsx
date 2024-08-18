@@ -10,10 +10,11 @@ import style from '../css/search.module.css'
 import { IoAirplane } from "react-icons/io5";
 import { useUser } from '../../user/contexts/LoginContextProvider';
 import Header from '../../common/Header/Header';
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMapMarkerAlt } from 'react-icons/fa';
-
+import { FaInfoCircle } from 'react-icons/fa';
+import PageButtons from '../components/PageButtons ';
 const Search = () => {
   const [passengers, setPassengers] = useState(1);
   const [results, setResults] = useState({ outboundFlights: [], inboundFlights: [], combinations: [] });
@@ -54,6 +55,10 @@ const Search = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const errorRef = useRef(null);
   const [showError, setShowError] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
 
   // 로그인 여부
   const { isLogin, loginCheck } = useUser();
@@ -229,7 +234,6 @@ const Search = () => {
   };
 
 
-
   // 메인에서 받은 정보
   useEffect(() => {
     // 전달받은 정보로 상태 설정
@@ -312,14 +316,14 @@ const Search = () => {
 
     try {
       // API 호출
-      const combinedResponse = await searchFlight(departure, departureDate, arrival, tripType === "round-trip" ? returnDate : '');
+      const combinedResponse = await searchFlight(departure, departureDate, arrival, returnDate, currentPage, itemsPerPage);
       console.log("될까?", combinedResponse.data);
       setResults(prevResults => ({
         ...prevResults,
         combinations: combinedResponse.data.combinations || [],
-        outboundFlights: combinedResponse.data.outboundFlights || []
-      }
-      ))
+        outboundFlights: combinedResponse.data.outboundFlights || [],
+        inboundFlights: combinedResponse.data.inboundFlights || []
+      }));
     } catch (error) {
       console.error('Fetch error:', error);
     }
@@ -341,6 +345,14 @@ const Search = () => {
     }
   }, [errorMessage]);
 
+  useEffect(() => {
+    if (isSearchReady && departure && arrival && departureDate) {
+      handleSearch();
+      setIsSearchReady(false);
+    }
+  }, [isSearchReady, departure, arrival, departureDate, currentPage, itemsPerPage, tripType]);
+
+
   const handleTripTypeChange = (type) => {
     setTripType(type);
     if (type === 'round-trip') {
@@ -352,6 +364,7 @@ const Search = () => {
       setDepartureDate(dates[0] ? format(dates[0], 'yyyy-MM-dd') : '');
       setReturnDate('');
     }
+    setResults({ outboundFlights: [], inboundFlights: [], combinations: [] });
   };
 
   // 비행기 이름 처리
@@ -360,8 +373,12 @@ const Search = () => {
     return indexOfParenthesis !== -1 ? airlineName.substring(0, indexOfParenthesis).trim() : airlineName;
   };
 
+  const paginatedResults = tripType === "round-trip"
+    ? results.combinations.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+    : results.outboundFlights.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   return (
-    <Box p={5} margin="0 auto">
+    <Box p={5} margin="0 auto" mb={8}>
       <Header isMain={true} />
       <div className={style.searchBar}>
         <div className={style.contentpart}>
@@ -386,7 +403,7 @@ const Search = () => {
                   <div className={style.searchAirportContainer}>
                     <div className={style.depLabel}>출발 도시/공항</div>
                     <div className={style.searchContainer} ref={departureInputRef}>
-                      <AiOutlineSearch style={{ marginRight: '10px', fontSize: '20px', color: '#718096' }} /> 
+                      <AiOutlineSearch style={{ marginRight: '10px', fontSize: '20px', color: '#718096' }} />
                       <input
                         className={style.searchAirport}
                         type="text"
@@ -434,7 +451,7 @@ const Search = () => {
                   <div className={style.searchAirportContainer} >
                     <div className={style.depLabel}>도착 도시/공항</div>
                     <div className={style.searchContainer} ref={arrivalInputRef}>
-                      <AiOutlineSearch style={{ marginRight: '10px', fontSize: '20px', color: '#718096' }} /> 
+                      <AiOutlineSearch style={{ marginRight: '10px', fontSize: '20px', color: '#718096' }} />
                       <input
                         className={style.searchAirport}
                         type="text"
@@ -539,13 +556,20 @@ const Search = () => {
           {errorMessage}
         </div>
       )}
-      
+
       <div className={style.results}>
-        {tripType == "round-trip" && results.combinations.length > 0 && (
+        {tripType == "round-trip" && paginatedResults.length > 0 && (
           <div className={style.resultsContents}>
-            {/* <h3>왕복 항공권 조합</h3> */}
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+              <FaInfoCircle
+                style={{ marginRight: '8px', color: 'gray', fontSize: '15px' }}
+              />
+              <Text sx={{ color: '#878787', fontFamily: 'Noto Sans KR !important', fontSize: '15px' }}>
+                클릭 시 결제 페이지로 넘어갑니다.
+              </Text>
+            </div>
             <ul>
-              {results.combinations.map((combination, index) => (
+              {paginatedResults.map((combination, index) => (
                 <li key={index} onClick={() => handleClick(combination)}>
                   <div className={style.flights}>
                     <div className={style.flightInfo}>
@@ -598,14 +622,25 @@ const Search = () => {
                 </li>
               ))}
             </ul>
+            <PageButtons
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              results={results}
+              itemsPerPage={itemsPerPage}
+            />
           </div>
         )}
 
-        {tripType == "one-way" && results.outboundFlights.length > 0 && (
+        {tripType === 'one-way' && paginatedResults.length > 0 && (
           <div className={style.resultsContents}>
-            {/* <h3>출발 항공권</h3> */}
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+              <FaInfoCircle style={{ marginRight: '8px', color: 'gray', fontSize: '15px' }} />
+              <Text sx={{ color: '#878787', fontFamily: 'Noto Sans KR !important', fontSize: '15px' }}>
+                클릭 시 결제 페이지로 넘어갑니다.
+              </Text>
+            </div>
             <ul>
-              {results.outboundFlights.map((flight, index) => (
+              {paginatedResults.map((flight, index) => (
                 <li key={index} onClick={() => handleClick(flight)}>
                   <div className={style.flightInfo}>
                     <div className={style.flightAirline}>{flight.airlineName}</div>
@@ -618,6 +653,12 @@ const Search = () => {
                 </li>
               ))}
             </ul>
+            <PageButtons
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              results={results}
+              itemsPerPage={itemsPerPage}
+            />
           </div>
         )}
       </div>

@@ -437,10 +437,15 @@ input {
   justify-content: space-between;
   padding: 30px 60px;
   border: 1px solid #ddd;
-  /* border-radius: 4px; */
+  border-radius: 30px;
   background-color: #ffffff;
-  /* margin-bottom: 10px; */
-  /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); */
+  transition: transform 0.3s ease;
+  margin-bottom: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.results li:hover {
+  transform: scale(1.01);
 }
 
 .flights {
@@ -551,6 +556,47 @@ input {
   justify-content: flex-end;
 }
 
+.pageButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.pageButtons button {
+  background-color: #4a7dc9d0;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 10px 20px;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.pageButtons button:disabled {
+  background-color: #d6d6d6;
+  cursor: not-allowed;
+}
+
+.pageButtons button:hover:not(:disabled) {
+  background-color: #0056b3;
+  transform: translateY(-2px); 
+}
+
+.pageButtons button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.4); 
+}
+
+.pageButtons span {
+  font-size: 16px;
+  margin: 0 10px;
+  color: #333;
+}
+
 @keyframes fadeInOut {
   0% {
     opacity: 1; /* 시작할 때 완전히 투명 */
@@ -573,7 +619,6 @@ input {
     transform: translateY(0);
   }
 }
-
 
 .errorMessage {
   width: 1100px;
