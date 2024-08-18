@@ -155,10 +155,9 @@
     word-wrap: break-word; /* 긴 단어를 줄 바꿈 */
     font-family: 'GeekbleMalang2WOFF2';
     font-size: 17px;
-    margin-top: 3px;
     padding: 5px 15px;
     position:relative;
-    margin: 15px 5px;
+    margin: 15px 2px 15px 0;
     background:#fde7f7;
     border-radius: 10px;  
 }
