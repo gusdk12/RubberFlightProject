@@ -22,6 +22,7 @@ const ScheduleEdit = () => {
     const titleWarningRef = useRef(null);
     const sharePopoverRef = useRef(null);
     const shareNoticeMessageRef = useRef(null);
+    const backUrl = process.env.REACT_APP_BACK_URL;
     
     const navigate = useNavigate();
     useEffect(()=>{
@@ -32,7 +33,7 @@ const ScheduleEdit = () => {
     const getTeam = () => {
         axios({
             method: "get",
-            url: "http://localhost:8282/schedule/team/" + id,
+            url: `${backUrl}/schedule/team/` + id,
         })
         .then(response => {
             const {data, status, statusText} = response;
@@ -74,7 +75,7 @@ const ScheduleEdit = () => {
     }
 
     useEffect(() => {
-        fetch(`http://localhost:8282/title/${id}`)
+        fetch(`${backUrl}/title/${id}`)
             .then(response => response.json())
             .then(data => setTitle(data.title));
 
@@ -136,11 +137,11 @@ const ScheduleEdit = () => {
             return;
         } 
 
-        const response = await axios.post('http://localhost:8282/user/check-username', { username });
+        const response = await axios.post(`${backUrl}/user/check-username`, { username });
         if (response.data.exists) {
             axios({
                 method: "post",
-                url: "http://localhost:8282/schedule/team/" + id + "/" + username,
+                url: `${backUrl}/schedule/team/` + id + "/" + username,
             })
             .then(response => {
                 const {data, status, statusText} = response;
@@ -181,7 +182,7 @@ const ScheduleEdit = () => {
                     </div>
                 </div>
             </div>
-            <ScheduleEditPart ScheduleId={id}/>
+            <ScheduleEditPart ScheduleId={id} activeUsersPic={activeUsersPic}/>
         </div>
     );
 };

@@ -20,55 +20,48 @@ const AirlineReviewItem = ({review}) => {
 
     return (
         <>
-          <MotionBox
-            key={review.id} onClick={onOpen}
-            initial={{ opacity: 0, scale: 1 }} animate={{ opacity: 1, x: 0, scale: 1 }}
-            whileHover={{ scale: 1.02 }} exit={{ opacity: 0 }} 
-            transition={{ default: { duration: 0.5 }, scale: { duration: 0.3 }, paddingBottom: { duration: 0.1 } }}
-            position="relative"
-            style={{ 
-              maxWidth: '750px', minWidth: '750px', 
-              margin: 'auto', width: '90%', height: '200px',
-              borderWidth: '1px', borderRadius: '20px',
-              padding: '16px',
-              marginBottom: '40px',
-              marginTop: '40px',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-              backgroundColor: 'white', cursor: 'pointer',
-              transition: 'background-color 0.3s ease, transform 0.3s ease'
-            }}
-          >
-            <Grid
-              templateAreas={`"header header" "nav main" "nav footer"`}
-              gridTemplateRows={'50px 40px 1fr'}
-              gridTemplateColumns={'120px 1fr'}
-              h='100%' gap='1' color='blackAlpha.700' fontWeight='bold'>
-              <GridItem pl='3' mt='1 ' area={'header'}>
-                <Flex>
-                  <div><img src={Flight} className={styles.top}/></div>
-                  <div className={styles.airlinename}>{review.airline.name}</div>
-                  <Spacer/>
-                  <div className={styles.writeDate}>
-                  {new Date(review.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}</div>
-                </Flex>
-              </GridItem>
-              <GridItem pl='2' area={'nav'}>
-                <div className={styles.profileCon}>
-                  <div className={styles.userImg}><Image src={review.flightInfo.reserve.user.image} className={styles.proFile}/></div>
-                  <div className={styles.username}>{review.flightInfo.reserve.user.name}</div>
-                </div>
-              </GridItem>
-              <GridItem pl='2' area={'main'}>
-                <Flex>
-                  <div className={styles.airlinerate}><TotalStarRating rate={totalRate} className={styles.stars}/></div>
-                  <div className={styles.totalscore}>({totalRate})</div>
-                </Flex>
-              </GridItem>
-              <GridItem pl='2' area={'footer'}>
-                <div className={styles.cardtitle}>"{review.title}"</div>
-              </GridItem>
-            </Grid>          
-          </MotionBox>
+          <Flex>
+            <div className={styles.profileCon}>
+              <div className={styles.userImg}><Image src={review.flightInfo.reserve.user.image} className={styles.proFile}/></div>
+              <div className={styles.username}>{review.flightInfo.reserve.user.name}</div>
+            </div>
+            <MotionBox
+              key={review.id} onClick={onOpen}
+              initial={{ opacity: 0, scale: 1 }} animate={{ opacity: 1, x: 0, scale: 1 }}
+              whileHover={{ scale: 1.02 }} exit={{ opacity: 0 }} 
+              transition={{ default: { duration: 0.5 }, scale: { duration: 0.5 }, paddingBottom: { duration: 0.3 } }}
+              position="relative" className={styles.reviewBox}>
+              <Grid
+                templateAreas={`"header header" "main main" "footer footer"`}
+                gridTemplateRows={'50px 40px 1fr'}
+                gridTemplateColumns={'120px 1fr'}
+                h='100%' gap='1' color='blackAlpha.700' fontWeight='bold'>
+                <GridItem pl='3' mt='1 ' area={'header'}>
+                  <Flex justifyContent='right'>
+                    <div className={styles.writeDate}>
+                    {new Date(review.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}</div>
+                  </Flex>
+                </GridItem>
+                {/* <GridItem pl='2' area={'nav'}>
+                  <div className={styles.profileCon}>
+                    <div className={styles.userImg}><Image src={review.flightInfo.reserve.user.image} className={styles.proFile}/></div>
+                    <div className={styles.username}>{review.flightInfo.reserve.user.name}</div>
+                    </div>
+                </GridItem> */}
+                <GridItem pl='2' area={'main'}>
+                  <Flex>
+                    <div><img src={Flight} className={styles.top}/></div>
+                    <div className={styles.airlinename}>{review.airline.name}</div>
+                    <div className={styles.airlinerate}><TotalStarRating rate={totalRate} className={styles.stars}/></div>
+                    <div className={styles.totalscore}>({totalRate})</div>
+                  </Flex>
+                </GridItem>
+                <GridItem pl='2' area={'footer'}>
+                  <div className={styles.cardtitle}>"{review.title}"</div>
+                </GridItem>
+              </Grid>         
+            </MotionBox>
+          </Flex> 
 
           <Modal isOpen={isOpen} onClose={onClose} size='3xl' isCentered>
             <ModalOverlay/>

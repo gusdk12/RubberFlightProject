@@ -21,6 +21,7 @@ const EditCA = () => {
     const [airports, setAirport] = useState([]);
     const [airportIataInput, setAirportIataInput] = useState("");
     const [selectedAirport, setSelectedAirport] = useState(null);
+    const backUrl = process.env.REACT_APP_BACK_URL;
 
     useEffect(() => {
         document.body.style.backgroundColor = '#eef2fc';
@@ -31,7 +32,7 @@ const EditCA = () => {
     // 전체 나라 목록 가져오기
     const fetchCountries = async () => {
         try {
-            const response = await axios.get("http://localhost:8282/country/list");
+            const response = await axios.get(`${backUrl}/country/list`);
             const { data, status } = response;
             if (status === 200) {
                 setCountry(data);
@@ -49,7 +50,7 @@ const EditCA = () => {
     // 선택한 나라의 공항 목록 가져오기
     const fetchAirportsByCountry = async (countryId) => {
         try {
-            const response = await axios.get(`http://localhost:8282/airport/detail/${countryId}`);
+            const response = await axios.get(`${backUrl}/airport/detail/${countryId}`);
             const { data, status } = response;
             if (status === 200) {
                 setAirport(data);
@@ -115,7 +116,7 @@ const EditCA = () => {
                 countryName: data.nameCountry,
             };
 
-            const saveResponse = await axios.post('http://localhost:8282/country/add', extractedData, {
+            const saveResponse = await axios.post(`${backUrl}/country/add`, extractedData, {
                 headers: { 'Content-Type': 'application/json' },
             });
 
@@ -142,7 +143,7 @@ const EditCA = () => {
         }
 
         try {
-            const response = await axios.delete(`http://localhost:8282/country/delete/${countryIso}`, {
+            const response = await axios.delete(`${backUrl}/country/delete/${countryIso}`, {
                 headers: { "Content-Type": "application/json" },
             });
 
@@ -194,7 +195,7 @@ const EditCA = () => {
                 country: { id: selectedCountry.id },
             };
 
-            const saveResponse = await axios.post('http://localhost:8282/airport/add', extractedData, {
+            const saveResponse = await axios.post(`${backUrl}/airport/add`, extractedData, {
                 headers: { 'Content-Type': 'application/json' },
             });
 
@@ -220,7 +221,7 @@ const EditCA = () => {
         }
 
         try {
-            const response = await axios.delete(`http://localhost:8282/airport/delete/${airportIso}`, {
+            const response = await axios.delete(`${backUrl}/airport/delete/${airportIso}`, {
                 headers: { "Content-Type": "application/json" },
             });
 

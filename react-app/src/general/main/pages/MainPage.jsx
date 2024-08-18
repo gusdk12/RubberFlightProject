@@ -46,6 +46,8 @@ const MainPage = () => {
     const searchBoxRef = useRef(null);
     const departureInputRef = useRef(null);
     const arrivalInputRef = useRef(null);
+    
+    const backUrl = process.env.REACT_APP_BACK_URL;
 
     // 유효성
     const [errorMessage, setErrorMessage] = useState('');
@@ -90,7 +92,7 @@ const MainPage = () => {
     // 공항 찾기
     useEffect(() => {
         // 공항 데이터를 서버에서 가져오는 useEffect
-        axios.get('http://localhost:8282/airport/list')
+        axios.get(`${backUrl}/airport/list`)
           .then(response => {
             setAirports(response.data);
             setFilteredAirports(response.data);

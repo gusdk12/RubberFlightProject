@@ -18,15 +18,16 @@ const AirLineReviewList = () => {
   const [loading, setLoading] = useState(true);
   const [airlineNames, setAirlineNames] = useState([]);
   const [selectedAirlineId, setSelectedAirlineId] = useState(null); // 선택된 항공사 ID
+  const backUrl = process.env.REACT_APP_BACK_URL;
 
   // 모든 리뷰 목록 불러오기(최신순, 별점순)
   const fetchReviews = async (type, page, airlineId) => {
     try {
       let url;
       if (airlineId === null) {
-        url = `http://localhost:8282/airlinereview/${type}?page=${page}&size=${pageSize}`;
+        url = `${backUrl}/airlinereview/${type}?page=${page}&size=${pageSize}`;
       } else {
-        url = `http://localhost:8282/airlinereview/${type}/${airlineId}?page=${page}&size=${pageSize}`;
+        url = `${backUrl}/airlinereview/${type}/${airlineId}?page=${page}&size=${pageSize}`;
       }
       const response = await axios.get(url);
       setReviews(response.data.content); // 리뷰 목록 리스트
@@ -41,7 +42,7 @@ const AirLineReviewList = () => {
   // 저장된 항공사 이름 불러오기
   const fetchAirline = async () => {
     try {
-      const response = await axios.get(`http://localhost:8282/airlinereview/namelist`);
+      const response = await axios.get(`${backUrl}/airlinereview/namelist`);
       setAirlineNames(response.data);
     } catch (error) {
       console.error("항공사 이름을 가져오는 데 오류가 발생했습니다:", error);
@@ -124,7 +125,7 @@ const AirLineReviewList = () => {
     <>
       <Header isMain={false} />
       <div className={styles.container}>
-        <Flex justifyContent='end' p='100px'>
+        <Flex justifyContent='end' p='80px 100px'>
           <div className={styles.title}>
             <div className={styles.title1}>
               수많은 항공사에 대해 궁금하신가요?
@@ -133,23 +134,22 @@ const AirLineReviewList = () => {
               여러 사람들이 이용한 다양한 항공사들의<br/> 생생한 후기를 확인해보세요
             </div>
           </div>
-              <div><img className={styles.logo} src={Logo}/></div>
+          <div><img className={styles.logo} src={Logo}/></div>
         </Flex>
 
         <div className={styles.reviewcontainer}>
-
           {/* 사이드바 */}
           <div className={styles.airlineMenu}>
             <div className={styles.name}>
               <Link to={"/review"} onClick={() => handleAirlineClick(null)}>항공사 전체</Link>
             </div>
-
             <hr className={styles.nameline} />
 
             {/* 항공사 리스트 */}
             <div className={styles.airlineList}>
               {airlineNames && airlineNames.map((airline) =>
-                <div key={airline.id} onClick={() => handleAirlineClick(airline.id)} className={styles.name}>
+                <div key={airline.id} onClick={() => handleAirlineClick(airline.id)} 
+                className={`${styles.name} ${selectedAirlineId === airline.id ? styles.click : ''}`}>
                   <p className={styles.airlineName}>{airline.name}</p>
                 </div>
               )}
@@ -159,6 +159,7 @@ const AirLineReviewList = () => {
 
           <div className={styles.reviewBody}>
             <Tabs variant="line">
+
               <TabList>
                 <Tab fontSize={20} _selected={{ color: "#6d9eeb", borderBottom: "2px solid #6d9eeb", fontWeight: "bold" }} onClick={handleLatestClick}>
                   최신순
@@ -187,6 +188,8 @@ const AirLineReviewList = () => {
               </TabPanels>
             </Tabs>
 
+          </div>
+        </div>
             {totalPages > 0 && (
               <Box className={styles.reviewPagebtn}>
                 <button className={`${styles.reviewPagebtn} ${styles.reviewPageBtn} ${styles.reviewPrevbtn}`}
@@ -200,9 +203,8 @@ const AirLineReviewList = () => {
                   onClick={() => handlePageChange(totalPages - 1)}>▶▶</button>
               </Box>
             )}
-          </div>
-        </div>
       </div>
+        <div id={styles.footerPart}></div>
     </>
   );
 };

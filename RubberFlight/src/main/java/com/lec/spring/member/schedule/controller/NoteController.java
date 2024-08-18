@@ -12,6 +12,7 @@ import com.lec.spring.member.schedule.service.ScheduleService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
 @RestController
 public class NoteController {
 
+    @Value("${awsServer.address}")
+    private String serverUrl;
     private final ScheduleService scheduleService;
     private final DateService dateService;
     private final UserService userService;
@@ -84,7 +87,7 @@ public class NoteController {
         User enteredUser = userService.findById(userId);
         String imageUrl = enteredUser.getImage();
         if(imageUrl.equals("/uploads/user.png"))
-            imageUrl = "http://localhost:8282/uploads/user.png";
+            imageUrl = serverUrl + "/uploads/user.png";
 
         activeUsersMap.computeIfAbsent(scheduleId, k -> new ConcurrentSkipListSet<>()).add(imageUrl);
         Set<String> usersPics = activeUsersMap.get(scheduleId);
@@ -102,7 +105,7 @@ public class NoteController {
         User enteredUser = userService.findById(userId);
         String imageUrl = enteredUser.getImage();
         if(imageUrl.equals("/uploads/user.png"))
-            imageUrl = "http://localhost:8282/uploads/user.png";
+            imageUrl = serverUrl + "/uploads/user.png";
 
         Set<String> usersPics = activeUsersMap.get(scheduleId);
         if (usersPics != null) {

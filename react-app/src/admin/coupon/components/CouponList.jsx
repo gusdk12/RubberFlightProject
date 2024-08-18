@@ -94,9 +94,20 @@ const CouponList = () => {
                     borderRadius="md"
                     boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
                   >
-                    <Text fontSize="18px" color="#2a6cb9" mb={2}>
-                      {coupon.description}
-                    </Text>
+                    <Flex
+                      direction="row"
+                      justify="space-between"
+                      align="center"
+                      mb={2}
+                    >
+                      <Text fontSize="18px" color="#2a6cb9">
+                        {coupon.description}
+                      </Text>
+                      <Text fontSize="sm" color="gray.600">
+                        [ {coupon.airline_name} ]
+                      </Text>
+                    </Flex>
+
                     <Flex align="center" mb={1}>
                       <Text fontSize="30px" fontWeight="bold">
                         {coupon.percent} 

@@ -10,6 +10,7 @@ const LoginForm = () => {
   const [rememberUserId, setRememberUserId] = useState('');
   const toast = useToast();
   const navigate = useNavigate();
+  const backUrl = process.env.REACT_APP_BACK_URL;
 
   const home = () => {
     navigate("/");
@@ -126,7 +127,7 @@ const LoginForm = () => {
                     cursor: 'pointer',
                   }}
                   onClick={() => {
-                    window.location.href = "http://localhost:8282/oauth2/authorization/google";
+                    window.location.href = `${backUrl}/authorization/google`;
                   }}
                 />
 
@@ -141,7 +142,7 @@ const LoginForm = () => {
                     cursor: 'pointer',
                   }}
                   onClick={() => {
-                    window.location.href = "http://localhost:8282/oauth2/authorization/kakao";
+                    window.location.href = `${backUrl}/oauth2/authorization/kakao`;
                   }}
                 />
 
@@ -156,7 +157,7 @@ const LoginForm = () => {
                     cursor: 'pointer',
                   }}
                   onClick={() => {
-                    window.location.href = "http://localhost:8282/oauth2/authorization/naver";
+                    window.location.href = `${backUrl}/oauth2/authorization/naver`;
                   }}
                 />
 
@@ -171,7 +172,7 @@ const LoginForm = () => {
                     cursor: 'pointer',
                   }}
                   onClick={() => {
-                    window.location.href = "http://localhost:8282/oauth2/authorization/facebook";
+                    window.location.href = `${backUrl}/oauth2/authorization/facebook`;
                   }}
                 />
               </div>

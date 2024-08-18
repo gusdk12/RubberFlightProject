@@ -6,6 +6,7 @@ import com.lec.spring.general.review.repository.AirlineRepository;
 import com.lec.spring.member.flightInfo.domain.FlightInfo;
 import com.lec.spring.member.flightInfo.repository.FlightInfoRepository;
 import com.lec.spring.member.review.domain.Review;
+import com.lec.spring.member.review.domain.ReviewDTO;
 import com.lec.spring.member.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -58,31 +60,43 @@ public class ReviewService {
 
     // 리뷰 작성
     @Transactional
-    public Review write(Long flightInfoId, Review review) {
+    public Review write(Long flightInfo, ReviewDTO review) {
+
 
         // FlightInfo 조회
-        FlightInfo flightInfo = flightInfoRepository.findById(flightInfoId)
+        FlightInfo flight = flightInfoRepository.findById(flightInfo)
                 .orElseThrow(() -> new IllegalArgumentException("flightInfo_id를 확인하세요"));
-
-        // Review에 FlightInfo 설정
-        review.setFlightInfo(flightInfo); // FlightInfo와 연결
 
         Airline airline;
         // 항공사 존재하는지 확인
-        if (!airlineRepository.existsByName(review.getFlightInfo().getAirlineName())) {
+        if (!airlineRepository.existsByName(flight.getAirlineName())) {
             airline = new Airline();
-            airline.setName(review.getFlightInfo().getAirlineName());
+            airline.setName(flight.getAirlineName());
             airlineRepository.save(airline);  // 새로운 항공사 저장
-            System.out.println("항공사 이름 추가 :" + review.getFlightInfo().getAirlineName());
+            System.out.println("항공사 이름 추가 :" + flight.getAirlineName());
         } else {
             // 항공사 존재하면 해당 항공사 가져오기
-            System.out.println(review.getFlightInfo().getAirlineName() + "는 이미 있는 항공사");
-            airline = airlineRepository.findByName(review.getFlightInfo().getAirlineName());
+            System.out.println(flight.getAirlineName() + "는 이미 있는 항공사");
+            airline = airlineRepository.findByName(flight.getAirlineName());
         }
-        review.setAirline(airline); // 리뷰에 항공사 저장
 
-        Review reviewEntity = reviewRepository.save(review); // Review 저장
-        flightInfo.setReview(reviewEntity); // flightInfo 에 review 추가
+        // ReviewDTO를 Review 엔티티로 변환
+        Review reviewEntity = Review.builder()
+                .title(review.getTitle())
+                .seat_rate(review.getSeat_rate())
+                .service_rate(review.getService_rate())
+                .procedure_rate(review.getProcedure_rate())
+                .flightmeal_rate(review.getFlightmeal_rate())
+                .lounge_rate(review.getLounge_rate())
+                .clean_rate(review.getClean_rate())
+                .content(review.getContent())
+                .date(LocalDateTime.now())
+                .flightInfo(flight) // flightInfo와 연결
+                .airline(airline)   // airline 연결
+                .build();
+
+        reviewEntity = reviewRepository.save(reviewEntity); // Review 저장
+        flight.setReview(reviewEntity); // flightInfo 에 review 추가
 
         return reviewEntity;
     }
@@ -95,7 +109,7 @@ public class ReviewService {
 
     // 리뷰 수정
     @Transactional
-    public Review update(Review review) {
+    public Review update(ReviewDTO review) {
         Review reviewEntity = reviewRepository.findById(review.getId()).orElseThrow(() -> new IllegalArgumentException("id를 확인해주세요"));
 
         reviewEntity.setClean_rate(review.getClean_rate()); // 청결 점수

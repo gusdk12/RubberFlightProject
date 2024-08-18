@@ -46,6 +46,7 @@ const JoinForm = ({ join }) => {
     const [tel1, setTel1] = React.useState('');
     const [tel2, setTel2] = React.useState('');
     const [tel3, setTel3] = React.useState('');
+    const backUrl = process.env.REACT_APP_BACK_URL;
     const navigate = useNavigate(); 
 
 
@@ -85,7 +86,7 @@ const JoinForm = ({ join }) => {
         }
 
         try {
-            const response = await axios.post('http://localhost:8282/user/check-username', { username });
+            const response = await axios.post(`${backUrl}/user/check-username`, { username });
             if (response.data.exists) {
                 Swal.fire({
                     icon: 'error',

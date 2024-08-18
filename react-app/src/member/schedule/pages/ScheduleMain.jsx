@@ -20,6 +20,7 @@ const ScheduleMain = () => {
     const [editingItemId, setEditingItemId] = useState(null);
     const [editItemName, setEditItemName] = useState("");
     const containerRef = useRef(null);
+    const backUrl = process.env.REACT_APP_BACK_URL;
     const [emojiGroups] = useState([
         ["👔", "🛀"],   // 그룹 1
         ["💻", "💡"],   // 그룹 2
@@ -42,7 +43,7 @@ const ScheduleMain = () => {
 
     const readAllSchedule = async () => {
         try {
-            const response = await axios.get("http://localhost:8282/schedule", {
+            const response = await axios.get(`${backUrl}/schedule`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             if (Array.isArray(response.data)) {
@@ -57,7 +58,7 @@ const ScheduleMain = () => {
 
     const readAllChecklistsAndItems = async () => {
         try {
-            const checklistsResponse = await axios.get(`http://localhost:8282/checklist/user`, {
+            const checklistsResponse = await axios.get(`${backUrl}/checklist/user`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setChecklists(checklistsResponse.data);
@@ -67,7 +68,7 @@ const ScheduleMain = () => {
             if (checklistsResponse.data.length > 0) {
                 const checklistIds = checklistsResponse.data.map(checklist => checklist.id);
                 const itemsPromises = checklistIds.map(checklistId =>
-                    axios.get(`http://localhost:8282/checklist/items/${checklistId}`, {
+                    axios.get(`${backUrl}/checklist/items/${checklistId}`, {
                         headers: { Authorization: `Bearer ${token}` },
                     })
                 );
@@ -103,7 +104,7 @@ const ScheduleMain = () => {
 
     const updateChecklistItem = async (itemId, itemName, checked, checklistId) => {
         try {
-            const response = await axios.put(`http://localhost:8282/checklist/items/${itemId}`, {
+            const response = await axios.put(`${backUrl}/checklist/items/${itemId}`, {
                 itemName,
                 checked,
                 checklistId
@@ -121,7 +122,7 @@ const ScheduleMain = () => {
 
     const deleteChecklistItem = async (itemId) => {
         try {
-            await axios.delete(`http://localhost:8282/checklist/items/${itemId}`, {
+            await axios.delete(`${backUrl}/checklist/items/${itemId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             readAllChecklistsAndItems();
@@ -133,7 +134,7 @@ const ScheduleMain = () => {
     const createNewSchedule = (e) => {
         e.preventDefault();
         const newSchedule = { title: "제목 없는 일정" };
-        axios.post("http://localhost:8282/schedule", newSchedule, {
+        axios.post(`${backUrl}/schedule`, newSchedule, {
             headers: { Authorization: `Bearer ${token}`, "Content-Type": 'application/json' }
         })
         .then(response => {
@@ -148,7 +149,7 @@ const ScheduleMain = () => {
         if (!newItemName || !selectedChecklistId) return;
     
         try {
-            await axios.post(`http://localhost:8282/checklist/items/create`, {
+            await axios.post(`${backUrl}/checklist/items/create`, {
                 checklistId: selectedChecklistId,
                 itemName: newItemName,
                 checked: false

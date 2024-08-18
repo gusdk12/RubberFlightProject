@@ -8,6 +8,7 @@ export const UserCouponProvider = ({ children }) => {
   const [coupons, setCoupons] = useState([]);
   const [existingUserCoupons, setExistingUserCoupons] = useState([]); 
   const [existingAdminCoupons, setExistingAdminCoupons] = useState([]); 
+  const backUrl = process.env.REACT_APP_BACK_URL;
 
   const addCoupon = async (couponCode) => {
     const token = Cookies.get('accessToken');
@@ -16,7 +17,7 @@ export const UserCouponProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.post(`http://localhost:8282/coupon/user/add`, 
+      const response = await axios.post(`${backUrl}/coupon/user/add`, 
         { couponCode },
         {
           headers: {
@@ -42,7 +43,7 @@ export const UserCouponProvider = ({ children }) => {
 
     try {
       // 사용자 쿠폰 목록 가져오기
-      const userResponse = await axios.get(`http://localhost:8282/coupon/user/coupons`, {
+      const userResponse = await axios.get(`${backUrl}/coupon/user/coupons`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -52,7 +53,7 @@ export const UserCouponProvider = ({ children }) => {
       setExistingUserCoupons(userCouponCodes); 
 
       // 관리자 쿠폰 목록 가져오기
-      const adminResponse = await axios.get(`http://localhost:8282/coupon/list`, {
+      const adminResponse = await axios.get(`${backUrl}/coupon/list`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

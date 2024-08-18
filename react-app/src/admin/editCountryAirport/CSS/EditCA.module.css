@@ -28,6 +28,10 @@
     display: none;
 }
 
+.cn {
+    cursor: pointer;
+}
+
 .countryDetails {
     height: 55px;
     display: flex;
@@ -81,7 +85,7 @@
     width: 800px;
     height: 600px;
     padding-top: 100px;
-    padding-left: 200px;
+    padding-left: 170px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 
     position: fixed;

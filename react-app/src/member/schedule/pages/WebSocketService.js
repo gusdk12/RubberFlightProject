@@ -10,9 +10,10 @@ class WebSocketService {
     }
 
     connect(callback, id) {
+        const backUrl = process.env.REACT_APP_BACK_URL;
         if (!this.connectPromise) {
             this.connectPromise = new Promise((resolve, reject) => {
-                const socket = new SockJS(`http://localhost:8282/ws/title`);
+                const socket = new SockJS(`${backUrl}/ws/title`);
                 this.stompClient = Stomp.over(socket);
                 this.stompClient.connect({}, () => {
                     this.connected = true;

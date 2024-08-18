@@ -18,6 +18,7 @@ const ReviewList = () => {
   // 해당 유저 리뷰 목록 불러오기(최신순, 별점순)
   const fetchReviewList = async (type, page) => {
     const token = Cookies.get('accessToken');
+    const backUrl = process.env.REACT_APP_BACK_URL;
     if (!token) {
       console.error("토큰을 찾을 수 없습니다.");
       setLoading(false);
@@ -26,13 +27,12 @@ const ReviewList = () => {
     
     try {
       const response = await axios.get(
-        `http://localhost:8282/review/${type}?page=${page}&size=${pageSize}`, {
+        `${backUrl}/review/${type}?page=${page}&size=${pageSize}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log(response.data)
       setReviews(response.data.content); // 리뷰 목록 리스트
       setTotalPages(response.data.totalPages); // 총 페이지
     } catch (error) {

@@ -22,11 +22,12 @@ const ReviewDetail = () => {
     content: "",
   });
   const [loading, setLoading] = useState(true);
+  const backUrl = process.env.REACT_APP_BACK_URL;
 
   const fetchReviewInfo = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8282/review/detail/` + id
+        `${backUrl}/review/detail/` + id
       );
       setReview(response.data);
     } catch (error) {
@@ -58,7 +59,7 @@ const ReviewDetail = () => {
         if (result.isConfirmed) {
           axios({
             method: "delete",
-            url: "http://localhost:8282/review/delete/" + id,
+            url: `${backUrl}/review/delete/` + id,
           }).then((response) => {
             const { data, status, statusText } = response;
             if (data === 1) {

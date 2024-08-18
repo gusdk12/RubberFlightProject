@@ -18,6 +18,7 @@ const Reserve = () => {
   const [buyerTel, setBuyerTel] = useState('');
   const [buyerEmail, setBuyerEmail] = useState('');
   const token = Cookies.get('accessToken');
+  const backUrl = process.env.REACT_APP_BACK_URL;
 
   // 쿠폰
   const [coupons, setCoupons] = useState([]); // 쿠폰 목록 상태 추가
@@ -39,7 +40,7 @@ const Reserve = () => {
     }, []);
 
     useEffect(() => {
-      fetch('http://localhost:8282/coupon/user/coupons', {
+      fetch(`${backUrl}/coupon/user/coupons`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -142,7 +143,7 @@ const Reserve = () => {
 
           // const token = Cookies.get('accessToken');
 
-          fetch('http://localhost:8282/reservation', {
+          fetch(`${backUrl}/reservation`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -158,7 +159,7 @@ const Reserve = () => {
           })
           .then(() => {
             if (selectedCoupon) {
-              fetch(`http://localhost:8282/coupon/user/use/${selectedCoupon.id}`, {
+              fetch(`${backUrl}/coupon/user/use/${selectedCoupon.id}`, {
                 method: 'POST',
                 headers: {
                   'Authorization': `Bearer ${token}`

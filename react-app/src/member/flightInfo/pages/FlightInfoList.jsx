@@ -9,6 +9,7 @@ const FlightInfoList = () => {
   const [flightInfoList, setFlightInfoList] = useState({ upcomingFlights: [], pastFlights: [] });
   const [loading, setLoading] = useState(true);
   const [reviewList, setReviewList] = useState([]);
+  const backUrl = process.env.REACT_APP_BACK_URL;
 
   // 유저 리뷰 데이터 불러오기
   const fetchReviews = async () => {
@@ -21,7 +22,7 @@ const FlightInfoList = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:8282/review/reviewlist`, {
+        `${backUrl}/review/reviewlist`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -48,7 +49,7 @@ const FlightInfoList = () => {
       }
 
       try {
-        const response = await axios.get('http://localhost:8282/flightInfo/list', {
+        const response = await axios.get(`${backUrl}/flightInfo/list`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

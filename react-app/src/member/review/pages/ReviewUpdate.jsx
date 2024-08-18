@@ -13,6 +13,7 @@ import Stamp from "../../../assets/images/review/stamp.webp";
 const ReviewUpdate = () => {
   const {id} = useParams();
   const navigate = useNavigate();
+  const backUrl = process.env.REACT_APP_BACK_URL;
   const [review, setReview] = useState({
     title: "",
     seat_rate : "",
@@ -27,7 +28,7 @@ const ReviewUpdate = () => {
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:8282/review/detail/" + id,
+      url: `${backUrl}/review/detail/` + id,
     })
       .then(response => {
         const { data, status, statusText } = response;
@@ -65,16 +66,29 @@ const validateForm = () => {
 };
 
  // 데이터 수정하기
- const submitReview = (e) => {
+const submitReview = (e) => {
   e.preventDefault();
   
   const validationError = validateForm();
+  console.log(review);
+  let provide = {
+    id: review.id,
+    title: review.title,
+    seat_rate : review.seat_rate,
+    service_rate: review.service_rate,
+    procedure_rate: review.procedure_rate,
+    flightmeal_rate: review.flightmeal_rate,
+    lounge_rate: review.lounge_rate,
+    clean_rate: review.clean_rate, 
+    content: review.content
+  };
+  console.log(provide);
   if(!validationError){
     axios({
       method: "put",
-      url: "http://localhost:8282/review/update",
+      url: `${backUrl}/review/update`,
       headers: {
-          "Content-Type": 'application/json;charset=utf-8',
+          "Content-Type": 'application/json',
       },
       data: JSON.stringify(review),
   })

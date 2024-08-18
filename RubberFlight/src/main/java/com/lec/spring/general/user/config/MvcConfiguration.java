@@ -9,6 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MvcConfiguration implements WebMvcConfigurer {
 
+    @Value("${awsFrontServer.address}")
+    private String frontServerUrl;
     @Value("${cors.allowed-origins}")
     private String[] corsAllowedOrigins;
 
@@ -16,7 +18,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry corsRegistry) {
         corsRegistry
                 .addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins(frontServerUrl)
                 .allowedOrigins(corsAllowedOrigins);
     }
 
