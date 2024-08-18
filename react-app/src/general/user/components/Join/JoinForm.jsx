@@ -272,7 +272,7 @@ const JoinForm = ({ join }) => {
         onClick={home}
       ></div>
     </div>
-        <Box className="form" maxWidth="480px" mx="auto" p={6} bg="#ffffff" borderRadius="md" boxShadow="md" padding={10}>
+        <Box className="form" maxWidth="480px" mx="auto" p={6} bg="#ffffff" borderRadius="md" boxShadow="md" padding={10} marginBottom="80px">
             <h2 className="login-title" style={{ textAlign: 'center', fontSize: '40px' }}>Join</h2>
 
             <form className="login-form" onSubmit={onJoin}>
