@@ -111,7 +111,7 @@ const Chat = (props) => {
                 </div>
               ))}
             </div>
-            <Flex w='278px'>
+            <Flex w='280px' h='50px' mb='-1px' ml='-1px'>
               <textarea id={styles.input}
                 ref={textAreaRef}
                 value={message}
@@ -123,7 +123,6 @@ const Chat = (props) => {
                <Image src={loading ? Spin : Send} className={`${styles.send} ${loading ? styles.spin : ''}`}/>
               </button>
             </Flex>
-            
           </div>
         </>
     );
