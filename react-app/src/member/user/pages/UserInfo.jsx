@@ -163,7 +163,7 @@ const UserInfo = () => {
         </Box>
         <Box p={8} bg="gray.70" borderRadius="md">
           <Text fontSize="lg" fontWeight="bold" textAlign={"center"}>가이드라인
-          <Image className={styles.icon}></Image>
+          <Image className={styles.nextIcon}></Image>
           </Text>
           <Text mt={1} textAlign={"center"}>러버플라이트 적극적으로 활용하기</Text>
 
