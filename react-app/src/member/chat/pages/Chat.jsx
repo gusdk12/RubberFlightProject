@@ -91,7 +91,7 @@ const Chat = (props) => {
             <Image id={styles.help} src={Help}/>
             <div id={styles.helptext}>
               Lover Air의 귀염둥이 <br/>Lumi에게 궁금한 것을 물어보세요~
-              <br/>채팅이 끝나면 '종료'라고 입력해주세요!</div>
+            </div>
           </div>
           <div id={styles.chatBox}>
             <div id={styles.titleBox}>
