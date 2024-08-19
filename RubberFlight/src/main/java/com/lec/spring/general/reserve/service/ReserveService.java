@@ -38,7 +38,6 @@ public class ReserveService {
         this.airportRepository = airportRepository;
     }
 
-    // save
     public Reserve createReservation(String personnel, FlightInfo depFlightInfo, FlightInfo retFlightInfo) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -146,8 +145,8 @@ public class ReserveService {
     // DB 저장
     @Transactional
     public Reserve saveReservation(Long userId, String personnel, boolean isRoundTrip, Flight outboundFlight, Flight inboundFlight, Coupon coupon) {
-        System.out.println("saveReservation Coupon" + coupon);
-        System.out.println("왕복인가요" + isRoundTrip);
+//        System.out.println("saveReservation Coupon" + coupon);
+//        System.out.println("왕복인가요" + isRoundTrip);
         Reserve reserve = new Reserve();
         User user = userRepository.findById(userId).orElse(null);
         reserve.setUser(user);

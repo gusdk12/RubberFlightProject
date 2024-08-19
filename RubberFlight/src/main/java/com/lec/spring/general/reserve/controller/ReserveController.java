@@ -87,6 +87,8 @@ public class ReserveController {
         responseMap.put("outboundFlights", sortedOutboundFlights);
         responseMap.put("inboundFlights", sortedInboundFlights);
 
+        System.out.println("항공권 정보" + responseMap);
+
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
 
