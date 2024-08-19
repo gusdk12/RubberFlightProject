@@ -36,7 +36,7 @@
     height: 30px;
     position: relative;
     left: 240px;
-    top: 10px;
+    top: 12px;
     display: inline-block;
 }
 
@@ -48,7 +48,7 @@
 
 #helptext {
     position: relative;
-    width: 260px;
+    width: 175px;
     padding: 10px;
     left: 45px;
     bottom: 70px;

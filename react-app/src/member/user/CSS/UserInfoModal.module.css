@@ -65,3 +65,13 @@
     border: none !important;
     margin-left: 0 !important;
 }
+
+.infoContainer{
+    margin-top: 35px;
+}
+
+.info{
+    font-size: 25px;
+    margin-left: 13px;
+    margin-top: 15px;
+}
