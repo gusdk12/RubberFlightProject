@@ -55,7 +55,7 @@ const LoginForm = () => {
       </div>
 
       {/* Flex 컨테이너: 왼쪽에는 이미지, 오른쪽에는 로그인 폼 */}
-      <Flex maxWidth="800px" mx="auto" p={6} bg="white" borderRadius="md" boxShadow="md" alignItems="center">
+      <Flex maxWidth="1000px" height="600px" mx="auto" p={6} bg="white" borderRadius="md" boxShadow="md" alignItems="center">
         {/* 왼쪽 이미지 영역 */}
         <Box className={styles.banner}
           flex="1"

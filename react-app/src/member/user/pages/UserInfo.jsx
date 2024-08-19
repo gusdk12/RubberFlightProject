@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Box, Flex, Divider, Avatar, Text, Button, Icon } from '@chakra-ui/react';
+import { Box, Flex, Divider, Avatar, Text, Button, Icon, Circle } from '@chakra-ui/react';
 import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
 import { FiPlus } from 'react-icons/fi';
 import { IoMdSettings } from 'react-icons/io'; 
@@ -8,48 +8,63 @@ import { BsCalendar, BsCheckCircle } from 'react-icons/bs';
 import CouponModal from './CouponModal';
 import { useNavigate } from 'react-router-dom';
 import UserInfoModal from './UserInfoModal';
+import Swal from 'sweetalert2';
+import { FaPlane, FaCalendarAlt, FaClipboardCheck, FaThumbsUp } from "react-icons/fa";
+
 
 const UserInfo = () => {
+  const { isLogin, logout } = useContext(LoginContext);
   const { userInfo } = useContext(LoginContext); 
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isCouponModalOpen, setCouponModalOpen] = useState(false);
   const [isInfoModalOpen, setInfoModalOpen] = useState(false);
-  const [email, setEmail] = useState('');  // 이메일 상태 추가
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    tel: '',
+    image: null,
+    existingImage: ''
+  });
   const navigate = useNavigate();
-  const backUrl = process.env.REACT_APP_BACK_URL;
 
   useEffect(() => {
     if (userInfo.id) {
       const fetchUserEmail = async () => {
         try {
-          const response = await fetch(`${backUrl}/mypage/${userInfo.id}`);
+          const response = await fetch(`http://localhost:8282/mypage/${userInfo.id}`);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
 
-          const data = await response.json();  // 데이터를 JSON으로 파싱
-          setEmail(data.email || '');  // 이메일 상태 업데이트
+          const data = await response.json();  
+          setFormData(prevData => ({
+            ...prevData,
+            name: data.name || '',
+            email: data.email || '',
+            tel: data.tel || '',
+            existingImage: data.image || ''
+          }));
         } catch (error) {
           console.error('유저 이메일 정보를 가져오는 데 실패했습니다:', error);
         }
       };
 
-      fetchUserEmail();  // 이메일 데이터 가져오기
+      fetchUserEmail();  
     }
   }, [userInfo.id]);
 
-  const handleOpenModal = () => {
-    setModalOpen(true); 
+  const handleOpenCouponModal = () => {
+    setCouponModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setModalOpen(false); 
+  const handleCloseCouponModal = () => {
+    setCouponModalOpen(false);
   };
 
-  const userInfoModalOpen = () => {
+  const handleOpenInfoModal = () => {
     setInfoModalOpen(true);
   };
 
-  const userInfoModalClose = () => {
+  const handleCloseInfoModal = () => {
     setInfoModalOpen(false);
   };
 
@@ -57,7 +72,35 @@ const UserInfo = () => {
     navigate('/schedule');
   };
 
-  const navigateToChecklist = () => {};
+  const navigateToChecklist = () => {
+    navigate('/schedule')
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout(true);
+
+      Swal.fire({
+        title: '로그아웃되었습니다.',
+        text: '메인화면으로 이동합니다.',
+        icon: 'success',
+        confirmButtonText: '확인',
+        backdrop: true,
+        position: 'center',
+        customClass: {
+          container: 'swal-container'
+        },
+        didOpen: () => {
+          document.querySelector('.swal2-container').style.zIndex = 9999;
+        }
+      }).then(() => {
+        navigate("/"); 
+      });
+
+    } catch (error) {
+      console.error('로그아웃 처리 중 오류 발생:', error);
+    }
+  };
 
   return (
     <>
@@ -75,16 +118,15 @@ const UserInfo = () => {
           <Flex align="center" ml={3}>
             <Avatar 
               size="sm" 
-              name={userInfo.name} 
-              src={process.env.PUBLIC_URL + `/images/${userInfo.image}`} 
-              backgroundColor="#dde6f5d7" 
+              name={formData.name || '이름 없음'} 
+              src={formData.existingImage} 
             />
-            <Box ml={3} display="flex" flexDirection="column" alignItems="flex-start"> {/* 이름과 이메일을 세로로 정렬 */}
+            <Box ml={3} display="flex" flexDirection="column" alignItems="flex-start"> 
               <Flex alignItems="center">
-                <Text fontSize="lg" fontWeight="bold">{userInfo.name}</Text>
-                <Icon as={IoMdSettings} boxSize={6} ml={2} cursor="pointer" onClick={userInfoModalOpen}/> {/* 톱니바퀴 아이콘 */}
+                <Text fontSize="lg" fontWeight="bold">{formData.name || '이름 없음'}</Text>
+                <Icon as={IoMdSettings} boxSize={6} ml={2} cursor="pointer" onClick={handleOpenInfoModal}/> 
               </Flex>
-              <Text fontSize="xx-small" mt={1}>{email}</Text> {/* 이름 아래에 이메일 정보 */}
+              <Text fontSize="small" mt={1}>{formData.email || '이메일 없음'}</Text> 
             </Box>
           </Flex>
 
@@ -95,7 +137,7 @@ const UserInfo = () => {
             alignItems="center"
             borderRadius="full"
           >
-            <Icon as={AiOutlineLogout} boxSize={6} />
+            <Icon as={AiOutlineLogout} boxSize={6} onClick={logout}  />
           </Button>
         </Flex>
         
@@ -114,7 +156,7 @@ const UserInfo = () => {
                 <Text fontSize="lg" fontWeight="bold">사용 가능 쿠폰</Text>
                 <Flex align="center">
                   <Text fontSize="lg" fontWeight="bold">2장</Text>
-                  <Icon as={FiPlus} boxSize={5} ml={2} cursor="pointer" onClick={handleOpenModal} />
+                  <Icon as={FiPlus} boxSize={5} ml={2} cursor="pointer" onClick={handleOpenCouponModal} />
                 </Flex>
               </Flex>
             </Box>
@@ -122,8 +164,8 @@ const UserInfo = () => {
             <Divider orientation="vertical" height="140px" ml={3} mr={3} color="gray.100"/>
 
             <Box flex="1" p={4}>
-              <Text fontSize="lg" fontWeight="bold" mb={5}>나의 서비스</Text>
-              <Flex mt={2}  direction="row" align="center" justify="center" gap={7}>
+              <Text fontSize="lg" fontWeight="bold" mb={5}>나의 서비스 {">>"}</Text>
+              <Flex mt={2} direction="row" align="center" justify="center" gap={7}>
                 <Flex direction="column" align="center" cursor="pointer" onClick={navigateToSchedule}>
                   <Icon as={BsCalendar} boxSize="50px" mb={3} />
                   <Text fontSize="sm">일정 {">>"} </Text>
@@ -137,16 +179,51 @@ const UserInfo = () => {
           </Flex>
         </Box>
 
-        <Box p={4} mt={4} bg="gray.100" borderRadius="md">
-          <Text fontSize="lg" fontWeight="bold">가이드라인</Text>
-          <Text mt={2}>여기에는 가이드라인에 대한 내용을 추가하세요.</Text>
+        <Box p={8} mt={4} bg="gray.100" borderRadius="md">
+          <Text fontSize="lg" fontWeight="bold">가이드라인 {">>"}</Text>
+          <Text mt={1}>러버플라이트 적극적으로 활용하기</Text>
+
+
+          <Flex mt={8} align="center" justify="center" position="relative" gap={0}>
+
+       
+        <Divider orientation="horizontal" borderColor="gray.300" position="absolute" top="38%" left="5%" right="5%" width="90%" />
+
+     
+        <Flex direction="column" align="center" position="relative" zIndex={1} mx={10} onClick={() => navigate("/search")} cursor="pointer">
+          <Circle size="80px" bg="gray.200">
+            <Icon as={FaPlane} boxSize={8} />
+          </Circle>
+          <Text mt={2}>예약하기</Text>
+        </Flex>
+
+        <Flex direction="column" align="center" position="relative" zIndex={1} mx={7} onClick={() => navigate("/schedule")} cursor="pointer">
+          <Circle size="80px" bg="gray.200">
+            <Icon as={FaCalendarAlt} boxSize={8} />
+          </Circle>
+          <Text mt={2}>일정작성</Text>
+        </Flex>
+
+        <Flex direction="column" align="center" position="relative" zIndex={1} mx={7} onClick={() => navigate("/schedule")} cursor="pointer">
+          <Circle size="80px" bg="gray.200">
+            <Icon as={FaClipboardCheck} boxSize={8} />
+          </Circle>
+          <Text mt={2}>체크리스트 작성</Text>
+        </Flex>
+
+        <Flex direction="column" align="center" position="relative" zIndex={1} mx={7} onClick={() => navigate("/review")} cursor="pointer">
+          <Circle size="80px" bg="gray.200">
+            <Icon as={FaThumbsUp} boxSize={8} />
+          </Circle>
+          <Text mt={2}>리뷰작성</Text>
+        </Flex>
+      </Flex>
         </Box>
 
-        <CouponModal isOpen={isModalOpen} onClose={handleCloseModal} />
+        <CouponModal isOpen={isCouponModalOpen} onClose={handleCloseCouponModal} />
         <UserInfoModal 
           isOpen={isInfoModalOpen} 
-          onClose={userInfoModalClose}
-          userInfo={userInfo} // 이메일 정보를 포함한 userInfo 전달
+          onClose={handleCloseInfoModal}
         />
       </Box>
     </>

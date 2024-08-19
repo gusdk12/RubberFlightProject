@@ -57,20 +57,27 @@ public class UserService {
     }
 
     @Transactional
+    public void changePassword(Long userId, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // 새로운 비밀번호를 인코딩합니다.
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+
+        userRepository.save(user); // 비밀번호 변경 사항 저장
+    }
+
+    @Transactional
     public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     @Transactional
     public User save(User user) {
-
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            String encodedPassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(encodedPassword);
-        }
-
         return userRepository.save(user);
     }
+
 
     public User findByUsername(String username){
         return userRepository.findByUsername(username.toUpperCase());

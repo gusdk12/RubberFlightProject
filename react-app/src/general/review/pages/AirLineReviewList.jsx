@@ -174,7 +174,7 @@ const AirLineReviewList = () => {
                     reviews.map((review) => {
                       return (<AirlineReviewItem key={review.id} review={review} />);
                     })
-                  ) : (<div>작성된 리뷰가 없습니다.</div>)}
+                  ) : (<div className={styles.noReview}>작성된 리뷰가 없습니다.</div>)}
                 </TabPanel>
                 <TabPanel>
                   {reviews.length > 0 ? (
@@ -182,7 +182,7 @@ const AirLineReviewList = () => {
                       return (<AirlineReviewItem key={review.id} review={review} />);
                     })
                   ) : (
-                    <div>작성된 리뷰가 없습니다.</div>
+                    <div className={styles.noReview}>작성된 리뷰가 없습니다.</div>
                   )}
                 </TabPanel>
               </TabPanels>

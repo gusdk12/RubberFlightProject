@@ -1,4 +1,5 @@
 .selectJoinContainer {
+    
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,7 +11,8 @@
 }
 
 .heading {
-    margin-bottom: 20px;
+    margin-top: 45px !important;
+    margin-bottom: 25px !important;
     font-size: 1.5rem;
     font-family: "KIMM_Light" !important;
 }

@@ -11,6 +11,8 @@ const MyPage = () => {
   const toast = useToast(); 
   const navigate = useNavigate(); 
   const [isFirstVisit, setIsFirstVisit] = useState(true); 
+  const [profileImage, setProfileImage] = useState(null);
+  const backUrl = process.env.REACT_APP_BACK_URL;
 
   useEffect(() => {
     document.body.style.overflowY = 'scroll';
@@ -20,7 +22,40 @@ const MyPage = () => {
       navigate('/mypage/user-info'); 
       setIsFirstVisit(false); 
     }
-  }, [navigate, isFirstVisit]);
+
+    const fetchProfileImage = async () => {
+      try {
+        if (userInfo?.id) {  // userInfo.id가 존재할 때만 호출
+          const apiUrl = `${backUrl}/mypage/${userInfo.id}`;
+          console.log("API 요청 URL:", apiUrl);
+    
+          const response = await fetch(apiUrl);
+          
+          if (!response.ok) {
+            throw new Error(`이미지 로딩 실패: ${response.status} (${response.statusText})`);
+          }
+    
+          const data = await response.json();
+          
+          // 이미지 URL이 이미 절대 경로인지 확인
+          const imageUrl = data.image.startsWith('http') ? data.image : `${backUrl}/${data.image.replace(/\\/g, '/')}`;
+          
+          console.log("이미지 URL:", imageUrl); 
+          setProfileImage(imageUrl); 
+        } else {
+          console.log("유저 정보가 아직 존재하지 않습니다.");
+        }
+      } catch (error) {
+        console.error('프로필 이미지를 불러오는 중 오류 발생:', error.message);
+      }
+    };
+
+    if (userInfo?.id) {
+      fetchProfileImage();
+    }
+
+  }, [navigate, isFirstVisit, userInfo]);
+  
 
   const handleCopyUsername = () => {
     navigator.clipboard.writeText(userInfo.username)
@@ -78,8 +113,8 @@ const MyPage = () => {
               <Avatar
                 size="sm"
                 name={userInfo.name}
-                src={process.env.PUBLIC_URL + `/images/${userInfo.image}`}
-                backgroundColor="#dde6f5d7"
+                src={profileImage || process.env.PUBLIC_URL + '/default-profile.png'}
+                // backgroundColor="#dde6f5d7"
               />
               <Text fontSize="lg" fontWeight="bold" ml={3}>
                 {userInfo.username}

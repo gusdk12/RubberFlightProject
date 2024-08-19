@@ -24,7 +24,8 @@ const SelectJoin = () => {
     return (
         <>
             <div
-                style={{
+                style={{    
+                    // background: 'linear-gradient(rgb(176, 201, 230), rgb(213, 225, 235), rgb(239, 243, 246))',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -70,7 +71,7 @@ const SelectJoin = () => {
                         </Button>
                     </Box>
                     
-                    <Box className={styles.divider}></Box>
+                    {/* <Box className={styles.divider}></Box> */}
                     
                     <Box className={styles.section}>
                         {/* 네모 박스 */}
