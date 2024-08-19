@@ -14,7 +14,7 @@ import Help from '../../../assets/images/schedule/help.webp';
 const Chat = (props) => {
   const {userInfo} = useUser();
   const [loading, setLoading] = useState(false);
-  const initialMessages = [{ sender: 'Lumi', text: `안녕하세요!<br/> 무엇을 도와드릴까요?` }];
+  const initialMessages = [{ sender: 'Lumi', text: `안녕하세요!<br/> 어떤 여행지를 추천해드릴까요?` }];
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState(initialMessages);
   const backUrl = process.env.REACT_APP_BACK_URL;
@@ -91,16 +91,14 @@ const Chat = (props) => {
             <Image id={styles.help} src={Help}/>
             <div id={styles.helptext}>
               Lover Air의 귀염둥이 <br/>Lumi에게 궁금한 것을 물어보세요~
-              <br/>채팅이 끝나면 '종료'라고 입력해주세요!</div>
+            </div>
           </div>
           <div id={styles.chatBox}>
             <div id={styles.titleBox}>
               <Flex justifyContent='start' alignItems='center'>
                 <Image src={ChatBot} className={styles.botIcon} />
                 <div id={styles.title}>Lumi</div>
-                {/* <button id={styles.close} onClick={props.closeChat}></button> */}
               </Flex>
-                {/* <div id={styles.helptext}>Lover Air의 귀염둥이 Lumi에게 궁금한 것을 물어보세요~</div> */}
             </div>
             <div id={styles.chatIn} ref={chatContainerRef}>
               {chatHistory.map((chat, index) => (
@@ -113,7 +111,7 @@ const Chat = (props) => {
                 </div>
               ))}
             </div>
-            <Flex w='278px'>
+            <Flex w='280px' h='50px' mb='-1px' ml='-1px'>
               <textarea id={styles.input}
                 ref={textAreaRef}
                 value={message}
@@ -125,7 +123,6 @@ const Chat = (props) => {
                <Image src={loading ? Spin : Send} className={`${styles.send} ${loading ? styles.spin : ''}`}/>
               </button>
             </Flex>
-            
           </div>
         </>
     );

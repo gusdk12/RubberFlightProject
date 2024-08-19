@@ -242,4 +242,8 @@ public class ReserveService {
             }
         }
     }
+
+    public int getReservationCntByUserId(Long userId) {
+        return reserveRepository.countByUserId(userId);
+    }
 }
