@@ -10,13 +10,19 @@ import { useNavigate } from 'react-router-dom';
 import UserInfoModal from './UserInfoModal';
 import Swal from 'sweetalert2';
 import { FaPlane, FaCalendarAlt, FaClipboardCheck, FaThumbsUp } from "react-icons/fa";
-import styles from '../CSS/UserInfoModal.module.css'
+import styles from '../CSS/UserInfoModal.module.css';
+import Cookies from 'js-cookie';
 
 const UserInfo = () => {
   const { isLogin, logout } = useContext(LoginContext);
   const { userInfo } = useContext(LoginContext); 
   const [isCouponModalOpen, setCouponModalOpen] = useState(false);
   const [isInfoModalOpen, setInfoModalOpen] = useState(false);
+  const [reservationCount, setReservationCount] = useState(null);
+  const [error, setError] = useState(null);
+  const [couponCount, setCouponCount] = useState(null);
+  const [reviewCount, setReviewCount] = useState(null);
+  const token = Cookies.get('accessToken');
   const backUrl = process.env.REACT_APP_BACK_URL;
   const [formData, setFormData] = useState({
     name: '',
@@ -54,7 +60,10 @@ const UserInfo = () => {
   }, [userInfo.id]);
 
   const handleOpenCouponModal = () => setCouponModalOpen(true);
-  const handleCloseCouponModal = () => setCouponModalOpen(false);
+  const handleCloseCouponModal = () => {
+    setCouponModalOpen(false);
+    fetchCouponCount();
+  };
   const handleOpenInfoModal = () => setInfoModalOpen(true);
   const handleCloseInfoModal = () => setInfoModalOpen(false);
 
@@ -78,11 +87,93 @@ const UserInfo = () => {
         didOpen: () => {
           document.querySelector('.swal2-container').style.zIndex = 9999;
         }
-      }).then(() => navigate("/")); 
+      }).then(() => navigate("/"));
     } catch (error) {
       console.error('로그아웃 처리 중 오류 발생:', error);
     }
   };
+
+  // 유저의 예약 횟수
+  useEffect(() => {
+    const fetchReservationCount = async () => {
+      try {
+        const response = await fetch(`${backUrl}/reservation/count`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setReservationCount(data.count);
+      } catch (error) {
+        setError('Error fetching reservation count');
+        console.error('Error fetching reservation count', error);
+      }
+    };
+
+    fetchReservationCount();
+  });
+
+  // 유저의 쿠폰 개수
+  const fetchCouponCount = async () => {
+    try {
+      const response = await fetch(`${backUrl}/coupon/count`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setCouponCount(data.count);
+    } catch (error) {
+      setError('Error fetching coupon count');
+      console.error('Error fetching coupon count', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCouponCount();
+  }, [])
+
+    // 유저의 리뷰 개수
+    useEffect(() => {
+      const fetchReviewCount = async () => {
+        try {
+          const response = await fetch(`${backUrl}/review/count`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          setReviewCount(data.count);
+        } catch (error) {
+          setError('Error fetching reservation count');
+          console.error('Error fetching reservation count', error);
+        }
+      };
+
+      fetchReviewCount();
+    });
+
 
   return (
     <>
@@ -98,16 +189,16 @@ const UserInfo = () => {
         <Flex p={4} bg="blue.600" color="white" borderTopRadius="lg" align="center" justify="space-between">
           <Flex align="center" ml={3}>
             <Avatar 
-              size="lg" 
+              size="lg"
               name={formData.name || '이름 없음'} 
-              src={formData.existingImage || '/default-avatar.png'} 
+              src={formData.existingImage || '/default-avatar.png'}
             />
-            <Box ml={4} display="flex" flexDirection="column" alignItems="flex-start"> 
+            <Box ml={4} display="flex" flexDirection="column" alignItems="flex-start">
               <Flex alignItems="center">
                 <Text fontSize="xl" fontWeight="bold">{formData.name || '이름 없음'}</Text>
                 <Icon as={IoMdSettings} boxSize={6} ml={2} cursor="pointer" onClick={handleOpenInfoModal}/> 
               </Flex>
-              <Text fontSize="sm" mt={1}>{formData.email || '이메일 없음'}</Text> 
+              <Text fontSize="sm" mt={1}>{formData.email || '이메일 없음'}</Text>
             </Box>
           </Flex>
 
@@ -129,16 +220,22 @@ const UserInfo = () => {
             <Box flex="1" p={4}>
               <Flex justify="space-between" align="center">
                 <Text fontSize="lg" fontWeight="bold">이용내역</Text>
-                <Text fontSize="lg" fontWeight="bold">52회</Text>
+                <Text fontSize="lg" fontWeight="bold">
+                  {reservationCount !== null ? `${reservationCount}회` : '0회'}
+                </Text>
               </Flex>
               <Flex justify="space-between" align="center" mt={4}>
                 <Text fontSize="lg" fontWeight="bold">나의 리뷰</Text>
-                <Text fontSize="lg" fontWeight="bold">15개</Text>
+                <Text fontSize="lg" fontWeight="bold">
+                {reviewCount !== null ? `${reviewCount}개` : '0개'}
+                </Text>
               </Flex>
               <Flex justify="space-between" align="center" mt={4}>
                 <Text fontSize="lg" fontWeight="bold">사용 가능 쿠폰</Text>
                 <Flex align="center">
-                  <Text fontSize="lg" fontWeight="bold">2장</Text>
+                  <Text fontSize="lg" fontWeight="bold">
+                    {couponCount !== null ? `${couponCount}장` : '0장'}
+                  </Text>
                   <Icon as={FiPlus} boxSize={5} ml={2} cursor="pointer" onClick={handleOpenCouponModal} />
                 </Flex>
               </Flex>
@@ -162,10 +259,11 @@ const UserInfo = () => {
           </Flex>
         </Box>
         <Box p={8} bg="gray.70" borderRadius="md">
-          <Text fontSize="lg" fontWeight="bold" textAlign={"center"}>가이드라인
-          <Image className={styles.nextIcon}></Image>
-          </Text>
-          <Text mt={1} textAlign={"center"}>러버플라이트 적극적으로 활용하기</Text>
+          <Flex justify="center" align="center">
+            <Text fontSize="lg" fontWeight="bold">가이드라인</Text>
+            <Box className={styles.nextIcon} ml={2} border={'none'}/>
+          </Flex>
+          <Text mt={1} textAlign="center">러버플라이트 적극적으로 활용하기</Text>
 
           <Flex
           mt={8}

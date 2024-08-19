@@ -184,6 +184,18 @@ public class ReserveController {
         return ResponseEntity.ok(reserve);
     }
 
+    // 유저의 예약 횟수 가져오기
+    @CrossOrigin
+    @GetMapping("/reservation/count")
+    public ResponseEntity<?> getReservationCnt(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").split(" ")[1];
+        Long userId = jwtUtil.getId(token);
+
+        int cnt = reserveService.getReservationCntByUserId(userId);
+
+        return ResponseEntity.ok(Map.of("count", cnt));
+    }
+
 
 
 }

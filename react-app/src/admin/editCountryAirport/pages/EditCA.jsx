@@ -101,7 +101,7 @@ const EditCA = () => {
 
         const existingCountry = countrys.find(country => country.countryIso === countryIsoInput);
         if (existingCountry) {
-            alert('Warning',`${countryIsoInput}는 이미 존재합니다.`,'warning');
+            alert('Warning',`${existingCountry.countryName}는 이미 존재합니다.`,'warning');
             setCountryIsoInput('');
             return;
         }
@@ -121,11 +121,11 @@ const EditCA = () => {
             });
 
             if (saveResponse.status === 200) {
-                alert('Success',`${countryIsoInput} 저장 성공.`,'success');
+                alert('Success',`${extractedData.countryName} 저장 성공.`,'success');
                 await fetchCountries();
                 setSelectedCountry(null);
             } else {
-                alert('Error',`${countryIsoInput} 저장 실패.`,'error');
+                alert('Error',`${extractedData.countryName} 저장 실패.`,'error');
             }
 
         } catch (error) {
@@ -170,7 +170,7 @@ const EditCA = () => {
 
         const existingAirport = airports.find(airport => airport.airportIso === airportIataInput);
         if (existingAirport) {
-            alert('Warning',`${airportIataInput}는 이미 존재합니다.`,'warning');
+            alert('Warning',`${existingAirport.airportName}는 이미 존재합니다.`,'warning');
             setAirportIataInput('');
             return;
         }
@@ -200,7 +200,7 @@ const EditCA = () => {
             });
 
             if (saveResponse.status === 200) {
-                alert('Success',`${airportIataInput} 저장 성공.`,'success');
+                alert('Success',`${extractedData.airportName} 저장 성공.`,'success');
                 await fetchAirportsByCountry(selectedCountry.id);
             } else {
                 window.alert('저장 실패');
