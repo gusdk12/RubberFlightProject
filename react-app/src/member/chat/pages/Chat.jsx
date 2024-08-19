@@ -104,10 +104,18 @@ const Chat = (props) => {
               {chatHistory.map((chat, index) => (
                 <div key={index} style={{ marginBottom: '10px' }}>
                   { chat.sender !== 'Lumi' ? 
-                    (<div ><Flex justifyContent='end'><Image borderRadius='full' boxSize='40px' src={props.activeUsersPic} border='2px solid #ffa9e8'/></Flex>
-                    <Flex justifyContent='end'><div dangerouslySetInnerHTML={{ __html: chat.text }} className={styles.contentUser}/></Flex></div>)
-                  : (<div id={styles.Bot}><Image borderRadius='full' boxSize='40px' src={Bot} border='2px solid #3791f9' backgroundColor= '#3791f9'/>
-                    <div dangerouslySetInnerHTML={{ __html: chat.text }} className={styles.contentBot}/></div>)}
+                    (<div>
+                      <Flex justifyContent='end'>
+                        <Image borderRadius='full' boxSize='40px' objectFit='cover' src={props.activeUsersPic} border='2px solid #ffa9e8' />
+                      </Flex>
+                      <Flex justifyContent='end'>
+                        <div dangerouslySetInnerHTML={{ __html: chat.text }} className={styles.contentUser}/>
+                      </Flex>
+                    </div>)
+                  : (<div>
+                      <Image borderRadius='full' boxSize='40px' objectFit='cover' src={Bot} border='2px solid #3791f9' backgroundColor= '#3791f9'/>
+                      <div dangerouslySetInnerHTML={{ __html: chat.text }} className={styles.contentBot}/>
+                    </div>)}
                 </div>
               ))}
             </div>

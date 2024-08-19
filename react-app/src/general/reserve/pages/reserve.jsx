@@ -14,6 +14,7 @@ const Reserve = () => {
   const [buyerName, setBuyerName] = useState('');
   const [buyerTel, setBuyerTel] = useState('');
   const [buyerEmail, setBuyerEmail] = useState('');
+  const [buyerBirth, setBuyerBirth] = useState('');
   const token = Cookies.get('accessToken');
   const backUrl = process.env.REACT_APP_BACK_URL;
 
@@ -24,6 +25,23 @@ const Reserve = () => {
   const location = useLocation();
   const { flight, passengers } = location.state || {};
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('Passengers:', passengers);
+  }, [passengers]);
+
+  const extractNumbersFromString = (str) => {
+    const numbers = str.match(/\d+/g);
+    console.log("Extracted numbers:", numbers); // 추출된 숫자 배열 출력
+
+    return numbers ? numbers.map(Number) : [0, 0, 0]; // 배열로 변환
+  };
+
+  const [adults, children, infants] = extractNumbersFromString(passengers);
+
+  console.log("Adults:", adults); // 성인 수
+  console.log("Children:", children); // 소아 수
+  console.log("Infants:", infants); // 유아 수
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -86,9 +104,19 @@ const Reserve = () => {
 
   const isRoundTripValue = isRoundTrip();
 
-  const totalPrice = isRoundTripValue
-    ? flight.outbound.price + flight.inbound.price
-    : flight.price;
+  // 가격
+  const getPriceForFlight = (price) => {
+    return isRoundTripValue ? flight.outbound.price + flight.inbound.price : flight.price
+  };
+
+  const adultPrice = getPriceForFlight(flight.price); // 성인 1명의 가격
+  const childPrice = adultPrice * 0.75; // 소아는 성인 가격의 75%
+  const infantPrice = adultPrice * 0.10; // 유아는 성인 가격의 10%
+
+  const outboundTotalPrice = (adults * adultPrice) + (children * childPrice) + (infants * infantPrice);
+  // const inboundTotalPrice = isRoundTripValue ? (adults * adultPrice) + (children * childPrice) + (infants * infantPrice) : 0;
+
+  const totalPrice = outboundTotalPrice;
 
   const discountedPrice = selectedCoupon
     ? Math.floor(totalPrice * (1 - selectedCoupon.percent / 100) / 10) * 10
@@ -100,7 +128,19 @@ const Reserve = () => {
     );
   };
 
+  // 유효성
+  const isFormValid = () => {
+    return buyerName.trim() !== '' && 
+           buyerEmail.trim() !== '' && 
+           buyerTel.trim() !== '' &&
+           buyerBirth.trim() !== ''
+  };
+
   const onClickPayment = () => {
+    if (!isFormValid()) {
+      window.alert("예약자 정보를 입력해주세요");
+      return;
+    }
     if (!window.IMP) return;
     /* 1. 가맹점 식별하기 */
     const { IMP } = window;
@@ -319,37 +359,61 @@ const Reserve = () => {
           </>
         ) : (
           <>
-            <div className={style.airportInfo}>
-              <div className={style.depAirportInfo}>
-                <div className={style.airportIcon}><PiAirplaneTakeoffBold /></div>
-                <h2>가는 항공편</h2>
-                <div className={style.airports}>
-                  <div>{flight.depAirport}</div>
-                  <div className={style.airportArrow}><HiArrowLongRight /></div>
-                  <div>{flight.arrAirport}</div>
-                </div>
-              </div>
-
-              <div className={style.ticket}>
-                <div>{flight.airlineName}</div>
-                <div className={style.depDayTime}>{flight.depDayFormat}<br />
-                  {flight.depTime}</div>
-                <div className={style.takeTime}>
-                  <div className={style.duringTime}><FaCircle /></div>
-                  <div className={style.line}>
-                    <div className={style.takeTimeFormat}>{flight.takeTimeFormat}</div>
-                    <div className={style.type}>직항</div>
+            <Flex direction="row" justifyContent="space-between">
+              <div className={style.airportInfo}>
+                <div className={style.airportInfo}>
+                  <div className={style.depAirportInfo}>
+                    <div className={style.airportIcon}><PiAirplaneTakeoffBold /></div>
+                    <h2>가는 항공편</h2>
+                    <div className={style.airports}>
+                      <div>{flight.depAirport}</div>
+                      <div className={style.airportArrow}><HiArrowLongRight /></div>
+                      <div>{flight.arrAirport}</div>
+                    </div>
                   </div>
-                  <div className={style.duringTime2}><FaCircle /></div>
+
+                  <div className={style.ticket}>
+                    <div>{flight.airlineName}</div>
+                    <div className={style.depDayTime}>{flight.depDayFormat}<br />
+                      {flight.depTime}</div>
+                    <div className={style.takeTime}>
+                      <div className={style.duringTime}><FaCircle /></div>
+                      <div className={style.line}>
+                        <div className={style.takeTimeFormat}>{flight.takeTimeFormat}</div>
+                        <div className={style.type}>직항</div>
+                      </div>
+                      <div className={style.duringTime2}><FaCircle /></div>
+                    </div>
+                    <div>{flight.arrDayFormat}<br />
+                      {flight.arrTime}</div>
+                    <div><FlightPrice price={flight.price} /></div>
+                  </div>
                 </div>
-                <div>{flight.arrDayFormat}<br />
-                  {flight.arrTime}</div>
-                <div><FlightPrice price={flight.price} /></div>
+                <div className={style.note}>
+                  ※ 항공사 별로 조회좌석수가 예약완료 후의 좌석상태와 상이할 수 있음을 미리 안내해드리며, 반드시 예약완료 후의 좌석상태를 확인해주시기 바랍니다.
+                </div>
               </div>
-            </div>
-            <div className={style.note}>
-              ※ 항공사 별로 조회좌석수가 예약완료 후의 좌석상태와 상이할 수 있음을 미리 안내해드리며, 반드시 예약완료 후의 좌석상태를 확인해주시기 바랍니다.
-            </div>
+              <Box className={style.userInfo}>
+                <Heading as="h2" size="md" mb="4">상품 결제 정보</Heading>
+                <Flex direction="column" bg="gray.50" p="4">
+                  <Flex direction="column" pr="4">
+                    <Text mb="2" fontFamily="Noto Sans KR" fontSize="17px">총 항공 예상 운임</Text>
+                    <Text mb="2" fontFamily="Verdana, Geneva, Tahoma, sans-serif" fontSize="12px" color="gray.700">{passengers}</Text>
+                    <div>
+                      <CouponDropdown
+                        coupons={coupons}
+                        onSelectCoupon={setSelectedCoupon}
+                      />
+                    </div>
+                  </Flex>
+                  <Flex mt={6} direction="row" justifyContent="flex-end" alignItems="flex-end">
+                    <Text fontSize="30px" fontFamily="Verdana, Geneva, Tahoma, sans-serif" color="purple.600" mb="2">{discountedPrice.toLocaleString('ko-KR')}</Text>
+                    <Text pl={2} pb={3} fontSize="14px" color="gray.500">원</Text>
+                  </Flex>
+                </Flex>
+                <Button onClick={onClickPayment} colorScheme="purple" mt="4" size="lg" width="full">결제하기</Button>
+              </Box>
+            </Flex>
           </>
         )}
 
@@ -369,7 +433,15 @@ const Reserve = () => {
                   />
                 </td>
                 <td><label htmlFor="buyerBirth">생년월일</label></td>
-                <td><input type="text" id="buyerBirth" name="buyerBirth" /></td>
+                <td>
+                  <input
+                    type="text"
+                    id="buyerBirth"
+                    value={buyerBirth}
+                    onChange={(e) => setBuyerBirth(e.target.value)}
+                    required
+                  />
+                </td>
               </tr>
               <tr>
                 <td><label htmlFor="buyerEmail">이메일</label></td>
@@ -396,8 +468,8 @@ const Reserve = () => {
             </tbody>
           </table>
           <div className={style.note}>
-              ※ 입력하신 개인정보는 안전하게 보호되며, 예약 및 결제 처리 외의 용도로는 사용되지 않습니다.
-            </div>
+            ※ 입력하신 개인정보는 안전하게 보호되며, 예약 및 결제 처리 외의 용도로는 사용되지 않습니다.
+          </div>
         </div>
       </div>
     </>

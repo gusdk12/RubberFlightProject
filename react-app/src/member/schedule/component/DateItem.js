@@ -4,26 +4,33 @@ import TextareaAutosize from 'react-textarea-autosize';
 import 'flatpickr/dist/flatpickr.min.css';
 import Flatpickr from 'react-flatpickr';
 import { FaTrash } from "react-icons/fa6";
+import debounce from 'lodash.debounce';
 
 const DateItem = ({ index, dateInfo, handleChange, handleDeleteDate }) => {
     const {id, date, content} = dateInfo;
     const [localContent, setLocalContent] = useState('');
     const contentRef = useRef(localContent);
 
+    // useEffect(() => {
+    //     setLocalContent(content);
+    //     contentRef.current = content;
+    // }, []);
     useEffect(() => {
         setLocalContent(content);
-        contentRef.current = content;
+        // contentRef.current = content;
     }, [content]);
 
     useEffect(() => {
         contentRef.current = localContent; // Update the ref whenever localContent changes
     }, [localContent]);
 
+    const sendContentDebounced = debounce(() => {
+        handleChange(index, contentRef.current, 1);
+    }, 1000); // 500ms debounce
+
     const onInputChange = (event) => {
-        // handleChange(index, event.target.value, 1);
-        const newValue = event.target.value;
-        setLocalContent(newValue);
-        handleChange(index, newValue, 1);
+        setLocalContent(event.target.value);
+        sendContentDebounced();
     };
     const onDateChange = (changedDate) => {
         handleChange(index, changedDate, 0);
