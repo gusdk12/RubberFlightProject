@@ -9,7 +9,7 @@ import CouponModal from './CouponModal';
 import { useNavigate } from 'react-router-dom';
 import UserInfoModal from './UserInfoModal';
 import Swal from 'sweetalert2';
-import { FaPlane, FaCalendarAlt, FaClipboardCheck, FaThumbsUp } from "react-icons/fa";
+import { FaPlane, FaCalendarAlt, FaClipboardCheck, FaThumbsUp, FaUser } from "react-icons/fa";
 import styles from '../CSS/UserInfoModal.module.css';
 import Cookies from 'js-cookie';
 
@@ -177,6 +177,15 @@ const UserInfo = () => {
 
   return (
     <>
+      <div className={styles.infoContainer}>
+      <Box className={styles.info}>
+        <Flex alignItems="center">
+          <Icon as={FaUser} boxSize={8} mr={2} />
+          <Text marginLeft="5px">내 정보</Text>
+        </Flex>
+      </Box>
+      </div>
+
       <Box
         maxWidth="900px"
         width="90%"
