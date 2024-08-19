@@ -271,7 +271,7 @@ const Search = () => {
   useEffect(() => {
     if (isSearchReady && departure && arrival && departureDate) {
       handleSearch();
-      setIsSearchReady(false); // 검색 후 플래그 리셋
+      setIsSearchReady(false);
     }
   }, [isSearchReady, departure, arrival, departureDate]);
 
@@ -568,6 +568,12 @@ const Search = () => {
       {errorMessage && (
         <div className={style.errorMessage} ref={errorRef}>
           {errorMessage}
+        </div>
+      )}
+
+      {!isLoading && (tripType === 'round-trip' ? results.combinations : results.outboundFlights).length === 0 && (
+        <div className={style.noResultsMessage}>
+          해당 공항편이 없습니다.
         </div>
       )}
 
