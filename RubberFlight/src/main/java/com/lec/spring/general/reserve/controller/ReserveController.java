@@ -62,13 +62,13 @@ public class ReserveController {
         String depTimezone = airportService.findByIso(iataCode).getTimezone();
         String arrTimezone = airportService.findByIso(arrIataCode).getTimezone();
 
-        System.out.println("출발 iataCode" + iataCode);
-        System.out.println("도착 iataCode" + arrIataCode);
-        System.out.println("출발 날짜" + depDate);
-        System.out.println("도착 날짜" + arrDate);
-        System.out.println("출발 타임존" + depTimezone);
-        System.out.println("도착 타임존" + arrTimezone) ;
-        System.out.println("arrDate: " + arrDate);
+//        System.out.println("출발 iataCode" + iataCode);
+//        System.out.println("도착 iataCode" + arrIataCode);
+//        System.out.println("출발 날짜" + depDate);
+//        System.out.println("도착 날짜" + arrDate);
+//        System.out.println("출발 타임존" + depTimezone);
+//        System.out.println("도착 타임존" + arrTimezone) ;
+//        System.out.println("arrDate: " + arrDate);
 
 
 
@@ -93,7 +93,7 @@ public class ReserveController {
         responseMap.put("outboundFlights", sortedOutboundFlights);
         responseMap.put("inboundFlights", sortedInboundFlights);
 
-        System.out.println("항공권 정보" + responseMap);
+//        System.out.println("항공권 정보" + responseMap);
 
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
@@ -185,7 +185,7 @@ public class ReserveController {
 //        System.out.println("왕복일까요111" + isRoundTrip);
 
         Coupon coupon = couponService.findById(reserveRequest.getCouponId());
-        System.out.println("가져온 쿠폰 정보" + coupon);
+//        System.out.println("가져온 쿠폰 정보" + coupon);
 
         Reserve reserve = reserveService.saveReservation(userId, reserveRequest.getPersonnel(), isRoundTrip, outboundFlight, inboundFlight, coupon);
 //        System.out.println("예약정보" + reserve);
