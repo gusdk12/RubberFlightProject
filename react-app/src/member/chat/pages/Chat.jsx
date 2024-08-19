@@ -14,7 +14,7 @@ import Help from '../../../assets/images/schedule/help.webp';
 const Chat = (props) => {
   const {userInfo} = useUser();
   const [loading, setLoading] = useState(false);
-  const initialMessages = [{ sender: 'Lumi', text: `안녕하세요!<br/> 무엇을 도와드릴까요?` }];
+  const initialMessages = [{ sender: 'Lumi', text: `안녕하세요!<br/> 어떤 여행지를 추천해드릴까요?` }];
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState(initialMessages);
   const backUrl = process.env.REACT_APP_BACK_URL;
