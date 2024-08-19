@@ -660,12 +660,40 @@ const Search = () => {
               {paginatedResults.map((flight, index) => (
                 <li key={index} onClick={() => handleClick(flight)}>
                   <div className={style.flightInfo}>
-                    <div className={style.flightAirline}>{flight.airlineName}</div>
+                    <div className={style.flightInfo}>
+                      <div className={style.flightAirline}>
+                        <div>{flight.airlineName}</div>
+                      </div>
+                      <div className={style.flightTimes}>
+                        <div className={style.flightDepTime}>
+                          {flight.depTime}
+                          <div className={style.depAirport}>{flight.depAirport}</div>
+                        </div>
+                      </div>
+                            <div className={style.airplane2}><IoAirplane /></div>
+                      <div className={style.flightTimes2}>
+                        <div className={style.flightArrTime}>
+                          {flight.arrTime}
+                          <div className={style.arrAirport}>{flight.arrAirport}</div>
+                        </div>
+                      </div>
+                      
+                      <div className={style.flightTakeTimes}>
+                        <div className={style.flightTakeTime}>{flight.takeTimeFormat}</div>
+                      </div>
+                    </div>
+                    <div className={style.flightPrice}>
+                      <div className={style.verticalLine}></div>
+                      <div className={style.totalPrice}>
+                        {(flight.priceFormat).toLocaleString('ko-KR')}원
+                      </div>
+                    </div>
+                    {/* <div className={style.flightAirline}>{flight.airlineName}</div>
                     <div className={style.flightDepTime}>{flight.depTime}<div className={style.depAirport}>{flight.depAirport}</div></div>
                     <div className={style.flightArrTime}>{flight.arrTime}<div className={style.arrAirport}>{flight.arrAirport}</div></div>
                     <div className={style.flightTakeTime}>{flight.takeTimeFormat}</div>
                     <div className={style.verticalLine}></div>
-                    <div className={style.flightPrice}>{flight.priceFormat}원</div>
+                    <div className={style.flightPrice}>{flight.priceFormat}원</div> */}
                   </div>
                 </li>
               ))}
