@@ -32,43 +32,34 @@ const LoginForm = () => {
   }, []);
 
   return (
-    <>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: 100
-        }}
-      >
-        <div
-          style={{
-            backgroundImage: 'url(/images/icons/commercial-plane.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center center',
-            width: '75px',
-            height: '75px',
-            cursor: 'pointer'
-          }}
-          onClick={home}
-        ></div>
-      </div>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh"
+      p={4}
+    >
+      {/* 로그인 텍스트 */}
+      <Box mb={0} textAlign="center">
+        <h1 style={{ fontSize: '3rem', fontWeight: 'bold' }}>Login</h1>
+      </Box>
 
       {/* Flex 컨테이너: 왼쪽에는 이미지, 오른쪽에는 로그인 폼 */}
-      <Flex maxWidth="1000px" height="600px" mx="auto" p={6} bg="white" borderRadius="md" boxShadow="md" alignItems="center">
+      <Flex maxWidth="1000px" height="500px" mx="auto" p={0} bg="white" borderRadius="md" alignItems="center">
         {/* 왼쪽 이미지 영역 */}
         <Box className={styles.banner}
           flex="1"
           bgSize="cover"
           bgPosition="center"
           height="400px"
+          width="500px"
           marginRight="7px"
           padding="10px"
         />
 
         {/* 오른쪽 로그인 폼 영역 */}
         <Box flex="1" p={4}>
-          <h2 style={{ textAlign: 'center', marginBottom: '1rem', fontSize: 30 }}>Login</h2>
           <form onSubmit={(e) => onLogin(e)}>
             <Stack spacing={4}>
               <FormControl id="username">
@@ -189,7 +180,7 @@ const LoginForm = () => {
           </form>
         </Box>
       </Flex>
-    </>
+    </Box>
   );
 };
 
