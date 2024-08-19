@@ -7,7 +7,7 @@ import { Image, GridItem } from '@chakra-ui/react'
 import Flight from "../../../assets/images/review/top1.webp";
 import Stamp from "../../../assets/images/review/stamp.webp";
 
-const AirlineReviewItem = ({review}) => {
+const AirlineReviewItem = ({review, index}) => {
   useEffect(() => {
     document.body.style.boxSizing = "border-box";
   });
@@ -20,24 +20,24 @@ const AirlineReviewItem = ({review}) => {
 
     return (
         <>
-          <Flex>
-            <div className={styles.profileCon}>
+          <Flex className={`${index % 2 === 0 ? styles.listBox1 : styles.listBox2}`}>
+            <div className={styles.profileCon} style={{transform: index % 2 === 0 ? 'scaleX(1)' : 'scaleX(-1)'}}>
               <div className={styles.userImg}><Image src={review.flightInfo.reserve.user.image} className={styles.proFile}/></div>
               <div className={styles.username}>{review.flightInfo.reserve.user.name}</div>
             </div>
             <MotionBox
-              key={review.id} onClick={onOpen}
+              key={review.id} onClick={onOpen} className={styles.reviewBox} style={{transform: index % 2 === 0 ? 'scaleY(1)' : 'scaleY(-1)'}}
               initial={{ opacity: 0, scale: 1 }} animate={{ opacity: 1, x: 0, scale: 1 }}
               whileHover={{ scale: 1.02 }} exit={{ opacity: 0 }} 
               transition={{ default: { duration: 0.5 }, scale: { duration: 0.5 }, paddingBottom: { duration: 0.3 } }}
-              position="relative" className={styles.reviewBox}>
+              position="relative">
               <Grid
                 templateAreas={`"header header" "main main" "footer footer"`}
-                gridTemplateRows={'50px 40px 1fr'}
+                gridTemplateRows={'30px 40px 1fr'}
                 gridTemplateColumns={'120px 1fr'}
                 h='100%' gap='1' color='blackAlpha.700' fontWeight='bold'>
                 <GridItem pl='3' mt='1 ' area={'header'}>
-                  <Flex justifyContent='right'>
+                  <Flex justifyContent='right' style={{transform: index % 2 === 0 ? 'scaleX(1)' : 'scaleX(-1)'}}>
                     <div className={styles.writeDate}>
                     {new Date(review.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}</div>
                   </Flex>
@@ -49,19 +49,19 @@ const AirlineReviewItem = ({review}) => {
                     </div>
                 </GridItem> */}
                 <GridItem pl='2' area={'main'}>
-                  <Flex>
+                  <Flex style={{transform: index % 2 === 0 ? 'scaleX(1)' : 'scaleX(-1)'}}>
                     <div><img src={Flight} className={styles.top}/></div>
                     <div className={styles.airlinename}>{review.airline.name}</div>
                     <div className={styles.airlinerate}><TotalStarRating rate={totalRate} className={styles.stars}/></div>
                     <div className={styles.totalscore}>({totalRate})</div>
                   </Flex>
                 </GridItem>
-                <GridItem pl='2' area={'footer'}>
+                <GridItem pl='2' area={'footer'} style={{transform: index % 2 === 0 ? 'scaleX(1)' : 'scaleX(-1)'}}>
                   <div className={styles.cardtitle}>"{review.title}"</div>
                 </GridItem>
               </Grid>         
             </MotionBox>
-          </Flex> 
+          </Flex>
 
           <Modal isOpen={isOpen} onClose={onClose} size='3xl' isCentered>
             <ModalOverlay/>
