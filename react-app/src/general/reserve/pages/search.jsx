@@ -59,6 +59,7 @@ const Search = () => {
   const [showError, setShowError] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -271,7 +272,7 @@ const Search = () => {
   useEffect(() => {
     if (isSearchReady && departure && arrival && departureDate) {
       handleSearch();
-      setIsSearchReady(false); // 검색 후 플래그 리셋
+      setIsSearchReady(false);
     }
   }, [isSearchReady, departure, arrival, departureDate]);
 
@@ -317,6 +318,7 @@ const Search = () => {
     setErrorMessage('');
     setResults({ outboundFlights: [], inboundFlights: [], combinations: [] });
     setIsLoading(true); 
+    setHasSearched(true);
 
     try {
       // API 호출
@@ -573,6 +575,12 @@ const Search = () => {
           {errorMessage}
         </div>
       )}
+
+        {!isLoading && hasSearched && (tripType === 'round-trip' ? results.combinations : results.outboundFlights).length === 0 && (
+          <div className={style.noResultsMessage}>
+            해당 공항편이 없습니다.
+          </div>
+        )}
 
       <div className={style.results}>
         {tripType == "round-trip" && paginatedResults.length > 0 && (
