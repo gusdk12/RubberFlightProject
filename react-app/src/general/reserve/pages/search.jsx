@@ -14,7 +14,7 @@ import { Box, Text } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { FaInfoCircle } from 'react-icons/fa';
-import PageButtons from '../components/PageButtons ';
+import PageButtons from '../components/PageButtons'
 import { Spinner } from '@chakra-ui/react';
 
 const Search = () => {
