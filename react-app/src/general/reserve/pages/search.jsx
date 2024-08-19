@@ -14,7 +14,7 @@ import { Box, Text } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { FaInfoCircle } from 'react-icons/fa';
-import PageButtons from '../components/PageButtons'
+import PageButtons from '../components/PageButtons';
 import { Spinner } from '@chakra-ui/react';
 
 const Search = () => {
@@ -29,7 +29,7 @@ const Search = () => {
   const [departureDate, setDepartureDate] = useState('');
   const [returnDate, setReturnDate] = useState('');
 
-  const [departure, setDeparture] = useState('ICN');
+  const [departure, setDeparture] = useState('');
   const [arrival, setArrival] = useState('');
   const [airports, setAirports] = useState([]);
   const [filteredAirports, setFilteredAirports] = useState([]);
@@ -408,7 +408,10 @@ const Search = () => {
                   className="editable-div" id={style.editableDiv}
                   onClick={() => handleClickEdit('departure')}
                 >
-                  <div className="airportName" id={style.airportName}>{departure || '출발'}</div>
+                   <div
+                    className={`airportName ${departure ? style.airportName : style.placeholderText}`}
+                    id={style.airportName}
+                  >{departure || '도시, 공항명 입력'}</div>
                   <div className={style.selectArrow} />
                 </div>
                 {activeField === 'departure' && (
