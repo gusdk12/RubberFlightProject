@@ -76,50 +76,45 @@ public class NoteController {
         return allList;
     }
 
-    private final Map<Long, Set<String>> activeUsersMap = new ConcurrentHashMap<>();
+    private final Map<Long, Set<Long>> activeUsersMap = new ConcurrentHashMap<>();
 
     @CrossOrigin
     @MessageMapping("/join/{id}")
     @SendTo("/topic/users/{id}")
-    public Set<String> joinUser(@RequestBody JoinRequestDTO request) {
+    public Set<Long> joinUser(@RequestBody JoinRequestDTO request) {
         Long scheduleId = request.getScheduleId();
         Long userId = jwtUtil.getId(request.getUserToken());
-        User enteredUser = userService.findById(userId);
-        String imageUrl = enteredUser.getImage();
 
-        activeUsersMap.computeIfAbsent(scheduleId, k -> new ConcurrentSkipListSet<>()).add(imageUrl);
-        Set<String> usersPics = activeUsersMap.get(scheduleId);
+        activeUsersMap.computeIfAbsent(scheduleId, k -> new ConcurrentSkipListSet<>()).add(userId);
+        Set<Long> users = activeUsersMap.get(scheduleId);
 
-        return usersPics;
+        return users;
     }
 
 
     @CrossOrigin
     @MessageMapping("/leave/{id}")
     @SendTo("/topic/users/{id}")
-    public Set<String> leaveUser(@RequestBody JoinRequestDTO request) {
+    public Set<Long> leaveUser(@RequestBody JoinRequestDTO request) {
         Long scheduleId = request.getScheduleId();
         Long userId = jwtUtil.getId(request.getUserToken());
-        User enteredUser = userService.findById(userId);
-        String imageUrl = enteredUser.getImage();
 
-        Set<String> usersPics = activeUsersMap.get(scheduleId);
-        if (usersPics != null) {
-            usersPics.remove(imageUrl);
-            if (usersPics.isEmpty()) {
+        Set<Long> users = activeUsersMap.get(scheduleId);
+        if (users != null) {
+            users.remove(userId);
+            if (users.isEmpty()) {
                 activeUsersMap.remove(scheduleId);
             }
         }
-        return usersPics;
+        return users;
     }
 
     @CrossOrigin
     @GetMapping("/users/{id}")
-    public Set<String> getUsers(@PathVariable Long id) {
-        Set<String> usersPics = activeUsersMap.get(id);
+    public Set<Long> getUsers(@PathVariable Long id) {
+        Set<Long> usersPics = activeUsersMap.get(id);
         if(usersPics.isEmpty()){
-            Set<String> empty = new HashSet<>();
-            empty.add("empty");
+            Set<Long> empty = new HashSet<>();
             return empty;
         }
 

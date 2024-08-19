@@ -15,13 +15,18 @@ const ScheduleEditPart = (props) => {
     const backUrl = process.env.REACT_APP_BACK_URL;
     
     useEffect(() => {
+        let isSubScribed = false;
         fetch(`${backUrl}/dates/${props.ScheduleId}`)
             .then(response => response.json())
             .then(data => {
                 setDates([...data])
+            })
+            .then(() => {
+                if(!isSubScribed){
+                    webSocketService.subscribeTo(props.ScheduleId, setDates, "dates");
+                    isSubScribed = true;
+                }
             });
-            
-        webSocketService.subscribeTo(props.ScheduleId, setDates, "dates");
 
     }, [props.ScheduleId]);
     

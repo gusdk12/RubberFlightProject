@@ -7,9 +7,14 @@ class WebSocketService {
         this.stompClient = null;
         this.connected = false;
         this.connectPromise = null;
+        this.activeSubscriptions = {};
     }
 
     connect(callback, id) {
+        if (this.connected || this.connectPromise) {
+            return this.connectPromise;
+        }
+
         const backUrl = process.env.REACT_APP_BACK_URL;
         if (!this.connectPromise) {
             this.connectPromise = new Promise((resolve, reject) => {
@@ -25,6 +30,17 @@ class WebSocketService {
             });
         }
         return this.connectPromise;
+    }
+
+    disconnect() {
+        if (this.stompClient) {
+            this.stompClient.disconnect(() => {
+                console.log("Disconnected");
+                this.stompClient = null;
+                this.connected = false;
+                this.connectPromise = null;
+            });
+        }
     }
 
     ensureConnected(id) {
@@ -86,14 +102,21 @@ class WebSocketService {
     }
 
     subscribeTo(id, callback, link) {
+        // const topic = `/topic/${link}/${id}`;
+        // if (this.activeSubscriptions[topic]) {
+        //     console.log(`Already subscribed to ${topic}`);
+        //     return Promise.resolve();
+        // }
+
         return this.ensureConnected(id).then(() => {
-            this.stompClient.subscribe(`/topic/${link}/${id}`, (message) => {
+            const subscription = this.stompClient.subscribe(`/topic/${link}/${id}`, (message) => {
                 if (message.body) {
                     // console.log(callback(JSON.parse(message.body).title));
                     link==="title" && callback(JSON.parse(message.body).title);
                     link==="title" || callback(JSON.parse(message.body));
                 }
             });
+            // this.activeSubscriptions[topic] = subscription;
         });
     }
 }
