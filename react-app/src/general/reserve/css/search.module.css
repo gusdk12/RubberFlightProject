@@ -141,7 +141,8 @@
   top: 105px;
   border-radius: 40px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  animation: slideUp 0.3s ease-in-out; 
+  animation: slideUp 0.3s ease-in-out;
+  background-color: #ffffff !important; 
 }
 
 .searchContainer {
@@ -543,7 +544,6 @@ input {
 }
 
 .verticalLine {
-  /* outline: 2px solid rebeccapurple; */
   width: 1px;
   height: 60px;
   background-color: rgb(155, 155, 155);
@@ -618,6 +618,14 @@ input {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.noResultsMessage {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+  margin-top: 60px;
+  margin-bottom: 400px;
 }
 
 .errorMessage {

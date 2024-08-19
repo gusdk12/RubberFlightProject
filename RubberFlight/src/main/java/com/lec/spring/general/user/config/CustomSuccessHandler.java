@@ -45,15 +45,37 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String token = jwtUtil.createJwt(id, username, role, name,60*60*600L);
 
+        System.out.println("생성된 JWT 토큰: " + token);
+
+        System.out.println("사용자 ID: " + id);
+        System.out.println("사용자 이름: " + name);
+        System.out.println("사용자 이메일/아이디: " + username);
+        System.out.println("사용자 역할: " + role);
+
         Cookie jwtCookie = new Cookie("accessToken", token);
         jwtCookie.setHttpOnly(false); // Allow JavaScript access
-        jwtCookie.setSecure(true); // Use only over HTTPS
+        jwtCookie.setSecure(false); // Use only over HTTPS
         jwtCookie.setPath("/"); // Available for all paths
         jwtCookie.setMaxAge(60 * 60 * 600); // Set expiration time
+
+        System.out.println("JWT 쿠키 생성됨. 쿠키 이름: " + jwtCookie.getName());
+        System.out.println("쿠키 값: " + jwtCookie.getValue());
+        System.out.println("쿠키 만료 시간(초): " + jwtCookie.getMaxAge());
+        System.out.println("쿠키 경로: " + jwtCookie.getPath());
+        System.out.println("쿠키 보안 설정: " + jwtCookie.getSecure());
 
         response.addCookie(jwtCookie);
 
         response.addCookie(createCookie("Authorization", token));
+
+        // 콘솔확인용 추가
+        Cookie authCookie = createCookie("Authorization", token);
+        System.out.println("Authorization 쿠키 생성됨. 쿠키 이름: " + authCookie.getName());
+        System.out.println("쿠키 값: " + authCookie.getValue());
+
+
+        System.out.println("리다이렉트 경로: " + frontServerUrl + "/");
+
         response.sendRedirect(frontServerUrl + "/");
     }
 

@@ -62,9 +62,15 @@ public class ReserveController {
         String depTimezone = airportService.findByIso(iataCode).getTimezone();
         String arrTimezone = airportService.findByIso(arrIataCode).getTimezone();
 
-        System.out.println(depTimezone);
-        System.out.println(arrTimezone) ;
+        System.out.println("출발 iataCode" + iataCode);
+        System.out.println("도착 iataCode" + arrIataCode);
+        System.out.println("출발 날짜" + depDate);
+        System.out.println("도착 날짜" + arrDate);
+        System.out.println("출발 타임존" + depTimezone);
+        System.out.println("도착 타임존" + arrTimezone) ;
         System.out.println("arrDate: " + arrDate);
+
+
 
         String depAirportName = airportService.findByIso(iataCode).getAirportName();
         String arrAirportName = airportService.findByIso(arrIataCode).getAirportName();
@@ -86,6 +92,8 @@ public class ReserveController {
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("outboundFlights", sortedOutboundFlights);
         responseMap.put("inboundFlights", sortedInboundFlights);
+
+        System.out.println("항공권 정보" + responseMap);
 
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
