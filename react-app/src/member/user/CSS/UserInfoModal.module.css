@@ -57,7 +57,11 @@
 }
 
 .nextIcon{
-    width: 50px;
-    height: auto;
+    width: 25px;
+    height: 25px;
     background-image: url('../../../../src/assets/images/mypage/next.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none !important;
+    margin-left: 0;
 }

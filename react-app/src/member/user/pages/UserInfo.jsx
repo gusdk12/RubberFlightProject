@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import UserInfoModal from './UserInfoModal';
 import Swal from 'sweetalert2';
 import { FaPlane, FaCalendarAlt, FaClipboardCheck, FaThumbsUp } from "react-icons/fa";
-import styles from '../CSS/UserInfoModal.module.css'
+import styles from '../CSS/UserInfoModal.module.css';
 
 const UserInfo = () => {
   const { isLogin, logout } = useContext(LoginContext);
@@ -95,6 +95,7 @@ const UserInfo = () => {
         boxShadow="md"
         bg="white"
       >
+        {/* Header Section */}
         <Flex p={4} bg="blue.600" color="white" borderTopRadius="lg" align="center" justify="space-between">
           <Flex align="center" ml={3}>
             <Avatar 
@@ -102,7 +103,7 @@ const UserInfo = () => {
               name={formData.name || '이름 없음'} 
               src={formData.existingImage || '/default-avatar.png'} 
             />
-            <Box ml={4} display="flex" flexDirection="column" alignItems="flex-start"> 
+            <Box ml={4}>
               <Flex alignItems="center">
                 <Text fontSize="xl" fontWeight="bold">{formData.name || '이름 없음'}</Text>
                 <Icon as={IoMdSettings} boxSize={6} ml={2} cursor="pointer" onClick={handleOpenInfoModal}/> 
@@ -123,7 +124,8 @@ const UserInfo = () => {
             <Icon as={AiOutlineLogout} boxSize={6} onClick={handleLogout}  />
           </Button>
         </Flex>
-        <br />
+
+        {/* Content Section */}
         <Box p={4}>
           <Flex borderRadius="lg" bg="white" p={4} boxShadow="sm" mb={4}>
             <Box flex="1" p={4}>
@@ -151,107 +153,111 @@ const UserInfo = () => {
               <Flex mt={2} direction="row" align="center" justify="center" gap={14}>
                 <Flex direction="column" align="center" cursor="pointer" onClick={navigateToSchedule}>
                   <Icon as={BsCalendar} boxSize="50px" mb={3} color="blue.600" />
-                  <Text fontSize="sm" color="blue.600"  marginLeft="13px">일정 {">>"}</Text>
+                  <Text fontSize="sm" color="blue.600">일정 {">>"}</Text>
                 </Flex>
                 <Flex direction="column" align="center" cursor="pointer" onClick={navigateToChecklist}>
                   <Icon as={BsCheckCircle} boxSize="50px" mb={3} color="blue.600" />
-                  <Text fontSize="sm" color="blue.600" marginLeft="10px">체크리스트 {">>"}</Text>
+                  <Text fontSize="sm" color="blue.600">체크리스트 {">>"}</Text>
                 </Flex>
               </Flex>
             </Box>
           </Flex>
         </Box>
+
+        {/* Guideline Section */}
         <Box p={8} bg="gray.70" borderRadius="md">
-          <Text fontSize="lg" fontWeight="bold" textAlign={"center"}>가이드라인
-          <Image className={styles.nextIcon}></Image>
-          </Text>
-          <Text mt={1} textAlign={"center"}>러버플라이트 적극적으로 활용하기</Text>
-
-          <Flex
-          mt={8}
-          align="center"
-          justify="center"
-          position="relative"
-          gap={6}
-          px={10} 
-        >
-          <Divider
-            orientation="horizontal"
-            borderColor="gray.300"
-            position="absolute"
-            top="38%"
-            left="8%"
-            right="0"
-            width="85%" 
-          />
-
-          <Flex
-            direction="column"
-            align="center"
-            position="relative"
-            zIndex={1}
-            onClick={() => navigate("/search")}
-            cursor="pointer"
-            ml={4} 
-            mr={4} 
-          >
-            <Circle size="80px" bg="gray.200" boxShadow="sm">
-              <Icon as={FaPlane} boxSize={8} color="blue.600" />
-            </Circle>
-            <Text mt={2} fontSize="sm" color="blue.600">예약하기</Text>
+          <Flex justify="center" align="center">
+            <Text fontSize="lg" fontWeight="bold">가이드라인</Text>
+            <Box className={styles.nextIcon} ml={2} border={'none'}/>
           </Flex>
+          <Text mt={1} textAlign="center">러버플라이트 적극적으로 활용하기</Text>
 
+          {/* Navigation Section */}
           <Flex
-            direction="column"
+            mt={8}
             align="center"
+            justify="center"
             position="relative"
-            zIndex={1}
-            onClick={() => navigate("/schedule")}
-            cursor="pointer"
-            ml={4}
-            mr={4}
+            gap={6}
+            px={10}
           >
-            <Circle size="80px" bg="gray.200" boxShadow="sm">
-              <Icon as={FaCalendarAlt} boxSize={8} color="blue.600" />
-            </Circle>
-            <Text mt={2} fontSize="sm" color="blue.600">일정작성</Text>
-          </Flex>
+            <Divider
+              orientation="horizontal"
+              borderColor="gray.300"
+              position="absolute"
+              top="38%"
+              left="8%"
+              right="0"
+              width="85%"
+            />
 
-          <Flex
-            direction="column"
-            align="center"
-            position="relative"
-            zIndex={1}
-            onClick={() => navigate("/schedule")}
-            cursor="pointer"
-            ml={4}
-            mr={4}
-          >
-            <Circle size="80px" bg="gray.200" boxShadow="sm">
-              <Icon as={FaClipboardCheck} boxSize={8} color="blue.600" />
-            </Circle>
-            <Text mt={2} fontSize="sm" color="blue.600">체크리스트 작성</Text>
-          </Flex>
+            <Flex
+              direction="column"
+              align="center"
+              position="relative"
+              zIndex={1}
+              onClick={() => navigate("/search")}
+              cursor="pointer"
+              ml={4} 
+              mr={4} 
+            >
+              <Circle size="80px" bg="gray.200" boxShadow="sm">
+                <Icon as={FaPlane} boxSize={8} color="blue.600" />
+              </Circle>
+              <Text mt={2} fontSize="sm" color="blue.600">예약하기</Text>
+            </Flex>
 
-          <Flex
-            direction="column"
-            align="center"
-            position="relative"
-            zIndex={1}
-            onClick={() => navigate("/review")}
-            cursor="pointer"
-            ml={4}
-            mr={4}
-          >
-            <Circle size="80px" bg="gray.200" boxShadow="sm">
-              <Icon as={FaThumbsUp} boxSize={8} color="blue.600" />
-            </Circle>
-            <Text mt={2} fontSize="sm" color="blue.600">리뷰작성</Text>
+            <Flex
+              direction="column"
+              align="center"
+              position="relative"
+              zIndex={1}
+              onClick={() => navigate("/schedule")}
+              cursor="pointer"
+              ml={4}
+              mr={4}
+            >
+              <Circle size="80px" bg="gray.200" boxShadow="sm">
+                <Icon as={FaCalendarAlt} boxSize={8} color="blue.600" />
+              </Circle>
+              <Text mt={2} fontSize="sm" color="blue.600">일정작성</Text>
+            </Flex>
+
+            <Flex
+              direction="column"
+              align="center"
+              position="relative"
+              zIndex={1}
+              onClick={() => navigate("/schedule")}
+              cursor="pointer"
+              ml={4}
+              mr={4}
+            >
+              <Circle size="80px" bg="gray.200" boxShadow="sm">
+                <Icon as={FaClipboardCheck} boxSize={8} color="blue.600" />
+              </Circle>
+              <Text mt={2} fontSize="sm" color="blue.600">체크리스트 작성</Text>
+            </Flex>
+
+            <Flex
+              direction="column"
+              align="center"
+              position="relative"
+              zIndex={1}
+              onClick={() => navigate("/review")}
+              cursor="pointer"
+              ml={4}
+              mr={4}
+            >
+              <Circle size="80px" bg="gray.200" boxShadow="sm">
+                <Icon as={FaThumbsUp} boxSize={8} color="blue.600" />
+              </Circle>
+              <Text mt={2} fontSize="sm" color="blue.600">리뷰작성</Text>
+            </Flex>
           </Flex>
-        </Flex>
-        <br />
         </Box>
 
+        {/* Modals */}
         <CouponModal isOpen={isCouponModalOpen} onClose={handleCloseCouponModal} />
         <UserInfoModal 
           isOpen={isInfoModalOpen} 
