@@ -192,6 +192,7 @@ const EditCA = () => {
                 airportIso: data.codeIataAirport,
                 latitudeAirport: data.latitudeAirport,
                 longitudeAirport: data.longitudeAirport,
+                timezone: data.timezone,
                 country: { id: selectedCountry.id },
             };
 
