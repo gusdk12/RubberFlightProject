@@ -1,14 +1,18 @@
 /* 리뷰 목록 페이지 */
+.listBox2 {
+    transform: rotate(180deg) scaleY(-1) scaleX(1);
+}
+
+
 .reviewBox {
     max-width: 500px;
     min-width: 500px;
-    margin: 40px auto 40px 40px;
+    margin: 15px auto 20px 40px;
     width: 90%;
-    height: 200px;
+    height: 180px;
     border-width: 1px #edf9fffb;
     border-radius: 20px;
     padding: 16px;
-    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
     background-color: #edf9ff;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
@@ -23,7 +27,6 @@
     position:absolute;
     top: 90px;
     left:-28px;
-    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }
 
 .top {
@@ -51,6 +54,7 @@
     justify-content: center;
     margin-left: 80px;
 }
+
 
 .userImg .proFile {
     margin: 0 auto;

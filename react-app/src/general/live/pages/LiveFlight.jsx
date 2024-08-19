@@ -11,7 +11,7 @@ const LiveFlight = () => {
   const [flightData, setFlightData] = useState(null);
   const [depAirportData, setDepAirportData] = useState(null);
   const [arrAirportData, setArrAirportData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [iframeLoading, setIframeLoading] = useState(true);
   const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const LiveFlight = () => {
   },[]);
 
   const searchFly = async () => {
-    setLoading(true);
+    setIframeLoading(true);
 
     try {
       const response = await getLiveInfo(flightIataInput);
@@ -38,7 +38,7 @@ const LiveFlight = () => {
       if (!data) {
         alert("조회 실패", "실시간 비행 정보가 없거나 잘못된 코드입니다.", "error" )
         setFlightIataInput('');
-        setLoading(false);
+        setIframeLoading(false);
         return;
       }
 
@@ -101,7 +101,7 @@ const LiveFlight = () => {
       console.error("Error fetching flight or airport data:", error);
       alert('Error','존재하지 않습니다','error');
     } finally {
-      setLoading(false);
+      setIframeLoading(false);
     }
   };
 
@@ -127,7 +127,6 @@ const LiveFlight = () => {
 
       <div className={styles.allCon}>
         <div id={styles.headerairplane}/>
-        {/* <div className={styles.livestart1}>비행기 위치를 실시간으로 - </div> */}
         <div className={styles.livestart1}></div>
         <div className={styles.livestart2}>
           비행기 코드를 통해 위치를 검색해보세요<br />
@@ -144,7 +143,7 @@ const LiveFlight = () => {
             value={flightIataInput}
             onChange={(e) => setFlightIataInput(e.target.value)}
           />
-          <Button onClick={searchFly} id={styles.searchBtn} isLoading={loading}>Search</Button>
+          <Button onClick={searchFly} id={styles.searchBtn}>Search</Button>
         </div>
 
         <div className={styles.earthCon}>
@@ -157,21 +156,20 @@ const LiveFlight = () => {
             </div>
           )}
 
-          <iframe
-            id="map-iframe"
-            src={`/ApiTest.html?apiKey=${apiKey}`}
-            width="100%"
-            height="100%"
-            title="Google Map"
-          ></iframe>
-
-          {loading && (
+          {iframeLoading  && (
             <div className={styles.loadingOverlay}>
               <div className={styles.loadingImg}></div>
             </div>
           )}
 
-
+          <iframe
+            id="map-iframe"
+            src={`/GoogleMap.html?apiKey=${apiKey}`}
+            width="100%"
+            height="100%"
+            title="Google Map"
+            onLoad={() => setIframeLoading(false)}
+          ></iframe>
 
         </div>
       </div>
