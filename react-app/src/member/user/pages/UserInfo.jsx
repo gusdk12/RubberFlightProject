@@ -137,7 +137,7 @@ const UserInfo = () => {
             alignItems="center"
             borderRadius="full"
           >
-            <Icon as={AiOutlineLogout} boxSize={6} onClick={handleLogout} />
+            <Icon as={AiOutlineLogout} boxSize={6} onClick={logout}  />
           </Button>
         </Flex>
         

@@ -41,16 +41,17 @@ const Join = () => {
   }
 
   return (
-    <>
-      <div
+    <div
       className='container'
       style={{
-        background: 'linear-gradient(rgb(176, 201, 230), rgb(213, 225, 235), rgb(239, 243, 246))'
+        width: '100%',       
+        height: '100vh',      
+        background: 'linear-gradient(rgb(176, 201, 230), rgb(213, 225, 235), rgb(239, 243, 246))',
+        overflow: 'auto'
       }}
     >
-        <JoinForm join={join}/>
-      </div>
-    </>
+      <JoinForm join={join} />
+    </div>
   );
 };
 

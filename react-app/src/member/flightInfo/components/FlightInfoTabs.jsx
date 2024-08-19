@@ -86,7 +86,7 @@ const FlightInfoTabs = ({ pastFlights = [], upcomingFlights = [], reviewList = [
               </Box>
             </Flex>
           ) : (
-            <Text>지난 예약된 항공편이 없습니다.</Text>
+            <Text fontFamily="Noto Sans KR" fontWeight="700">지난 예약된 항공편이 없습니다.</Text>
           )}
         </TabPanel>
       </TabPanels>
