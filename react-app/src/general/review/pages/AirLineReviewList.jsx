@@ -13,7 +13,7 @@ const AirLineReviewList = () => {
   const [reviews, setReviews] = useState([]);
   const [sortOrder, setSortOrder] = useState("latest");
   const [currentPage, setCurrentPage] = useState(0); // 초기 페이지 번호 설정
-  const [pageSize] = useState(4); // 한 페이지에 보여줄 리뷰 개수
+  const [pageSize] = useState(5); // 한 페이지에 보여줄 리뷰 개수
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [airlineNames, setAirlineNames] = useState([]);
@@ -171,15 +171,15 @@ const AirLineReviewList = () => {
               <TabPanels>
                 <TabPanel>
                   {reviews.length > 0 ? (
-                    reviews.map((review) => {
-                      return (<AirlineReviewItem key={review.id} review={review} />);
+                    reviews.map((review, index) => {
+                      return (<AirlineReviewItem key={review.id} index={index} review={review} />);
                     })
                   ) : (<div className={styles.noReview}>작성된 리뷰가 없습니다.</div>)}
                 </TabPanel>
                 <TabPanel>
                   {reviews.length > 0 ? (
-                    reviews.map((review) => {
-                      return (<AirlineReviewItem key={review.id} review={review} />);
+                    reviews.map((review, index) => {
+                      return (<AirlineReviewItem key={review.id} index={index} review={review} />);
                     })
                   ) : (
                     <div className={styles.noReview}>작성된 리뷰가 없습니다.</div>
@@ -187,7 +187,6 @@ const AirLineReviewList = () => {
                 </TabPanel>
               </TabPanels>
             </Tabs>
-
           </div>
         </div>
             {totalPages > 0 && (
