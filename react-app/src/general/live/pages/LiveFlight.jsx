@@ -127,7 +127,6 @@ const LiveFlight = () => {
 
       <div className={styles.allCon}>
         <div id={styles.headerairplane}/>
-        {/* <div className={styles.livestart1}>비행기 위치를 실시간으로 - </div> */}
         <div className={styles.livestart1}></div>
         <div className={styles.livestart2}>
           비행기 코드를 통해 위치를 검색해보세요<br />
@@ -159,7 +158,7 @@ const LiveFlight = () => {
 
           <iframe
             id="map-iframe"
-            src={`/ApiTest.html?apiKey=${apiKey}`}
+            src={`/GoogleMap.html?apiKey=${apiKey}`}
             width="100%"
             height="100%"
             title="Google Map"
