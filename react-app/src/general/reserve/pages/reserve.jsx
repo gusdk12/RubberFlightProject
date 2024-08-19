@@ -14,6 +14,7 @@ const Reserve = () => {
   const [buyerName, setBuyerName] = useState('');
   const [buyerTel, setBuyerTel] = useState('');
   const [buyerEmail, setBuyerEmail] = useState('');
+  const [buyerBirth, setBuyerBirth] = useState('');
   const token = Cookies.get('accessToken');
   const backUrl = process.env.REACT_APP_BACK_URL;
 
@@ -24,6 +25,23 @@ const Reserve = () => {
   const location = useLocation();
   const { flight, passengers } = location.state || {};
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('Passengers:', passengers);
+  }, [passengers]);
+
+  const extractNumbersFromString = (str) => {
+    const numbers = str.match(/\d+/g);
+    console.log("Extracted numbers:", numbers); // 추출된 숫자 배열 출력
+
+    return numbers ? numbers.map(Number) : [0, 0, 0]; // 배열로 변환
+  };
+  
+  const [adults, children, infants] = extractNumbersFromString(passengers);
+
+  console.log("Adults:", adults); // 성인 수
+  console.log("Children:", children); // 소아 수
+  console.log("Infants:", infants); // 유아 수
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -86,11 +104,21 @@ const Reserve = () => {
 
   const isRoundTripValue = isRoundTrip();
 
-  const totalPrice = isRoundTripValue
-    ? flight.outbound.price + flight.inbound.price
-    : flight.price;
+  // 가격
+  const getPriceForFlight = (price) => {
+    return isRoundTripValue ? flight.outbound.price + flight.inbound.price : flight.price
+  };
 
-  const discountedPrice = selectedCoupon
+  const adultPrice = getPriceForFlight(flight.price); // 성인 1명의 가격
+  const childPrice = adultPrice * 0.75; // 소아는 성인 가격의 75%
+  const infantPrice = adultPrice * 0.10; // 유아는 성인 가격의 10%
+
+  const outboundTotalPrice = (adults * adultPrice) + (children * childPrice) + (infants * infantPrice);
+  // const inboundTotalPrice = isRoundTripValue ? (adults * adultPrice) + (children * childPrice) + (infants * infantPrice) : 0;
+
+  const totalPrice = outboundTotalPrice;
+
+    const discountedPrice = selectedCoupon
     ? Math.floor(totalPrice * (1 - selectedCoupon.percent / 100) / 10) * 10
     : totalPrice;
 
@@ -100,7 +128,19 @@ const Reserve = () => {
     );
   };
 
+  // 유효성
+  const isFormValid = () => {
+    return buyerName.trim() !== '' && 
+           buyerEmail.trim() !== '' && 
+           buyerTel.trim() !== '' &&
+           buyerBirth.trim() !== ''
+  };
+
   const onClickPayment = () => {
+    if (!isFormValid()) {
+      window.alert("예약자 정보를 입력해주세요");
+      return;
+    }
     if (!window.IMP) return;
     /* 1. 가맹점 식별하기 */
     const { IMP } = window;
@@ -369,7 +409,15 @@ const Reserve = () => {
                   />
                 </td>
                 <td><label htmlFor="buyerBirth">생년월일</label></td>
-                <td><input type="text" id="buyerBirth" name="buyerBirth" /></td>
+                <td>
+                <input
+                    type="text"
+                    id="buyerBirth"
+                    value={buyerBirth}
+                    onChange={(e) => setBuyerBirth(e.target.value)}
+                    required
+                  />
+                </td>
               </tr>
               <tr>
                 <td><label htmlFor="buyerEmail">이메일</label></td>
