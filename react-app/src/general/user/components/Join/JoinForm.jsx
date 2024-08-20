@@ -165,15 +165,15 @@ const JoinForm = ({ join }) => {
                     minHeight: 100
                 }}
             >
-                <div className='homeBtn'
-                    style={{
-                        backgroundImage: 'url(/images/icons/commercial-plane.png)',
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center center',
-                        width: '75px',
-                        height: '75px',
-                        cursor: 'pointer'
-                    }}
+                <div className={styles.homeBtn}
+                    // style={{
+                    //     backgroundImage: 'url(../../../../../assets/images/main/logo.webp)',
+                    //     backgroundSize: 'cover',
+                    //     backgroundPosition: 'center center',
+                    //     width: '75px',
+                    //     height: '75px',
+                    //     cursor: 'pointer'
+                    // }}
                     onClick={home}
                 ></div>
             </div>
