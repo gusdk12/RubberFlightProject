@@ -19,6 +19,8 @@ const FlightInfoItem = ({ flightInfo, timetable, history }) => {
   const info = flightInfo || {};
   const flightData = timetable.length > 0 ? timetable[0] : history.length > 0 ? history[0] : {};
 
+  // console.log('info.depSch:', info.depSch);
+
   return (
     <Flex direction="column" spacing={3} gap={7} pt={4}>
       <Flex mb={2} ml={30}>
@@ -36,6 +38,7 @@ const FlightInfoItem = ({ flightInfo, timetable, history }) => {
             }).replace(/(\d{1,2})\.$/, '$1')}
           </Text>
         </Box>
+
       </Flex>
       <Flex mb={2} ml={30}>
         <Box flex="1" textAlign="left">
