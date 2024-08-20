@@ -16,7 +16,7 @@ const DateItem = ({ index, dateInfo, version, handleChange, handleDeleteDate }) 
         setLocalContent(content);
     }, []);
     useEffect(() => {
-        if(version >= localVersion){
+        if(version > localVersion){
             setLocalContent(content);
             setLocalVersion(version);
         }
