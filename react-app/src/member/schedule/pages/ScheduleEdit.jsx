@@ -30,6 +30,10 @@ const ScheduleEdit = () => {
         if(!userInfo.id) return;
         getTeam();
     }, [userInfo]);
+
+    useEffect(()=>{
+        console.log(`현재 접속한 유저들 프사 = ${activeUsersPic}`);
+    }, [activeUsersPic]);
     
     const getTeam = () => {
         axios({
