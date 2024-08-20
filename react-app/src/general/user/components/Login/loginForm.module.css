@@ -14,12 +14,6 @@
     background-image: url('../../../../assets/images/login/facebook_login_btn.webp'); 
 }
 
-.banner {
-    background-image: url('../../../../assets/images/login/Logo.webp'); 
-    background-color: rgb(201, 220, 232);
-    margin: 0px 30px;
-}
-
 .inputCustom {
     width: 100%;
     height: var(--input-height);

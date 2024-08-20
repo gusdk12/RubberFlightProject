@@ -39,24 +39,15 @@ const LoginForm = () => {
       alignItems="center"
       minHeight="100vh"
       p={4}
+      backgroundColor="red"
     >
+      <Box
+        height="10vh"
+      ></Box>
       {/* 로그인 텍스트 */}
-      <Box mb={0} textAlign="center">
-        <h1 style={{ fontSize: '3rem', fontWeight: 'bold' }}>Login</h1>
+      <Box mb={2} textAlign="center">
+        <h1 style={{ fontSize: '27px', fontWeight: 'bold' }}>Login</h1>
       </Box>
-
-      {/* Flex 컨테이너: 왼쪽에는 이미지, 오른쪽에는 로그인 폼 */}
-      <Flex maxWidth="1000px" height="500px" mx="auto" p={0} bg="white" borderRadius="md" alignItems="center">
-        {/* 왼쪽 이미지 영역 */}
-        <Box className={styles.banner}
-          flex="1"
-          bgSize="cover"
-          bgPosition="center"
-          height="400px"
-          width="500px"
-          marginRight="7px"
-          padding="10px"
-        />
 
         {/* 오른쪽 로그인 폼 영역 */}
         <Box flex="1" p={4}>
@@ -179,7 +170,6 @@ const LoginForm = () => {
             </Stack>
           </form>
         </Box>
-      </Flex>
     </Box>
   );
 };
