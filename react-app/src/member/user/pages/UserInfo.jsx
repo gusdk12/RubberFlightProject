@@ -272,7 +272,7 @@ const UserInfo = () => {
             <Text fontSize="lg" fontWeight="bold">가이드라인</Text>
             <Box className={styles.nextIcon} ml={2} border={'none'}/>
           </Flex>
-          <Text mt={1} textAlign="center">러버플라이트 적극적으로 활용하기</Text>
+          <Text mt={1} textAlign="center">러버 에어 적극적으로 활용하기</Text>
 
           <Flex
           mt={8}
