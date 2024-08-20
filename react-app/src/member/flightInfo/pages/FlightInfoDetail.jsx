@@ -15,6 +15,9 @@ const FlightInfoDetail = () => {
     setFlightId(flightId); 
   }, [flightId, setFlightId]);
 
+  console.log("도착 " + new Date(flightInfo.arrSch).getTime());
+  console.log("현재 " + new Date().getTime());
+
   const renderFlightDetails = () => {
     return (
       <Box
