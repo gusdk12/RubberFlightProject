@@ -131,7 +131,7 @@ public class Flight {
 
         // Duration이 음수인 경우 (도착 시간이 출발 시간보다 이전으로 나타나는 경우), 날짜가 넘어간 경우 처리
         if (duration.isNegative()) {
-            duration = duration.plusDays(1);
+            duration = duration.plusHours(24);
         }
 
         return duration;
@@ -143,6 +143,9 @@ public class Flight {
     }
 
     private String convertMinutesToHoursAndMinutes(int takeTime) {
+        if (takeTime < 0) {
+            takeTime += 1440;
+        }
         int hours = takeTime / 60;
         int remainingMinutes = takeTime % 60;
         return String.format("%d시간 %d분", hours, remainingMinutes);

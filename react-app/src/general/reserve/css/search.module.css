@@ -3,7 +3,7 @@
 .searchBar {
   width: 1200px;
   padding: 0 0 5px 0;
-  margin: 200px auto 0 auto; 
+  margin: 0 auto 0 auto; 
   border-radius: 40px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
