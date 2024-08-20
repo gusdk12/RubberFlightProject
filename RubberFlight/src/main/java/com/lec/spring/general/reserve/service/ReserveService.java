@@ -73,8 +73,8 @@ public class ReserveService {
     // 거리 측정
 
     private static final double EARTH_RADIUS = 6371.0; // 지구 반지름 (킬로미터)
-    private static final int MIN_PRICE_PER_KM = 150;
-    private static final int MAX_PRICE_PER_KM = 250;
+    private static final int MIN_PRICE_PER_KM = 72;
+    private static final int MAX_PRICE_PER_KM = 104;
 
     public double calculateDistance(String departureIata, String arrivalIata) {
         Airport departureAirport = airportRepository.findByAirportIso(departureIata);
