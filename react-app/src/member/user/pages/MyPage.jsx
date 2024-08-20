@@ -5,6 +5,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { CopyIcon } from '@chakra-ui/icons'; 
 import Header from '../../../general/common/Header/Header';
 import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
+import copy from 'copy-to-clipboard';
 
 const MyPage = () => {
   const { userInfo } = useContext(LoginContext);
@@ -58,8 +59,8 @@ const MyPage = () => {
   
 
   const handleCopyUsername = () => {
-    navigator.clipboard.writeText(userInfo.username)
-      .then(() => {
+    copy(userInfo.username);
+    
         toast({
           duration: 3000,
           isClosable: true,
@@ -81,7 +82,6 @@ const MyPage = () => {
             </Box>
           ),
         });
-      });
   };
 
   return (
