@@ -240,7 +240,7 @@ const EditCA = () => {
 
     return (
             <>
-            <Header isMain={true}/>
+            <Header isMain={false}/>
             <div className={styles.allCon}>
                 <div className={styles.countryInfo}>
                     <div className={styles.countryPlus}>
