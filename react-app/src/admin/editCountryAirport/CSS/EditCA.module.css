@@ -92,8 +92,13 @@
     right: 0;
 }
 
+.airportDetails {
+    /* border: 1px solid red; */
+    width: 600px;
+}
+
 .airportInfo .airName {
-    font-size: 40px;
+    font-size: 38px;
     margin-bottom: 30px;
 }
 
