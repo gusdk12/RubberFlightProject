@@ -392,8 +392,8 @@ const Search = () => {
   );
 
   return (
-    <Box p={5} margin="0 auto" mb={8}>
-      <Header isMain={true} />
+    <Box p={5} pt={0} margin="0 auto" mb={8}>
+      <Header isMain={false} />
       <div className={style.searchBar}>
         <div className={style.contentpart}>
           <div className={style.wayBox}>
