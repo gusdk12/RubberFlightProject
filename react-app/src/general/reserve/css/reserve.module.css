@@ -186,6 +186,11 @@
     margin-top: 70px;
 }
 
+.payInfo {
+    /* outline: 2px solid blue; */
+     width: 295px;
+}
+
 /* 테이블 */
 .reservationTable {
     /* outline: 2px solid saddlebrown; */

@@ -130,6 +130,9 @@ UPDATE ft_flightInfo SET review_id = 5 WHERE id = 5;
 
 # 쿠폰
 INSERT INTO FT_COUPON (code, percent, description, airline_name)
+VALUES ('SUMMER99', 99, '2024년 특별 할인 쿠폰', 'All');
+
+INSERT INTO FT_COUPON (code, percent, description, airline_name)
 VALUES ('COUPON2024', 20, '2024년 특별 할인 쿠폰', 'All');
 
 INSERT INTO FT_COUPON (code, percent, description, airline_name)
