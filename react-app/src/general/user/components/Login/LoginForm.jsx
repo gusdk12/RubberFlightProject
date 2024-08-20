@@ -39,14 +39,10 @@ const LoginForm = () => {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      minHeight="100vh"
+      minHeight="90vh"
       p={4}
       backgroundColor="#ffffff"
     >
-      {/*  */}
-      <Box
-        height="3vh"
-      ></Box>
 
       {/* 이미지 */}
       <Box className={styles.Logo} onClick={home} cursor="pointer"/>  

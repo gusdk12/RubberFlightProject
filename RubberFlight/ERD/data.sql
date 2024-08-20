@@ -188,20 +188,23 @@ VALUES (1, "2024-08-02", '이틀 째엔 역시 맛집가야지');
 
 # 서버용
 INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (7, "성인2", true);
-# INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (7, "성인1, 소아1", true);
-# INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (7, "성인3", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (7, "성인1, 소아1", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (7, "성인3", true);
 
 # 왕복1
-INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
-VALUES (1, "Seoul (Incheon)", "ICN", "Narita", "NRT", 198700, "nh6972", "2024-08-16T09:00:00", "2024-08-16T11:20:00", "ana", "1", "10", "1", "45");
-INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
-VALUES (1, "Narita", "NRT", "Seoul (Incheon)", "ICN", 198700, "7C4910", "2024-08-20T07:50:00", "2024-08-20T10:20:00", "Jeju Air", "", "", "", "1");
+INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (4, "Seoul (Incheon)", "ICN", "Narita", "NRT", 198700, "nh6972", "2024-08-16T09:00:00", "2024-08-16T11:20:00", "ana", "1", "10", "1", "45");
+INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (4, "Narita", "NRT", "Seoul (Incheon)", "ICN", 198700, "7C4910", "2024-08-20T07:50:00", "2024-08-20T10:20:00", "Jeju Air", "", "", "", "1");
 
 # 왕복2
-INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
-VALUES (2, "Seoul (Incheon)", "ICN", "Los Angeles International", "LAX", 732200, "yp101", "2024-08-10T12:50:00", "2024-08-10T16:20:00", "air premia", "1", "46", "", "");
-INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
-VALUES (2, "Los Angeles International", "LAX", "Seoul (Incheon)", "ICN", 731000, "sq5703", "2024-08-15T23:00:00", "2024-08-17T04:00:00", "singapore airlines", "b", "150", "1", "");
+INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (5, "Seoul (Incheon)", "ICN", "Los Angeles International", "LAX", 732200, "yp101", "2024-08-10T12:50:00", "2024-08-10T16:20:00", "air premia", "1", "46", "", "");
+INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (5, "Los Angeles International", "LAX", "Seoul (Incheon)", "ICN", 731000, "sq5703", "2024-08-15T23:00:00", "2024-08-17T04:00:00", "singapore airlines", "b", "150", "1", "");
+
 # # 편도
-INSERT INTO ft_flightInfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
-VALUES (3, "Jeju Airport", "CJU", "Gimpo Airport", "GMP", 82900, "ke1150", "2024-08-05T09:00:00", "2024-08-05T10:10:00", "korean air", "", "5", "b", "1");
+INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (6, "Jeju Airport", "CJU", "Gimpo Airport", "GMP", 82900, "ke1150", "2024-08-05T09:00:00", "2024-08-05T10:10:00", "korean air", "", "5", "b", "1");
+
+
