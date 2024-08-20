@@ -47,8 +47,8 @@ const FlightInfoCard = ({ flight, index, tabKey, isPast, review }) => {
       }}
     >
       {/* 항공편 출발지 및 도착지 정보 */}
-      <Flex justify="space-between" align="center" ml={2} mt={1}>
-        <Heading as="h2" size="md" m={2}>
+      <Flex justify="space-between" align="center" ml="-15px" mt="-16px" mr="-15px" pb={2} pt={2} pl={7} pr={2} borderBottom="2px solid #d5e3ff" borderTopRadius="8px" >
+        <Heading as="h2" size="20px" m={2} fontFamily="KIMM_Bold">
           {flight.depAirport} ({flight.depIata}) → {flight.arrAirport} ({flight.arrIata})
         </Heading>
         <Text fontSize="md" color="#c17777" fontWeight="bold" mr={7}>{flight.airlineName}</Text>
@@ -89,14 +89,14 @@ const FlightInfoCard = ({ flight, index, tabKey, isPast, review }) => {
 
         {/* 탑승 정보 */}
         <Box flex="1" mt={4} mr={3} textAlign="center">
-          <Text fontSize="sm" mt={3} color="#9e9e9e" fontWeight="bold">탑승일 | DATE</Text>
-          <Text fontSize="md" mt={1} fontWeight="bold">
+          <Text fontSize="sm" mt={3} color="#9e9e9e" fontFamily="Noto Sans KR !important"  fontWeight="bold">탑승일 | DATE</Text>
+          <Text fontSize="md" mt={1} fontFamily="Noto Sans KR !important"  fontWeight="bold">
             {new Date(flight.depSch).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}
           </Text>
-          <Text fontSize="sm" mt={3} color="#9e9e9e" fontWeight="bold">인원 | COUNT</Text>
-          <Text fontSize="md" mt={1} fontWeight="bold">{flight.reserve.personnel}명</Text>
-          <Text fontSize="sm" mt={3} color="#9e9e9e" fontWeight="bold">탑승시간 | TIME</Text>
-          <Text fontSize="md" mt={1} fontWeight="bold">
+          <Text fontSize="sm" mt={3} color="#9e9e9e" fontFamily="Noto Sans KR !important"  fontWeight="bold">인원 | COUNT</Text>
+          <Text fontSize="md" mt={1} fontFamily="Noto Sans KR !important"  fontWeight="bold">{flight.reserve.personnel}명</Text>
+          <Text fontSize="sm" mt={3} color="#9e9e9e" fontFamily="Noto Sans KR !important" fontWeight="bold">탑승시간 | TIME</Text>
+          <Text fontSize="md" mt={1} fontFamily="Noto Sans KR !important"  fontWeight="bold">
             {new Date(flight.depSch).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
           </Text>
         </Box>

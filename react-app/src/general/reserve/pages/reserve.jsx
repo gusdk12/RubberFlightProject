@@ -26,13 +26,13 @@ const Reserve = () => {
   const { flight, passengers } = location.state || {};
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log('Passengers:', passengers);
-  }, [passengers]);
+  // useEffect(() => {
+  //   console.log('Passengers:', passengers);
+  // }, [passengers]);
 
   const extractNumbersFromString = (str) => {
     const numbers = str.match(/\d+/g);
-    console.log("Extracted numbers:", numbers); // 추출된 숫자 배열 출력
+    // console.log("Extracted numbers:", numbers); // 추출된 숫자 배열 출력
 
     return numbers ? numbers.map(Number) : [0, 0, 0]; // 배열로 변환
   };
@@ -120,7 +120,7 @@ const Reserve = () => {
 
   const discountedPrice = selectedCoupon
     ? Math.floor(totalPrice * (1 - selectedCoupon.percent / 100) / 10) * 10
-    : totalPrice;
+    : Math.floor(totalPrice);
 
   const FlightPrice = ({ price }) => {
     return (

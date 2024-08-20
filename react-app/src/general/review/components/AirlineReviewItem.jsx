@@ -22,7 +22,7 @@ const AirlineReviewItem = ({review, index}) => {
         <>
           <Flex className={`${index % 2 === 0 ? styles.listBox1 : styles.listBox2}`}>
             <div className={styles.profileCon} style={{transform: index % 2 === 0 ? 'scaleX(1)' : 'scaleX(-1)'}}>
-              <div className={styles.userImg}><Image src={review.flightInfo.reserve.user.image} className={styles.proFile}/></div>
+              <div className={styles.userImg}><Image borderRadius='full' objectFit='cover' src={review.flightInfo.reserve.user.image} className={styles.proFile}/></div>
               <div className={styles.username}>{review.flightInfo.reserve.user.name}</div>
             </div>
             <MotionBox
@@ -42,12 +42,6 @@ const AirlineReviewItem = ({review, index}) => {
                     {new Date(review.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}</div>
                   </Flex>
                 </GridItem>
-                {/* <GridItem pl='2' area={'nav'}>
-                  <div className={styles.profileCon}>
-                    <div className={styles.userImg}><Image src={review.flightInfo.reserve.user.image} className={styles.proFile}/></div>
-                    <div className={styles.username}>{review.flightInfo.reserve.user.name}</div>
-                    </div>
-                </GridItem> */}
                 <GridItem pl='2' area={'main'}>
                   <Flex style={{transform: index % 2 === 0 ? 'scaleX(1)' : 'scaleX(-1)'}}>
                     <div><img src={Flight} className={styles.top}/></div>

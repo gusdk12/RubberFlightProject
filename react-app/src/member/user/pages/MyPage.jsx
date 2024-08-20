@@ -5,6 +5,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { CopyIcon } from '@chakra-ui/icons'; 
 import Header from '../../../general/common/Header/Header';
 import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
+import copy from 'copy-to-clipboard';
 
 const MyPage = () => {
   const { userInfo } = useContext(LoginContext);
@@ -58,8 +59,8 @@ const MyPage = () => {
   
 
   const handleCopyUsername = () => {
-    navigator.clipboard.writeText(userInfo.username)
-      .then(() => {
+    copy(userInfo.username);
+    
         toast({
           duration: 3000,
           isClosable: true,
@@ -81,7 +82,6 @@ const MyPage = () => {
             </Box>
           ),
         });
-      });
   };
 
   return (
@@ -89,15 +89,15 @@ const MyPage = () => {
       {/* 마이페이지 화면 */}
       <div style={{
         width: '1320px',
-        top: '15px',
+        // top: '15px',
         left: '50%',
         transform: 'translateX(-50%)',
         position: 'relative',
         marginBottom: '60px',
-        padding: '20px',
+        padding: ' 0 20px 20px 20px',
         transition: 'all 0.3s ease'
       }}>
-        <Header />
+        <Header isMain={false}/>
         <Flex style={{ boxShadow: '0 5px 9px rgba(0, 0, 0, 0.1)' }}>
           <MenuBar />
 

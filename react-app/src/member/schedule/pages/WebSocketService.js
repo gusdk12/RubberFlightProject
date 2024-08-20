@@ -86,10 +86,11 @@ class WebSocketService {
         });
     }
 
-    sendDates(id, dates, deleteIndex) {
+    sendDates(id, dates, version, deleteIndex) {
         const payload = {
             scheduleId: id,
             dates: dates,
+            editVersion: version,
             deleteIndex: deleteIndex,
         };
         return this.ensureConnected(id).then(() => {
@@ -113,7 +114,9 @@ class WebSocketService {
                 if (message.body) {
                     // console.log(callback(JSON.parse(message.body).title));
                     link==="title" && callback(JSON.parse(message.body).title);
-                    link==="title" || callback(JSON.parse(message.body));
+                    link==="users" && callback(JSON.parse(message.body));
+                    link==="dates" && callback(JSON.parse(message.body));
+                    // link==="dates" && console.log(JSON.parse(message.body));
                 }
             });
             // this.activeSubscriptions[topic] = subscription;
