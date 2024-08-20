@@ -57,7 +57,7 @@ const SelectJoin = () => {
                         <Box className={styles.leftbox}>
                             <div className={styles.header}>사용자</div>
                             <div className={styles.leftimage}></div>
-                            <div className={styles.text}> 러버 플라이트의 <br/>
+                            <div className={styles.text}> 러버 에어의 <br/>
                                 다양한 서비스를 이용해보세요.
                             </div>
                         </Box>
@@ -79,7 +79,7 @@ const SelectJoin = () => {
                         <Box className={styles.rightbox}>
                         <div className={styles.header}>관리자</div>
                             <div className={styles.rightimage}></div>
-                            <div className={styles.text}> 러버플라이트의 시스템을 <br/>
+                            <div className={styles.text}> 러버 에어의 시스템을 <br/>
                             직접 관리해보세요.
                             </div>
                         </Box>
