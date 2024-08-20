@@ -211,3 +211,45 @@ INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, a
 VALUES (6, "Jeju Airport", "CJU", "Gimpo Airport", "GMP", 82900, "ke1150", "2024-08-05T09:00:00", "2024-08-05T10:10:00", "korean air", "", "5", "b", "1");
 
 
+# 서버용22
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인 2명, 소아 0명, 유아 0명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인 1명, 소아 1명, 유아 0명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (2, "성인 3명, 소아 0명, 유아 0명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (2, "성인 2명, 소아 0명, 유아 1명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (3, "성인 2명, 소아 0명, 유아 0명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (3, "성인 1명, 소아 0명, 유아 0명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (4, "성인 4명, 소아 0명, 유아 0명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (4, "성인 2명, 소아 1명, 유아 0명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (6, "성인 2명, 소아 0명, 유아 1명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (6, "성인 2명, 소아 0명, 유아 1명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (7, "성인 4명, 소아 0명, 유아 1명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (7, "성인 1명, 소아 0명, 유아 0명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (8, "성인 2명, 소아 0명, 유아 0명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (8, "성인 4명, 소아 1명, 유아 0명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (10, "성인 2명, 소아 1명, 유아 0명", true);
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (10, "성인 1명, 소아 0명, 유아 0명", true);
+
+# 유저1
+INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (, "Seoul (Incheon)", "ICN", "Changchun", "CGQ", 129060, "cz4202", "2024-08-01T09:00:00", "2024-08-01T10:10:00", "china southern airlines", "1", "21", "1", "");
+INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (, "Changchun", "CGQ", "Seoul (Incheon)", "ICN", 134880, "cz687", "2024-08-03T09:10:00", "2024-08-03T12:15:00", "china southern airlines", "1", "g", "1", "131");
+
+# 유저2
+INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (, "Seoul (Incheon)", "ICN", "Shanghai Pudong International", "PVG", 177090, "ho3105", "2024-08-01T09:00:00", "2024-08-01T10:05:00", "juneyao airlines", "1", "8", "2", "");
+INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (,"Shanghai Pudong International", "PVG", "Seoul (Incheon)", "ICN", 182010, "mf9085", "2024-08-03T11:10:00", "2024-08-03T14:20:00", "xiamen airlines", "1", "18", "2", "265");
+
+# 유저3
+INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (, "Seoul (Incheon)", "ICN", "Hong Kong International", "HKG", 297520, "hx1551", "2024-08-01T09:00:00", "2024-08-01T11:50:00", "hong kong airlines", "1", "7", "1", "");
+INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (, "Hong Kong International", "HKG", "Seoul (Incheon)", "ICN", 301660, "7c2108", "2024-08-04T01:25:00", "2024-08-04T06:00:00", "jeju air", "1", "24", "1", "126");
+
+# 유저4
+# 유저6
+# 유저7
+# 유저8
+# 유저10
+
