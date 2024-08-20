@@ -120,7 +120,7 @@ const Reserve = () => {
 
     const discountedPrice = selectedCoupon
     ? Math.floor(totalPrice * (1 - selectedCoupon.percent / 100) / 10) * 10
-    : totalPrice;
+    : Math.floor(totalPrice);
 
   const FlightPrice = ({ price }) => {
     return (
