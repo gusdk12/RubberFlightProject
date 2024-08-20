@@ -93,8 +93,9 @@ const FlightInfoCard = ({ flight, index, tabKey, isPast, review }) => {
           <Text fontSize="md" mt={1} fontFamily="Noto Sans KR !important"  fontWeight="bold">
             {new Date(flight.depSch).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d{1,2})\.$/, '$1')}
           </Text>
-          <Text fontSize="sm" mt={3} color="#9e9e9e" fontFamily="Noto Sans KR !important"  fontWeight="bold">인원 | COUNT</Text>
-          <Text fontSize="md" mt={1} fontFamily="Noto Sans KR !important"  fontWeight="bold">{flight.reserve.personnel}명</Text>
+          
+          <Text fontSize="sm" mt={3} color="#9e9e9e" fontFamily="Noto Sans KR !important"  fontWeight="bold">인원 | COUNT</Text>  
+          <Text fontSize="md" mt={1} fontFamily="Noto Sans KR !important"  fontWeight="bold">{flight.reserve.personnel}</Text>
           <Text fontSize="sm" mt={3} color="#9e9e9e" fontFamily="Noto Sans KR !important" fontWeight="bold">탑승시간 | TIME</Text>
           <Text fontSize="md" mt={1} fontFamily="Noto Sans KR !important"  fontWeight="bold">
             {new Date(flight.depSch).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
