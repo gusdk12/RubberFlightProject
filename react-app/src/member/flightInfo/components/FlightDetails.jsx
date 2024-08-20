@@ -20,6 +20,7 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
 
   const info = flightInfo || {};
   const depSch = new Date(info.depSch);
+  // console.log("여기는요?" , depSch);
   const now = new Date();
 
   return (
@@ -95,9 +96,11 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
           </Box>
 
           <Text fontSize="sm" color="red.500" mb={8} align="right">
-            {now > depSch && delayHours > 0 
+            {now > depSch && delayInMinutes > 0 && (
+            delayHours > 0 
               ? `총 ${delayHours}시간 ${delayMinutes}분 지연되었습니다.` 
-              : `총 ${delayMinutes}분 지연되었습니다.`}
+              : `총 ${delayMinutes}분 지연되었습니다.`
+            )}
           </Text>
 
           <Flex justify="center" direction="row" align="center" gap={90}>
