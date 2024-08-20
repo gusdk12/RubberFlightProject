@@ -18,6 +18,10 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
     return new Date(dateString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
   };
 
+  const info = flightInfo || {};
+  const depSch = new Date(info.depSch);
+  const now = new Date();
+
   return (
     <Flex direction="column" mb={4}>
       <Flex justify="space-between">
@@ -91,7 +95,7 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
           </Box>
 
           <Text fontSize="sm" color="red.500" mb={8} align="right">
-            {delayHours > 0 
+            {now > depSch && delayHours > 0 
               ? `총 ${delayHours}시간 ${delayMinutes}분 지연되었습니다.` 
               : `총 ${delayMinutes}분 지연되었습니다.`}
           </Text>
