@@ -10,12 +10,13 @@ import style from '../css/search.module.css'
 import { IoAirplane } from "react-icons/io5";
 import { useUser } from '../../user/contexts/LoginContextProvider';
 import Header from '../../common/Header/Header';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Divider, Text } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { FaInfoCircle } from 'react-icons/fa';
 import PageButtons from '../components/PageButtons';
 import { Spinner } from '@chakra-ui/react';
+import { SiEthiopianairlines } from "react-icons/si";
 
 const Search = () => {
   const [passengers, setPassengers] = useState(1);
@@ -599,49 +600,68 @@ const Search = () => {
                   <div className={style.flights}>
                     <div className={style.flightInfo}>
                       <div className={style.flightAirline}>
-                        {getFormattedAirlineName(combination.outbound.airlineName) === getFormattedAirlineName(combination.inbound.airlineName)
-                          ? getFormattedAirlineName(combination.outbound.airlineName)
+                      {getFormattedAirlineName(combination.outbound.airlineName) === getFormattedAirlineName(combination.inbound.airlineName)
+                          ? (
+                            <>
+                            <div className={style.airlineLable1}>항공사
+                              <SiEthiopianairlines className={style.airlineIcon} />
+                            </div>
+                            <div className={style.airlineItem}>
+                              {getFormattedAirlineName(combination.outbound.airlineName)}
+                            </div>
+                            </>
+                          )
                           : (
                             <>
-                              <div>{getFormattedAirlineName(combination.outbound.airlineName)}</div>
-                              <div>{getFormattedAirlineName(combination.inbound.airlineName)}</div>
+                              <div className={style.airlineLable2}>항공사
+                                <SiEthiopianairlines className={style.airlineIcon} />
+                              </div>
+                              <div className={style.airlineItem}>
+                                {getFormattedAirlineName(combination.outbound.airlineName)}
+                              </div>
+                              <div className={style.airlineItemNoMargin}>
+                                {getFormattedAirlineName(combination.inbound.airlineName)}
+                              </div>
                             </>
                           )}
                       </div>
-                      <div className={style.flightTimes}>
-                        <div className={style.flightDepTime}>
-                          {combination.outbound.depTime}
-                          <div className={style.depAirport}>{combination.outbound.depAirport}</div>
+                      
+                      <div className={style.flightTimesContainer}>
+                          <div className={style.airlineLable}>시간 </div>
+                          <div className={style.flightTimes}>
+                            <div className={style.flightDepTime}>
+                              {combination.outbound.depTime}
+                              <div className={style.depAirport}>{combination.outbound.depAirport}</div>
+                            </div>
+                            <div className={style.airplane}><IoAirplane /></div>
+                            <div className={style.flightArrTime}>
+                              {combination.outbound.arrTime}
+                              <div className={style.arrAirport}>{combination.outbound.arrAirport}</div>
+                            </div>
+                          </div>
+                          <div className={style.flightTimes2}>
+                            <div className={style.flightDepTime}>
+                              {combination.inbound.depTime}
+                              <div className={style.depAirport}>{combination.inbound.depAirport}</div>
+                            </div>
+                            <div className={style.airplane1}><IoAirplane /></div>
+                            <div className={style.flightArrTime}>
+                              {combination.inbound.arrTime}
+                              <div className={style.arrAirport}>{combination.inbound.arrAirport}</div>
+                            </div>
+                          </div>
                         </div>
-                        <div className={style.flightArrTime}>
-                          {combination.outbound.arrTime}
-                          <div className={style.arrAirport}>{combination.outbound.arrAirport}</div>
+                          <div className={style.flightTakeTimes}>
+                            <div className={style.flightTakeTime}>{combination.outbound.takeTimeFormat}</div>
+                            <div className={style.flightTakeTime}>{combination.inbound.takeTimeFormat}</div>
+                          </div>
+                      </div>
+
+                      <div className={style.flightPrice}>
+                        <div className={style.verticalLine}></div>
+                        <div className={style.totalPrice}>
+                          왕복 {(combination.outbound.price + combination.inbound.price).toLocaleString('ko-KR')}원
                         </div>
-                      </div>
-                      <div className={style.airplane}>
-                        <div className={style.airplane1}><IoAirplane /></div>
-                        <IoAirplane />
-                      </div>
-                      <div className={style.flightTimes2}>
-                        <div className={style.flightDepTime}>
-                          {combination.inbound.depTime}
-                          <div className={style.depAirport}>{combination.inbound.depAirport}</div>
-                        </div>
-                        <div className={style.flightArrTime}>
-                          {combination.inbound.arrTime}
-                          <div className={style.arrAirport}>{combination.inbound.arrAirport}</div>
-                        </div>
-                      </div>
-                      <div className={style.flightTakeTimes}>
-                        <div className={style.flightTakeTime}>{combination.outbound.takeTimeFormat}</div>
-                        <div className={style.flightTakeTime}>{combination.inbound.takeTimeFormat}</div>
-                      </div>
-                    </div>
-                    <div className={style.flightPrice}>
-                      <div className={style.verticalLine}></div>
-                      <div className={style.totalPrice}>
-                        왕복 {(combination.outbound.price + combination.inbound.price).toLocaleString('ko-KR')}원
-                      </div>
                     </div>
                   </div>
                 </li>
