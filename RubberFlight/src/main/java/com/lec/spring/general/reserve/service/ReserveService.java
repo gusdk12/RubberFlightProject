@@ -118,10 +118,13 @@ public class ReserveService {
             for (Flight inbound : inboundFlights) {
                 Map<String, Object> combination = new HashMap<>();
                 int totalPrice = outbound.getPrice() + inbound.getPrice();
+                int totalDuration = outbound.getTakeTime() + inbound.getTakeTime();
                 combination.put("id", outbound.getId() + "_" + inbound.getId());
                 combination.put("outbound", outbound);
                 combination.put("inbound", inbound);
                 combination.put("totalPrice", totalPrice);
+                combination.put("totalDuration", totalDuration);
+
 
                 combinations.add(combination);
             }
@@ -129,7 +132,8 @@ public class ReserveService {
 
         // 가격에 따라 정렬
         return combinations.stream()
-                .sorted(Comparator.comparingInt(combination -> (int) combination.get("totalPrice")))
+                .sorted(Comparator.comparingInt((Map<String, Object> combination) -> (int) combination.get("totalPrice"))
+                        .thenComparingInt(combination -> (int) combination.get("totalDuration")))
                 .collect(Collectors.toList());
     }
 
