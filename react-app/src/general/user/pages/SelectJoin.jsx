@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Flex, Box, Button, Heading } from '@chakra-ui/react';
 import styles from './SelectJoin.module.css';
@@ -6,6 +6,11 @@ import styles from './SelectJoin.module.css';
 const SelectJoin = () => {
     const [selectedOption, setSelectedOption] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        document.body.style.backgroundColor = "#ffffff";
+    }, []); // Empty dependency array ensures this effect runs once on mount and cleanup on unmount
+
 
     const handleUserClick = () => {
         setSelectedOption('user');
@@ -29,24 +34,20 @@ const SelectJoin = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    minHeight: 100,
+                    minHeight: 30,
                 }}
             >
-                <div
-                    style={{
-                        backgroundImage: 'url(/images/icons/commercial-plane.png)',
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center center',
-                        width: '75px',
-                        height: '75px',
-                        cursor: 'pointer',
-                    }}
-                    onClick={home}
-                ></div>
             </div>
 
+            
+
             <Flex direction="column" align="center" className={styles.selectJoinContainer}>
-                <Heading as="h3" className={styles.heading} mb={6}>
+
+                <div className={styles.homeBtn}
+                        onClick={home}
+                ></div>
+
+                <Heading as="h5" className={styles.heading} mb={5}>
                     회원가입 유형을 선택하세요
                 </Heading>
 
@@ -71,7 +72,7 @@ const SelectJoin = () => {
                         </Button>
                     </Box>
                     
-                    {/* <Box className={styles.divider}></Box> */}
+                    <Box className={styles.divider}></Box>
                     
                     <Box className={styles.section}>
                         {/* 네모 박스 */}

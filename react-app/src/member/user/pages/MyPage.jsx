@@ -5,6 +5,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { CopyIcon } from '@chakra-ui/icons'; 
 import Header from '../../../general/common/Header/Header';
 import { LoginContext } from '../../../general/user/contexts/LoginContextProvider';
+import copy from 'copy-to-clipboard';
 
 const MyPage = () => {
   const { userInfo } = useContext(LoginContext);
@@ -27,7 +28,7 @@ const MyPage = () => {
       try {
         if (userInfo?.id) {  // userInfo.id가 존재할 때만 호출
           const apiUrl = `${backUrl}/mypage/${userInfo.id}`;
-          console.log("API 요청 URL:", apiUrl);
+          // console.log("API 요청 URL:", apiUrl);
     
           const response = await fetch(apiUrl);
           
@@ -40,10 +41,10 @@ const MyPage = () => {
           // 이미지 URL이 이미 절대 경로인지 확인
           const imageUrl = data.image.startsWith('http') ? data.image : `${backUrl}/${data.image.replace(/\\/g, '/')}`;
           
-          console.log("이미지 URL:", imageUrl); 
+          // console.log("이미지 URL:", imageUrl); 
           setProfileImage(imageUrl); 
         } else {
-          console.log("유저 정보가 아직 존재하지 않습니다.");
+          // console.log("유저 정보가 아직 존재하지 않습니다.");
         }
       } catch (error) {
         console.error('프로필 이미지를 불러오는 중 오류 발생:', error.message);
@@ -58,8 +59,8 @@ const MyPage = () => {
   
 
   const handleCopyUsername = () => {
-    navigator.clipboard.writeText(userInfo.username)
-      .then(() => {
+    copy(userInfo.username);
+    
         toast({
           duration: 3000,
           isClosable: true,
@@ -81,7 +82,6 @@ const MyPage = () => {
             </Box>
           ),
         });
-      });
   };
 
   return (

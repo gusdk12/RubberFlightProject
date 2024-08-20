@@ -29,9 +29,9 @@ const DateItem = ({ index, dateInfo, version, handleChange, handleDeleteDate }) 
     }, [content]);
     useEffect(() => {
         // version === 0 && setLocalContent(content);
-        // if(version > localVersion){
-        //     setLocalVersion(version);
-        // }
+        if(version > localVersion){
+            setLocalVersion(version);
+        }
         // contentRef.current = content;
     }, [version]);
 
@@ -40,16 +40,16 @@ const DateItem = ({ index, dateInfo, version, handleChange, handleDeleteDate }) 
     }, [localContent]);
 
     const sendContentDebounced = debounce(() => {
-        console.log(`서버에 보낼 내용 = ${localContent}`);
-        handleChange(index, localContent, 1, localVersion);
+        console.log(`로컬 버전 = ${localVersion} 서버 버전 = ${version} 서버에 보낼 내용 = ${contentRef.current}`);
+        handleChange(index, contentRef.current, 1, localVersion);
     }, 500); // 500ms debounce
 
     const onInputChange = (event) => {
         version === localVersion && setLocalVersion(localVersion + 1);
         setLocalContent(event.target.value);
-        // sendContentDebounced();
+        sendContentDebounced();
         // console.log(`서버에 보낼 내용 = ${event.target.value}`);
-        handleChange(index, event.target.value, 1, localVersion);
+        // handleChange(index, event.target.value, 1, localVersion);
     };
     const onDateChange = (changedDate) => {
         handleChange(index, changedDate, 0, localVersion + 1);
