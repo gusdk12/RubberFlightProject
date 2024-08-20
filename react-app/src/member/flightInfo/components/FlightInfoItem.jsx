@@ -19,6 +19,7 @@ const FlightInfoItem = ({ flightInfo, timetable, history }) => {
   const info = flightInfo || {};
   const flightData = timetable.length > 0 ? timetable[0] : history.length > 0 ? history[0] : {};
 
+  // console.log("도착게이트" , flightData.arrival?.gate);
   // console.log('info.depSch:', info.depSch);
 
   return (
