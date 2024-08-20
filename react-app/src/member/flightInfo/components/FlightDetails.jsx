@@ -20,8 +20,9 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
 
   const info = flightInfo || {};
   const depSch = new Date(info.depSch);
-  // console.log("여기는요?" , depSch);
   const now = new Date();
+
+  const gap = flightInfo.depIata.length > 5 || flightInfo.depAirport.length > 10 ? 20 : 110;
 
   return (
     <Flex direction="column" mb={4}>
@@ -47,7 +48,7 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
         {/* 1 */}
         <Flex direction="column" gap={16} align="center">
           <Text fontSize="xl">{formatTime(flightInfo.depSch) || "-"}</Text>
-          <Text fontSize="14px" fontWeight="bold" mt={5} mb={5} color="gray.500">
+          <Text fontSize="14px" fontWeight="bold" mt={5} mb={5} color="gray.500" whiteSpace="nowrap">
           {calculateFlightDuration(flightInfo.depSch, flightInfo.arrSch)}
           </Text>
           <Text fontSize="xl">{formatTime(flightInfo.arrSch) || "-"}</Text>
@@ -68,10 +69,10 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
 
         {/* 3 */}
         <Box pl={12}>
-          <Flex justify="center" direction="row" align="center" gap={110} mb={8}>
+          <Flex justify="center" direction="row" align="center" gap={gap} mb={8} wrap="nowrap">
             <Text fontSize="2xl" fontWeight="bold">{flightInfo.depIata || "-"}</Text>
             <Text fontSize="lg" fontWeight="bold" color="blue.500">{flightInfo.depAirport || "-"}</Text>
-            <Text fontSize="14px" color="gray.500">출발</Text>
+            <Text fontSize="14px" color="gray.500" whiteSpace="nowrap">출발</Text>
           </Flex>
 
           <Box textAlign="center" borderWidth="1px" borderColor="gray.300" borderRadius="md" p={4} mb={2}>
@@ -106,7 +107,7 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
           <Flex justify="center" direction="row" align="center" gap={90}>
             <Text fontSize="2xl" fontWeight="bold">{flightInfo.arrIata || "-"}</Text>
             <Text fontSize="lg" fontWeight="bold" color="blue.500">{flightInfo.arrAirport || "-"}</Text>
-            <Text fontSize="14px" color="gray.500">도착</Text>
+            <Text fontSize="14px" color="gray.500" whiteSpace="nowrap">도착</Text>
           </Flex>
         </Box>
       </Flex>
