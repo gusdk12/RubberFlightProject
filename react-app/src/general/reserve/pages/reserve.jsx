@@ -8,6 +8,7 @@ import { FaCircle } from "react-icons/fa";
 import { SiEthiopianairlines } from "react-icons/si";
 import Cookies from 'js-cookie';
 import { Dropdown, Menu } from 'antd';
+import Header from '../../common/Header/Header';
 
 const Reserve = () => {
   // 유저 정보 받기
@@ -235,6 +236,7 @@ const Reserve = () => {
   return (
     <>
       <div className={style.box}>
+      <Header isMain={false} />
         <div className={style.boxTitle}>
           <div className={style.boxFont}>선택한 항공권</div>
         </div>
@@ -339,8 +341,8 @@ const Reserve = () => {
                 <Heading as="h2" size="md" mb="4">상품 결제 정보</Heading>
                 <Flex direction="column" bg="gray.50" p="4">
                   <Flex direction="column" pr="4">
-                    <Text mb="2" fontFamily="Noto Sans KR" fontSize="17px">총 항공 예상 운임</Text>
-                    <Text mb="2" fontFamily="Verdana, Geneva, Tahoma, sans-serif" fontSize="12px" color="gray.700">{passengers}</Text>
+                    <Text mb="2" fontFamily="Noto Sans KR" fontSize="17px" fontWeight="bold">총 항공 예상 운임</Text>
+                    <Text mb="2" fontFamily="Verdana, Geneva, Tahoma, sans-serif" fontSize="12px" fontWeight="bold" color="gray.700">{passengers}</Text>
                     <div>
                       <CouponDropdown
                         coupons={coupons}
@@ -349,11 +351,11 @@ const Reserve = () => {
                     </div>
                   </Flex>
                   <Flex mt={6} direction="row" justifyContent="flex-end" alignItems="flex-end">
-                    <Text fontSize="30px" fontFamily="Verdana, Geneva, Tahoma, sans-serif" color="purple.600" mb="2">{discountedPrice.toLocaleString('ko-KR')}</Text>
+                    <Text fontSize="30px" fontFamily="Verdana, Geneva, Tahoma, sans-serif" color="#1DA1F2" mb="2">{discountedPrice.toLocaleString('ko-KR')}</Text>
                     <Text pl={2} pb={3} fontSize="14px" color="gray.500">원</Text>
                   </Flex>
                 </Flex>
-                <Button onClick={onClickPayment} colorScheme="purple" mt="4" size="lg" width="full">결제하기</Button>
+                <Button onClick={onClickPayment} colorScheme="twitter" mt="4" size="lg" width="full">결제하기</Button>
               </Box>
             </Flex>
           </>
@@ -397,8 +399,8 @@ const Reserve = () => {
                 <Heading as="h2" size="md" mb="4">상품 결제 정보</Heading>
                 <Flex direction="column" bg="gray.50" p="4">
                   <Flex direction="column" pr="4">
-                    <Text mb="2" fontFamily="Noto Sans KR" fontSize="17px">총 항공 예상 운임</Text>
-                    <Text mb="2" fontFamily="Verdana, Geneva, Tahoma, sans-serif" fontSize="12px" color="gray.700">{passengers}</Text>
+                    <Text mb="2" fontFamily="Noto Sans KR" fontSize="17px" fontWeight="bold">총 항공 예상 운임</Text>
+                    <Text mb="2" fontFamily="Verdana, Geneva, Tahoma, sans-serif" fontSize="12px" fontWeight="bold" color="gray.700">{passengers}</Text>
                     <div>
                       <CouponDropdown
                         coupons={coupons}
@@ -407,11 +409,11 @@ const Reserve = () => {
                     </div>
                   </Flex>
                   <Flex mt={6} direction="row" justifyContent="flex-end" alignItems="flex-end">
-                    <Text fontSize="30px" fontFamily="Verdana, Geneva, Tahoma, sans-serif" color="purple.600" mb="2">{discountedPrice.toLocaleString('ko-KR')}</Text>
+                  <Text fontSize="30px" fontFamily="Verdana, Geneva, Tahoma, sans-serif" color="#1DA1F2" mb="2">{discountedPrice.toLocaleString('ko-KR')}</Text>
                     <Text pl={2} pb={3} fontSize="14px" color="gray.500">원</Text>
                   </Flex>
                 </Flex>
-                <Button onClick={onClickPayment} colorScheme="purple" mt="4" size="lg" width="full">결제하기</Button>
+                <Button onClick={onClickPayment} colorScheme="twitter" mt="4" size="lg" width="full">결제하기</Button>
               </Box>
             </Flex>
           </>

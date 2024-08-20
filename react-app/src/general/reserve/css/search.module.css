@@ -1,5 +1,15 @@
 /* search.css */
 
+.searchMessage {
+  text-align: center;
+  margin-bottom: 40px;
+  font-weight: bold;
+  color: #00235A;
+  font-size: 21px;
+  font-family: "KIMM_Light";
+  letter-spacing: 0.5px;
+}
+
 .searchBar {
   width: 1200px;
   padding: 0 0 5px 0;
@@ -8,6 +18,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   box-sizing: border-box;
+  margin-bottom: 100px;
 }
 
 .contentpart {
@@ -77,6 +88,7 @@
   gap: 30px;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 }
 
 #searchAirport {
@@ -407,6 +419,11 @@ input {
   /* outline: 2px solid red; */
 }
 
+.subButton:hover { 
+  transform: scale(1.01);  
+  background-color: #6d98de;       
+}
+
 .results {
   /* outline: 2px solid slateblue; */
   margin-top: 50px;
@@ -429,6 +446,8 @@ input {
   padding: 0;
   margin: 0;
   width: 100%;
+  border-left: 2px solid #4875bd;
+  padding-left: 30px;
 }
 
 .results li {
@@ -442,11 +461,32 @@ input {
   background-color: #ffffff;
   transition: transform 0.3s ease;
   margin-bottom: 20px;
+  position: relative;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .results li:hover {
   transform: scale(1.01);
+}
+
+.results li::before {
+  content: '';
+  position: absolute;
+  left: -36px; 
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background-color: #4875bd; 
+  border-radius: 50%;
+}
+
+.results li:hover::before {
+  transform: translateX(50%) translateY(-50%) scale(1.01);
+}
+
+.results li:last-child {
+  border-bottom: none;
 }
 
 .flights {
@@ -593,8 +633,7 @@ input {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  font-size: 17px;
-  color: #FF1414;
+  font-size: 19px;
   flex-shrink: 0; /* 가격 정보는 항상 고정된 크기를 유지 */
 }
 
@@ -602,13 +641,15 @@ input {
   width: 1px;
   height: 60px;
   background-color: rgb(155, 155, 155);
-  margin-right: 120px;
+  margin-right: 90px;
 }
 
 .totalPrice {
+  font-family: 'Verdana', Geneva, Tahoma, sans-serif;
   font-weight: bold;
   white-space: nowrap;
   justify-content: flex-end;
+  color: #FF1414;
 }
 
 .pageButtons {

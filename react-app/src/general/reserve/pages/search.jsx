@@ -86,7 +86,7 @@ const Search = () => {
   }
 
   useEffect(() => {
-    document.body.style.backgroundColor = "white";
+    document.body.style.backgroundColor = "#f9fbff";
     document.body.style.overflowY = 'scroll';
   }, []);
 
@@ -393,8 +393,13 @@ const Search = () => {
   );
 
   return (
-    <Box p={5} pt={0} margin="0 auto" mb={8}>
+    <Box p={5} pt={0} margin="0 auto" mb={40}>
       <Header isMain={false} />
+
+      <div className={style.searchMessage}>
+        설레는 여행의 시작, 항공권을 찾아보세요.
+      </div>
+
       <div className={style.searchBar}>
         <div className={style.contentpart}>
           <div className={style.wayBox}>
