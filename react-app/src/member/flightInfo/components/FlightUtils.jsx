@@ -28,7 +28,7 @@ export const calculateFlightDuration = (depTime, arrTime) => {
    const arrDate = new Date(flight.arrSch);
  
    if (flight.reserve.isended) {
-     return { text: '도착', color: 'green.500' };
+     return { text: '도착', color: '#4285f4ff' };
    } else if (now >= depDate && now <= arrDate) {
      return { text: '출발', color: 'blue.500' };
    } else {
