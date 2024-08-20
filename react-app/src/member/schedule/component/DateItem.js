@@ -16,16 +16,16 @@ const DateItem = ({ index, dateInfo, version, handleChange, handleDeleteDate }) 
         setLocalContent(content);
     }, []);
     useEffect(() => {
-        if(version > localVersion){
+        if(version >= localVersion){
             setLocalContent(content);
             setLocalVersion(version);
         }
     
-        console.log("인덱스 " + index);
-        console.log(`서버로부터 받은 메세지 - ${content}`);
-        console.log(`로컬 받은 메세지 - ${localContent}`);
-        console.log("서버 버전 " + version);
-        console.log("로컬 버전 " + localVersion);
+        // console.log("인덱스 " + index);
+        // console.log(`서버로부터 받은 메세지 - ${content}`);
+        // console.log(`로컬 받은 메세지 - ${localContent}`);
+        // console.log("서버 버전 " + version);
+        // console.log("로컬 버전 " + localVersion);
     }, [content]);
     useEffect(() => {
         // version === 0 && setLocalContent(content);
@@ -40,13 +40,16 @@ const DateItem = ({ index, dateInfo, version, handleChange, handleDeleteDate }) 
     }, [localContent]);
 
     const sendContentDebounced = debounce(() => {
-        handleChange(index, contentRef.current, 1, localVersion);
+        console.log(`서버에 보낼 내용 = ${localContent}`);
+        handleChange(index, localContent, 1, localVersion);
     }, 500); // 500ms debounce
 
     const onInputChange = (event) => {
         version === localVersion && setLocalVersion(localVersion + 1);
         setLocalContent(event.target.value);
-        sendContentDebounced();
+        // sendContentDebounced();
+        // console.log(`서버에 보낼 내용 = ${event.target.value}`);
+        handleChange(index, event.target.value, 1, localVersion);
     };
     const onDateChange = (changedDate) => {
         handleChange(index, changedDate, 0, localVersion + 1);

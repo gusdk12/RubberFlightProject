@@ -104,6 +104,8 @@ public class NoteController {
 
         Set<Long> users = activeUsersMap.get(scheduleId);
 
+        System.out.println("접속한 유저들" + users);
+
         return users;
     }
 
