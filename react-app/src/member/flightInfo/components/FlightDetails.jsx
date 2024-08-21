@@ -79,7 +79,7 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
             <Flex justify="space-around" direction="row">
               <Flex justify="space-between" direction="column">
                 <Text fontSize="sm" mb={2} color="gray.500">
-                  {flightData ? "예정 출발시간" : "실제 출발시간"}
+                  {flightData ? "실제 출발시간" : "예정 출발시간"}
                 </Text>
                 <Text fontSize="30px" fontWeight="bold">
                   {formatTime(flightData?.departure?.estimatedTime || flightInfo.depSch) || "-"}
@@ -87,7 +87,7 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
               </Flex>
               <Flex justify="space-between" direction="column">
                 <Text fontSize="sm" mb={2} color="gray.500">
-                  {flightData ? "예정 도착시간" : "실제 도착시간"}
+                  {flightData ? "실제 도착시간" : "예정 도착시간"}
                 </Text>
                 <Text fontSize="30px" fontWeight="bold">
                   {formatTime(flightData?.arrival?.estimatedTime || flightInfo.arrSch) || "-"}
