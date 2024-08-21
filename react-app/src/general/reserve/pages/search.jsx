@@ -396,9 +396,14 @@ const Search = () => {
     <Box p={5} pt={0} margin="0 auto" mb={40}>
       <Header isMain={false} />
 
-      <div className={style.searchMessage}>
-        설레는 여행의 시작, 항공권을 찾아보세요.
+      <div className={style.searchHeaderContainer}>
+        <div id={style.searchplane}/>
+        <div id={style.searchCloud}/>
+        <div className={style.searchMessage}>
+          설레는 여행의 시작, 항공권을 찾아보세요.
+        </div>
       </div>
+
 
       <div className={style.searchBar}>
         <div className={style.contentpart}>
