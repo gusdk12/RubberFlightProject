@@ -104,7 +104,7 @@ const AirLineReviewList = () => {
       const pageNumber = startPage + i;
       buttons.push(
         <button
-          className={styles.reviewPageBtn}
+          className={`${styles.reviewPageBtn} ${currentPage === pageNumber ? styles.pageClick: ''}`}
           key={pageNumber}
           onClick={() => handlePageChange(pageNumber)}
           disabled={pageNumber >= totalPages} // 유효한 페이지 번호인지 확인
