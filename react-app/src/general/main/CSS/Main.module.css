@@ -197,10 +197,10 @@ body{
 #reserveButton{
     font-family: "KIMM_Bold";
     font-size: 20px;
-    color: #636676;
+    color: #F2F4F7;
     z-index: 10;
     position: absolute;
-    background-color: #f8fbff;
+    background-color: #00235A;
     opacity: 0;
     border-radius: 100px;
     box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.082);
@@ -208,6 +208,9 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+#reserveButton:hover{
+    background-color: #00102b;
 }
 .showReserveClass{
     animation: showingReserve 1s linear;
@@ -239,7 +242,7 @@ body{
     background-color: #edf1f8d9;
     opacity: 0;
     /* outline: 2px solid red; */
-    width: 1200px !important;
+    width: 1150px !important;
     height: 180px !important;
     /* overflow: hidden; */
 }
@@ -262,7 +265,7 @@ body{
         top: 28vh;
         opacity: 1;
         left: 50%;
-        transform: translateX(-60%);
+        transform: translateX(-50%);
     }
 }
 

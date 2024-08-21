@@ -1,13 +1,70 @@
 /* search.css */
 
+.searchHeaderContainer{
+  background: linear-gradient(to bottom, #B0C9E6, #D5E1EB, #F9FBFF);
+  width: 100vw;
+  height: 400px;
+  position: relative;
+  left: -20px;
+  top: -170px;
+  margin-bottom: -160px;
+}
+#searchplane{
+  background-image: url('../../../assets/images/flightInfo/searchplane.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: rotate(-90deg) translateY(0%);
+  z-index: 1;
+  filter: drop-shadow(-3px 2px 3px rgba(34, 39, 53, 0.033)) /* Left and bottom shadow */;
+  animation: fly 7s linear infinite;
+}
+@keyframes fly {
+  from {
+    top: 70%;
+    transform: rotate(-90deg) translateY(100%);
+  }
+  to {
+    top: -70%;
+    transform: rotate(-90deg) translateY(-400%);
+  }
+}
+#searchCloud{
+  background-image: url('../../../assets/images/flightInfo/cartooncloud.webp');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 1000px;
+  height: 350px;
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translateX(-35%);
+  z-index: 2;
+  /* filter: drop-shadow(-3px 2px 3px rgba(34, 39, 53, 0.077)); */
+}
 .searchMessage {
-  text-align: center;
+  /* background-color: #d9f3fd; */
+  text-align:right;
   margin-bottom: 40px;
   font-weight: bold;
-  color: #00235A;
+  color: #697fa5;
   font-size: 21px;
   font-family: "KIMM_Light";
   letter-spacing: 0.5px;
+  position: relative;
+  top: 340px;
+  width: 700px;
+  position: absolute;
+  left: 50%;
+  top: 87%;
+  transform: translateX(-15%);
+  z-index: 3;
 }
 
 .searchBar {
