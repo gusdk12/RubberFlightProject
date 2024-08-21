@@ -312,7 +312,7 @@ useEffect(() => {
         <Header isMain={true}/>
         <div className={style.contentpart}>
             <ThreeScene setIsAirplaneLoaded={setIsAirplaneLoaded} isSearhMode={isSearhMode}/>
-            <Box ref={reserveButtonRef} id={style.reserveButton} onClick={() => setIsSearhMode(true)} className="reserveButton">항공권 조회하기</Box>
+            <Box ref={reserveButtonRef} id={style.reserveButton} onClick={() => setIsSearhMode(true)} className="reserveButton">&gt;&gt; 항공권 조회하기</Box>
             <Box ref={searchBoxRef} id={style.searchBox} className="seachBox">
                 <div id={style.wayBox}>
                     <div id={style.roundway} onClick={() => handleWayChange(true)} className={isRoundWay ? style.actives : ''}>왕복</div> 
