@@ -10,7 +10,7 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
 
   const flightData = timetable.length > 0 ? timetable[0] : history.length > 0 ? history[0] : null;
 
-  const delayInMinutes = flightData?.departure?.delay || 0;
+  const delayInMinutes = flightData?.arrival?.delay || 0;
   const { hours: delayHours, minutes: delayMinutes } = convertDelay(delayInMinutes);
 
   const formatTime = (dateString) => {
@@ -50,11 +50,11 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
       <Flex direction="row" mb={4} align="center" gap={7} p={6}>
         {/* 1 */}
         <Flex direction="column" gap={16} align="center">
-          <Text fontSize="xl">{formatTime(flightInfo.depSch) || "-"}</Text>
+          <Text fontSize="xl">{formatTime(flightData?.departure?.scheduledTime || flightInfo.depSch)}</Text>
           <Text fontSize="14px" fontWeight="bold" mt={5} mb={5} color="gray.500" whiteSpace="nowrap">
           {calculateFlightDuration(flightInfo.depSch, flightInfo.arrSch)}
           </Text>
-          <Text fontSize="xl">{formatTime(flightInfo.arrSch) || "-"}</Text>
+          <Text fontSize="xl">{formatTime(flightData?.arrival?.scheduledTime || flightInfo.arrSch)}</Text>
         </Flex>
 
         {/* 2 */}
@@ -87,8 +87,8 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
                 <Text fontSize="30px" fontWeight="bold">
                 {formatTime(
                   history.length > 0 
-                    ? flightData?.departure?.actualTime 
-                    : flightData?.departure?.estimatedTime || flightInfo.depSch 
+                    ? flightData?.departure?.actualTime || flightData?.departure?.estimatedTime
+                    : flightData?.departure?.estimatedTime || flightInfo.depSch
                 ) || "-"}
                 </Text>
               </Flex>
@@ -97,7 +97,11 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
                   {history.length > 0 ? "실제 도착시간" : "예정 도착시간"}
                 </Text>
                 <Text fontSize="30px" fontWeight="bold">
-                  {formatTime(flightData?.arrival?.estimatedTime || flightInfo.arrSch) || "-"}
+                {formatTime(
+                  history.length > 0 
+                  ? flightData?.arrival?.actualTime || flightData?.arrival?.estimatedTime
+                  : flightData?.arrival?.estimatedTime || flightInfo.arrSch
+                ) || "-"}
                 </Text>
               </Flex>
             </Flex>
@@ -105,9 +109,9 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
 
           <Text fontSize="sm" color="red.500" mb={8} align="right">
             {now > depSch && delayInMinutes > 0 && (
-            delayHours > 0 
-              ? `총 ${delayHours}시간 ${delayMinutes}분 지연되었습니다.` 
-              : `총 ${delayMinutes}분 지연되었습니다.`
+              delayHours > 0 
+              ? `도착시간 ${delayHours}시간 ${delayMinutes}분 지연되었습니다.` 
+              : `도착시간 ${delayMinutes}분 지연되었습니다.`
             )}
           </Text>
 
@@ -118,6 +122,7 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
           </Flex>
         </Box>
       </Flex>
+        <Text fontSize="11px" mr={3} color="rgb(6, 0, 0)" textAlign="right" >※ 표시된 시간은 현지 기준 시간입니다.</Text>
     </Flex>
   );
 };
