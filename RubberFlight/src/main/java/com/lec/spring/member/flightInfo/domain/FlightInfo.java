@@ -42,9 +42,6 @@ public class FlightInfo {
     @Column(nullable = false, name = "flight_iat")
     private String flightIat;
 
-    @Column(nullable = false, name = "airline_iata")
-    private String airlineIata;
-
     @Column(nullable = false, name = "dep_sch")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime depSch;

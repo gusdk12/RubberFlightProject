@@ -246,9 +246,6 @@ public class ReserveService {
         flightInfo.setDepGate(flight.getDepGate());
         flightInfo.setArrTerminal(flight.getArrTerminal());
         flightInfo.setArrGate(flight.getArrGate());
-        flightInfo.setAirlineIata(flight.getAirlineIata());
-
-//        System.out.println("airlineIata" + flightInfo.getAirlineIata());
 
         return flightInfo;
     }
