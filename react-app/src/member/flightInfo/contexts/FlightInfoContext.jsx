@@ -20,6 +20,7 @@ export const FlightInfoProvider = ({ children }) => {
         setHistory(fetchedData.history || []);
         setTimetable(fetchedData.timetable || []);
 
+        console.log("예약 데이터:", fetchedData.flightInfo);
         console.log("지난 예약 데이터:", fetchedData.history);
         console.log("예정된 예약 데이터:", fetchedData.timetable);
 
