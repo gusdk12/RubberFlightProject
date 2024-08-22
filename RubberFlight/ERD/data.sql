@@ -189,6 +189,9 @@ VALUES (1, "2024-08-02", '이틀 째엔 역시 맛집가야지');
 # WHERE id = 1;
 
 
+    delete
+        from ft_flightinfo
+    where id = 13;
 # 서버용
 INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (7, "성인2", true);
 INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (7, "성인1, 소아1", true);
@@ -214,7 +217,7 @@ VALUES (30, "Los Angeles International", "LAX", "Seoul (Incheon)", "ICN", 731000
 INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
 VALUES (31, "Jeju Airport", "CJU", "Gimpo Airport", "GMP", 82900, "ke1150", "2024-08-05T09:00:00", "2024-08-05T10:10:00", "korean air", "", "5", "b", "1");
 
-
+ALTER TABLE ft_flightinfo DROP COLUMN airline_iata;
 # 서버용22
 INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인 2명, 소아 0명, 유아 0명", true);
 INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인 1명, 소아 1명, 유아 0명", true);
