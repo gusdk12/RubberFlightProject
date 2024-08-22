@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -252,7 +255,7 @@ public class ReserveService {
 
     @Scheduled(fixedRate = 60000) // 1분마다 실행
     public void updateEndedReservations() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
 
         // 모든 예약
         List<Reserve> allReserves = reserveRepository.findAll();
@@ -262,15 +265,27 @@ public class ReserveService {
             if (!reserve.isIsended()) {
                 List<FlightInfo> flightInfos = flightInfoRepository.findByReserve(reserve);
 
-//                System.out.println(flightInfos);
+                LocalDateTime latestArrSchUTC = flightInfos.stream()
+                        .map(flightInfo -> {
+                            // FlightInfo에서 도착지 IATA 코드 가져오기
+                            String arrIata = flightInfo.getArrIata();
 
-                // 왕복 예약인 경우, 마지막 도착 시간 찾기
-                LocalDateTime latestArrSch = flightInfos.stream()
-                        .map(FlightInfo::getArrSch)
+                            // AirportService를 통해 타임존 정보 가져오기
+                            Airport airport = airportRepository.findByAirportIso(arrIata);
+                            String arrTimezone = airport.getTimezone();
+
+                            System.out.println("도착 공항 코드:" + arrIata);
+                            System.out.println("도착 타임존:" + arrTimezone);
+
+                            // 도착 시간을 해당 타임존으로 변환 후 UTC로 변환
+                            ZonedDateTime arrZonedDateTime = flightInfo.getArrSch().atZone(ZoneId.of(arrTimezone));
+                            return arrZonedDateTime.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
+                        })
                         .max(LocalDateTime::compareTo)
                         .orElse(null);
 
-                if (latestArrSch != null && latestArrSch.isBefore(now)) {
+                // 최신 도착 시간이 현재 UTC 시간보다 이전이면 예약 종료로 설정
+                if (latestArrSchUTC != null && latestArrSchUTC.isBefore(now)) {
                     reserve.setIsended(true);
                     reserveRepository.save(reserve);
                 }
