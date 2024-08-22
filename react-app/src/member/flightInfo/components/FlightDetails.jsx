@@ -10,7 +10,7 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
 
   const flightData = timetable.length > 0 ? timetable[0] : history.length > 0 ? history[0] : null;
 
-  const delayInMinutes = flightData?.departure?.delay || 0;
+  const delayInMinutes = flightData?.arrival?.delay || 0;
   const { hours: delayHours, minutes: delayMinutes } = convertDelay(delayInMinutes);
 
   const formatTime = (dateString) => {
@@ -87,8 +87,8 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
                 <Text fontSize="30px" fontWeight="bold">
                 {formatTime(
                   history.length > 0 
-                    ? flightData?.departure?.actualTime 
-                    : flightData?.departure?.estimatedTime || flightInfo.depSch 
+                    ? flightData?.departure?.actualTime || flightData?.departure?.estimatedTime
+                    : flightData?.departure?.estimatedTime || flightInfo.depSch
                 ) || "-"}
                 </Text>
               </Flex>
@@ -97,7 +97,11 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
                   {history.length > 0 ? "실제 도착시간" : "예정 도착시간"}
                 </Text>
                 <Text fontSize="30px" fontWeight="bold">
-                  {formatTime(flightData?.arrival?.estimatedTime || flightInfo.arrSch) || "-"}
+                {formatTime(
+                  history.length > 0 
+                    ? flightData?.arrival?.actualTime || flightData?.arrival?.estimatedTime
+                    : flightData?.arrival?.estimatedTime || flightInfo.arrSch
+                ) || "-"}
                 </Text>
               </Flex>
             </Flex>
@@ -106,8 +110,8 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
           <Text fontSize="sm" color="red.500" mb={8} align="right">
             {now > depSch && delayInMinutes > 0 && (
             delayHours > 0 
-              ? `총 ${delayHours}시간 ${delayMinutes}분 지연되었습니다.` 
-              : `총 ${delayMinutes}분 지연되었습니다.`
+              ? `도착시간 ${delayHours}시간 ${delayMinutes}분 지연되었습니다.` 
+              : `도착시간 ${delayMinutes}분 지연되었습니다.`
             )}
           </Text>
 
