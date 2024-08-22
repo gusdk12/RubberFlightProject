@@ -31,7 +31,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
                  JOIN ft_airline a ON r.airline_id = a.id
                  JOIN ft_flightinfo f ON r.id = f.review_id
                  JOIN ft_reservation re ON f.reservation_id = re.id
-                 JOIN ft_user u ON re.user_id = u.id
+                 JOIN FT_USER u ON re.user_id = u.id
         where u.id = :id
         ORDER BY (r.seat_rate + r.service_rate + r.procedure_rate + r.flightmeal_rate
          + r.lounge_rate + r.clean_rate) / 6 DESC, r.date DESC

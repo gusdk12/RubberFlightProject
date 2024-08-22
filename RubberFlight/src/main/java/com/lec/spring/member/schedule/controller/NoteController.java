@@ -131,8 +131,11 @@ public class NoteController {
     @CrossOrigin
     @GetMapping("/scheduleusers/{id}")
     public Set<Long> getUsers(@PathVariable Long id) {
-        Set<Long> usersPics = activeUsersMap.get(id);
-        if(usersPics.isEmpty()){
+        Set<Long> usersPics = new HashSet<>();
+        if(activeUsersMap.containsKey(id)){
+            usersPics = activeUsersMap.get(id);
+        }
+        else {
             Set<Long> empty = new HashSet<>();
             return empty;
         }
