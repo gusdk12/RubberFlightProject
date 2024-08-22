@@ -117,6 +117,7 @@ public class FlightInfoController {
         LocalDateTime depSch = flightInfo.getDepSch();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = depSch.format(formatter);
+        String airlineIata = flightInfo.getAirlineIata();
 
         RestTemplate restTemplate = new RestTemplate();
         URI uri = UriComponentsBuilder
@@ -126,6 +127,7 @@ public class FlightInfoController {
                 .queryParam("type", "departure")
                 .queryParam("date_from", date)
                 .queryParam("flight_number", flightIat)
+                .queryParam("airline_iata", airlineIata)
                 .build()
                 .encode()
                 .toUri();
