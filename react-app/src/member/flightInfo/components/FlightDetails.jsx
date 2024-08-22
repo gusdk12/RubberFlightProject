@@ -15,8 +15,11 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
 
   const formatTime = (dateString) => {
     if (!dateString) return "-";
-    return new Date(dateString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-  };
+    const date = new Date(dateString);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+};
 
   const info = flightInfo || {};
   const depSch = new Date(info.depSch);
@@ -79,15 +82,19 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
             <Flex justify="space-around" direction="row">
               <Flex justify="space-between" direction="column">
                 <Text fontSize="sm" mb={2} color="gray.500">
-                  {flightData ? "예정 출발시간" : "실제 출발시간"}
+                  {history.length > 0 ? "실제 출발시간" : "예정 출발시간"}
                 </Text>
                 <Text fontSize="30px" fontWeight="bold">
-                  {formatTime(flightData?.departure?.estimatedTime || flightInfo.depSch) || "-"}
+                {formatTime(
+                  history.length > 0 
+                    ? flightData?.departure?.actualTime 
+                    : flightData?.departure?.estimatedTime || flightInfo.depSch 
+                ) || "-"}
                 </Text>
               </Flex>
               <Flex justify="space-between" direction="column">
                 <Text fontSize="sm" mb={2} color="gray.500">
-                  {flightData ? "예정 도착시간" : "실제 도착시간"}
+                  {history.length > 0 ? "실제 도착시간" : "예정 도착시간"}
                 </Text>
                 <Text fontSize="30px" fontWeight="bold">
                   {formatTime(flightData?.arrival?.estimatedTime || flightInfo.arrSch) || "-"}
