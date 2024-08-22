@@ -65,6 +65,7 @@ class WebSocketService {
     }
 
     joinPage(id, userToken) {
+        console.log(`${id}번 스케쥴에 유저 접속`);
         return this.ensureConnected(id).then(() => {
             if (this.stompClient && this.stompClient.connected) {
                 const payload = { scheduleId: id, userToken: userToken };
