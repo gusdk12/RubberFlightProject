@@ -129,7 +129,7 @@ public class NoteController {
     }
 
     @CrossOrigin
-    @GetMapping("/users/{id}")
+    @GetMapping("/scheduleusers/{id}")
     public Set<Long> getUsers(@PathVariable Long id) {
         Set<Long> usersPics = activeUsersMap.get(id);
         if(usersPics.isEmpty()){
@@ -139,4 +139,5 @@ public class NoteController {
 
         return usersPics;
     }
+
 }
