@@ -221,7 +221,7 @@ const ScheduleEdit = () => {
                     </div>
                 </div>
             </div>
-            <ScheduleEditPart ScheduleId={id} activeUsersPic={activeUsersPic}/>
+            <ScheduleEditPart ScheduleId={id} activeUsersPic={activeUsersPic} />
         </div>
     );
 };
