@@ -1,7 +1,7 @@
 .box {
     width: 1200px;
     margin: 0 auto;
-    margin-bottom: 200px;
+    margin-bottom: 100px;
     display: flex;
     flex-direction: column;
 }
@@ -13,13 +13,13 @@
     display: flex;
     border-bottom: #6f7075 2px solid; 
     margin-bottom: 50px;
-    margin-top: 45px;
 }
 
 .boxFont {
     /* outline: 2px solid blue; */
     font-size: 22px;
     font-family: "Noto Sans KR";
+    font-weight: bold;
     padding-bottom: 20px;
     padding-left: 10px;
 }
@@ -64,6 +64,7 @@
 
 .airports div {
     font-family: Noto Sans KR;
+    font-weight: bold;
     font-size: 20px;
     font-weight: bold;
 }
@@ -115,6 +116,7 @@
 
 .depTime {
     font-family: Noto Sans KR;
+    font-weight: bold;
     font-size: 18px;
 }
 
@@ -169,6 +171,7 @@
 
 .arrTime {
     font-family: Noto Sans KR;
+    font-weight: bold;
     font-size: 18px;
 }
 
@@ -181,6 +184,11 @@
 
 .payUserInfo {
     margin-top: 70px;
+}
+
+.payInfo {
+    /* outline: 2px solid blue; */
+     width: 295px;
 }
 
 /* 테이블 */

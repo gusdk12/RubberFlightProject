@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, styled, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Spinner, styled, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import style from '../css/reserve.module.css';
@@ -8,6 +8,9 @@ import { FaCircle } from "react-icons/fa";
 import { SiEthiopianairlines } from "react-icons/si";
 import Cookies from 'js-cookie';
 import { Dropdown, Menu } from 'antd';
+import Header from '../../common/Header/Header';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 const Reserve = () => {
   // 유저 정보 받기
@@ -30,6 +33,8 @@ const Reserve = () => {
   //   console.log('Passengers:', passengers);
   // }, [passengers]);
 
+  const MySwal = withReactContent(Swal);
+
   const extractNumbersFromString = (str) => {
     const numbers = str.match(/\d+/g);
     // console.log("Extracted numbers:", numbers); // 추출된 숫자 배열 출력
@@ -39,9 +44,9 @@ const Reserve = () => {
 
   const [adults, children, infants] = extractNumbersFromString(passengers);
 
-  console.log("Adults:", adults); // 성인 수
-  console.log("Children:", children); // 소아 수
-  console.log("Infants:", infants); // 유아 수
+  // console.log("Adults:", adults); // 성인 수
+  // console.log("Children:", children); // 소아 수
+  // console.log("Infants:", infants); // 유아 수
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -63,8 +68,8 @@ const Reserve = () => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('Fetched coupons:', data);
-        console.log('Type of coupons:', Array.isArray(data)); // 배열인지 확인
+        // console.log('Fetched coupons:', data);
+        // console.log('Type of coupons:', Array.isArray(data)); // 배열인지 확인
         setCoupons(data);
       })
       .catch(error => {
@@ -77,22 +82,60 @@ const Reserve = () => {
     document.body.style.overflowY = 'scroll';
   }, []);
 
-  const CouponDropdown = ({ coupons, onSelectCoupon }) => {
-    const menuItems = coupons.length > 0
-      ? coupons.map(coupon => ({
-        key: coupon.id,
-        label: (
-          <a onClick={() => onSelectCoupon(coupon)}>
-            {coupon.description} - {coupon.percent}% 할인
+  const handleSelectCoupon = (coupon) => {
+    console.log("선택한 쿠폰:", coupon);
+    setSelectedCoupon(coupon); // 선택된 쿠폰을 상태에 저장
+  };
+
+  const handleCancelCoupon = () => {
+    console.log("쿠폰 취소했지롱~");
+    setSelectedCoupon(null); // 쿠폰 선택 취소
+  };
+
+
+  const CouponDropdown = ({ coupons, onSelectCoupon, onCancelCoupon }) => {
+
+    const noCouponsItem = {
+      key: 'no-coupons',
+      label: (
+        <div>
+          사용 가능한 쿠폰이 없습니다.
+        </div>
+      ),
+    };
+    
+    const cancelCouponItem = selectedCoupon ? {
+      key: 'cancel',
+      label: (
+        <div>
+          <a
+            style={{ color: 'red', cursor: 'pointer' }}
+            onClick={() => onCancelCoupon()} // 적용 취소 버튼 클릭 시 호출
+          >
+            쿠폰 적용 취소
           </a>
-        )
-      }))
-      : [{ key: 'no-coupons', label: '사용할 수 있는 쿠폰이 없습니다.' }];
+        </div>
+      ),
+    } : null;
+    
+   const menuItems = [
+    ...(cancelCouponItem ? [cancelCouponItem] : []), // 선택된 쿠폰이 있을 때 "적용 취소" 항목을 추가
+    ...coupons.map(coupon => ({
+      key: coupon.id,
+      label: (
+        <a onClick={() => onSelectCoupon(coupon)}>
+          {coupon.description} - {coupon.percent}% 할인
+        </a>
+      ),
+    })),
+  ];
+
+  
 
     return (
       <Dropdown overlay={<Menu items={menuItems} />} trigger={['click']}>
         <Button fontSize="16px" fontFamily="Noto Sans KR">
-          쿠폰 적용하기
+        {selectedCoupon ? `${selectedCoupon.description}(-${selectedCoupon.percent}%)` : '쿠폰 적용하기'}
         </Button>
       </Dropdown>
     );
@@ -130,23 +173,59 @@ const Reserve = () => {
 
   // 유효성
   const isFormValid = () => {
-    return buyerName.trim() !== '' && 
-           buyerEmail.trim() !== '' && 
-           buyerTel.trim() !== '' &&
-           buyerBirth.trim() !== ''
+    // 이름 유효성 검사
+    const isNameValid = buyerName.trim().length >= 2 && /^[가-힣a-zA-Z\s]+$/.test(buyerName);
+  
+    // 이메일 유효성 검사 (간단한 형식 검사)
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmailValid = emailPattern.test(buyerEmail.trim());
+  
+    // 휴대폰 번호 유효성 검사 (숫자 및 형식 검사)
+    const phonePattern = /^01[0-9]-\d{3,4}-\d{4}$/;
+    const isPhoneValid = phonePattern.test(buyerTel.trim());
+  
+    // 생년월일 유효성 검사 (YYYY-MM-DD 형식, 합리적인 날짜 검사)
+    const birthPattern = /^\d{4}-\d{2}-\d{2}$/;
+    const isBirthValid = birthPattern.test(buyerBirth.trim()) && isValidDate(buyerBirth.trim());
+  
+    return isNameValid && isEmailValid && isPhoneValid && isBirthValid;
   };
+  
+  // 생년월일이 유효한 날짜인지 확인하는 함수
+  const isValidDate = (dateString) => {
+    const date = new Date(dateString);
+    const today = new Date();
+  
+    // 날짜 객체가 유효한 날짜인지 확인
+    if (isNaN(date.getTime())) {
+      return false;
+    }
+  
+    // 생년월일이 현재 날짜보다 이전인지 확인
+    if (date > today) {
+      return false;
+    }
+  
+    const age = today.getFullYear() - date.getFullYear();
+    return age >= 0 && age <= 120;
+  };  
 
-  const onClickPayment = () => {
+  const onClickPayment = async () => {
     if (!isFormValid()) {
-      window.alert("예약자 정보를 입력해주세요");
+      MySwal.fire({
+        icon: 'warning',
+        title: '예약자 정보 처리 실패',
+        text: '예약자 정보를 확인해주세요',
+        confirmButtonText: '확인'
+      });
       return;
     }
-    if (!window.IMP) return;
-    /* 1. 가맹점 식별하기 */
-    const { IMP } = window;
-    IMP.init("imp28617244"); // 가맹점 식별코드
 
-    /* 2. 결제 데이터 정의하기 */
+    if (!window.IMP) return;
+
+    const { IMP } = window;
+    IMP.init("imp28617244");
+
     const data = {
       pg: "html5_inicis",
       pay_method: "card",
@@ -160,7 +239,7 @@ const Reserve = () => {
       buyer_postcode: "06236",
     };
 
-    /* 4. 결제 창 호출하기 */
+  
     IMP.request_pay(data, callback);
   };
 
@@ -169,7 +248,12 @@ const Reserve = () => {
     const { success, error_msg } = response;
 
     if (success) {
-      window.alert("결제 성공");
+      MySwal.fire({
+        icon: 'success',
+        title: '결제 성공',
+        text: '결제가 완료되었습니다.',
+        confirmButtonText: '확인'
+      }).then(() => {
       const reservationData = {
         personnel: passengers,
         isRoundTrip: isRoundTripValue,
@@ -178,12 +262,12 @@ const Reserve = () => {
         couponId: selectedCoupon ? selectedCoupon.id : null,
       };
 
-      console.log(passengers);
-      console.log(isRoundTripValue);
-      console.log(flight.outbound);
-      console.log(flight);
-      console.log(flight.inbound);
-      console.log(selectedCoupon.id);
+      // console.log(passengers);
+      // console.log(isRoundTripValue);
+      // console.log(flight.outbound);
+      // console.log(flight);
+      // console.log(flight.inbound);
+      // console.log(selectedCoupon.id);
 
       // const token = Cookies.get('accessToken');
 
@@ -210,13 +294,18 @@ const Reserve = () => {
               }
             })
               .then(() => {
-                console.log(selectedCoupon.id);
-                window.alert('결제가 완료되었고, 쿠폰이 삭제되었습니다.');
+                // console.log(selectedCoupon.id);
+                // window.alert('결제가 완료되었고, 쿠폰이 삭제되었습니다.');
                 navigate('/mypage/flight-info');
               })
               .catch(error => {
                 console.error('쿠폰 삭제 중 오류가 발생했습니다:', error);
-                window.alert('쿠폰 삭제 중 오류가 발생했습니다.');
+                MySwal.fire({
+                  icon: 'error',
+                  title: '오류 발생!',
+                  text: '쿠폰 삭제 중 오류가 발생했습니다.',
+                  confirmButtonText: '확인'
+                });
               });
           } else {
             navigate('/mypage/flight-info');
@@ -224,10 +313,21 @@ const Reserve = () => {
         })
         .catch(error => {
           console.error('예약 실패:', error);
-          window.alert('예약 처리 중 오류 발생');
+          MySwal.fire({
+            icon: 'error',
+            title: '오류 발생',
+            text: '예약 처리 중 오류가 발생했습니다',
+            confirmButtonText: '확인'
+          });
         });
+      });
     } else {
-      window.alert(`결제 실패: ${error_msg}`);
+      MySwal.fire({
+        icon: 'error',
+        title: '결제 실패',
+        text: `결제 실패: ${error_msg}`,
+        confirmButtonText: '확인'
+      });
     }
   };
 
@@ -235,6 +335,7 @@ const Reserve = () => {
   return (
     <>
       <div className={style.box}>
+      <Header isMain={false} />
         <div className={style.boxTitle}>
           <div className={style.boxFont}>선택한 항공권</div>
         </div>
@@ -335,25 +436,27 @@ const Reserve = () => {
                   ※ 항공사 별로 조회좌석수가 예약완료 후의 좌석상태와 상이할 수 있음을 미리 안내해드리며, 반드시 예약완료 후의 좌석상태를 확인해주시기 바랍니다.
                 </div>
               </div>
-              <Box className={style.userInfo}>
+              <Box className={style.payInfo}>
                 <Heading as="h2" size="md" mb="4">상품 결제 정보</Heading>
                 <Flex direction="column" bg="gray.50" p="4">
                   <Flex direction="column" pr="4">
-                    <Text mb="2" fontFamily="Noto Sans KR" fontSize="17px">총 항공 예상 운임</Text>
-                    <Text mb="2" fontFamily="Verdana, Geneva, Tahoma, sans-serif" fontSize="12px" color="gray.700">{passengers}</Text>
+                    <Text mb="2" fontFamily="Noto Sans KR" fontSize="17px" fontWeight="bold">총 항공 예상 운임</Text>
+                    <Text mb="2" fontFamily="Verdana, Geneva, Tahoma, sans-serif" fontSize="12px" fontWeight="bold" color="gray.700">{passengers}</Text>
                     <div>
                       <CouponDropdown
                         coupons={coupons}
-                        onSelectCoupon={setSelectedCoupon}
+                        selectedCoupon={selectedCoupon}
+                        onSelectCoupon={handleSelectCoupon}
+                        onCancelCoupon={handleCancelCoupon}
                       />
                     </div>
                   </Flex>
                   <Flex mt={6} direction="row" justifyContent="flex-end" alignItems="flex-end">
-                    <Text fontSize="30px" fontFamily="Verdana, Geneva, Tahoma, sans-serif" color="purple.600" mb="2">{discountedPrice.toLocaleString('ko-KR')}</Text>
+                    <Text fontSize="30px" fontFamily="Verdana, Geneva, Tahoma, sans-serif" color="#1DA1F2" mb="2">{discountedPrice.toLocaleString('ko-KR')}</Text>
                     <Text pl={2} pb={3} fontSize="14px" color="gray.500">원</Text>
                   </Flex>
                 </Flex>
-                <Button onClick={onClickPayment} colorScheme="purple" mt="4" size="lg" width="full">결제하기</Button>
+                <Button onClick={onClickPayment} colorScheme="twitter" mt="4" size="lg" width="full">결제하기</Button>
               </Box>
             </Flex>
           </>
@@ -397,21 +500,23 @@ const Reserve = () => {
                 <Heading as="h2" size="md" mb="4">상품 결제 정보</Heading>
                 <Flex direction="column" bg="gray.50" p="4">
                   <Flex direction="column" pr="4">
-                    <Text mb="2" fontFamily="Noto Sans KR" fontSize="17px">총 항공 예상 운임</Text>
-                    <Text mb="2" fontFamily="Verdana, Geneva, Tahoma, sans-serif" fontSize="12px" color="gray.700">{passengers}</Text>
+                    <Text mb="2" fontFamily="Noto Sans KR" fontSize="17px" fontWeight="bold">총 항공 예상 운임</Text>
+                    <Text mb="2" fontFamily="Verdana, Geneva, Tahoma, sans-serif" fontSize="12px" fontWeight="bold" color="gray.700">{passengers}</Text>
                     <div>
                       <CouponDropdown
                         coupons={coupons}
-                        onSelectCoupon={setSelectedCoupon}
+                        selectedCoupon={selectedCoupon}
+                        onSelectCoupon={handleSelectCoupon}
+                        onCancelCoupon={handleCancelCoupon}
                       />
                     </div>
                   </Flex>
                   <Flex mt={6} direction="row" justifyContent="flex-end" alignItems="flex-end">
-                    <Text fontSize="30px" fontFamily="Verdana, Geneva, Tahoma, sans-serif" color="purple.600" mb="2">{discountedPrice.toLocaleString('ko-KR')}</Text>
+                  <Text fontSize="30px" fontFamily="Verdana, Geneva, Tahoma, sans-serif" color="#1DA1F2" mb="2">{discountedPrice.toLocaleString('ko-KR')}</Text>
                     <Text pl={2} pb={3} fontSize="14px" color="gray.500">원</Text>
                   </Flex>
                 </Flex>
-                <Button onClick={onClickPayment} colorScheme="purple" mt="4" size="lg" width="full">결제하기</Button>
+                <Button onClick={onClickPayment} colorScheme="twitter" mt="4" size="lg" width="full">결제하기</Button>
               </Box>
             </Flex>
           </>
@@ -440,6 +545,7 @@ const Reserve = () => {
                     value={buyerBirth}
                     onChange={(e) => setBuyerBirth(e.target.value)}
                     required
+                    placeholder="YYYY-MM-DD"
                   />
                 </td>
               </tr>
@@ -452,6 +558,7 @@ const Reserve = () => {
                     value={buyerEmail}
                     onChange={(e) => setBuyerEmail(e.target.value)}
                     required
+                    placeholder="example@example.com"
                   />
                 </td>
                 <td><label htmlFor="buyerTel">휴대폰 번호</label></td>
@@ -462,6 +569,7 @@ const Reserve = () => {
                     value={buyerTel}
                     onChange={(e) => setBuyerTel(e.target.value)}
                     required
+                    placeholder="010-1234-5678"
                   />
                 </td>
               </tr>
