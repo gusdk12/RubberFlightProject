@@ -85,7 +85,11 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
                   {history.length > 0 ? "실제 출발시간" : "예정 출발시간"}
                 </Text>
                 <Text fontSize="30px" fontWeight="bold">
-                  {formatTime(flightData?.departure?.estimatedTime || flightInfo.depSch) || "-"}
+                {formatTime(
+                  history.length > 0 
+                    ? flightData?.departure?.actualTime 
+                    : flightData?.departure?.estimatedTime || flightInfo.depSch 
+                ) || "-"}
                 </Text>
               </Flex>
               <Flex justify="space-between" direction="column">
