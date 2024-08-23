@@ -54,6 +54,7 @@ const FlightInfoDetail = () => {
 
     let arrschTime = flightInfo.arrSch;
     let depschTime = flightInfo.depSch;
+    console.log("로컬임?", isDebug);
 
     if(!isDebug){
       arrschTime.setHours(arrschTime.getHours() + 9);
