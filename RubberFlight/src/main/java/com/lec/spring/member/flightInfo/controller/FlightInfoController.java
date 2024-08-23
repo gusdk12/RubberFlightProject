@@ -114,6 +114,7 @@ public class FlightInfoController {
     private ResponseEntity<?> getFlightHistory(FlightInfo flightInfo, Map<String, Object> combinedResponse) throws IOException {
         String arrIata = flightInfo.getArrIata();
         String flightIat = flightInfo.getFlightIat().replaceAll("[^0-9]", "");
+        String airlineIata = flightIat.replaceAll("[^A-Za-z]", "");
         LocalDateTime depSch = flightInfo.getDepSch();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = depSch.format(formatter);
@@ -126,6 +127,7 @@ public class FlightInfoController {
                 .queryParam("type", "arrival")
                 .queryParam("date_from", date)
                 .queryParam("flight_number", flightIat)
+                .queryParam("airline_iata", airlineIata)
                 .queryParam("status", "landed")
                 .build()
                 .encode()
