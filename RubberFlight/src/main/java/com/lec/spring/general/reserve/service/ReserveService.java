@@ -287,11 +287,10 @@ public class ReserveService {
                                     LocalDateTime dbDateTime = flightInfo.getArrSch();
 
                                     // 이건 db 시간을 zoneDateTime 으로
-//                                    ZonedDateTime utcDateTime = dbDateTime.atZone(ZoneOffset.UTC);
+                                    ZonedDateTime utcDateTime = dbDateTime.atZone(ZoneOffset.UTC);
 
                                     // db 정보를 서울로(이게 api 시간)
-//                                   ZonedDateTime seoulDateTime = utcDateTime.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
-                                    LocalDateTime seoulDateTime = dbDateTime.plusHours(9);  // 서울로(이게 api 데이터 시간)
+                                   ZonedDateTime seoulDateTime = utcDateTime.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
 
                                     int year = seoulDateTime.getYear();
                                     int mon = seoulDateTime.getMonthValue();
@@ -301,10 +300,10 @@ public class ReserveService {
                                     int second = seoulDateTime.getSecond();
 
                                     System.out.println("저장 시간 " + hour);
-                                    System.out.println("저장 시간 " + minute);
-                                    System.out.println("저장 시간 " + second);
+                                    System.out.println("저장 분 " + minute);
+                                    System.out.println("저장 초 " + second);
 
-                                    ZonedDateTime utcZonedDateTime = seoulDateTime.atZone(ZoneId.of(arrTimezone));    // 타임존 부여
+                                    ZonedDateTime utcZonedDateTime = seoulDateTime.withZoneSameInstant(ZoneId.of(arrTimezone));
 
                                     ZonedDateTime updatedDateTime = utcZonedDateTime
                                             .withYear(year)
