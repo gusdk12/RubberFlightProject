@@ -284,16 +284,26 @@ public class ReserveService {
 //                                System.out.println("도착 타임존:" + arrTimezone);
 
                                     System.out.println("디비상 정보" + flightInfo.getArrSch());
+                                    LocalDateTime dbDateTime = flightInfo.getArrSch();
 
-                                    ZonedDateTime arrZonedDateTime = flightInfo.getArrSch().atZone(ZoneId.of(arrTimezone));
+                                    // 이건 db 시간을 zoneDateTime 으로
+                                    ZonedDateTime utcDateTime = dbDateTime.atZone(ZoneOffset.UTC);
 
-                                    System.out.println("해당 나라 시간으로 시간" + arrZonedDateTime);
+                                    // db 정보를 서울로(이게 api 시간)
+                                    ZonedDateTime seoulDateTime = utcDateTime.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
 
-                                    ZonedDateTime utcDateTime = arrZonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
+                                    System.out.println("디비 정보로 api 찾기 >> " + utcDateTime);
 
-                                    System.out.println("해당나라 >> utc ??? " + utcDateTime);
+                                    // 시간 동일하게 타임존
+                                    ZonedDateTime arrZonedDateTime = utcDateTime.withZoneSameInstant(ZoneId.of(arrTimezone));
 
-                                    return utcDateTime.toLocalDateTime();
+                                    System.out.println("해당 나라 시간으로 동일한 시간" + arrZonedDateTime);
+
+                                    ZonedDateTime realDateTime = arrZonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
+
+                                    System.out.println("해당나라 >> utc ??? " + realDateTime);
+
+                                    return realDateTime.toLocalDateTime();
                                 })
                                 .max(LocalDateTime::compareTo)
                                 .orElse(null);
