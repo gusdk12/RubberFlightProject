@@ -16,6 +16,10 @@ const FlightInfoItem = ({ flightInfo, timetable, history }) => {
     return field || defaultValue;
   };
 
+  const getGateOrTerminalValue = (flightDataValue, infoValue) => {
+    return flightDataValue || infoValue || "-";
+  };
+
   const info = flightInfo || {};
   const flightData = timetable.length > 0 ? timetable[0] : history.length > 0 ? history[0] : {};
 
@@ -41,21 +45,21 @@ const FlightInfoItem = ({ flightInfo, timetable, history }) => {
       <Flex mb={2} ml={30}>
         <Box flex="1" textAlign="left">
           <Text {...labelStyle}>출발 탑승구 | GATE</Text>
-          <Text {...valueStyle}>{getFlightValue(flightData.departure?.gate)}</Text>
+          <Text {...valueStyle}>{getGateOrTerminalValue(flightData.departure?.gate, info.depGate)}</Text>
         </Box>
         <Box flex="1" textAlign="left">
           <Text {...labelStyle}>도착 탑승구 | GATE</Text>
-          <Text {...valueStyle}>{getFlightValue(flightData.arrival?.gate)}</Text>
+          <Text {...valueStyle}>{getGateOrTerminalValue(flightData.arrival?.gate, info.arrGate)}</Text>
         </Box>
       </Flex>
       <Flex mb={2} ml={30}>
         <Box flex="1" textAlign="left">
           <Text {...labelStyle}>출발 터미널 | TERMINAL</Text>
-          <Text {...valueStyle}>{getFlightValue(flightData.departure?.terminal)}</Text>
+          <Text {...valueStyle}>{getGateOrTerminalValue(flightData.departure?.terminal, info.depTerminal)}</Text>
         </Box>
         <Box flex="1" textAlign="left">
           <Text {...labelStyle}>도착 터미널 | TERMINAL</Text>
-          <Text {...valueStyle}>{getFlightValue(flightData.arrival?.terminal)}</Text>
+          <Text {...valueStyle}>{getGateOrTerminalValue(flightData.arrival?.terminal, info.arrTerminal)}</Text>
         </Box>
       </Flex>
       <Flex mb={2} ml={30}>
