@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 const CouponModal = ({ isOpen, onClose }) => {
   const [couponCode, setCouponCode] = useState('');
   const [error, setError] = useState('');
-  const { addCoupon, existingUserCoupons, existingAdminCoupons } = useUserCoupon(); // 수정된 부분
+  const { addCoupon, existingUserCoupons, existingAdminCoupons } = useUserCoupon();
   
   const inputRef = useRef(null);
 
@@ -19,7 +19,7 @@ const CouponModal = ({ isOpen, onClose }) => {
 
   const handleAddCoupon = async () => {
     setError(''); 
-    const validationError = validateCouponCode(couponCode, existingUserCoupons, existingAdminCoupons); // 수정된 부분
+    const validationError = validateCouponCode(couponCode, existingUserCoupons, existingAdminCoupons); 
     if (validationError) {
       setError(validationError);
       return;
@@ -36,6 +36,7 @@ const CouponModal = ({ isOpen, onClose }) => {
         text: `결제 시 쿠폰을 확인하실 수 있습니다.`,
       });
     } catch (error) {
+      console.log('쿠폰 추가 중 발생한 오류:', error);
       setError('쿠폰 추가 중 오류가 발생했습니다.');
     }
   };
