@@ -46,6 +46,7 @@ const JoinForm = ({ join }) => {
     const [tel2, setTel2] = React.useState('');
     const [tel3, setTel3] = React.useState('');
     const [profileImage, setProfileImage] = React.useState(`${process.env.REACT_APP_BACK_URL}/uploads/user.png`); // Default profile image URL
+    const [isUsernameVerified, setIsUsernameVerified] = React.useState(false);
 
     const backUrl = process.env.REACT_APP_BACK_URL;
     const navigate = useNavigate(); 
@@ -115,6 +116,16 @@ const JoinForm = ({ join }) => {
         const fullTel = `${tel1}-${tel2}-${tel3}`;
 
         // 유효성 검사 추가 
+
+        if (!isUsernameVerified) {
+            Swal.fire({
+                icon: 'error',
+                title: '아이디 중복 확인 필요',
+                text: '아이디 중복 확인을 먼저 해주세요.',
+            });
+            return;
+        }
+
         if (!username) {
             Swal.fire({
                 icon: 'error',
@@ -242,6 +253,7 @@ const JoinForm = ({ join }) => {
         }
 
         e.target.reset();
+        setIsUsernameVerified(false);
     };
 
     const home = () => {
