@@ -52,9 +52,9 @@ const FlightInfoDetail = () => {
     const depTimeInKST = convertToKST(flightInfo.depSch, depTimezone);
     const currentTimeInKST = new Date(); // 현재 한국 시간
 
-    // console.log("arr",arrTimeInKST);
-    // console.log("dep",depTimeInKST);
-    // console.log("kor",currentTimeInKST);
+    console.log("arr",arrTimeInKST);
+    console.log("dep",depTimeInKST);
+    console.log("kor",currentTimeInKST);
 
     return (
       <Box
