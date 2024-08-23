@@ -57,10 +57,37 @@ const FlightInfoDetail = () => {
     console.log("로컬임?", isDebug);
 
     if(isDebug === 'false'){
-      arrschTime.setHours(arrschTime.getHours() + 9);
-      depschTime.setHours(depschTime.getHours() + 9);
-      console.log("api상 arr시간 바꿈", arrschTime);
-      console.log("api상 dep시간 바꿈", depschTime);
+      let dateArrSchTime = new Date(arrschTime);
+      let dateDepSchTime = new Date(depschTime);
+      console.log("api상 arr시간 Date로", dateArrSchTime);
+      console.log("api상 dep시간 Date로", dateDepSchTime);
+
+      dateArrSchTime.setHours(dateArrSchTime.getHours() + 9);
+      dateDepSchTime.setHours(dateDepSchTime.getHours() + 9);
+      console.log("api상 arr시간 바꿈", dateArrSchTime);
+      console.log("api상 dep시간 바꿈", dateDepSchTime);
+
+      let arryear = dateArrSchTime.getFullYear();
+      let arrmonth = String(dateArrSchTime.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+      let arrday = String(dateArrSchTime.getDate()).padStart(2, '0');
+      let arrhours = String(dateArrSchTime.getHours()).padStart(2, '0');
+      let arrminutes = String(dateArrSchTime.getMinutes()).padStart(2, '0');
+      let arrseconds = String(dateArrSchTime.getSeconds()).padStart(2, '0');
+      
+      arrschTime = `${arryear}-${arrmonth}-${arrday} ${arrhours}:${arrminutes}:${arrseconds}`;
+
+      let depyear = dateDepSchTime.getFullYear();
+      let depmonth = String(dateDepSchTime.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+      let depday = String(dateDepSchTime.getDate()).padStart(2, '0');
+      let dephours = String(dateDepSchTime.getHours()).padStart(2, '0');
+      let depminutes = String(dateDepSchTime.getMinutes()).padStart(2, '0');
+      let depseconds = String(dateDepSchTime.getSeconds()).padStart(2, '0');
+      
+      depschTime = `${depyear}-${depmonth}-${depday} ${dephours}:${depminutes}:${depseconds}`;
+
+      console.log("으아악!!!! arr시간 바꿈", arrschTime);
+      console.log("으아악!!!! dep시간 바꿈", depschTime);
+
     }
 
     const arrTimeInKST = convertToKST(arrschTime, arrTimezone);
