@@ -261,17 +261,21 @@ VALUES (27, "Hong Kong International", "HKG", "Seoul (Incheon)", "ICN", 301660, 
 # 유저10
 
 # 실시간 추적 가능 데이터 넣기!!
-INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인2", false);
+
+#미국
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (2, "성인 14명, 소아 2명, 유아 2명", false);
 
 INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
-VALUES (14, "Incheon Airport", "ICN", "LA", "LAX", 1000000, "KE17", "2024-08-22T14:30:00", "2024-08-22T10:10:00", "Korean Air", "2", "232", "TBIT", "130");
+VALUES (54, "Incheon Airport", "ICN", "LA", "LAX", 1500000, "KE213", "2024-08-23T02:20:00", "2024-08-22T21:25:00", "Korean Air", "2", "232", "TBIT", "130");
 
-INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (2, "성인4", false);
-
-INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
-VALUES (15, "Incheon Airport", "ICN", "LA", "LAX", 1500000, "PR112", "2024-08-22T15:45:00", "2024-08-22T11:20:00", "Philippine Airlines", "2", "232", "TBIT", "130");
-
-INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인2", false);
+#홍콩
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (3, "성인1", false);
 
 INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
-VALUES (1, "Incheon Airport", "ICN", "LA", "LAX", 1500000, "KE213", "2024-08-23T02:20:00", "2024-08-22T21:25:00", "Korean Air", "2", "232", "TBIT", "130");
+VALUES (53, "Incheon Airport", "ICN", "HONGKONG", "HKG", 500000, "TW115", "2024-08-23T09:05:00", "2024-08-23T12:15:00", "T''Way Air", "2", "2", "TBIT", "2");
+
+
+INSERT INTO ft_reservation (user_id, personnel, isended) VALUES (1, "성인 14명, 소아 2명, 유아 2명", false);
+
+INSERT INTO ft_flightinfo (reservation_id, dep_airport, dep_iata, arr_airport, arr_iata, price, flight_iat, dep_sch, arr_sch, airline_name, dep_terminal, dep_gate, arr_terminal, arr_gate)
+VALUES (4, "Incheon Airport", "ICN", "LA", "LAX", 1500000, "KE213", "2024-08-23T02:20:00", "2024-08-22T21:25:00", "Korean Air", "2", "232", "TBIT", "130");

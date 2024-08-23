@@ -291,18 +291,20 @@ public class ReserveService {
 
                                     // db 정보를 서울로(이게 api 시간)
 //                                    ZonedDateTime seoulDateTime = utcDateTime.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
-                                    LocalDateTime seoulDateTime = dbDateTime.plusHours(9);
+//                                    LocalDateTime seoulDateTime = dbDateTime.plusHours(9);  // 서울로(이게 api 데이터 시간)
+
+                                    ZonedDateTime seoulDateTime = dbDateTime.atZone(ZoneId.of("Asia/Seoul"));
 
                                     System.out.println("디비 정보로 api 찾기 >> " + seoulDateTime);
 
-                                    ZonedDateTime apiZonedDateTime = seoulDateTime.atZone(ZoneId.of("Asia/Seoul"));
+//                                    ZonedDateTime apiZonedDateTime = seoulDateTime.atZone(ZoneId.of("Asia/Seoul"));
 
                                     // 시간 동일하게 타임존
-                                    ZonedDateTime arrZonedDateTime = apiZonedDateTime.withZoneSameInstant(ZoneId.of(arrTimezone));
+                                    ZonedDateTime arrZonedDateTime = seoulDateTime.withZoneSameInstant(ZoneId.of(arrTimezone));
 //                                    ZonedDateTime arrZonedDateTime = dbDateTime.atZone(ZoneId.of(arrTimezone));
 
                                     System.out.println("여기랑 위랑 시간은 똑같아야 됨");
-                                    System.out.println("해당 나라 시간으로" + arrZonedDateTime);
+                                    System.out.println("해당 나라 타임존으로" + arrZonedDateTime);
                                     LocalDateTime localDateTime = arrZonedDateTime.toLocalDateTime();
 
                                     System.out.println("시간도 맞나요?" + localDateTime);
