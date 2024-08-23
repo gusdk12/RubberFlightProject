@@ -283,23 +283,15 @@ public class ReserveService {
 //                                System.out.println("도착 공항 코드:" + arrIata);
 //                                System.out.println("도착 타임존:" + arrTimezone);
 
-                                    ZonedDateTime depDateTime = flightInfo.getArrSch().atZone(ZoneId.of("Asia/Seoul"));
+                                    System.out.println("디비상 정보" + flightInfo.getArrSch());
 
-                                    System.out.println("지금 데베 시간은요???" + depDateTime);
+                                    ZonedDateTime arrZonedDateTime = flightInfo.getArrSch().atZone(ZoneId.of(arrTimezone));
 
-                                    // API 시간으로 변환
-                                    ZonedDateTime arrDateTime = depDateTime.withZoneSameInstant(ZoneOffset.UTC);    // api 시간
-
-                                    System.out.println("api 시간!!!!!!!!!!!11" + arrDateTime);
-
-//                                    // 도착 시간을 해당 타임존으로 변환 후 UTC로 변환
-                                    ZonedDateTime arrZonedDateTime = arrDateTime.withZoneSameInstant(ZoneId.of(arrTimezone));
-
-                                    System.out.println("이건 그 나라 공항시간입니다" + arrZonedDateTime);
+                                    System.out.println("해당 나라 시간으로 시간" + arrZonedDateTime);
 
                                     ZonedDateTime utcDateTime = arrZonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
 
-                                    System.out.println("최종 utc 시간??? " + utcDateTime);
+                                    System.out.println("해당나라 >> utc ??? " + utcDateTime);
 
                                     return utcDateTime.toLocalDateTime();
                                 })
