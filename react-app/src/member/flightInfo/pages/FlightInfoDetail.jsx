@@ -52,14 +52,21 @@ const FlightInfoDetail = () => {
     console.log("api상 arr시간",flightInfo.arrSch);
     console.log("api상 dep시간",flightInfo.depSch);
 
-    const arrTimeInKST = convertToKST(flightInfo.arrSch, arrTimezone);
-    const depTimeInKST = convertToKST(flightInfo.depSch, depTimezone);
+    let arrschTime = flightInfo.arrSch;
+    let depschTime = flightInfo.depSch;
+    console.log("로컬임?", isDebug);
+
+    if(!isDebug){
+      arrschTime.setHours(arrschTime.getHours() + 9);
+      depschTime.setHours(depschTime.getHours() + 9);
+      console.log("api상 arr시간 바꿈", arrschTime);
+      console.log("api상 dep시간 바꿈", depschTime);
+    }
+
+    const arrTimeInKST = convertToKST(arrschTime, arrTimezone);
+    const depTimeInKST = convertToKST(depschTime, depTimezone);
     const currentTimeInKST = new Date(); // 현재 한국 시간
     
-    if(!isDebug){
-      arrTimeInKST.setHours(arrTimeInKST.getHours() + 9);
-      depTimeInKST.setHours(depTimeInKST.getHours() + 9);
-    }
 
     console.log("arr",arrTimeInKST);
     console.log("dep",depTimeInKST);
