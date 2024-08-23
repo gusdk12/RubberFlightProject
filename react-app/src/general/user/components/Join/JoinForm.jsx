@@ -98,6 +98,7 @@ const JoinForm = ({ join }) => {
                     title: '사용가능한 아이디입니다.',
                     text: '회원가입을 진행해주세요.',
                 });
+                setIsUsernameVerified(true);
             }
         } catch (error) {
             console.error('Error checking username:', error);
