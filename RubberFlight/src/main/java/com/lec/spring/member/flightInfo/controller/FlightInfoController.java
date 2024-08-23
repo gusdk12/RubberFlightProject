@@ -115,7 +115,6 @@ public class FlightInfoController {
         String arrIata = flightInfo.getArrIata();
         String flightIat = flightInfo.getFlightIat().replaceAll("[^0-9]", "");
         String airlineIata = flightInfo.getFlightIat().replaceAll("[^A-Za-z]", "");
-        System.out.println("여기" + airlineIata);
         LocalDateTime depSch = flightInfo.getDepSch();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = depSch.format(formatter);
