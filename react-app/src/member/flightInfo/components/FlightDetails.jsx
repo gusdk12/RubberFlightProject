@@ -109,9 +109,13 @@ const FlightDetails = ({ flightInfo, timetable, history }) => {
 
           <Text fontSize="sm" color="red.500" mb={8} align="right">
             {now > depSch && delayInMinutes > 0 && (
-              delayHours > 0 
-              ? `도착시간 ${delayHours}시간 ${delayMinutes}분 지연되었습니다.` 
-              : `도착시간 ${delayMinutes}분 지연되었습니다.`
+              history.length > 0 
+              ? (delayHours > 0 
+                  ? `도착시간 ${delayHours}시간 ${delayMinutes}분 지연되었습니다.` 
+                  : `도착시간 ${delayMinutes}분 지연되었습니다.`)
+              : (delayHours > 0 
+                  ? `도착시간 ${delayHours}시간 ${delayMinutes}분 지연될 예정입니다.` 
+                  : `도착시간 ${delayMinutes}분 지연될 예정입니다.`)
             )}
           </Text>
 
