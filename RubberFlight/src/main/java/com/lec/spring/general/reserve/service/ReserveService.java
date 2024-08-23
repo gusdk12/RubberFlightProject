@@ -295,19 +295,27 @@ public class ReserveService {
 
                                     System.out.println("디비 정보로 api 찾기 >> " + seoulDateTime);
 
+                                    ZonedDateTime apiZonedDateTime = seoulDateTime.atZone(ZoneId.of("Asia/Seoul"));
+
                                     // 시간 동일하게 타임존
-//                                    ZonedDateTime arrZonedDateTime = seoulDateTime.withZoneSameInstant(ZoneId.of(arrTimezone));
-                                    ZonedDateTime arrZonedDateTime = dbDateTime.atZone(ZoneId.of(arrTimezone));
+                                    ZonedDateTime arrZonedDateTime = apiZonedDateTime.withZoneSameInstant(ZoneId.of(arrTimezone));
+//                                    ZonedDateTime arrZonedDateTime = dbDateTime.atZone(ZoneId.of(arrTimezone));
 
                                     System.out.println("여기랑 위랑 시간은 똑같아야 됨");
                                     System.out.println("해당 나라 시간으로" + arrZonedDateTime);
+                                    LocalDateTime localDateTime = arrZonedDateTime.toLocalDateTime();
+
+                                    System.out.println("시간도 맞나요?" + localDateTime);
+
+                                    ZonedDateTime utcZonedDateTime = localDateTime.atZone(ZoneId.of("America/Los_Angeles"))
+                                                                 .withZoneSameInstant(ZoneId.of("UTC"));
 
 
-                                    ZonedDateTime realDateTime = arrZonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
+//                                    ZonedDateTime realDateTime = arrZonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
 
-                                    System.out.println("해당나라 >> utc ??? " + realDateTime);
+                                    System.out.println("해당나라 >> utc ??? " + utcZonedDateTime);
 
-                                    return realDateTime.toLocalDateTime();
+                                    return utcZonedDateTime.toLocalDateTime();
                                 })
                                 .max(LocalDateTime::compareTo)
                                 .orElse(null);
