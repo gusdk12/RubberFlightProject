@@ -122,7 +122,7 @@ const FlightInfoDetail = () => {
         {arrTimeInKST >= currentTimeInKST && ( 
           <Flex justifyContent="flex-end" mt={10} mr={30}>
             <Link 
-              href={`/live?flight=${timetable[0].flight.iataNumber}`} 
+              href={`/live?flight=${timetable[0]?.flight?.iataNumber}`} 
               color="blue.500"
               display="flex" 
               alignItems="center"
