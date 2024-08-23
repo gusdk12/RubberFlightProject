@@ -1,21 +1,70 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FlightInfoContext } from '../contexts/FlightInfoContext'; 
 import { useParams } from 'react-router-dom'; 
 import { Box, Flex, Text, Link, Spinner } from '@chakra-ui/react'; 
 import FlightInfoItem from '../components/FlightInfoItem';
 import FlightDetails from '../components/FlightDetails';
 import { IoIosArrowDroprightCircle } from "react-icons/io";
+import { getAirportInfo1 } from '../../../apis/airportApis';
+import moment from 'moment-timezone';
 
 const FlightInfoDetail = () => {
   const { flightId } = useParams(); 
   const { flightInfo, timetable, history, setFlightId } = useContext(FlightInfoContext); 
+  const [arrTimezone, setArrTimezone] = useState('');
+  const [depTimezone, setDepTimezone] = useState('');
+  const isDebug = process.env.REACT_APP_DEBUC;
 
   useEffect(() => {
     document.body.style.overflowY = 'scroll';
     setFlightId(flightId); 
   }, [flightId, setFlightId]);
 
+  // flightInfo 업데이트 시 공항 타임존 정보 가져오기
+  useEffect(() => {
+    if (flightInfo?.arrIata) {
+      getAirportInfo1(flightInfo.arrIata)
+        .then(response => {
+          setArrTimezone(response.data[0].timezone);
+          // console.log(response.data[0].timezone); //미국
+        })
+        .catch(error => {
+          console.error('Error fetching arrival airport info:', error);
+        });
+    }
+    if (flightInfo?.depIata) {
+      getAirportInfo1(flightInfo.depIata)
+        .then(response => {
+          setDepTimezone(response.data[0].timezone);
+          // console.log(response.data[0].timezone);
+        })
+        .catch(error => {
+          console.error('Error fetching departure airport info:', error);
+        });
+    }
+  }, [flightInfo]);
+
+  const convertToKST = (time, timezone) => {
+    return moment.tz(time, timezone).tz('Asia/Seoul').toDate();
+  };
+
   const renderFlightDetails = () => {
+    console.log("api상 arr시간",flightInfo.arrSch);
+    console.log("api상 dep시간",flightInfo.depSch);
+
+    const arrTimeInKST = convertToKST(flightInfo.arrSch, arrTimezone);
+    const depTimeInKST = convertToKST(flightInfo.depSch, depTimezone);
+    const currentTimeInKST = new Date(); // 현재 한국 시간
+    
+    if(!isDebug){
+      arrTimeInKST.setHours(arrTimeInKST.getHours() + 9);
+      depTimeInKST.setHours(depTimeInKST.getHours() + 9);
+    }
+
+    console.log("arr",arrTimeInKST);
+    console.log("dep",depTimeInKST);
+    console.log("kor",currentTimeInKST);
+
     return (
       <Box
         style={{
@@ -35,7 +84,7 @@ const FlightInfoDetail = () => {
         {/* 추가 비행 정보 표시 */}
         <FlightInfoItem flightInfo={flightInfo} timetable={timetable} history={history} />
 
-        {timetable.length > 0 && timetable[0]?.flight?.iataNumber && new Date(flightInfo.arrSch) >= new Date() && new Date(flightInfo.depSch) < new Date() && (
+        {timetable.length > 0 && timetable[0]?.flight?.iataNumber && arrTimeInKST >= currentTimeInKST && depTimeInKST < currentTimeInKST && ( 
           <Flex justifyContent="flex-end" mt={10} mr={30}>
             <Link 
               href={`/live?flight=${timetable[0].flight.iataNumber}`} 

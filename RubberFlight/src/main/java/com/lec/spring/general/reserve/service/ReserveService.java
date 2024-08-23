@@ -10,6 +10,7 @@ import com.lec.spring.general.user.domain.User;
 import com.lec.spring.general.user.repository.UserRepository;
 import com.lec.spring.member.flightInfo.domain.FlightInfo;
 import com.lec.spring.member.flightInfo.repository.FlightInfoRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -26,6 +30,8 @@ import java.util.stream.Collectors;
 @Service
 public class ReserveService {
 
+    @Value("${projectmode}")
+    private String projectmode;
     private final ReserveRepository reserveRepository;
 
     private final FlightInfoRepository flightInfoRepository;
@@ -250,35 +256,115 @@ public class ReserveService {
         return flightInfo;
     }
 
-    @Scheduled(fixedRate = 60000) // 1분마다 실행
-    public void updateEndedReservations() {
-        LocalDateTime now = LocalDateTime.now();
+        @Scheduled(fixedRate = 60000) // 1분마다 실행
+        public void updateEndedReservations() {
+            LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
 
-        // 모든 예약
-        List<Reserve> allReserves = reserveRepository.findAll();
+            // 모든 예약
+            List<Reserve> allReserves = reserveRepository.findAll();
 
-        for (Reserve reserve : allReserves) {
+            for (Reserve reserve : allReserves) {
 //            System.out.println("끝남 여부" + reserve.isIsended());
-            if (!reserve.isIsended()) {
-                List<FlightInfo> flightInfos = flightInfoRepository.findByReserve(reserve);
 
-//                System.out.println(flightInfos);
+                if (!reserve.isIsended()) {
+                    if(projectmode.equals("1")){
 
-                // 왕복 예약인 경우, 마지막 도착 시간 찾기
-                LocalDateTime latestArrSch = flightInfos.stream()
-                        .map(FlightInfo::getArrSch)
-                        .max(LocalDateTime::compareTo)
-                        .orElse(null);
+                        List<FlightInfo> flightInfos = flightInfoRepository.findByReserve(reserve);
 
-                if (latestArrSch != null && latestArrSch.isBefore(now)) {
-                    reserve.setIsended(true);
-                    reserveRepository.save(reserve);
+                        LocalDateTime latestArrSchUTC = flightInfos.stream()
+                                .map(flightInfo -> {
+                                    // FlightInfo에서 도착지 IATA 코드 가져오기
+                                    String arrIata = flightInfo.getArrIata();
+
+                                    // AirportService를 통해 타임존 정보 가져오기
+                                    Airport airport = airportRepository.findByAirportIso(arrIata);
+                                    String arrTimezone = airport.getTimezone();
+
+//                                System.out.println("도착 공항 코드:" + arrIata);
+//                                System.out.println("도착 타임존:" + arrTimezone);
+
+                                    System.out.println("디비상 정보" + flightInfo.getArrSch());
+                                    LocalDateTime dbDateTime = flightInfo.getArrSch();
+
+                                    // 이건 db 시간을 zoneDateTime 으로
+//                                    ZonedDateTime utcDateTime = dbDateTime.atZone(ZoneOffset.UTC);
+
+                                    // db 정보를 서울로(이게 api 시간)
+//                                    ZonedDateTime seoulDateTime = utcDateTime.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
+//                                    LocalDateTime seoulDateTime = dbDateTime.plusHours(9);  // 서울로(이게 api 데이터 시간)
+
+                                    ZonedDateTime seoulDateTime = dbDateTime.atZone(ZoneId.of("Asia/Seoul"));
+
+                                    System.out.println("디비 정보로 api 찾기 >> " + seoulDateTime);
+
+//                                    ZonedDateTime apiZonedDateTime = seoulDateTime.atZone(ZoneId.of("Asia/Seoul"));
+
+                                    // 시간 동일하게 타임존
+                                    ZonedDateTime arrZonedDateTime = seoulDateTime.withZoneSameInstant(ZoneId.of(arrTimezone));
+//                                    ZonedDateTime arrZonedDateTime = dbDateTime.atZone(ZoneId.of(arrTimezone));
+
+                                    System.out.println("여기랑 위랑 시간은 똑같아야 됨");
+                                    System.out.println("해당 나라 타임존으로" + arrZonedDateTime);
+                                    LocalDateTime localDateTime = arrZonedDateTime.toLocalDateTime();
+
+                                    System.out.println("시간도 맞나요?" + localDateTime);
+
+                                    ZonedDateTime utcZonedDateTime = localDateTime.atZone(ZoneId.of("America/Los_Angeles"))
+                                                                 .withZoneSameInstant(ZoneId.of("UTC"));
+
+
+//                                    ZonedDateTime realDateTime = arrZonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
+
+                                    System.out.println("해당나라 >> utc ??? " + utcZonedDateTime);
+
+                                    return utcZonedDateTime.toLocalDateTime();
+                                })
+                                .max(LocalDateTime::compareTo)
+                                .orElse(null);
+
+                        // 최신 도착 시간이 현재 UTC 시간보다 이전이면 예약 종료로 설정
+                        if (latestArrSchUTC != null && latestArrSchUTC.isBefore(now)) {
+                            System.out.println("지금 도착 시간은???????????" + latestArrSchUTC);
+                            reserve.setIsended(true);
+                            reserveRepository.save(reserve);
+                        }
+                    }
                 }
-            }
+
+
+
+                    List<FlightInfo> flightInfos = flightInfoRepository.findByReserve(reserve);
+
+                    LocalDateTime latestArrSchUTC = flightInfos.stream()
+                            .map(flightInfo -> {
+                                // FlightInfo에서 도착지 IATA 코드 가져오기
+                                String arrIata = flightInfo.getArrIata();
+
+                                System.out.println("arrIata" + arrIata);
+                                // AirportService를 통해 타임존 정보 가져오기
+                                Airport airport = airportRepository.findByAirportIso(arrIata);
+                                String arrTimezone = airport.getTimezone();
+
+//                                System.out.println("도착 공항 코드:" + arrIata);
+//                                System.out.println("도착 타임존:" + arrTimezone);
+
+                                // 도착 시간을 해당 타임존으로 변환 후 UTC로 변환
+                                ZonedDateTime arrZonedDateTime = flightInfo.getArrSch().atZone(ZoneId.of(arrTimezone));
+                                return arrZonedDateTime.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime();
+                            })
+                            .max(LocalDateTime::compareTo)
+                            .orElse(null);
+
+                    // 최신 도착 시간이 현재 UTC 시간보다 이전이면 예약 종료로 설정
+                    if (latestArrSchUTC != null && latestArrSchUTC.isBefore(now)) {
+                        reserve.setIsended(true);
+                        reserveRepository.save(reserve);
+                    }
+                }
+        }
+
+        public int getReservationCntByUserId(Long userId) {
+            return reserveRepository.countByUserId(userId);
         }
     }
 
-    public int getReservationCntByUserId(Long userId) {
-        return reserveRepository.countByUserId(userId);
-    }
-}

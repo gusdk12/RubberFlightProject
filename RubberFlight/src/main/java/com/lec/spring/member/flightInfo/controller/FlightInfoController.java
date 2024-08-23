@@ -112,7 +112,7 @@ public class FlightInfoController {
     }
 
     private ResponseEntity<?> getFlightHistory(FlightInfo flightInfo, Map<String, Object> combinedResponse) throws IOException {
-        String depIata = flightInfo.getDepIata();
+        String arrIata = flightInfo.getArrIata();
         String flightIat = flightInfo.getFlightIat().replaceAll("[^0-9]", "");
         LocalDateTime depSch = flightInfo.getDepSch();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -122,10 +122,11 @@ public class FlightInfoController {
         URI uri = UriComponentsBuilder
                 .fromUriString("https://aviation-edge.com/v2/public/flightsHistory")
                 .queryParam("key", aviation_key)
-                .queryParam("code", depIata)
-                .queryParam("type", "departure")
+                .queryParam("code", arrIata)
+                .queryParam("type", "arrival")
                 .queryParam("date_from", date)
                 .queryParam("flight_number", flightIat)
+                .queryParam("status", "landed")
                 .build()
                 .encode()
                 .toUri();

@@ -6,6 +6,8 @@ export const FlightInfoContext = createContext();
 export const FlightInfoProvider = ({ children }) => {
   const [flightInfo, setFlightInfo] = useState(null);
   const [history, setHistory] = useState([]);
+  // const [historyDep, setHistoryDep] = useState([]);
+  // const [historyArr, setHistoryArr] = useState([]);
   const [timetable, setTimetable] = useState([]);
   const [flightId, setFlightId] = useState(null);
 
