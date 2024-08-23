@@ -290,34 +290,48 @@ public class ReserveService {
 //                                    ZonedDateTime utcDateTime = dbDateTime.atZone(ZoneOffset.UTC);
 
                                     // db 정보를 서울로(이게 api 시간)
-//                                    ZonedDateTime seoulDateTime = utcDateTime.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
-//                                    LocalDateTime seoulDateTime = dbDateTime.plusHours(9);  // 서울로(이게 api 데이터 시간)
+//                                   ZonedDateTime seoulDateTime = utcDateTime.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
+                                    LocalDateTime seoulDateTime = dbDateTime.plusHours(9);  // 서울로(이게 api 데이터 시간)
 
-                                    ZonedDateTime seoulDateTime = dbDateTime.atZone(ZoneId.of("Asia/Seoul"));
+                                    int year = seoulDateTime.getYear();
+                                    int mon = seoulDateTime.getMonthValue();
+                                    int day = seoulDateTime.getDayOfMonth();
+                                    int hour = seoulDateTime.getHour();
+                                    int minute = seoulDateTime.getMinute();
+                                    int second = seoulDateTime.getSecond();
 
-                                    System.out.println("디비 정보로 api 찾기 >> " + seoulDateTime);
+                                    System.out.println("저장 시간 " + hour);
+                                    System.out.println("저장 시간 " + minute);
+                                    System.out.println("저장 시간 " + second);
 
-//                                    ZonedDateTime apiZonedDateTime = seoulDateTime.atZone(ZoneId.of("Asia/Seoul"));
+                                    ZonedDateTime utcZonedDateTime = seoulDateTime.atZone(ZoneId.of(arrTimezone));    // 타임존 부여
 
-                                    // 시간 동일하게 타임존
-                                    ZonedDateTime arrZonedDateTime = seoulDateTime.withZoneSameInstant(ZoneId.of(arrTimezone));
-//                                    ZonedDateTime arrZonedDateTime = dbDateTime.atZone(ZoneId.of(arrTimezone));
+                                    ZonedDateTime updatedDateTime = utcZonedDateTime
+                                            .withYear(year)
+                                            .withMonth(mon)
+                                            .withDayOfMonth(day)
+                                            .withHour(hour)
+                                            .withMinute(minute)
+                                                    .withSecond(second);
 
-                                    System.out.println("여기랑 위랑 시간은 똑같아야 됨");
-                                    System.out.println("해당 나라 타임존으로" + arrZonedDateTime);
-                                    LocalDateTime localDateTime = arrZonedDateTime.toLocalDateTime();
+                                    System.out.println("이거 주입한 시간" + updatedDateTime);
 
-                                    System.out.println("시간도 맞나요?" + localDateTime);
 
-                                    ZonedDateTime utcZonedDateTime = localDateTime.atZone(ZoneId.of("America/Los_Angeles"))
-                                                                 .withZoneSameInstant(ZoneId.of("UTC"));
+
+
+//                                    System.out.println("여기랑 위랑 시간은 똑같아야 됨");
+//                                    System.out.println("해당 나라 타임존으로" + arrZonedDateTime);
+//                                    LocalDateTime localDateTime = arrZonedDateTime.toLocalDateTime();
+//
+//                                    System.out.println("시간도 맞나요?" + localDateTime);
+
 
 
 //                                    ZonedDateTime realDateTime = arrZonedDateTime.withZoneSameInstant(ZoneOffset.UTC);
 
-                                    System.out.println("해당나라 >> utc ??? " + utcZonedDateTime);
+//                                    System.out.println("해당나라 >> utc ??? " + utcZonedDateTime);
 
-                                    return utcZonedDateTime.toLocalDateTime();
+                                    return updatedDateTime.toLocalDateTime();
                                 })
                                 .max(LocalDateTime::compareTo)
                                 .orElse(null);
