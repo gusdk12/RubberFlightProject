@@ -19,6 +19,7 @@ SELECT * FROM ft_participation;
 SELECT * FROM ft_date;
 
 SELECT * FROM ft_coupon;
+SELECT * FROM FT_COUPON;
 SELECT * FROM ft_coupon_users;
 
 SELECT * FROM ft_coupon_users WHERE users_id = 1;

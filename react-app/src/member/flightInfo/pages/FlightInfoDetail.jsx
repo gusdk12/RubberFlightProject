@@ -13,6 +13,7 @@ const FlightInfoDetail = () => {
   const { flightInfo, timetable, history, setFlightId } = useContext(FlightInfoContext); 
   const [arrTimezone, setArrTimezone] = useState('');
   const [depTimezone, setDepTimezone] = useState('');
+  const isDebug = process.env.REACT_APP_DEBUC;
 
   useEffect(() => {
     document.body.style.overflowY = 'scroll';
@@ -48,9 +49,17 @@ const FlightInfoDetail = () => {
   };
 
   const renderFlightDetails = () => {
+    console.log("api상 arr시간",flightInfo.arrSch);
+    console.log("api상 dep시간",flightInfo.depSch);
+
     const arrTimeInKST = convertToKST(flightInfo.arrSch, arrTimezone);
     const depTimeInKST = convertToKST(flightInfo.depSch, depTimezone);
     const currentTimeInKST = new Date(); // 현재 한국 시간
+    
+    if(!isDebug){
+      arrTimeInKST.setHours(arrTimeInKST.getHours() + 9);
+      depTimeInKST.setHours(depTimeInKST.getHours() + 9);
+    }
 
     console.log("arr",arrTimeInKST);
     console.log("dep",depTimeInKST);
@@ -75,7 +84,7 @@ const FlightInfoDetail = () => {
         {/* 추가 비행 정보 표시 */}
         <FlightInfoItem flightInfo={flightInfo} timetable={timetable} history={history} />
 
-        {timetable.length > 0 && timetable[0]?.flight?.iataNumber && arrTimeInKST >= currentTimeInKST && depTimeInKST < currentTimeInKST && (
+        {timetable.length > 0 && timetable[0]?.flight?.iataNumber && arrTimeInKST >= currentTimeInKST && depTimeInKST < currentTimeInKST && ( 
           <Flex justifyContent="flex-end" mt={10} mr={30}>
             <Link 
               href={`/live?flight=${timetable[0].flight.iataNumber}`} 
