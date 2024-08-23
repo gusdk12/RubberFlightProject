@@ -111,16 +111,109 @@ const JoinForm = ({ join }) => {
     const onJoin = async (e) => {
         e.preventDefault();
 
-        // Validation and form data processing here...
+        const fullEmail = `${email}@${emailDomain}`; 
+        const fullTel = `${tel1}-${tel2}-${tel3}`;
+
+        // 유효성 검사 추가 
+        if (!username) {
+            Swal.fire({
+                icon: 'error',
+                title: '아이디를 입력하지 않았습니다.',
+                text: '아이디를 입력해 주세요.',
+            });
+            return;
+        }
+    
+        if (!password) {
+            Swal.fire({
+                icon: 'error',
+                title: '비밀번호를 입력하지 않았습니다.',
+                text: '비밀번호를 입력해 주세요.',
+            });
+            return;
+        }
+    
+        if (!confirmPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: '비밀번호 확인을 입력하지 않았습니다.',
+                text: '비밀번호 확인을 입력해 주세요.',
+            });
+            return;
+        }
+    
+        if (password !== confirmPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: '비밀번호가 일치하지 않습니다.',
+                text: '비밀번호와 비밀번호 확인이 다릅니다.',
+            });
+            return;
+        }
+    
+        if (!name) {
+            Swal.fire({
+                icon: 'error',
+                title: '이름을 입력하지 않았습니다.',
+                text: '이름을 입력해 주세요.',
+            });
+            return;
+        }
+    
+        if (!email) {
+            Swal.fire({
+                icon: 'error',
+                title: '이메일을 입력하지 않았습니다.',
+                text: '이메일을 입력해 주세요.',
+            });
+            return;
+        }
+    
+        if (!emailDomain) {
+            Swal.fire({
+                icon: 'error',
+                title: '이메일 도메인을 선택하지 않았습니다.',
+                text: '이메일 도메인을 선택해 주세요.',
+            });
+            return;
+        }
+    
+        const emailRegex = /^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(fullEmail)) {
+            Swal.fire({
+                icon: 'error',
+                title: '이메일 형식 오류',
+                text: '유효한 이메일 주소를 입력해 주세요.',
+            });
+            return;
+        }
+    
+        // Validation for telephone number
+        if (!tel1 || !tel2 || !tel3) {
+            Swal.fire({
+                icon: 'error',
+                title: '전화번호를 입력하지 않았습니다.',
+                text: '전화번호를 입력해 주세요.',
+            });
+            return;
+        }
+
+        const telRegex = /^\d{3}-\d{4}-\d{4}$/;
+        if (!telRegex.test(fullTel)) {
+            Swal.fire({
+                icon: 'error',
+                title: '전화번호 형식 오류',
+                text: '전화번호를 올바른 형식으로 입력해 주세요.',
+            });
+            return;
+        }
 
         // Form data preparation
         const formData = new FormData(e.target);
-        const fullEmail = `${email}@${emailDomain}`;
         formData.delete('email');
         formData.delete('emailDomain');
         formData.append('email', fullEmail);
 
-        const fullTel = `${tel1}-${tel2}-${tel3}`;
         formData.delete('tel1');
         formData.delete('tel2');
         formData.delete('tel3');
