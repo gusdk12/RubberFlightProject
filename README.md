@@ -1,6 +1,6 @@
 # 🌟 LOVER AIR란?
 <p align="right">
-  <a href="https://www.youtube.com/watch?v=yM-aERb-wBk&list=PLedGoSru7949vE2KofRZ2Vg4aINCrD_jQ&index=3">‘🔗LOVER AIR 발표 영상’</a> / 
+  <a href="https://www.youtube.com/watch?v=59fw-YCZ5K4&list=PLedGoSru7948CbDAFR7ldzPuhvO0XBgxF&index=2">‘🔗LOVER AIR 발표 영상’</a> / 
   <a href="https://www.youtube.com/watch?v=_b2VAOLMK2s&list=PLedGoSru7948CbDAFR7ldzPuhvO0XBgxF&index=5">‘🔗LOVER AIR 발표 화면’</a>
 </p>
 
